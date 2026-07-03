@@ -115,4 +115,12 @@ public function notifications(): HasMany
     return $this->hasMany(Notification::class)
                 ->latest();
 }
+public function face()
+{
+    return $this->hasOne(EmployeeFace::class);
+}
+public function attendanceLogs()
+{
+    return $this->hasMany(AttendanceLog::class);
+}
 }

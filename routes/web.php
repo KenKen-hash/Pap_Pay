@@ -7,7 +7,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\FaceAttendanceController;
 
 use App\Http\Controllers\Employee\PayslipController;
 use App\Http\Controllers\Employee\LeaveController;
@@ -19,6 +18,9 @@ use App\Http\Controllers\Admin\AttendanceExportController;
 use App\Http\Controllers\Admin\LeaveController as AdminLeaveController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OfficialBusinessController;
+use App\Http\Controllers\Admin\FaceRegistrationController;
+use App\Http\Controllers\Admin\FaceAttendanceController;
+use App\Http\Controllers\Admin\AttendanceKioskController;
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -177,6 +179,30 @@ Route::middleware(['auth', 'role:admin'])
         Route::post('/official-business/{officialBusiness}/reject',
             [OfficialBusinessController::class, 'reject'])
             ->name('official_business.reject');
+            
+        Route::get(
+    '/employees/{user}/face-registration',
+    [FaceRegistrationController::class, 'show']
+)->name('admin.face.register');
+
+        Route::post(
+    '/employees/{id}/save-face',
+    [FaceRegistrationController::class, 'save']
+)->name('face.save');
+    
+    Route::get(
+    '/attendance-kiosk',
+    [FaceAttendanceController::class,'index']
+)->name('attendance.kiosk');
+
+    Route::get(
+    '/attendance/faces',
+    [FaceAttendanceController::class,'faces']
+)->name('attendance.faces');
+Route::post(
+    '/attendance/record',
+    [AttendanceKioskController::class, 'record']
+)->name('attendance.record');
 
         });
 
@@ -185,8 +211,4 @@ Route::middleware(['auth', 'role:admin'])
 | PUBLIC
 |--------------------------------------------------------------------------
 */
-
-Route::get('/face-attendance', [FaceAttendanceController::class, 'index'])
-    ->name('face.attendance');
-
 require __DIR__.'/auth.php';

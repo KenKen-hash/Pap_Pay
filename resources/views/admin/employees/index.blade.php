@@ -358,23 +358,42 @@ height="50">
 </td>
 
 <td>
-<div class="d-flex justify-content-center gap-2">
 
-<a href="#" class="btn btn-sm btn-outline-primary">
+<div class="d-flex gap-1">
+
+<a
+href="{{ route('admin.face.register', $employee->id) }}"
+class="btn btn-sm btn-success">
+
+<i class="bi bi-camera"></i>
+
+</a>
+
+<a
+href="#"
+class="btn btn-sm btn-outline-primary">
+
 <i class="bi bi-eye"></i>
+
 </a>
 
-<a href="#" class="btn btn-sm btn-outline-warning">
+<a
+href="#"
+class="btn btn-sm btn-outline-warning">
+
 <i class="bi bi-pencil"></i>
+
 </a>
 
-<form>
-<button class="btn btn-sm btn-outline-danger">
+<button
+class="btn btn-sm btn-outline-danger">
+
 <i class="bi bi-trash"></i>
+
 </button>
-</form>
 
 </div>
+
 </td>
 
 </tr>
@@ -424,6 +443,7 @@ employees</p>
         </div>
       </footer>
     </div>
+    
   </div>
 
   <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
