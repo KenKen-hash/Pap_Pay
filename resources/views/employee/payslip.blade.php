@@ -29,37 +29,40 @@
           </span>
         </a>
       </div>
-
-      <nav class="sidebar-nav">
-        <a class="nav-link " href="{{ route ('dashboard') }}">
-          <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
+<nav class="sidebar-nav">
+        <a class="nav-link" href="{{ route ('dashboard') }}">
+          <span class="nav-icon"><i class="bi bi-house-door" aria-hidden="true"></i></span>
           <span class="nav-text">Dashboard</span>
         </a>
         <a class="nav-link" href="{{ route ('attendance') }}">
-          <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
-          <span class="nav-text">Attendace</span>
+          <span class="nav-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
+          <span class="nav-text">Attendance</span>
         </a>
         <a class="nav-link" href="{{ route ('file_leave') }}">
-          <span class="nav-icon"><i class="bi bi-person-plus" aria-hidden="true"></i></span>
+          <span class="nav-icon"><i class="bi bi-calendar-plus" aria-hidden="true"></i></span>
           <span class="nav-text">File Leave</span>
         </a>
-         <a class="nav-link" href="{{ route ('file_ob') }}">
-          <span class="nav-icon"><i class="bi bi-bar-chart-line" aria-hidden="true"></i></span>
+        <a class="nav-link" href="{{ route ('file_ob') }}">
+          <span class="nav-icon"><i class="bi bi-briefcase" aria-hidden="true"></i></span>
           <span class="nav-text">File OB</span>
         </a>
-         <a class="nav-link active" href="{{ route ('payslip') }}" aria-current="page">
-          <span class="nav-icon"><i class="bi bi-table" aria-hidden="true"></i></span>
+        <a class="nav-link active" href="{{ route ('payslip') }}" aria-current="page">
+          <span class="nav-icon"><i class="bi bi-receipt" aria-hidden="true"></i></span>
           <span class="nav-text">Payslip</span>
         </a>
         <a class="nav-link" href="{{ route ('my_profile') }}">
-          <span class="nav-icon"><i class="bi bi-person-badge" aria-hidden="true"></i></span>
-          <span class="nav-text">Profile</span>
+          <span class="nav-icon"><i class="bi bi-person" aria-hidden="true"></i></span>
+          <span class="nav-text">My Profile</span>
         </a>
       </nav>
+
       <div class="sidebar-user">
-        <img class="avatar-img avatar-md sidebar-user-avatar" src="../../../../../khen/assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-        <strong>Admin Hasan</strong>
-        <small>Active Workspace</small>
+        <img class="avatar-img avatar-md sidebar-user-avatar" src="{{ $employee->photo
+    ? asset('storage/'.$employee->photo)
+    : asset('images/default-avatar.png')
+}}" alt="{{ $employee->name ?? 'Employee' }}">
+        <strong>{{ $employee->name ?? 'Employee Name' }}</strong>
+        <small>{{ $employee->position ?? 'Position' }}</small>
       </div>
 
       <div class="sidebar-footer">
@@ -107,16 +110,23 @@
               </div>
             </div>
 
-            <div class="dropdown">
+             <div class="dropdown">
               <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="avatar-img avatar-sm" src="../../../../../khen/assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-                <span class="profile-name d-none d-sm-inline">Admin Hasan</span>
+                <img class="avatar-img avatar-sm" src="{{ $employee->photo
+    ? asset('storage/'.$employee->photo)
+    : asset('images/default-avatar.png')
+}}" alt="{{ $employee->name ?? 'Employee' }}">
+                <span class="profile-name d-none d-sm-inline">{{ $employee->name ?? 'Employee' }}</span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-                <li><a class="dropdown-item" href="settings.html">Account settings</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="login.html">Sign out</a></li>
+                <li><a class="dropdown-item" href="{{ route ('my_profile') }}">My Profile</a></li>
+
+                <form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit" class="dropdown-item">
+        Sign out
+    </button>
+</form>
               </ul>
             </div>
           </div>

@@ -7,21 +7,33 @@ use Illuminate\Database\Eloquent\Model;
 class LeaveRequest extends Model
 {
     protected $fillable = [
+
         'user_id',
+
         'leave_type',
+
+        'supervisor',
+
         'start_date',
+
         'end_date',
+
+        'return_date',
+
         'days',
+
         'reason',
+
         'attachment',
 
-        // NEW
-        'emergency_contact',
-        'contact_number',
         'status',
+
         'approved_by',
+
         'approved_at',
+
         'remarks',
+
     ];
 
     protected $casts = [
@@ -67,5 +79,9 @@ class LeaveRequest extends Model
     public function isDeclined()
     {
         return $this->status === 'Declined';
+    }
+    public function isCancelled()
+    {
+        return $this->status === 'Cancelled';
     }
 }

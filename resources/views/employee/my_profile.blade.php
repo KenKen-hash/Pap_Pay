@@ -30,29 +30,29 @@
       </div>
 
      <nav class="sidebar-nav">
-        <a class="nav-link " href="{{ route ('dashboard') }}">
-          <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
+        <a class="nav-link" href="{{ route ('dashboard') }}">
+          <span class="nav-icon"><i class="bi bi-house-door" aria-hidden="true"></i></span>
           <span class="nav-text">Dashboard</span>
         </a>
         <a class="nav-link" href="{{ route ('attendance') }}">
-          <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
-          <span class="nav-text">Attendace</span>
+          <span class="nav-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
+          <span class="nav-text">Attendance</span>
         </a>
         <a class="nav-link" href="{{ route ('file_leave') }}">
-          <span class="nav-icon"><i class="bi bi-person-plus" aria-hidden="true"></i></span>
+          <span class="nav-icon"><i class="bi bi-calendar-plus" aria-hidden="true"></i></span>
           <span class="nav-text">File Leave</span>
         </a>
-         <a class="nav-link" href="{{ route ('file_ob') }}">
-          <span class="nav-icon"><i class="bi bi-bar-chart-line" aria-hidden="true"></i></span>
+        <a class="nav-link" href="{{ route ('file_ob') }}">
+          <span class="nav-icon"><i class="bi bi-briefcase" aria-hidden="true"></i></span>
           <span class="nav-text">File OB</span>
         </a>
-         <a class="nav-link" href="{{ route ('payslip') }}">
-          <span class="nav-icon"><i class="bi bi-table" aria-hidden="true"></i></span>
+        <a class="nav-link" href="{{ route ('payslip') }}">
+          <span class="nav-icon"><i class="bi bi-receipt" aria-hidden="true"></i></span>
           <span class="nav-text">Payslip</span>
         </a>
         <a class="nav-link active" href="{{ route ('my_profile') }}" aria-current="page">
-          <span class="nav-icon"><i class="bi bi-person-badge" aria-hidden="true"></i></span>
-          <span class="nav-text">Profile</span>
+          <span class="nav-icon"><i class="bi bi-person" aria-hidden="true"></i></span>
+          <span class="nav-text">My Profile</span>
         </a>
       </nav>
 

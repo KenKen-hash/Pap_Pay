@@ -25,41 +25,42 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-   protected $fillable = [
-    'name',
-    'first_name',
-    'middle_name',
-    'last_name',
+    protected $fillable = [
+        'name',
+        'first_name',
+        'middle_name',
+        'last_name',
 
-    'email',
-    'password',
+        'email',
+        'password',
 
-    'employee_id',
-    'department',
-    'position',
-    'contact_number',
-    'photo',
-    'status',
+        'employee_id',
+        'department',
+        'position',
+        'contact_number',
+        'photo',
+        'status',
 
-    'gender',
-    'birth_date',
-    'address',
+        'gender',
+        'birth_date',
+        'address',
 
-    'emergency_contact_person',
-    'emergency_contact_number',
+        'emergency_contact_person',
+        'emergency_contact_number',
 
-    'hire_date',
-    'employment_type',
-    'salary_grade',
-    'face_embedding',
-    'face_registered_at',
+        'hire_date',
+        'employment_type',
+        'salary_grade',
+        'face_embedding',
+        'face_registered_at',
 
-    'username',
-    'force_password_change',
-    'role',
+        'username',
+        'force_password_change',
+        'role',
 
-    'bio',
-];
+        'bio',
+
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -84,43 +85,45 @@ class User extends Authenticatable
         ];
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | Relationships
     |--------------------------------------------------------------------------
     */
 
-  public function attendances(): HasMany
-{
-    return $this->hasMany(Attendance::class);
-}
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class);
+    }
 
-public function leaveRequests(): HasMany
-{
-    return $this->hasMany(LeaveRequest::class);
-}
+    public function leaveRequests(): HasMany
+    {
+        return $this->hasMany(LeaveRequest::class);
+    }
 
-public function officialBusinesses(): HasMany
-{
-    return $this->hasMany(OfficialBusiness::class);
-}
+    public function officialBusinesses(): HasMany
+    {
+        return $this->hasMany(OfficialBusiness::class);
+    }
 
-public function payrolls(): HasMany
-{
-    return $this->hasMany(Payroll::class);
-}
+    public function payrolls(): HasMany
+    {
+        return $this->hasMany(Payroll::class);
+    }
 
-public function notifications(): HasMany
-{
-    return $this->hasMany(Notification::class)
-                ->latest();
-}
-public function face()
-{
-    return $this->hasOne(EmployeeFace::class);
-}
-public function attendanceLogs()
-{
-    return $this->hasMany(AttendanceLog::class);
-}
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class)
+            ->latest();
+    }
+    public function face()
+    {
+        return $this->hasOne(EmployeeFace::class);
+    }
+    public function attendanceLogs()
+    {
+        return $this->hasMany(AttendanceLog::class);
+    }
+
 }

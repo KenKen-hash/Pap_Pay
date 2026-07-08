@@ -49,6 +49,7 @@ class AttendanceKioskController extends Controller
 
                 return response()->json([
                     'success' => true,
+                    'message' => 'Morning Time In recorded successfully.',
                     'type' => 'Morning Time In',
                     'time' => $time
                 ]);
@@ -74,6 +75,7 @@ class AttendanceKioskController extends Controller
 
                 return response()->json([
                     'success' => true,
+                    'message' => 'Morning Time Out recorded successfully.',
                     'type' => 'Morning Time Out',
                     'time' => $time
                 ]);
@@ -99,6 +101,7 @@ class AttendanceKioskController extends Controller
 
                 return response()->json([
                     'success' => true,
+                    'message' => 'Afternoon Time In recorded successfully.',
                     'type' => 'Afternoon Time In',
                     'time' => $time
                 ]);
@@ -142,6 +145,7 @@ class AttendanceKioskController extends Controller
 
             return response()->json([
                 'success' => true,
+                'message' => 'Afternoon Time Out recorded successfully.',
                 'type' => 'Afternoon Time Out',
                 'time' => $time,
                 'work_hours' => $attendance->work_hours

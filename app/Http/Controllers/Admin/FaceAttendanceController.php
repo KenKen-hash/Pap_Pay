@@ -21,32 +21,33 @@ class FaceAttendanceController extends Controller
 
         $data = [];
 
-        foreach($employees as $face){
+        foreach ($employees as $face) {
 
-            if(!$face->user){
+            if (!$face->user) {
                 continue;
             }
 
             $data[] = [
 
-                'id'=>$face->user->id,
+                'id' => $face->user->id,
 
-                'employee_id'=>$face->user->employee_id,
+                'employee_id' => $face->user->employee_id,
 
-                'name'=>$face->user->name,
+                'name' => $face->user->name,
 
-                'department'=>$face->user->department,
+                'department' => $face->user->department,
 
-                'position'=>$face->user->position,
+                'position' => $face->user->position,
 
-                'descriptor'=>json_decode($face->descriptor)
+                'photo' => $face->user->photo
+                    ? asset('storage/' . $face->user->photo)
+                    : asset('images/default-avatar.png'),
+
+                'descriptor' => json_decode($face->descriptor)
 
             ];
-
         }
 
         return response()->json($data);
-
     }
-
 }

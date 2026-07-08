@@ -23,6 +23,8 @@ class LeaveController extends Controller
 
         $rejected = LeaveRequest::where('status', 'Rejected')->count();
 
+        $cancelled = LeaveRequest::where('status', 'Cancelled')->count();
+
         $onLeaveToday = LeaveRequest::where('status', 'Approved')
             ->whereDate('start_date', '<=', now())
             ->whereDate('end_date', '>=', now())
@@ -33,6 +35,7 @@ class LeaveController extends Controller
             'pending',
             'approved',
             'rejected',
+            'cancelled',
             'onLeaveToday'
         ));
     }
@@ -45,46 +48,50 @@ class LeaveController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-    $request->validate([
-        'status' => 'required|in:Approved,Rejected',
-        'remarks' => 'nullable|string|max:1000',
-    ]);
+        $request->validate([
+            'status' => 'required|in:Approved,Rejected',
+            'remarks' => 'nullable|string|max:1000',
+        ]);
 
-    $leave = LeaveRequest::findOrFail($id);
+        $leave = LeaveRequest::findOrFail($id);
 
-    // Prevent processing twice
-    if ($leave->status !== 'Pending') {
+        // Prevent processing twice
+        if ($leave->status != 'Pending') {
+
+            return response()->json([
+
+                'success' => false,
+
+                'message' => 'This leave request has already been processed.'
+
+            ], 422);
+        }
+
+        $leave->update([
+            'status' => $request->status,
+            'remarks' => $request->remarks,
+            'approved_by' => Auth::id(),
+            'approved_at' => now(),
+        ]);
+        Notification::create([
+
+            'user_id' => $leave->user_id,
+
+            'title' => 'Leave Request Updated',
+
+            'message' => 'Your ' . $leave->leave_type .
+                ' leave request has been ' .
+                strtolower($request->status) . '.',
+
+            'type' => 'leave',
+
+            'url' => '/employee/file-leave'
+
+        ]);
+
         return response()->json([
-            'success' => false,
-            'message' => 'This leave request has already been processed.'
-        ], 422);
+            'success' => true,
+            'message' => 'Leave request updated successfully.'
+        ]);
     }
-
-    $leave->update([
-        'status' => $request->status,
-        'remarks' => $request->remarks,
-        'approved_by' => Auth::id(),
-        'approved_at' => now(),
-    ]);
-    Notification::create([
-
-    'user_id' => $leave->user_id,
-
-    'title' => 'Leave Request Updated',
-
-    'message' => 'Your '.$leave->leave_type.
-                 ' leave request has been '.
-                 strtolower($request->status).'.',
-
-    'type' => 'leave',
-
-    'url' => '/employee/file-leave'
-
-]);
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Leave request updated successfully.'
-    ]);
-}
 }

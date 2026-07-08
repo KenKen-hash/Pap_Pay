@@ -114,21 +114,13 @@
               <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
             </button>
             <div class="dropdown">
-              <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <img
-        class="avatar-img avatar-sm"
-        src="{{ Auth::user()->photo
-                ? asset('storage/' . Auth::user()->photo)
-                : asset('khen/assets/images/avatar/avatar.jpg') }}"
-        alt="{{ Auth::user()->name }}">
-
-    <span class="profile-name d-none d-sm-inline">
-        {{ Auth::user()->name }}
-    </span>
-</button>
+              <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
+                <span class="notification-dot"></span>
+                <i class="bi bi-bell" aria-hidden="true"></i>
+              </button>
               <div class="dropdown-menu dropdown-menu-end notification-menu">
                 <div class="dropdown-header fw-bold text-body">Notifications</div>
-                <a class="dropdown-item" href="{{ route ('employees.index') }}">
+                <a class="dropdown-item" href="{{ route('employees.index') }}">
                   <span class="notification-title">New user registered</span>
                   <span class="notification-time">4 minutes ago</span>
                 </a>
@@ -142,12 +134,20 @@
                 </a>
               </div>
             </div>
-
             <div class="dropdown">
               <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="avatar-img avatar-sm" src="../../../../khen/assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-                <span class="profile-name d-none d-sm-inline">Admin Hasan</span>
-              </button>
+    <img
+        class="avatar-img avatar-sm"
+        src="{{ Auth::user()->photo
+                ? asset('storage/' . Auth::user()->photo)
+                : asset('khen/assets/images/avatar/avatar.jpg') }}"
+        alt="{{ Auth::user()->name }}">
+
+    <span class="profile-name d-none d-sm-inline">
+        {{ Auth::user()->name }}
+    </span>
+</button>
+            <div class="dropdown">
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="{{ route ('payroll') }}">Profile</a></li>
                 <li><a class="dropdown-item" href="{{ route ('settings') }}">Account settings</a></li>

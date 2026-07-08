@@ -13,14 +13,18 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('user_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
+                ->constrained()
+                ->cascadeOnDelete();
 
             $table->string('leave_type');
+
+            $table->string('supervisor');
 
             $table->date('start_date');
 
             $table->date('end_date');
+
+            $table->date('return_date');
 
             $table->integer('days');
 
@@ -34,10 +38,16 @@ return new class extends Migration
                 'Rejected'
             ])->default('Pending');
 
+            $table->foreignId('approved_by')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
+
+            $table->timestamp('approved_at')->nullable();
+
             $table->text('remarks')->nullable();
 
             $table->timestamps();
-
         });
     }
 

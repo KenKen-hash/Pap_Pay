@@ -20,7 +20,6 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OfficialBusinessController;
 use App\Http\Controllers\Admin\FaceRegistrationController;
 use App\Http\Controllers\Admin\FaceAttendanceController;
-use App\Http\Controllers\Admin\AttendanceKioskController;
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -73,7 +72,11 @@ Route::middleware(['auth', 'role:employee'])
         Route::get('/my_profile', function () {
             return view('employee.my_profile');
         })->name('my_profile');
-
+        
+        Route::delete(
+            '/employee/file-leave/{leave}/cancel',
+            [App\Http\Controllers\Employee\LeaveController::class, 'cancel']
+        )->name('leave.cancel');
     });
 
 Route::middleware(['auth', 'role:employee'])->group(function () {
@@ -83,7 +86,6 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
 
     Route::patch('/my-profile', [EmployeeProfileController::class, 'update'])
         ->name('my_profile.update');
-
 });
 
 /*
@@ -103,6 +105,11 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::get('/attendance_list', [AdminAttendanceController::class, 'index'])
             ->name('attendance_list');
+
+        Route::post(
+            '/attendance/record',
+            [AdminAttendanceController::class, 'record']
+        )->name('attendance.record');
 
         Route::get('/attendance/export/csv', [AttendanceExportController::class, 'csv'])
             ->name('attendance.export.csv');
@@ -152,63 +159,64 @@ Route::middleware(['auth', 'role:admin'])
         Route::view('/settings', 'admin.settings')
             ->name('settings');
 
-        Route::get('/users/create', [UserController::class,'chooseType'])
+        Route::get('/users/create', [UserController::class, 'chooseType'])
             ->name('users.choose');
 
-        Route::post('/users/create', [UserController::class,'redirectCreate'])
+        Route::post('/users/create', [UserController::class, 'redirectCreate'])
             ->name('users.redirect');
 
-        Route::get('/users/create/admin', [UserController::class,'createAdmin'])
+        Route::get('/users/create/admin', [UserController::class, 'createAdmin'])
             ->name('users.admin');
 
-        Route::get('/users/create/employee', [UserController::class,'createEmployee'])
+        Route::get('/users/create/employee', [UserController::class, 'createEmployee'])
             ->name('users.employee');
         Route::get('/admin/users/create-employee', [UserController::class, 'createEmployee'])
-             ->name('users.create.employee');
+            ->name('users.create.employee');
         Route::post('/admin/users/create/employee', [UserController::class, 'storeEmployee'])
-             ->name('users.employee.store');
+            ->name('users.employee.store');
 
-        Route::get('/official-business',
-            [OfficialBusinessController::class, 'index'])
+        Route::get(
+            '/official-business',
+            [OfficialBusinessController::class, 'index']
+        )
             ->name('official_business');
 
-        Route::post('/official-business/{officialBusiness}/approve',
-            [OfficialBusinessController::class, 'approve'])
+        Route::post(
+            '/official-business/{officialBusiness}/approve',
+            [OfficialBusinessController::class, 'approve']
+        )
             ->name('official_business.approve');
 
-        Route::post('/official-business/{officialBusiness}/reject',
-            [OfficialBusinessController::class, 'reject'])
+        Route::post(
+            '/official-business/{officialBusiness}/reject',
+            [OfficialBusinessController::class, 'reject']
+        )
             ->name('official_business.reject');
-            
+
         Route::get(
-    '/employees/{user}/face-registration',
-    [FaceRegistrationController::class, 'show']
-)->name('admin.face.register');
+            '/employees/{user}/face-registration',
+            [FaceRegistrationController::class, 'show']
+        )->name('admin.face.register');
 
         Route::post(
-    '/employees/{id}/save-face',
-    [FaceRegistrationController::class, 'save']
-)->name('face.save');
-    
-    Route::get(
-    '/attendance-kiosk',
-    [FaceAttendanceController::class,'index']
-)->name('attendance.kiosk');
+            '/employees/{id}/save-face',
+            [FaceRegistrationController::class, 'save']
+        )->name('face.save');
 
-    Route::get(
-    '/attendance/faces',
-    [FaceAttendanceController::class,'faces']
-)->name('attendance.faces');
-Route::post(
-    '/attendance/record',
-    [AttendanceKioskController::class, 'record']
-)->name('attendance.record');
+        Route::get(
+            '/attendance-kiosk',
+            [FaceAttendanceController::class, 'index']
+        )->name('attendance.kiosk');
 
-        });
+        Route::get(
+            '/attendance/faces',
+            [FaceAttendanceController::class, 'faces']
+        )->name('attendance.faces');
+    });
 
 /*
 |--------------------------------------------------------------------------
 | PUBLIC
 |--------------------------------------------------------------------------
 */
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
