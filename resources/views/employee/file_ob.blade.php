@@ -3,757 +3,786 @@
 @endphp
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="adminHMD professional admin dashboard template">
-  <title>Charts | adminHMD</title>
 
-  <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
-  <link rel="stylesheet" href="../../../../khen/assets/css/style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="adminHMD professional admin dashboard template">
+    <title>Charts | adminHMD</title>
+
+    <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../../../khen/assets/css/style.css">
 </head>
 
 <body>
-  <div class="admin-shell">
-    <div class="sidebar-backdrop" data-sidebar-close></div>
+    <div class="admin-shell">
+        <div class="sidebar-backdrop" data-sidebar-close></div>
 
-    <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
-      <div class="sidebar-header">
-        <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
-          <span class="brand-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>
-          <span class="brand-copy">
-            <span class="brand-title">adminHMD</span>
-            <span class="brand-subtitle">Admin Template</span>
-          </span>
-        </a>
-      </div>
-
-       <nav class="sidebar-nav">
-        <a class="nav-link" href="{{ route ('dashboard') }}">
-          <span class="nav-icon"><i class="bi bi-house-door" aria-hidden="true"></i></span>
-          <span class="nav-text">Dashboard</span>
-        </a>
-        <a class="nav-link" href="{{ route ('attendance') }}">
-          <span class="nav-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
-          <span class="nav-text">Attendance</span>
-        </a>
-        <a class="nav-link" href="{{ route ('file_leave') }}">
-          <span class="nav-icon"><i class="bi bi-calendar-plus" aria-hidden="true"></i></span>
-          <span class="nav-text">File Leave</span>
-        </a>
-        <a class="nav-link active" href="{{ route ('file_ob') }}" aria-current="page">
-          <span class="nav-icon"><i class="bi bi-briefcase" aria-hidden="true"></i></span>
-          <span class="nav-text">File OB</span>
-        </a>
-        <a class="nav-link" href="{{ route ('payslip') }}">
-          <span class="nav-icon"><i class="bi bi-receipt" aria-hidden="true"></i></span>
-          <span class="nav-text">Payslip</span>
-        </a>
-        <a class="nav-link" href="{{ route ('my_profile') }}">
-          <span class="nav-icon"><i class="bi bi-person" aria-hidden="true"></i></span>
-          <span class="nav-text">My Profile</span>
-        </a>
-      </nav>
-
-      <div class="sidebar-user">
-        <img class="avatar-img avatar-md sidebar-user-avatar" src="{{ $employee->photo
-    ? asset('storage/'.$employee->photo)
-    : asset('images/default-avatar.png')
-}}" alt="{{ $employee->name ?? 'Employee' }}">
-        <strong>{{ $employee->name ?? 'Employee Name' }}</strong>
-        <small>{{ $employee->position ?? 'Position' }}</small>
-      </div>
-
-      <div class="sidebar-footer">
-        <span class="status-dot"></span>
-        <span class="sidebar-footer-text">System running smoothly</span>
-      </div>
-    </aside>
-
-    <div class="admin-main">
-      <nav class="navbar admin-navbar navbar-expand bg-white">
-        <div class="container-fluid px-3 px-lg-4">
-          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="Toggle sidebar">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-
-          <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
-            <input class="form-control search-input" type="search" placeholder="Search users, orders, reports" aria-label="Search">
-          </form>
-
-          <div class="navbar-actions ms-auto">
-            <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" title="Switch color theme">
-              <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
-            </button>
-            <div class="dropdown">
-              <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
-                <span class="notification-dot"></span>
-                <i class="bi bi-bell" aria-hidden="true"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-end notification-menu">
-                <div class="dropdown-header fw-bold text-body">Notifications</div>
-                <a class="dropdown-item" href="users.html">
-                  <span class="notification-title">New user registered</span>
-                  <span class="notification-time">4 minutes ago</span>
+        <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
+            <div class="sidebar-header">
+                <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
+                    <span class="brand-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>
+                    <span class="brand-copy">
+                        <span class="brand-title">adminHMD</span>
+                        <span class="brand-subtitle">Admin Template</span>
+                    </span>
                 </a>
-                <a class="dropdown-item" href="charts.html">
-                  <span class="notification-title">Revenue target reached</span>
-                  <span class="notification-time">32 minutes ago</span>
-                </a>
-                <a class="dropdown-item" href="settings.html">
-                  <span class="notification-title">Security review completed</span>
-                  <span class="notification-time">1 hour ago</span>
-                </a>
-              </div>
             </div>
 
-             <div class="dropdown">
-              <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="avatar-img avatar-sm" src="{{ $employee->photo
-    ? asset('storage/'.$employee->photo)
-    : asset('images/default-avatar.png')
-}}" alt="{{ $employee->name ?? 'Employee' }}">
-                <span class="profile-name d-none d-sm-inline">{{ $employee->name ?? 'Employee' }}</span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="{{ route ('my_profile') }}">My Profile</a></li>
+            <nav class="sidebar-nav">
+                <a class="nav-link" href="{{ route('dashboard') }}">
+                    <span class="nav-icon"><i class="bi bi-house-door" aria-hidden="true"></i></span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a class="nav-link" href="{{ route('attendance') }}">
+                    <span class="nav-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
+                    <span class="nav-text">Attendance</span>
+                </a>
+                <a class="nav-link" href="{{ route('file_leave') }}">
+                    <span class="nav-icon"><i class="bi bi-calendar-plus" aria-hidden="true"></i></span>
+                    <span class="nav-text">File Leave</span>
+                </a>
+                <a class="nav-link active" href="{{ route('file_ob') }}" aria-current="page">
+                    <span class="nav-icon"><i class="bi bi-briefcase" aria-hidden="true"></i></span>
+                    <span class="nav-text">File OB</span>
+                </a>
+                <a class="nav-link" href="{{ route('payslip') }}">
+                    <span class="nav-icon"><i class="bi bi-receipt" aria-hidden="true"></i></span>
+                    <span class="nav-text">Payslip</span>
+                </a>
+                <a class="nav-link" href="{{ route('my_profile') }}">
+                    <span class="nav-icon"><i class="bi bi-person" aria-hidden="true"></i></span>
+                    <span class="nav-text">My Profile</span>
+                </a>
+            </nav>
 
-                <form method="POST" action="{{ route('logout') }}">
-    @csrf
-    <button type="submit" class="dropdown-item">
-        Sign out
-    </button>
-</form>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-     <main class="dashboard-content">
-
-<div class="container-fluid px-3 px-lg-4 py-4">
-
-    <!-- ========================= -->
-    <!-- PAGE HEADER -->
-    <!-- ========================= -->
-
-    <div class="page-heading">
-
-        <div class="page-heading-copy">
-
-            <span class="page-icon">
-                <i class="bi bi-briefcase-fill"></i>
-            </span>
-
-            <div>
-
-                <p class="eyebrow mb-1">
-                    Employee Portal
-                </p>
-
-                <h1 class="h3 mb-1">
-                    Official Business
-                </h1>
-
-                <p class="text-muted mb-0">
-                    Submit and monitor your Official Business requests.
-                </p>
-
+            <div class="sidebar-user">
+                <img class="avatar-img avatar-md sidebar-user-avatar"
+                    src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/default-avatar.png') }}"
+                    alt="{{ $employee->name ?? 'Employee' }}">
+                <strong>{{ $employee->name ?? 'Employee Name' }}</strong>
+                <small>{{ $employee->position ?? 'Position' }}</small>
             </div>
 
-        </div>
+            <div class="sidebar-footer">
+                <span class="status-dot"></span>
+                <span class="sidebar-footer-text">System running smoothly</span>
+            </div>
+        </aside>
 
-    </div>
+        <div class="admin-main">
+            <nav class="navbar admin-navbar navbar-expand bg-white">
+                <div class="container-fluid px-3 px-lg-4">
+                    <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
+                        aria-expanded="true" aria-label="Toggle sidebar">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
 
+                    <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
+                        <input class="form-control search-input" type="search"
+                            placeholder="Search users, orders, reports" aria-label="Search">
+                    </form>
 
-    <!-- ========================= -->
-    <!-- EMPLOYEE CARD -->
-    <!-- ========================= -->
+                    <div class="navbar-actions ms-auto">
+                        <button class="icon-button theme-toggle" type="button" data-theme-toggle
+                            aria-label="Switch color theme" title="Switch color theme">
+                            <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
+                        </button>
+                        <div class="dropdown">
+                            <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                aria-label="Notifications">
+                                <span class="notification-dot"></span>
+                                <i class="bi bi-bell" aria-hidden="true"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end notification-menu">
+                                <div class="dropdown-header fw-bold text-body">Notifications</div>
+                                <a class="dropdown-item" href="users.html">
+                                    <span class="notification-title">New user registered</span>
+                                    <span class="notification-time">4 minutes ago</span>
+                                </a>
+                                <a class="dropdown-item" href="charts.html">
+                                    <span class="notification-title">Revenue target reached</span>
+                                    <span class="notification-time">32 minutes ago</span>
+                                </a>
+                                <a class="dropdown-item" href="settings.html">
+                                    <span class="notification-title">Security review completed</span>
+                                    <span class="notification-time">1 hour ago</span>
+                                </a>
+                            </div>
+                        </div>
 
-    <section class="panel mt-3">
+                        <div class="dropdown">
+                            <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <img class="avatar-img avatar-sm"
+                                    src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/default-avatar.png') }}"
+                                    alt="{{ $employee->name ?? 'Employee' }}">
+                                <span
+                                    class="profile-name d-none d-sm-inline">{{ $employee->name ?? 'Employee' }}</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ route('my_profile') }}">My Profile</a></li>
 
-        <div class="panel-body">
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">
+                                        Sign out
+                                    </button>
+                                </form>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
 
-            <div class="row align-items-center gy-4">
+            <main class="dashboard-content">
 
-                <div class="col-12 col-lg-8">
+                <div class="container-fluid px-3 px-lg-4 py-4">
 
-                    <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-3">
+                    <!-- ========================= -->
+                    <!-- PAGE HEADER -->
+                    <!-- ========================= -->
 
-                        <img
-                            src="{{ $employee->photo ? asset('storage/'.$employee->photo) : asset('images/default-avatar.png') }}"
-                            class="rounded-circle shadow"
-                            width="90"
-                            height="90"
-                            style="object-fit:cover;"
-                        >
+                    <div class="page-heading">
 
-                        <div class="text-center text-sm-start">
+                        <div class="page-heading-copy">
 
-                            <h3 class="mb-1">
-
-                                {{ $employee->name }}
-
-                            </h3>
-
-                            <p class="text-muted mb-2">
-
-                                {{ $employee->position }}
-
-                            </p>
-
-                            <span class="badge bg-primary">
-
-                                {{ $employee->department }}
-
+                            <span class="page-icon">
+                                <i class="bi bi-briefcase-fill"></i>
                             </span>
 
-                            <span class="badge bg-success">
+                            <div>
 
-                                Employee ID :
-                                {{ $employee->employee_id }}
+                                <p class="eyebrow mb-1">
+                                    Employee Portal
+                                </p>
 
-                            </span>
+                                <h1 class="h3 mb-1">
+                                    Official Business
+                                </h1>
+
+                                <p class="text-muted mb-0">
+                                    Submit and monitor your Official Business requests.
+                                </p>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                </div>
 
-                <div class="col-12 col-lg-4 text-center text-lg-end">
+                    <!-- ========================= -->
+                    <!-- EMPLOYEE CARD -->
+                    <!-- ========================= -->
 
-                    <small class="text-muted">
+                    <section class="panel mt-3">
 
-                        Today
+                        <div class="panel-body">
 
-                    </small>
+                            <div class="row align-items-center gy-4">
 
-                    <h4>
+                                <div class="col-12 col-lg-8">
 
-                        {{ now()->format('F d, Y') }}
+                                    <div
+                                        class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-3">
 
-                    </h4>
+                                        <img src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/default-avatar.png') }}"
+                                            class="rounded-circle shadow" width="90" height="90"
+                                            style="object-fit:cover;">
 
-                </div>
+                                        <div class="text-center text-sm-start">
 
-            </div>
+                                            <h3 class="mb-1">
 
-        </div>
+                                                {{ $employee->name }}
 
-    </section>
+                                            </h3>
 
+                                            <p class="text-muted mb-2">
 
-    <!-- ========================= -->
-    <!-- SUMMARY CARDS -->
-    <!-- ========================= -->
+                                                {{ $employee->position }}
 
-    <section class="row g-3 mt-3">
+                                            </p>
 
-        <div class="col-12 col-sm-6 col-xl-3">
+                                            <span class="badge bg-primary">
 
-            <article class="metric-card metric-warning h-100">
+                                                {{ $employee->department }}
 
-                <div class="metric-top">
+                                            </span>
 
-                    <span class="metric-label">
+                                            <span class="badge bg-success">
 
-                        Pending
+                                                Employee ID :
+                                                {{ $employee->employee_id }}
 
-                    </span>
+                                            </span>
 
-                    <span class="metric-icon">
+                                        </div>
 
-                        <i class="bi bi-hourglass-split"></i>
+                                    </div>
 
-                    </span>
+                                </div>
 
-                </div>
+                                <div class="col-12 col-lg-4 text-center text-lg-end">
 
-                <div class="metric-value">
+                                    <small class="text-muted">
 
-                    3
+                                        Today
 
-                </div>
+                                    </small>
 
-                <div class="metric-meta">
+                                    <h4>
 
-                    Pending Requests
+                                        {{ now()->format('F d, Y') }}
 
-                </div>
+                                    </h4>
 
-            </article>
+                                </div>
 
-        </div>
+                            </div>
 
+                        </div>
 
-        <div class="col-12 col-sm-6 col-xl-3">
+                    </section>
 
-            <article class="metric-card metric-success h-100">
 
-                <div class="metric-top">
+                    <!-- ========================= -->
+                    <!-- SUMMARY CARDS -->
+                    <!-- ========================= -->
 
-                    <span class="metric-label">
+                    <section class="row g-3 mt-3">
 
-                        Approved
+                        <div class="col-12 col-sm-6 col-xl-3">
 
-                    </span>
+                            <article class="metric-card metric-warning h-100">
 
-                    <span class="metric-icon">
+                                <div class="metric-top">
 
-                        <i class="bi bi-check-circle-fill"></i>
+                                    <span class="metric-label">
 
-                    </span>
+                                        Pending
 
-                </div>
+                                    </span>
 
-                <div class="metric-value">
+                                    <span class="metric-icon">
 
-                    12
+                                        <i class="bi bi-hourglass-split"></i>
 
-                </div>
+                                    </span>
 
-                <div class="metric-meta">
+                                </div>
 
-                    Approved Requests
+                                <div class="metric-value">
 
-                </div>
+                                    {{ $pendingOB }}
 
-            </article>
+                                </div>
 
-        </div>
+                                <div class="metric-meta">
 
+                                    Pending Requests
 
-        <div class="col-12 col-sm-6 col-xl-3">
+                                </div>
 
-            <article class="metric-card metric-danger h-100">
+                            </article>
 
-                <div class="metric-top">
+                        </div>
 
-                    <span class="metric-label">
 
-                        Rejected
+                        <div class="col-12 col-sm-6 col-xl-3">
 
-                    </span>
+                            <article class="metric-card metric-success h-100">
 
-                    <span class="metric-icon">
+                                <div class="metric-top">
 
-                        <i class="bi bi-x-circle-fill"></i>
+                                    <span class="metric-label">
 
-                    </span>
+                                        Approved
 
-                </div>
+                                    </span>
 
-                <div class="metric-value">
+                                    <span class="metric-icon">
 
-                    1
+                                        <i class="bi bi-check-circle-fill"></i>
 
-                </div>
+                                    </span>
 
-                <div class="metric-meta">
+                                </div>
 
-                    Rejected Requests
+                                <div class="metric-value">
 
-                </div>
+                                    {{ $approvedOB }}
 
-            </article>
+                                </div>
 
-        </div>
+                                <div class="metric-meta">
 
+                                    Approved Requests
 
-        <div class="col-12 col-sm-6 col-xl-3">
+                                </div>
 
-            <article class="metric-card metric-primary h-100">
+                            </article>
 
-                <div class="metric-top">
+                        </div>
 
-                    <span class="metric-label">
 
-                        Total OB
+                        <div class="col-12 col-sm-6 col-xl-3">
 
-                    </span>
+                            <article class="metric-card metric-danger h-100">
 
-                    <span class="metric-icon">
+                                <div class="metric-top">
 
-                        <i class="bi bi-briefcase-fill"></i>
+                                    <span class="metric-label">
 
-                    </span>
+                                        Rejected
 
-                </div>
+                                    </span>
 
-                <div class="metric-value">
+                                    <span class="metric-icon">
 
-                    16
+                                        <i class="bi bi-x-circle-fill"></i>
 
-                </div>
+                                    </span>
 
-                <div class="metric-meta">
+                                </div>
 
-                    Total Requests
+                                <div class="metric-value">
 
-                </div>
+                                    {{ $rejectedOB }}
 
-            </article>
+                                </div>
 
-        </div>
+                                <div class="metric-meta">
 
-    </section>
+                                    Rejected Requests
 
+                                </div>
 
-    <!-- ========================= -->
-    <!-- OFFICIAL BUSINESS FORM -->
-    <!-- ========================= -->
+                            </article>
 
-    <section class="panel mt-4">
+                        </div>
 
-        <div class="panel-header">
 
-            <div>
+                        <div class="col-12 col-sm-6 col-xl-3">
 
-                <h2 class="h5 mb-1">
+                            <article class="metric-card metric-primary h-100">
 
-                    File Official Business
+                                <div class="metric-top">
 
-                </h2>
+                                    <span class="metric-label">
 
-                <p class="text-muted mb-0">
+                                        Total OB
 
-                    Complete the information below.
+                                    </span>
 
-                </p>
+                                    <span class="metric-icon">
 
-            </div>
+                                        <i class="bi bi-briefcase-fill"></i>
 
-        </div>
+                                    </span>
 
-        <div class="panel-body">
+                                </div>
 
-            <form>
+                                <div class="metric-value">
 
-                <div class="row g-3">
+                                    {{ $totalOB }}
 
-                    <div class="col-12">
+                                </div>
 
-                        <label class="form-label">
+                                <div class="metric-meta">
 
-                            Purpose
+                                    Total Requests
 
-                        </label>
+                                </div>
 
-                        <textarea
-                            class="form-control"
-                            rows="3"
-                            placeholder="Enter purpose of official business..."
-                        ></textarea>
+                            </article>
 
-                    </div>
+                        </div>
 
+                    </section>
 
-                    <div class="col-md-6">
 
-                        <label class="form-label">
+                    <!-- ========================= -->
+                    <!-- OFFICIAL BUSINESS FORM -->
+                    <!-- ========================= -->
 
-                            Destination
+                    <section class="panel mt-4">
 
-                        </label>
+                        <div class="panel-header">
 
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Destination"
-                        >
+                            <div>
 
-                    </div>
+                                <h2 class="h5 mb-1">
 
+                                    File Official Business
 
-                    <div class="col-md-6">
+                                </h2>
 
-                        <label class="form-label">
+                                <p class="text-muted mb-0">
 
-                            Supervisor
+                                    Complete the information below.
 
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Immediate Supervisor"
-                        >
-
-                    </div>
-
-
-                    <div class="col-md-4">
-
-                        <label class="form-label">
-
-                            Date
-
-                        </label>
-
-                        <input
-                            type="date"
-                            class="form-control"
-                        >
-
-                    </div>
-
-
-                    <div class="col-md-4">
-
-                        <label class="form-label">
-
-                            Time From
-
-                        </label>
-
-                        <input
-                            type="time"
-                            class="form-control"
-                        >
-
-                    </div>
-
-
-                    <div class="col-md-4">
-
-                        <label class="form-label">
-
-                            Time To
-
-                        </label>
-
-                        <input
-                            type="time"
-                            class="form-control"
-                        >
-
-                    </div>
-
-
-                    <div class="col-md-6">
-
-                        <label class="form-label">
-
-                            Transportation
-
-                        </label>
-
-                        <select class="form-select">
-
-                            <option>Company Vehicle</option>
-
-                            <option>Personal Vehicle</option>
-
-                            <option>Public Transportation</option>
-
-                            <option>Walking</option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="col-md-6">
-
-                        <label class="form-label">
-
-                            Attachment
-
-                        </label>
-
-                        <input
-                            type="file"
-                            class="form-control"
-                        >
-
-                    </div>
-
-
-                    <div class="col-12">
-
-                        <label class="form-label">
-
-                            Additional Remarks
-
-                        </label>
-
-                        <textarea
-                            class="form-control"
-                            rows="4"
-                            placeholder="Optional remarks..."
-                        ></textarea>
-
-                    </div>
-
-                    <div class="col-12 d-flex flex-column flex-sm-row gap-2 justify-content-end">
-
-                        <button
-                            type="reset"
-                            class="btn btn-outline-secondary"
-                        >
-
-                            Reset
-
-                        </button>
-
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                        >
-
-                            <i class="bi bi-send-fill me-1"></i>
-
-                            Submit Request
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    </section>
-    <section class="panel mt-4">
-
-    <div class="panel-header">
-
-        <div>
-
-            <h2 class="h5 mb-1">
-                Official Business History
-            </h2>
-
-            <p class="text-muted mb-0">
-                All your submitted OB requests
-            </p>
-
-        </div>
-
-    </div>
-
-    <div class="panel-body">
-
-        <div class="table-responsive">
-
-            <table class="table align-middle table-hover">
-
-                <thead>
-
-                    <tr>
-                        <th>Date</th>
-                        <th>Destination</th>
-                        <th>Purpose</th>
-                        <th>Time</th>
-                        <th>Status</th>
-                        <th>Remarks</th>
-                        <th>Action</th>
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    @forelse($officialBusinesses ?? [] as $ob)
-
-                        <tr>
-
-                            <td>
-                                {{ \Carbon\Carbon::parse($ob->ob_date)->format('M d, Y') }}
-                            </td>
-
-                            <td>
-                                {{ $ob->destination }}
-                            </td>
-
-                            <td>
-                                {{ $ob->purpose }}
-                            </td>
-
-                            <td>
-                                {{ $ob->time_from }} - {{ $ob->time_to }}
-                            </td>
-
-                            <td>
-
-                                @if($ob->status == 'Pending')
-                                    <span class="badge bg-warning text-dark">Pending</span>
-                                @elseif($ob->status == 'Approved')
-                                    <span class="badge bg-success">Approved</span>
-                                @elseif($ob->status == 'Rejected')
-                                    <span class="badge bg-danger">Rejected</span>
-                                @else
-                                    <span class="badge bg-secondary">Unknown</span>
-                                @endif
-
-                            </td>
-
-                            <td>
-                                {{ $ob->remarks ?? '-' }}
-                            </td>
-
-                            <td>
-
-                                <button class="btn btn-sm btn-outline-primary">
-                                    View
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-                    @empty
-
-                        <tr>
-
-                            <td colspan="7" class="text-center py-5">
-
-                                <i class="bi bi-inbox fs-1 text-muted"></i>
-
-                                <h5 class="mt-3">
-                                    No Official Business found
-                                </h5>
-
-                                <p class="text-muted">
-                                    Your OB requests will appear here after submission
                                 </p>
 
-                            </td>
+                            </div>
 
-                        </tr>
-                        
-                    @endforelse
+                        </div>
 
-                </tbody>
+                        <div class="panel-body">
 
-            </table>
+                            @if (session('success'))
+                                <div class="alert alert-success">
 
+                                    {{ session('success') }}
+
+                                </div>
+                            @endif
+
+
+                            @if ($errors->any())
+
+                                <div class="alert alert-danger">
+
+                                    <ul class="mb-0">
+
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+
+                                    </ul>
+
+                                </div>
+
+                            @endif
+
+                            <form action="{{ route('file_ob.store') }}" method="POST"
+                                enctype="multipart/form-data">
+
+                                @csrf
+
+                                <div class="row g-3">
+
+                                    <div class="col-12">
+
+                                        <label class="form-label">
+
+                                            Purpose
+
+                                        </label>
+
+                                        <textarea name="purpose" class="form-control" rows="3" required>{{ old('purpose') }}</textarea>
+
+                                    </div>
+
+
+                                    <div class="col-md-6">
+
+                                        <label class="form-label">
+
+                                            Destination
+
+                                        </label>
+
+                                        <input type="text" name="destination" class="form-control"
+                                            value="{{ old('destination') }}" required>
+
+                                    </div>
+
+
+
+                                    <div class="col-md-4">
+
+                                        <label class="form-label">
+
+                                            Date
+
+                                        </label>
+
+                                        <input type="date" name="ob_date" class="form-control"
+                                            min="{{ now()->toDateString() }}" required>
+
+                                    </div>
+
+
+                                    <div class="col-md-4">
+
+                                        <label class="form-label">
+
+                                            Time From
+
+                                        </label>
+
+                                        <input type="time" name="departure_time" class="form-control" required>
+
+                                    </div>
+
+
+                                    <div class="col-md-4">
+
+                                        <label class="form-label">
+
+                                            Time To
+
+                                        </label>
+
+                                        <input type="time" name="expected_return_time" class="form-control"
+                                            required>
+
+                                    </div>
+
+
+                                    <div class="col-md-6">
+
+                                        <label class="form-label">
+
+                                            Attachment
+
+                                        </label>
+
+                                        <input type="file" name="proof_images[]" class="form-control" multiple
+                                            accept=".jpg,.jpeg,.png">
+
+                                    </div>
+
+
+                                    <div class="col-12 d-flex flex-column flex-sm-row gap-2 justify-content-end">
+
+                                        <button type="reset" class="btn btn-outline-secondary">
+
+                                            Reset
+
+                                        </button>
+
+                                        <button type="submit" class="btn btn-primary">
+
+                                            <i class="bi bi-send-fill me-1"></i>
+
+                                            Submit Request
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </section>
+
+                    <section class="panel mt-4">
+
+                        <form method="GET" class="mb-3">
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+
+                                    <input type="text" name="search" class="form-control"
+                                        placeholder="Search purpose or destination..."
+                                        value="{{ request('search') }}">
+
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <select name="status" class="form-select">
+
+                                        <option value="">All Status</option>
+
+                                        <option value="Pending"
+                                            {{ request('status') == 'Pending' ? 'selected' : '' }}>
+                                            Pending
+                                        </option>
+
+                                        <option value="Approved"
+                                            {{ request('status') == 'Approved' ? 'selected' : '' }}>
+                                            Approved
+                                            </option>
+
+                                            <option value="Rejected"
+                                                {{ request('status') == 'Rejected' ? 'selected' : '' }}>
+                                                Rejected
+                                            </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <button class="btn btn-primary w-100">
+
+                                        Search
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2 class="h5 mb-1">
+                                    Official Business History
+                                </h2>
+
+                                <p class="text-muted mb-0">
+                                    All your submitted OB requests
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="panel-body">
+
+                            <div class="table-responsive">
+
+                                <table class="table align-middle table-hover">
+
+                                    <thead>
+
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Destination</th>
+                                            <th>Purpose</th>
+                                            <th>Time</th>
+                                            <th>Status</th>
+                                            <th>Proof</th>
+                                            <th>Action</th>
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody>
+
+                                        @forelse($officialBusinesses ?? [] as $ob)
+                                            <tr>
+
+                                                <td>
+                                                    {{ \Carbon\Carbon::parse($ob->ob_date)->format('M d, Y') }}
+                                                </td>
+
+                                                <td>
+                                                    {{ $ob->destination }}
+                                                </td>
+
+                                                <td>
+                                                    {{ $ob->purpose }}
+                                                </td>
+
+                                                <td>
+                                                    {{ \Carbon\Carbon::parse($ob->departure_time)->format('h:i A') }}
+                                                    -
+                                                    {{ \Carbon\Carbon::parse($ob->expected_return_time)->format('h:i A') }}
+                                                </td>
+
+                                                <td>
+
+                                                    @if ($ob->status == 'Pending')
+                                                        <span class="badge bg-warning text-dark">Pending</span>
+                                                    @elseif($ob->status == 'Approved')
+                                                        <span class="badge bg-success">Approved</span>
+                                                    @elseif($ob->status == 'Rejected')
+                                                        <span class="badge bg-danger">Rejected</span>
+                                                    @else
+                                                        <span class="badge bg-secondary">Unknown</span>
+                                                    @endif
+
+                                                </td>
+
+                                                <td>
+
+                                                    @if ($ob->proof_images)
+                                                        <button class="btn btn-sm btn-outline-primary">
+
+                                                            View
+
+                                                        </button>
+                                                    @else
+                                                        <span class="text-muted">
+
+                                                            None
+
+                                                        </span>
+                                                    @endif
+
+                                                </td>
+
+                                                <td>
+
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        View
+                                                    </button>
+
+                                                </td>
+
+                                            </tr>
+
+                                        @empty
+
+                                            <tr>
+
+                                                <td colspan="7" class="text-center py-5">
+
+                                                    <i class="bi bi-inbox fs-1 text-muted"></i>
+
+                                                    <h5 class="mt-3">
+                                                        No Official Business found
+                                                    </h5>
+
+                                                    <p class="text-muted">
+                                                        Your OB requests will appear here after submission
+                                                    </p>
+
+                                                </td>
+
+                                            </tr>
+                                        @endforelse
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                            <div class="mt-3">
+
+                                {{ $officialBusinesses->links() }}
+
+                            </div>
+
+                        </div>
+
+                    </section>
+            </main>
+
+
+            <footer class="admin-footer">
+                <div class="container-fluid px-3 px-lg-4">
+                    <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank" class="fw-bold text-success"
+                            href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a
+                            target="_blank" class="fw-bold text-success" href="https://themewagon.com">ThemeWagon</a>
+                    </span>
+                    <span>Professional dashboard template.</span>
+                    <span>Analytics chart examples.</span>
+                </div>
+            </footer>
         </div>
-
     </div>
 
-</section>
-</main>
-
-
-      <footer class="admin-footer">
-        <div class="container-fluid px-3 px-lg-4">
-          <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank" class="fw-bold text-success" href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a target="_blank" class="fw-bold text-success" href="https://themewagon.com">ThemeWagon</a> </span>
-          <span>Professional dashboard template.</span>
-          <span>Analytics chart examples.</span>
-        </div>
-      </footer>
-    </div>
-  </div>
-
-  <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
-  <script src="../../../../khen/assets/js/main.js"></script>
+    <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../../khen/assets/js/main.js"></script>
 </body>
+
 </html>

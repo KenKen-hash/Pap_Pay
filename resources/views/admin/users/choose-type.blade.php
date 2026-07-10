@@ -1,240 +1,415 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('title', 'Create User')
+<head>
 
-@section('content')
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div class="container py-5">
+    <title>Create Account | PAP PAY</title>
 
-    <div class="row justify-content-center">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <div class="col-xl-8 col-lg-9">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
-            <div class="card border-0 shadow-lg rounded-4">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
 
-                <div class="card-body p-5">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-                    <div class="text-center mb-5">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Poppins, sans-serif;
+        }
 
-                        <div class="avatar-circle mb-4">
-                            <i class="bi bi-person-plus-fill"></i>
-                        </div>
+        body {
+            min-height: 100vh;
+            background: #081224;
+            overflow-x: hidden;
+        }
 
-                        <h2 class="fw-bold mb-2">
-                            Create New User
-                        </h2>
+        .background {
 
-                        <p class="text-muted">
-                            Select the type of account you want to create.
-                        </p>
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                radial-gradient(circle at top left, #2f6bff55, transparent 45%),
+                radial-gradient(circle at bottom right, #14d9b655, transparent 40%),
+                #081224;
+
+        }
+
+        .container {
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+        .main-card {
+
+            background: rgba(255, 255, 255, .08);
+
+            backdrop-filter: blur(25px);
+
+            border: 1px solid rgba(255, 255, 255, .15);
+
+            border-radius: 25px;
+
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+            padding: 60px;
+
+            color: white;
+
+            box-shadow: 0 30px 60px rgba(0, 0, 0, .35);
+
+        }
+
+        .step {
+
+            color: #7ab7ff;
+
+            font-weight: 600;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 10px;
+
+        }
+
+        .main-card h1 {
+
+            font-size: 40px;
+
+            font-weight: 700;
+
+        }
+
+        .main-card p {
+
+            color: #b9c4d6;
+
+        }
+
+        .type-card {
+
+            display: block;
+
+            border: 2px solid rgba(255, 255, 255, .15);
+
+            border-radius: 20px;
+
+            padding: 35px;
+
+            cursor: pointer;
+
+            transition: .35s;
+
+            height: 100%;
+
+            background: rgba(255, 255, 255, .04);
+
+        }
+
+        .type-card:hover {
+
+            transform: translateY(-8px);
+
+            border-color: #4d8dff;
+
+        }
+
+        .btn-check:checked+.type-card {
+
+            border-color: #4d8dff;
+
+            box-shadow: 0 0 30px #2563eb66;
+
+        }
+
+        .icon {
+
+            width: 90px;
+
+            height: 90px;
+
+            border-radius: 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: white;
+
+            font-size: 38px;
+
+            margin-bottom: 25px;
+
+        }
+
+        .employee {
+
+            background: linear-gradient(135deg, #2563eb, #4f9cff);
+
+        }
+
+        .admin {
+
+            background: linear-gradient(135deg, #00c58e, #18e0ab);
+
+        }
+
+        .type-card h3 {
+
+            margin-bottom: 10px;
+
+        }
+
+        .type-card small {
+
+            color: #cfd7e6;
+
+        }
+
+        .type-card ul {
+
+            margin-top: 25px;
+
+            padding-left: 18px;
+
+            color: #d7e2ef;
+
+        }
+
+        .continue-btn {
+
+            width: 100%;
+
+            margin-top: 45px;
+
+            border: none;
+
+            padding: 18px;
+
+            border-radius: 15px;
+
+            background: linear-gradient(135deg, #2563eb, #4f9cff);
+
+            color: white;
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            transition: .3s;
+
+        }
+
+        .continue-btn:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow: 0 15px 35px rgba(37, 99, 235, .45);
+
+        }
+
+        @media (max-width:992px) {
+
+            .main-card {
+                padding: 45px;
+            }
+
+        }
+
+        @media (max-width:768px) {
+
+            .main-card {
+
+                padding: 30px 22px;
+
+            }
+
+            .main-card h1 {
+
+                font-size: 28px;
+
+            }
+
+            .type-card {
+
+                padding: 25px;
+
+            }
+
+            .icon {
+
+                width: 70px;
+                height: 70px;
+                font-size: 30px;
+
+            }
+
+        }
+
+        @media (max-width:576px) {
+
+            .main-card {
+
+                border-radius: 18px;
+
+            }
+
+            .step {
+
+                font-size: 13px;
+
+            }
+
+            .main-card p {
+
+                font-size: 14px;
+
+            }
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <form action="{{ route('users.choose') }}" method="POST">
+
+        @csrf
+
+        <div class="background"></div>
+
+        <div class="container py-5">
+
+            <div class="main-card">
+
+                <div class="step">
+
+                    STEP 1 OF 4
+
+                </div>
+
+                <h1>Create New Account</h1>
+
+                <p>
+
+                    Choose which type of account you would like to create.
+
+                </p>
+
+                <div class="row mt-5 g-4">
+
+                    <!-- Employee -->
+
+                    <div class="col-lg-6">
+
+                        <input type="radio" class="btn-check" name="role" id="employee" value="employee" checked>
+
+                        <label class="type-card" for="employee">
+
+                            <div class="icon employee">
+
+                                <i class="bi bi-person-workspace"></i>
+
+                            </div>
+
+                            <h3>Employee</h3>
+
+                            <small>
+
+                                Faculty, Staff, Maintenance,
+                                Laborers and other personnel.
+
+                            </small>
+
+                            <ul>
+
+                                <li>Attendance</li>
+
+                                <li>Payroll</li>
+
+                                <li>Leave Request</li>
+
+                                <li>Official Business</li>
+
+                            </ul>
+
+                        </label>
 
                     </div>
 
-                    <form action="{{ route('users.redirect') }}" method="POST">
+                    <!-- Admin -->
 
-                        @csrf
+                    <div class="col-lg-6">
 
-                        <div class="row g-4">
+                        <input type="radio" class="btn-check" name="role" id="admin" value="admin">
 
-                            <!-- Employee -->
+                        <label class="type-card" for="admin">
 
-                            <div class="col-md-6">
+                            <div class="icon admin">
 
-                                <input
-                                    class="btn-check"
-                                    type="radio"
-                                    name="role"
-                                    id="employee"
-                                    value="employee"
-                                    checked>
-
-                                <label class="selection-card" for="employee">
-
-                                    <div class="icon employee">
-
-                                        <i class="bi bi-person-workspace"></i>
-
-                                    </div>
-
-                                    <h4 class="mt-4 fw-bold">
-                                        Employee
-                                    </h4>
-
-                                    <p class="text-muted mb-0">
-
-                                        Faculty, Staff, Maintenance,
-                                        Laborers and other personnel.
-
-                                    </p>
-
-                                </label>
+                                <i class="bi bi-shield-lock-fill"></i>
 
                             </div>
 
-                            <!-- Admin -->
+                            <h3>Administrator</h3>
 
-                            <div class="col-md-6">
+                            <small>
 
-                                <input
-                                    class="btn-check"
-                                    type="radio"
-                                    name="role"
-                                    id="admin"
-                                    value="admin">
+                                HR, Finance and Payroll Personnel
 
-                                <label class="selection-card" for="admin">
+                            </small>
 
-                                    <div class="icon admin">
+                            <ul>
 
-                                        <i class="bi bi-shield-lock-fill"></i>
+                                <li>User Management</li>
 
-                                    </div>
+                                <li>Payroll Management</li>
 
-                                    <h4 class="mt-4 fw-bold">
-                                        Administrator
-                                    </h4>
+                                <li>Reports</li>
 
-                                    <p class="text-muted mb-0">
+                                <li>System Settings</li>
 
-                                        HR, Payroll Officer,
-                                        Finance Administrator.
+                            </ul>
 
-                                    </p>
+                        </label>
 
-                                </label>
-
-                            </div>
-
-                        </div>
-
-                        <div class="d-grid mt-5">
-
-                            <button class="btn btn-primary btn-lg rounded-3">
-
-                                Continue
-                                <i class="bi bi-arrow-right ms-2"></i>
-
-                            </button>
-
-                        </div>
-
-                    </form>
+                    </div>
 
                 </div>
+
+                <button class="continue-btn">
+
+                    Continue
+
+                    <i class="bi bi-arrow-right-circle-fill ms-2"></i>
+
+                </button>
 
             </div>
 
         </div>
 
-    </div>
+    </form>
 
-</div>
+</body>
 
-<style>
-
-body{
-    background:#f4f7fb;
-}
-
-.avatar-circle{
-
-    width:90px;
-    height:90px;
-    margin:auto;
-    border-radius:50%;
-    background:linear-gradient(135deg,#0d6efd,#5b8cff);
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    color:#fff;
-    font-size:38px;
-
-}
-
-.selection-card{
-
-    display:block;
-
-    border:2px solid #e9ecef;
-
-    border-radius:18px;
-
-    padding:40px 30px;
-
-    background:#fff;
-
-    text-align:center;
-
-    transition:.30s;
-
-    cursor:pointer;
-
-    height:100%;
-
-}
-
-.selection-card:hover{
-
-    transform:translateY(-8px);
-
-    border-color:#0d6efd;
-
-    box-shadow:0 20px 35px rgba(0,0,0,.08);
-
-}
-
-.btn-check:checked + .selection-card{
-
-    border-color:#0d6efd;
-
-    background:#f8fbff;
-
-    box-shadow:0 20px 40px rgba(13,110,253,.18);
-
-}
-
-.icon{
-
-    width:85px;
-
-    height:85px;
-
-    border-radius:20px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    color:white;
-
-    margin:auto;
-
-    font-size:34px;
-
-}
-
-.employee{
-
-    background:linear-gradient(135deg,#3b82f6,#2563eb);
-
-}
-
-.admin{
-
-    background:linear-gradient(135deg,#10b981,#059669);
-
-}
-
-.card{
-
-    overflow:hidden;
-
-}
-
-</style>
-
-@endsection
+</html>

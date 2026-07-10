@@ -16,19 +16,18 @@ return new class extends Migration
                   ->constrained()
                   ->cascadeOnDelete();
 
-            $table->string('purpose');
+            $table->text('purpose');
 
             $table->string('destination');
 
             $table->date('ob_date');
 
-            $table->time('time_start');
+            $table->time('departure_time');
 
-            $table->time('time_end');
+            $table->time('expected_return_time');
 
-            $table->text('remarks')->nullable();
-
-            $table->string('attachment')->nullable();
+            // Multiple proof images
+            $table->json('proof_images')->nullable();
 
             $table->enum('status', [
                 'Pending',
@@ -36,8 +35,16 @@ return new class extends Migration
                 'Rejected'
             ])->default('Pending');
 
-            $table->timestamps();
+            $table->foreignId('approved_by')
+                  ->nullable()
+                  ->constrained('users')
+                  ->nullOnDelete();
 
+            $table->timestamp('approved_at')->nullable();
+
+            $table->text('rejection_reason')->nullable();
+
+            $table->timestamps();
         });
     }
 

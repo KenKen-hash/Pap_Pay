@@ -10,6 +10,7 @@ use App\Http\Controllers\AttendanceController;
 
 use App\Http\Controllers\Employee\PayslipController;
 use App\Http\Controllers\Employee\LeaveController;
+use App\Http\Controllers\Employee\OfficialBusinessController as EmployeeOfficialBusinessController;
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EmployeeController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OfficialBusinessController;
 use App\Http\Controllers\Admin\FaceRegistrationController;
 use App\Http\Controllers\Admin\FaceAttendanceController;
+use App\Http\Controllers\Admin\UserWizardController;
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -65,18 +67,22 @@ Route::middleware(['auth', 'role:employee'])
         Route::get('/payslip', [PayslipController::class, 'index'])
             ->name('payslip');
 
-        Route::get('/file_ob', function () {
-            return view('employee.file_ob');
-        })->name('file_ob');
-
         Route::get('/my_profile', function () {
             return view('employee.my_profile');
         })->name('my_profile');
-        
+
         Route::delete(
             '/employee/file-leave/{leave}/cancel',
             [App\Http\Controllers\Employee\LeaveController::class, 'cancel']
         )->name('leave.cancel');
+
+        Route::get(
+            '/file_ob',
+            [EmployeeOfficialBusinessController::class, 'index']
+        )->name('file_ob');
+
+        Route::post('/file-ob', [EmployeeOfficialBusinessController::class, 'store'])
+            ->name('file_ob.store');
     });
 
 Route::middleware(['auth', 'role:employee'])->group(function () {
@@ -176,22 +182,19 @@ Route::middleware(['auth', 'role:admin'])
             ->name('users.employee.store');
 
         Route::get(
-            '/official-business',
+            '/official_business',
             [OfficialBusinessController::class, 'index']
-        )
-            ->name('official_business');
+        )->name('official_business');
 
         Route::post(
-            '/official-business/{officialBusiness}/approve',
+            '/admin/official-business/{id}/approve',
             [OfficialBusinessController::class, 'approve']
-        )
-            ->name('official_business.approve');
+        )->name('official_business.approve');
 
         Route::post(
-            '/official-business/{officialBusiness}/reject',
+            '/admin/official-business/{id}/reject',
             [OfficialBusinessController::class, 'reject']
-        )
-            ->name('official_business.reject');
+        )->name('official_business.reject');
 
         Route::get(
             '/employees/{user}/face-registration',
@@ -212,6 +215,31 @@ Route::middleware(['auth', 'role:admin'])
             '/attendance/faces',
             [FaceAttendanceController::class, 'faces']
         )->name('attendance.faces');
+
+        Route::prefix('admin')
+            ->middleware(['auth'])
+            ->group(function () {
+
+                Route::get('/users/create', [UserWizardController::class, 'chooseType'])
+                    ->name('users.create');
+
+                Route::post('/users/choose', [UserWizardController::class, 'choose'])
+                    ->name('users.choose');
+
+                Route::get('/users/create/employee', [UserWizardController::class, 'employeeForm'])
+                    ->name('users.employee');
+
+                Route::get('/users/create/admin', [UserWizardController::class, 'adminForm'])
+                    ->name('users.admin');
+                Route::post(
+                    '/users/employee/setup',
+                    [UserWizardController::class, 'employeeSetup']
+                )
+                    ->name('users.employee.setup');
+
+                Route::post('/users/admin/setup', [UserWizardController::class, 'adminSetup'])
+                    ->name('users.admin.setup');
+            });
     });
 
 /*
@@ -219,4 +247,18 @@ Route::middleware(['auth', 'role:admin'])
 | PUBLIC
 |--------------------------------------------------------------------------
 */
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/change-password-first-login', [
+        App\Http\Controllers\Auth\FirstPasswordController::class,
+        'index'
+    ])->name('password.first');
+
+    Route::post('/change-password-first-login', [
+        App\Http\Controllers\Auth\FirstPasswordController::class,
+        'update'
+    ])->name('password.first.update');
+
+});
 require __DIR__ . '/auth.php';

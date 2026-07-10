@@ -158,6 +158,32 @@
 
                 <div class="container-fluid px-3 px-lg-4 py-4">
 
+                    
+                    <!-- Page Heading -->
+                    <div class="page-heading">
+                        <div class="page-heading-copy">
+
+                            <span class="page-icon">
+                                <i class="bi bi-calendar-check"></i>
+                            </span>
+
+                            <div>
+                                <br>
+                                <h1 class="h3 mb-1">
+                                    Attendance
+                                </h1>
+
+                                <p class="text-muted mb-0">
+                                    View your daily attendance records monitored through the Face Recognition Attendance
+                                    System.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
                     <!-- Employee Card -->
 
                     <section class="panel mt-3">
@@ -230,30 +256,6 @@
 
                     </section>
 
-                    <!-- Page Heading -->
-                    <div class="page-heading">
-                        <div class="page-heading-copy">
-
-                            <span class="page-icon">
-                                <i class="bi bi-calendar-check"></i>
-                            </span>
-
-                            <div>
-                                <br>
-                                <h1 class="h3 mb-1">
-                                    Attendance
-                                </h1>
-
-                                <p class="text-muted mb-0">
-                                    View your daily attendance records monitored through the Face Recognition Attendance
-                                    System.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
 
 
                     <!-- Summary Cards -->
