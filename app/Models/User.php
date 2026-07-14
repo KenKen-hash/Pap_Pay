@@ -14,6 +14,7 @@ use App\Models\LeaveRequest;
 use App\Models\OfficialBusiness;
 use App\Models\Payroll;
 use App\Models\Notification;
+use App\Models\PayrollSetting;
 
 class User extends Authenticatable
 {
@@ -125,5 +126,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(AttendanceLog::class);
     }
-
+    public function payrollSetting()
+    {
+        return $this->hasOne(PayrollSetting::class);
+    }
 }

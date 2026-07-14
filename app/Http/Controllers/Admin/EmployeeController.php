@@ -11,11 +11,34 @@ use Illuminate\Support\Facades\Hash;
 class EmployeeController extends Controller
 {
     public function index()
-    {
-        $employees = User::latest()->paginate(10);
+{
+    $primaryEmployees = User::where('role', 'employee')
+        ->where('department', 'Primary')
+        ->latest()
+        ->get();
 
-        return view('admin.employees.index', compact('employees'));
-    }
+    $secondaryEmployees = User::where('role', 'employee')
+        ->where('department', 'Secondary')
+        ->latest()
+        ->get();
+
+    $tertiaryEmployees = User::where('role', 'employee')
+        ->where('department', 'Tertiary')
+        ->latest()
+        ->get();
+
+    $nonTeachingEmployees = User::where('role', 'employee')
+        ->where('department', 'Non-Teaching')
+        ->latest()
+        ->get();
+
+    return view('admin.employees.index', compact(
+        'primaryEmployees',
+        'secondaryEmployees',
+        'tertiaryEmployees',
+        'nonTeachingEmployees'
+    ));
+}
 
    public function create()
 {

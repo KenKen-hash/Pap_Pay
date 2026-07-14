@@ -11,6 +11,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Employee\PayslipController;
 use App\Http\Controllers\Employee\LeaveController;
 use App\Http\Controllers\Employee\OfficialBusinessController as EmployeeOfficialBusinessController;
+use App\Http\Controllers\Employee\AnnouncementController as EmployeeAnnouncementController;
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EmployeeController;
@@ -22,6 +23,9 @@ use App\Http\Controllers\Admin\OfficialBusinessController;
 use App\Http\Controllers\Admin\FaceRegistrationController;
 use App\Http\Controllers\Admin\FaceAttendanceController;
 use App\Http\Controllers\Admin\UserWizardController;
+use App\Http\Controllers\Admin\PayrollController;
+use App\Http\Controllers\Admin\AnnouncementController;
+
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -72,8 +76,8 @@ Route::middleware(['auth', 'role:employee'])
         })->name('my_profile');
 
         Route::delete(
-            '/employee/file-leave/{leave}/cancel',
-            [App\Http\Controllers\Employee\LeaveController::class, 'cancel']
+            '/file-leave/{leave}/cancel',
+            [LeaveController::class, 'cancel']
         )->name('leave.cancel');
 
         Route::get(
@@ -83,6 +87,11 @@ Route::middleware(['auth', 'role:employee'])
 
         Route::post('/file-ob', [EmployeeOfficialBusinessController::class, 'store'])
             ->name('file_ob.store');
+
+        Route::get(
+            '/announcements',
+            [EmployeeAnnouncementController::class, 'index']
+        )->name('employee.announcements');
     });
 
 Route::middleware(['auth', 'role:employee'])->group(function () {
@@ -144,8 +153,8 @@ Route::middleware(['auth', 'role:admin'])
         Route::post('/leaves/{id}/status', [AdminLeaveController::class, 'updateStatus'])
             ->name('admin.leaves.status');
 
-        Route::view('/payroll', 'admin.payroll')
-            ->name('payroll');
+        Route::get('/payroll', [PayrollController::class, 'index'])
+            ->name('payroll');;
 
         Route::view('/payslip_list', 'admin.payslip_list')
             ->name('payslip_list');
@@ -158,9 +167,6 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::view('/reports', 'admin.reports')
             ->name('reports');
-
-        Route::view('/announcements', 'admin.announcements')
-            ->name('announcements');
 
         Route::view('/settings', 'admin.settings')
             ->name('settings');
@@ -216,6 +222,8 @@ Route::middleware(['auth', 'role:admin'])
             [FaceAttendanceController::class, 'faces']
         )->name('attendance.faces');
 
+
+
         Route::prefix('admin')
             ->middleware(['auth'])
             ->group(function () {
@@ -240,6 +248,16 @@ Route::middleware(['auth', 'role:admin'])
                 Route::post('/users/admin/setup', [UserWizardController::class, 'adminSetup'])
                     ->name('users.admin.setup');
             });
+
+        Route::get(
+            '/announcements',
+            [AnnouncementController::class, 'index']
+        )->name('announcements');
+
+        Route::post(
+            '/announcements',
+            [AnnouncementController::class, 'store']
+        )->name('announcements.store');
     });
 
 /*
@@ -259,6 +277,5 @@ Route::middleware('auth')->group(function () {
         App\Http\Controllers\Auth\FirstPasswordController::class,
         'update'
     ])->name('password.first.update');
-
 });
 require __DIR__ . '/auth.php';

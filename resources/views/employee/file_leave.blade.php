@@ -20,23 +20,47 @@
                     aria-label="adminHMD dashboard"> <span class="brand-icon"><i class="bi bi-grid-1x2-fill"
                             aria-hidden="true"></i></span> <span class="brand-copy"> <span
                             class="brand-title">adminHMD</span> <span class="brand-subtitle">Admin Template</span>
-                    </span> </a> </div>
-            <nav class="sidebar-nav"> <a class="nav-link" href="{{ route('dashboard') }}"> <span class="nav-icon"><i
-                            class="bi bi-house-door" aria-hidden="true"></i></span> <span
-                        class="nav-text">Dashboard</span> </a> <a class="nav-link" href="{{ route('attendance') }}">
-                    <span class="nav-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span> <span
-                        class="nav-text">Attendance</span> </a> <a class="nav-link active"
-                    href="{{ route('file_leave') }}" aria-current="page"> <span class="nav-icon"><i
-                            class="bi bi-calendar-plus" aria-hidden="true"></i></span> <span class="nav-text">File
-                        Leave</span> </a> <a class="nav-link" href="{{ route('file_ob') }}"> <span class="nav-icon"><i
-                            class="bi bi-briefcase" aria-hidden="true"></i></span> <span class="nav-text">File OB</span>
-                </a> <a class="nav-link" href="{{ route('payslip') }}"> <span class="nav-icon"><i class="bi bi-receipt"
-                            aria-hidden="true"></i></span> <span class="nav-text">Payslip</span> </a> <a
-                    class="nav-link" href="{{ route('my_profile') }}"> <span class="nav-icon"><i class="bi bi-person"
-                            aria-hidden="true"></i></span> <span class="nav-text">My Profile</span> </a> </nav>
+                    </span> 
+                </a> 
+                </div>
+
+            <nav class="sidebar-nav">
+                <a class="nav-link" href="{{ route('dashboard') }}">
+                    <span class="nav-icon"><i class="bi bi-house-door" aria-hidden="true"></i></span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a class="nav-link" href="{{ route('attendance') }}">
+                    <span class="nav-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
+                    <span class="nav-text">Attendance</span>
+                </a>
+                <a class="nav-link active" href="{{ route('file_leave') }}" aria-current="page">
+                    <span class="nav-icon"><i class="bi bi-calendar-plus" aria-hidden="true"></i></span>
+                    <span class="nav-text">File Leave</span>
+                </a>
+                <a class="nav-link" href="{{ route('file_ob') }}">
+                    <span class="nav-icon"><i class="bi bi-briefcase" aria-hidden="true"></i></span>
+                    <span class="nav-text">File OB</span>
+                </a>
+                <a class="nav-link" href="{{ route('payslip') }}">
+                    <span class="nav-icon"><i class="bi bi-receipt" aria-hidden="true"></i></span>
+                    <span class="nav-text">Payslip</span>
+                </a>
+                <a class="nav-link" href="{{ route('employee.announcements') }}">
+                    <span class="nav-icon">
+                        <i class="bi bi-megaphone" aria-hidden="true"></i>
+                    </span>
+                    <span class="nav-text">Announcements</span>
+                </a>
+                <a class="nav-link" href="{{ route('my_profile') }}">
+                    <span class="nav-icon"><i class="bi bi-person" aria-hidden="true"></i></span>
+                    <span class="nav-text">My Profile</span>
+                </a>
+            </nav>
+
             <div class="sidebar-user"> <img class="avatar-img avatar-md sidebar-user-avatar"
                     src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/default-avatar.png') }}"
-                    alt="{{ $employee->name ?? 'Employee' }}"> <strong>{{ $employee->name ?? 'Employee Name' }}</strong>
+                    alt="{{ $employee->name ?? 'Employee' }}">
+                <strong>{{ $employee->name ?? 'Employee Name' }}</strong>
                 <small>{{ $employee->position ?? 'Position' }}</small>
             </div>
             <div class="sidebar-footer"> <span class="status-dot"></span> <span class="sidebar-footer-text">System
@@ -54,7 +78,8 @@
                             data-theme-toggle aria-label="Switch color theme" title="Switch color theme"> <i
                                 class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i> </button>
                         <div class="dropdown"> <button class="icon-button" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false" aria-label="Notifications"> <span class="notification-dot"></span>
+                                aria-expanded="false" aria-label="Notifications"> <span
+                                    class="notification-dot"></span>
                                 <i class="bi bi-bell" aria-hidden="true"></i> </button>
                             <div class="dropdown-menu dropdown-menu-end notification-menu">
                                 <div class="dropdown-header fw-bold"> Notifications </div>

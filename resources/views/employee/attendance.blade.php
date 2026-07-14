@@ -51,6 +51,12 @@
                     <span class="nav-icon"><i class="bi bi-receipt" aria-hidden="true"></i></span>
                     <span class="nav-text">Payslip</span>
                 </a>
+                <a class="nav-link" href="{{ route('employee.announcements') }}">
+                    <span class="nav-icon">
+                        <i class="bi bi-megaphone" aria-hidden="true"></i>
+                    </span>
+                    <span class="nav-text">Announcements</span>
+                </a>
                 <a class="nav-link" href="{{ route('my_profile') }}">
                     <span class="nav-icon"><i class="bi bi-person" aria-hidden="true"></i></span>
                     <span class="nav-text">My Profile</span>
@@ -94,8 +100,8 @@
                             <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
                         </button>
                         <div class="dropdown">
-                            <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                aria-label="Notifications">
+                            <button class="icon-button" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false" aria-label="Notifications">
                                 <span class="notification-dot"></span>
                                 <i class="bi bi-bell" aria-hidden="true"></i>
                             </button>
@@ -158,7 +164,7 @@
 
                 <div class="container-fluid px-3 px-lg-4 py-4">
 
-                    
+
                     <!-- Page Heading -->
                     <div class="page-heading">
                         <div class="page-heading-copy">
