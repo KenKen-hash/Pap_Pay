@@ -258,7 +258,15 @@ Route::middleware(['auth', 'role:admin'])
             '/announcements',
             [AnnouncementController::class, 'store']
         )->name('announcements.store');
+
+        Route::put(
+            '/employees/{employee}/reactivate',
+            [EmployeeController::class, 'reactivate']
+        )
+            ->name('employees.reactivate');
     });
+
+
 
 /*
 |--------------------------------------------------------------------------

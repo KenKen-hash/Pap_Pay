@@ -59,18 +59,12 @@
             <tbody>
 
                 @forelse($employees as $employee)
-
                     <tr>
 
                         <td>
 
-                            <img src="{{ $employee->photo
-                                ? asset('storage/'.$employee->photo)
-                                : asset('images/default-avatar.png') }}"
-                                class="rounded-circle border"
-                                width="50"
-                                height="50"
-                                style="object-fit:cover;">
+                            <img src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/default-avatar.png') }}"
+                                class="rounded-circle border" width="50" height="50" style="object-fit:cover;">
 
                         </td>
 
@@ -106,22 +100,18 @@
 
                         <td>
 
-                            @if($employee->status == 'Active')
-
+                            @if ($employee->status == 'Active')
                                 <span class="badge bg-success">
 
                                     {{ $employee->status }}
 
                                 </span>
-
                             @else
-
                                 <span class="badge bg-secondary">
 
                                     {{ $employee->status }}
 
                                 </span>
-
                             @endif
 
                         </td>
@@ -136,28 +126,29 @@
 
                             <div class="d-flex gap-1">
 
-                                <a href="{{ route('admin.face.register',$employee->id) }}"
+                                <a href="{{ route('admin.face.register', $employee->id) }}"
                                     class="btn btn-sm btn-success">
 
                                     <i class="bi bi-camera"></i>
 
                                 </a>
 
-                                <a href="#"
-                                    class="btn btn-sm btn-outline-primary">
+                                <button type="button" class="btn btn-sm btn-outline-primary viewEmployee"
+                                    data-url="{{ route('employees.show', $employee) }}">
 
                                     <i class="bi bi-eye"></i>
 
-                                </a>
+                                </button>
 
-                                <a href="#"
-                                    class="btn btn-sm btn-outline-warning">
+                                <button type="button" class="btn btn-sm btn-outline-warning editEmployee"
+                                    data-url="{{ route('employees.edit', $employee) }}">
 
                                     <i class="bi bi-pencil"></i>
 
-                                </a>
-
-                                <button class="btn btn-sm btn-outline-danger">
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger deactivateEmployee"
+                                    data-id="{{ $employee->id }}"
+                                    data-name="{{ $employee->first_name }} {{ $employee->last_name }}">
 
                                     <i class="bi bi-trash"></i>
 
@@ -184,12 +175,277 @@
                         </td>
 
                     </tr>
-
                 @endforelse
 
             </tbody>
 
         </table>
+
+    </div>
+
+    <div class="modal fade" id="employeeModal" tabindex="-1">
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+
+                        Employee Information
+
+                    </h5>
+
+                    <button class="btn-close" data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div id="employeeDetails">
+
+                        Loading...
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Edit Employee Modal -->
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+
+                <form id="editEmployeeForm">
+
+                    @csrf
+                    @method('PUT')
+
+                    <input type="hidden" name="_method" value="PUT">
+
+
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editEmployeeModalLabel">
+                            <i class="bi bi-pencil-square text-warning"></i>
+                            Edit Employee
+                        </h5>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <input type="hidden" id="employee_id">
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Middle Name</label>
+                                <input type="text" class="form-control" id="middle_name" name="middle_name">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Contact Number</label>
+                                <input type="text" class="form-control" id="contact_number" name="contact_number">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Department</label>
+                                <input type="text" class="form-control" id="department" name="department">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Position</label>
+                                <input type="text" class="form-control" id="position" name="position">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Gender</label>
+                                <select class="form-select" id="gender" name="gender">
+
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Employment Type</label>
+                                <input type="text" class="form-control" id="employment_type"
+                                    name="employment_type">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Status</label>
+
+                                <select class="form-select" id="status" name="status">
+
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Salary Grade</label>
+                                <input type="text" class="form-control" id="salary_grade" name="salary_grade">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Birth Date</label>
+                                <input type="date" class="form-control" id="birth_date" name="birth_date">
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Address</label>
+                                <textarea class="form-control" id="address" name="address" rows="2"></textarea>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Emergency Contact Person</label>
+                                <input type="text" class="form-control" id="emergency_contact_person"
+                                    name="emergency_contact_person">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Emergency Contact Number</label>
+                                <input type="text" class="form-control" id="emergency_contact_number"
+                                    name="emergency_contact_number">
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Bio</label>
+                                <textarea class="form-control" id="bio" name="bio" rows="3"></textarea>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+
+                            Cancel
+
+                        </button>
+
+                        <button type="submit" class="btn btn-warning">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            Save Changes
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===========================
+     Deactivate Employee Modal
+=========================== -->
+
+    <div class="modal fade" id="deactivateEmployeeModal" tabindex="-1">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header bg-warning">
+
+                    <h5 class="modal-title">
+
+                        <i class="bi bi-person-dash-fill"></i>
+
+                        Deactivate Employee
+
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body text-center">
+
+                    <i class="bi bi-exclamation-triangle-fill text-warning display-4"></i>
+
+                    <h4 class="mt-3">
+
+                        Are you sure?
+
+                    </h4>
+
+                    <p>
+
+                        You are about to deactivate
+
+                        <strong id="deactivateEmployeeName"></strong>
+
+                    </p>
+
+                    <p class="text-muted">
+
+                        The employee will no longer be able to access the system.
+
+                        Payroll and attendance records will remain.
+
+                    </p>
+
+                    <input type="hidden" id="deactivateEmployeeId">
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                        Cancel
+
+                    </button>
+
+                    <button id="confirmDeactivateEmployee" class="btn btn-warning">
+
+                        <i class="bi bi-person-dash-fill"></i>
+
+                        Deactivate
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 

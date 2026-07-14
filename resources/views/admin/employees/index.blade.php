@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="adminHMD professional admin dashboard template">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Users | adminHMD</title>
 
     <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
@@ -228,7 +229,9 @@
                         </div>
 
                         <div class="col-md-4">
-                            <div class="metric-card metric-warning">
+
+                            <div class="metric-card metric-warning" style="cursor:pointer;" data-bs-toggle="modal"
+                                data-bs-target="#inactiveEmployeesModal">
                                 <div class="metric-top">
                                     <span class="metric-label">
                                         Inactive
@@ -236,10 +239,7 @@
                                 </div>
 
                                 <div class="metric-value">
-                                    {{ $primaryEmployees->where('status', 'Inactive')->count() +
-                                        $secondaryEmployees->where('status', 'Inactive')->count() +
-                                        $tertiaryEmployees->where('status', 'Inactive')->count() +
-                                        $nonTeachingEmployees->where('status', 'Inactive')->count() }}
+                                   {{ $inactiveEmployees->count() }}
                                 </div>
                             </div>
                         </div>
@@ -289,7 +289,7 @@
 
                     {{-- Non Teaching Staff --}}
                     @include('admin.employees.table', [
-                        'title' => 'Non Teaching Staff',
+                        'title' => 'Non-Teaching',
                         'employees' => $nonTeachingEmployees,
                     ])
                 </div>
@@ -309,8 +309,496 @@
 
     </div>
 
+      <!-- Inactive Employees Modal -->
+
+<div class="modal fade"
+     id="inactiveEmployeesModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Inactive Employees
+
+                </h5>
+
+                <button
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table table-hover">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Name</th>
+
+                            <th>Department</th>
+
+                            <th>Position</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @forelse($inactiveEmployees as $employee)
+
+                        <tr>
+
+                            <td>{{ $employee->employee_id }}</td>
+
+                            <td>{{ $employee->first_name }} {{ $employee->last_name }}</td>
+
+                            <td>{{ $employee->department }}</td>
+
+                            <td>{{ $employee->position }}</td>
+
+                            <td>
+
+                                <span class="badge bg-danger">
+
+                                    Inactive
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="btn btn-success reactivateEmployee"
+                                    data-id="{{ $employee->id }}">
+
+                                    <i class="bi bi-arrow-repeat"></i>
+
+                                    Reactivate
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        @empty
+
+                        <tr>
+
+                            <td colspan="6"
+                                class="text-center">
+
+                                No inactive employees.
+
+                            </td>
+
+                        </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  
+
     <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
     <script src="../../../../khen/assets/js/main.js"></script>
+    <script>
+        document.querySelectorAll(".viewEmployee").forEach(button => {
+
+            button.addEventListener("click", function() {
+
+                let url = this.dataset.url;
+
+                fetch(url)
+
+                    .then(response => response.json())
+
+                    .then(employee => {
+
+                        document.getElementById("employeeDetails").innerHTML = `
+
+<div class="row">
+
+<div class="col-md-4 text-center">
+
+<img
+src="${employee.photo
+? '/storage/'+employee.photo
+: '/images/default-avatar.png'}"
+class="rounded-circle border mb-3"
+width="150"
+height="150"
+style="object-fit:cover;">
+
+<h4>
+
+${employee.first_name} ${employee.last_name}
+
+</h4>
+
+<p class="text-muted">
+
+${employee.position}
+
+</p>
+
+</div>
+
+<div class="col-md-8">
+
+<table class="table table-bordered">
+
+<tr>
+
+<th>Employee ID</th>
+
+<td>${employee.employee_id ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Email</th>
+
+<td>${employee.email ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Department</th>
+
+<td>${employee.department ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Position</th>
+
+<td>${employee.position ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Status</th>
+
+<td>${employee.status ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Gender</th>
+
+<td>${employee.gender ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Birth Date</th>
+
+<td>${employee.birth_date ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Contact Number</th>
+
+<td>${employee.contact_number ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Address</th>
+
+<td>${employee.address ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Employment Type</th>
+
+<td>${employee.employment_type ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Salary Grade</th>
+
+<td>${employee.salary_grade ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Emergency Contact</th>
+
+<td>${employee.emergency_contact_person ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Emergency Number</th>
+
+<td>${employee.emergency_contact_number ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Hire Date</th>
+
+<td>${employee.hire_date ?? '-'}</td>
+
+</tr>
+
+<tr>
+
+<th>Bio</th>
+
+<td>${employee.bio ?? '-'}</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+`;
+
+                        new bootstrap.Modal(document.getElementById("employeeModal")).show();
+
+                    });
+
+            });
+
+        });
+
+
+        document.querySelectorAll(".editEmployee").forEach(button => {
+
+            button.addEventListener("click", function() {
+
+                let url = this.dataset.url;
+
+                fetch(url)
+
+                    .then(response => response.json())
+
+                    .then(employee => {
+
+                        document.getElementById("employee_id").value = employee.id;
+
+                        document.getElementById("first_name").value = employee.first_name ?? "";
+                        document.getElementById("middle_name").value = employee.middle_name ?? "";
+                        document.getElementById("last_name").value = employee.last_name ?? "";
+                        document.getElementById("email").value = employee.email ?? "";
+                        document.getElementById("contact_number").value = employee.contact_number ?? "";
+                        document.getElementById("department").value = employee.department ?? "";
+                        document.getElementById("position").value = employee.position ?? "";
+                        document.getElementById("gender").value = employee.gender ?? "";
+                        document.getElementById("employment_type").value = employee.employment_type ??
+                            "";
+                        document.getElementById("status").value = employee.status ?? "";
+                        document.getElementById("salary_grade").value = employee.salary_grade ?? "";
+                        document.getElementById("birth_date").value = employee.birth_date ?? "";
+                        document.getElementById("address").value = employee.address ?? "";
+                        document.getElementById("emergency_contact_person").value = employee
+                            .emergency_contact_person ?? "";
+                        document.getElementById("emergency_contact_number").value = employee
+                            .emergency_contact_number ?? "";
+                        document.getElementById("bio").value = employee.bio ?? "";
+
+                        new bootstrap.Modal(document.getElementById("editEmployeeModal")).show();
+
+                    });
+
+            });
+
+        });
+
+        document.getElementById("editEmployeeForm").addEventListener("submit", function(e) {
+
+            e.preventDefault();
+
+            const id = document.getElementById("employee_id").value;
+
+            const formData = new FormData(this);
+
+            fetch("/admin/employees/" + id, {
+
+                    method: "POST",
+
+                    headers: {
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                        "Accept": "application/json"
+                    },
+
+                    body: formData
+
+                })
+
+                .then(async response => {
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        console.log(data);
+                        alert("Update failed. Check the browser console (F12).");
+                        return;
+                    }
+
+                    alert(data.message);
+
+                    bootstrap.Modal.getInstance(document.getElementById("editEmployeeModal")).hide();
+
+                    location.reload();
+
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    alert("Something went wrong.");
+
+                });
+
+        });
+
+        document.querySelectorAll(".deactivateEmployee").forEach(button => {
+
+            button.addEventListener("click", function() {
+
+                document.getElementById("deactivateEmployeeId").value = this.dataset.id;
+
+                document.getElementById("deactivateEmployeeName").textContent = this.dataset.name;
+
+                new bootstrap.Modal(
+                    document.getElementById("deactivateEmployeeModal")
+                ).show();
+
+            });
+
+        });
+        document.getElementById("confirmDeactivateEmployee").addEventListener("click", function() {
+
+            const id = document.getElementById("deactivateEmployeeId").value;
+
+            fetch("/admin/employees/" + id, {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+
+                        "Accept": "application/json"
+
+                    },
+
+                    body: new URLSearchParams({
+
+                        "_method": "DELETE"
+
+                    })
+
+                })
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    if (data.success) {
+
+                        alert(data.message);
+
+                        location.reload();
+
+                    } else {
+
+                        alert(data.message);
+
+                    }
+
+                });
+
+        });
+
+
+
+document.querySelectorAll(".reactivateEmployee").forEach(button=>{
+
+    button.addEventListener("click",function(){
+
+        const id=this.dataset.id;
+
+        fetch("/admin/employees/"+id+"/reactivate",{
+
+            method:"PUT",
+
+            headers:{
+
+                "X-CSRF-TOKEN":document.querySelector('meta[name="csrf-token"]').content,
+
+                "Accept":"application/json"
+
+            }
+
+        })
+
+        .then(r=>r.json())
+
+        .then(data=>{
+
+            alert(data.message);
+
+            location.reload();
+
+        });
+
+    });
+
+});
+    </script>
+
+
 </body>
 
 </html>
