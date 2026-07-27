@@ -31,7 +31,7 @@
             <nav class="sidebar-nav">
                 <a class="nav-link" href="{{ route('admin-dashboard') }}">
                     <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
-                    <span class="nav-text">Dashboard</span>
+                    <span class="nav-text">Statistics</span>
                 </a>
 
                 <a class="nav-link active" href="{{ route('employees.index') }}">
@@ -170,7 +170,6 @@
                     </div>
                 </div>
             </nav>
-
             <main class="dashboard-content">
                 <div class="container-fluid px-3 px-lg-4 py-4">
                     <div class="page-heading">
@@ -183,13 +182,7 @@
                                 </p>
                             </div>
                         </div>
-                        <button class="btn btn-outline-secondary btn-sm">
 
-                            <i class="bi bi-download"></i>
-
-                            Export
-
-                        </button>
                     </div>
 
                     <section class="row g-3 mt-1">
@@ -203,10 +196,12 @@
                                 </div>
 
                                 <div class="metric-value">
-                                    {{ $primaryEmployees->count() +
-                                        $secondaryEmployees->count() +
-                                        $tertiaryEmployees->count() +
-                                        $nonTeachingEmployees->count() }}
+                                    {{ $elementaryEmployees->count() +
+                                        $jhsEmployees->count() +
+                                        $shsEmployees->count() +
+                                        $collegeEmployees->count() +
+                                        $adminEmployees->count() +
+                                        $laborerEmployees->count() }}
                                 </div>
                             </div>
                         </div>
@@ -220,10 +215,12 @@
                                 </div>
 
                                 <div class="metric-value">
-                                    {{ $primaryEmployees->where('status', 'Active')->count() +
-                                        $secondaryEmployees->where('status', 'Active')->count() +
-                                        $tertiaryEmployees->where('status', 'Active')->count() +
-                                        $nonTeachingEmployees->where('status', 'Active')->count() }}
+                                    {{ $elementaryEmployees->where('status', 'Active')->count() +
+                                        $jhsEmployees->where('status', 'Active')->count() +
+                                        $shsEmployees->where('status', 'Active')->count() +
+                                        $collegeEmployees->where('status', 'Active')->count() +
+                                        $adminEmployees->where('status', 'Active')->count() +
+                                        $laborerEmployees->where('status', 'Active')->count() }}
                                 </div>
                             </div>
                         </div>
@@ -239,7 +236,7 @@
                                 </div>
 
                                 <div class="metric-value">
-                                   {{ $inactiveEmployees->count() }}
+                                    {{ $inactiveEmployees->count() }}
                                 </div>
                             </div>
                         </div>
@@ -257,40 +254,49 @@
                                 <input class="form-control form-control-sm table-search" type="search"
                                     placeholder="Search users" data-table-search="usersTable"
                                     aria-label="Search users">
-                                <a href="{{ route('users.choose') }}" class="btn btn-primary btn-sm">
-
+                                <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm">
                                     <i class="bi bi-person-plus"></i>
-
                                     Add User
-
                                 </a>
                             </div>
                         </div>
 
                     </section>
 
-                    {{-- Primary Department --}}
+                    {{-- Elementary --}}
                     @include('admin.employees.table', [
-                        'title' => 'Primary Department',
-                        'employees' => $primaryEmployees,
+                        'title' => 'Elementary Department',
+                        'employees' => $elementaryEmployees,
                     ])
 
-                    {{-- Secondary Department --}}
+                    {{-- Junior High School --}}
                     @include('admin.employees.table', [
-                        'title' => 'Secondary Department',
-                        'employees' => $secondaryEmployees,
+                        'title' => 'Junior High School (JHS)',
+                        'employees' => $jhsEmployees,
                     ])
 
-                    {{-- Tertiary Department --}}
+                    {{-- Senior High School --}}
                     @include('admin.employees.table', [
-                        'title' => 'Tertiary Department',
-                        'employees' => $tertiaryEmployees,
+                        'title' => 'Senior High School (SHS)',
+                        'employees' => $shsEmployees,
                     ])
 
-                    {{-- Non Teaching Staff --}}
+                    {{-- College --}}
                     @include('admin.employees.table', [
-                        'title' => 'Non-Teaching',
-                        'employees' => $nonTeachingEmployees,
+                        'title' => 'College Department',
+                        'employees' => $collegeEmployees,
+                    ])
+
+                    {{-- Admin --}}
+                    @include('admin.employees.table', [
+                        'title' => 'Administrative Personnel',
+                        'employees' => $adminEmployees,
+                    ])
+
+                    {{-- Laborers --}}
+                    @include('admin.employees.table', [
+                        'title' => 'Laborers',
+                        'employees' => $laborerEmployees,
                     ])
                 </div>
             </main>
@@ -309,113 +315,107 @@
 
     </div>
 
-      <!-- Inactive Employees Modal -->
+    <!-- Inactive Employees Modal -->
 
-<div class="modal fade"
-     id="inactiveEmployeesModal"
-     tabindex="-1">
+    <div class="modal fade" id="inactiveEmployeesModal" tabindex="-1">
 
-    <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-xl">
 
-        <div class="modal-content">
+            <div class="modal-content">
 
-            <div class="modal-header">
+                <div class="modal-header">
 
-                <h5 class="modal-title">
+                    <h5 class="modal-title">
 
-                    Inactive Employees
+                        Inactive Employees
 
-                </h5>
+                    </h5>
 
-                <button
-                    class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
+                    <button class="btn-close" data-bs-dismiss="modal">
+                    </button>
 
-            </div>
+                </div>
 
-            <div class="modal-body">
+                <div class="modal-body">
 
-                <table class="table table-hover">
+                    <table class="table table-hover">
 
-                    <thead>
+                        <thead>
 
-                        <tr>
+                            <tr>
 
-                            <th>ID</th>
+                                <th>ID</th>
 
-                            <th>Name</th>
+                                <th>Name</th>
 
-                            <th>Department</th>
+                                <th>Department</th>
 
-                            <th>Position</th>
+                                <th>Position</th>
 
-                            <th>Status</th>
+                                <th>Status</th>
 
-                            <th>Action</th>
+                                <th>Action</th>
 
-                        </tr>
+                            </tr>
 
-                    </thead>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
 
-                        @forelse($inactiveEmployees as $employee)
+                            @forelse($inactiveEmployees as $employee)
+                                <tr>
 
-                        <tr>
+                                    <td>{{ $employee->employee_id }}</td>
 
-                            <td>{{ $employee->employee_id }}</td>
+                                    <td>{{ $employee->first_name }} {{ $employee->last_name }}</td>
 
-                            <td>{{ $employee->first_name }} {{ $employee->last_name }}</td>
+                                    <td>{{ $employee->department }}</td>
 
-                            <td>{{ $employee->department }}</td>
+                                    <td>{{ $employee->position }}</td>
 
-                            <td>{{ $employee->position }}</td>
+                                    <td>
 
-                            <td>
+                                        <span class="badge bg-danger">
 
-                                <span class="badge bg-danger">
+                                            Inactive
 
-                                    Inactive
+                                        </span>
 
-                                </span>
+                                    </td>
 
-                            </td>
+                                    <td>
 
-                            <td>
+                                        <button class="btn btn-success reactivateEmployee"
+                                            data-id="{{ $employee->id }}">
 
-                                <button
-                                    class="btn btn-success reactivateEmployee"
-                                    data-id="{{ $employee->id }}">
+                                            <i class="bi bi-arrow-repeat"></i>
 
-                                    <i class="bi bi-arrow-repeat"></i>
+                                            Reactivate
 
-                                    Reactivate
+                                        </button>
 
-                                </button>
+                                    </td>
 
-                            </td>
+                                </tr>
 
-                        </tr>
+                            @empty
 
-                        @empty
+                                <tr>
 
-                        <tr>
+                                    <td colspan="6" class="text-center">
 
-                            <td colspan="6"
-                                class="text-center">
+                                        No inactive employees.
 
-                                No inactive employees.
+                                    </td>
 
-                            </td>
+                                </tr>
+                            @endforelse
 
-                        </tr>
+                        </tbody>
 
-                        @endforelse
+                    </table>
 
-                    </tbody>
-
-                </table>
+                </div>
 
             </div>
 
@@ -423,8 +423,6 @@
 
     </div>
 
-</div>
-  
 
     <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
     <script src="../../../../khen/assets/js/main.js"></script>
@@ -763,39 +761,39 @@ ${employee.position}
 
 
 
-document.querySelectorAll(".reactivateEmployee").forEach(button=>{
+        document.querySelectorAll(".reactivateEmployee").forEach(button => {
 
-    button.addEventListener("click",function(){
+            button.addEventListener("click", function() {
 
-        const id=this.dataset.id;
+                const id = this.dataset.id;
 
-        fetch("/admin/employees/"+id+"/reactivate",{
+                fetch("/admin/employees/" + id + "/reactivate", {
 
-            method:"PUT",
+                        method: "PUT",
 
-            headers:{
+                        headers: {
 
-                "X-CSRF-TOKEN":document.querySelector('meta[name="csrf-token"]').content,
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
 
-                "Accept":"application/json"
+                            "Accept": "application/json"
 
-            }
+                        }
 
-        })
+                    })
 
-        .then(r=>r.json())
+                    .then(r => r.json())
 
-        .then(data=>{
+                    .then(data => {
 
-            alert(data.message);
+                        alert(data.message);
 
-            location.reload();
+                        location.reload();
+
+                    });
+
+            });
 
         });
-
-    });
-
-});
     </script>
 
 

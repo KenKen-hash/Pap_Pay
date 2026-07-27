@@ -13,26 +13,38 @@ class EmployeeController extends Controller
     public function index()
     {
         // Active Employees
-        $primaryEmployees = User::where('role', 'employee')
-            ->where('department', 'Primary')
+        $elementaryEmployees = User::where('role', 'employee')
+            ->where('department', 'Elementary')
             ->where('status', 'Active')
             ->latest()
             ->get();
 
-        $secondaryEmployees = User::where('role', 'employee')
-            ->where('department', 'Secondary')
+        $jhsEmployees = User::where('role', 'employee')
+            ->where('department', 'JHS')
             ->where('status', 'Active')
             ->latest()
             ->get();
 
-        $tertiaryEmployees = User::where('role', 'employee')
-            ->where('department', 'Tertiary')
+        $shsEmployees = User::where('role', 'employee')
+            ->where('department', 'SHS')
             ->where('status', 'Active')
             ->latest()
             ->get();
 
-        $nonTeachingEmployees = User::where('role', 'employee')
-            ->where('department', 'Non-Teaching Staff')
+        $collegeEmployees = User::where('role', 'employee')
+            ->where('department', 'College')
+            ->where('status', 'Active')
+            ->latest()
+            ->get();
+
+        $adminEmployees = User::where('role', 'employee')
+            ->where('department', 'Admin')
+            ->where('status', 'Active')
+            ->latest()
+            ->get();
+
+        $laborerEmployees = User::where('role', 'employee')
+            ->where('department', 'Laborers')
             ->where('status', 'Active')
             ->latest()
             ->get();
@@ -46,10 +58,12 @@ class EmployeeController extends Controller
         $inactiveCount = $inactiveEmployees->count();
 
         return view('admin.employees.index', compact(
-            'primaryEmployees',
-            'secondaryEmployees',
-            'tertiaryEmployees',
-            'nonTeachingEmployees',
+            'elementaryEmployees',
+            'jhsEmployees',
+            'shsEmployees',
+            'collegeEmployees',
+            'adminEmployees',
+            'laborerEmployees',
             'inactiveEmployees',
             'inactiveCount'
         ));

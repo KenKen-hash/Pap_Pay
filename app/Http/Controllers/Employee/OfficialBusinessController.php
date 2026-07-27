@@ -67,13 +67,16 @@ class OfficialBusinessController extends Controller
 
             'ob_date' => 'required|date|after_or_equal:today',
 
-            'departure_time' => 'required',
+            'morning_time_in' => 'nullable',
+            'morning_time_out' => 'nullable',
 
-            'expected_return_time' => 'required|after:departure_time',
+            'afternoon_time_in' => 'nullable',
+            'afternoon_time_out' => 'nullable',
 
             'proof_images' => 'nullable|array',
 
             'proof_images.*' => 'image|mimes:jpg,jpeg,png|max:5120',
+
 
         ]);
 
@@ -89,7 +92,6 @@ class OfficialBusinessController extends Controller
                 );
             }
         }
-
         OfficialBusiness::create([
 
             'user_id' => Auth::id(),
@@ -100,11 +102,11 @@ class OfficialBusinessController extends Controller
 
             'ob_date' => $request->ob_date,
 
-            'departure_time' => $request->departure_time,
+            'morning_time_out' => $request->morning_time_out,
+            'morning_time_in' => $request->morning_time_in,
 
-            'expected_return_time' => $request->expected_return_time,
-
-            'proof_images' => $images,
+            'afternoon_time_out' => $request->afternoon_time_out,
+            'afternoon_time_in' => $request->afternoon_time_in,
 
             'status' => 'Pending',
 

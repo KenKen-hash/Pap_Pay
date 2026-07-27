@@ -214,7 +214,7 @@
 
             <div class="step">
 
-                STEP 2 OF 4
+                STEP 2 OF 2
 
             </div>
 
@@ -234,72 +234,69 @@
 
                 @csrf
 
+                <input type="hidden" name="employment_type" value="{{ request('employment_type') }}">
+
                 <div class="row mt-4 g-4">
 
-                    <div class="col-md-6">
-
-                        <input class="btn-check" type="radio" name="department" id="primary" value="Primary"
+                    <!-- Elementary -->
+                    <div class="col-lg-4 col-md-6">
+                        <input class="btn-check" type="radio" name="department" id="elementary" value="Elementary"
                             required>
-
-                        <label class="department-card" for="primary">
-
+                        <label class="department-card" for="elementary">
                             <i class="bi bi-house-door-fill"></i>
-
-                            <h5>Primary</h5>
-
+                            <h5>Elementary</h5>
                             <p>Elementary Department</p>
-
                         </label>
-
                     </div>
 
-                    <div class="col-md-6">
-
-                        <input class="btn-check" type="radio" name="department" id="secondary" value="Secondary">
-
-                        <label class="department-card" for="secondary">
-
+                    <!-- JHS -->
+                    <div class="col-lg-4 col-md-6">
+                        <input class="btn-check" type="radio" name="department" id="jhs" value="JHS">
+                        <label class="department-card" for="jhs">
                             <i class="bi bi-book-fill"></i>
-
-                            <h5>Secondary</h5>
-
-                            <p>Junior & Senior High</p>
-
+                            <h5>JHS</h5>
+                            <p>Junior High School</p>
                         </label>
-
                     </div>
 
-                    <div class="col-md-6">
+                    <!-- SHS -->
+                    <div class="col-lg-4 col-md-6">
+                        <input class="btn-check" type="radio" name="department" id="shs" value="SHS">
+                        <label class="department-card" for="shs">
+                            <i class="bi bi-journal-bookmark-fill"></i>
+                            <h5>SHS</h5>
+                            <p>Senior High School</p>
+                        </label>
+                    </div>
 
-                        <input class="btn-check" type="radio" name="department" id="tertiary" value="Tertiary">
-
-                        <label class="department-card" for="tertiary">
-
+                    <!-- College -->
+                    <div class="col-lg-4 col-md-6">
+                        <input class="btn-check" type="radio" name="department" id="college" value="College">
+                        <label class="department-card" for="college">
                             <i class="bi bi-mortarboard-fill"></i>
-
-                            <h5>Tertiary</h5>
-
+                            <h5>College</h5>
                             <p>College Department</p>
-
                         </label>
-
                     </div>
 
-                    <div class="col-md-6">
-
-                        <input class="btn-check" type="radio" name="department" id="nonteaching"
-                            value="Non-Teaching Staff">
-
-                        <label class="department-card" for="nonteaching">
-
-                            <i class="bi bi-people-fill"></i>
-
-                            <h5>Non-Teaching Staff</h5>
-
-                            <p>Administrative & Utility Personnel</p>
-
+                    <!-- Admin -->
+                    <div class="col-lg-4 col-md-6">
+                        <input class="btn-check" type="radio" name="department" id="admin" value="Admin">
+                        <label class="department-card" for="admin">
+                            <i class="bi bi-building-fill-gear"></i>
+                            <h5>Admin</h5>
+                            <p>Administrative Personnel</p>
                         </label>
+                    </div>
 
+                    <!-- Laborers -->
+                    <div class="col-lg-4 col-md-6">
+                        <input class="btn-check" type="radio" name="department" id="laborers" value="Laborers">
+                        <label class="department-card" for="laborers">
+                            <i class="bi bi-person-workspace"></i>
+                            <h5>Laborers</h5>
+                            <p>Maintenance & Utility Personnel</p>
+                        </label>
                     </div>
 
                 </div>
@@ -423,12 +420,14 @@
 
                             </a>
 
+                            <a href="{{ route('users.employment') }}" class="btn btn-success">
+                                <i class="bi bi-arrow-repeat me-2"></i>
+                                Go to Employment Type
+                            </a>
+
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-
                                 <i class="bi bi-plus-circle me-2"></i>
-
-                                Create Another Employee
-
+                                Create Another {{ $employmentType ?? request('employment_type') }} Employee
                             </button>
 
                         </div>

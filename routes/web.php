@@ -18,7 +18,6 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
 use App\Http\Controllers\Admin\AttendanceExportController;
 use App\Http\Controllers\Admin\LeaveController as AdminLeaveController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OfficialBusinessController;
 use App\Http\Controllers\Admin\FaceRegistrationController;
 use App\Http\Controllers\Admin\FaceAttendanceController;
@@ -27,7 +26,7 @@ use App\Http\Controllers\Admin\PayrollController;
 use App\Http\Controllers\Admin\AnnouncementController;
 
 
-Route::get('/welcome', function () {
+Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
@@ -156,6 +155,15 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/payroll', [PayrollController::class, 'index'])
             ->name('payroll');;
 
+        Route::post('/payroll/save', [PayrollController::class, 'save'])
+            ->name('payroll.save');
+
+        Route::post(
+            '/payroll/default/save',
+            [PayrollController::class, 'saveDepartmentConfig']
+        )->name('payroll.default.save');
+        
+
         Route::view('/payslip_list', 'admin.payslip_list')
             ->name('payslip_list');
 
@@ -170,22 +178,6 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::view('/settings', 'admin.settings')
             ->name('settings');
-
-        Route::get('/users/create', [UserController::class, 'chooseType'])
-            ->name('users.choose');
-
-        Route::post('/users/create', [UserController::class, 'redirectCreate'])
-            ->name('users.redirect');
-
-        Route::get('/users/create/admin', [UserController::class, 'createAdmin'])
-            ->name('users.admin');
-
-        Route::get('/users/create/employee', [UserController::class, 'createEmployee'])
-            ->name('users.employee');
-        Route::get('/admin/users/create-employee', [UserController::class, 'createEmployee'])
-            ->name('users.create.employee');
-        Route::post('/admin/users/create/employee', [UserController::class, 'storeEmployee'])
-            ->name('users.employee.store');
 
         Route::get(
             '/official_business',
@@ -222,32 +214,34 @@ Route::middleware(['auth', 'role:admin'])
             [FaceAttendanceController::class, 'faces']
         )->name('attendance.faces');
 
+        Route::get(
+            '/payroll/{department}',
+            [PayrollController::class, 'department']
+        )->name('payroll.department');
 
 
-        Route::prefix('admin')
-            ->middleware(['auth'])
-            ->group(function () {
+        Route::get('/users/create', [UserWizardController::class, 'chooseType'])
+            ->name('users.create');
 
-                Route::get('/users/create', [UserWizardController::class, 'chooseType'])
-                    ->name('users.create');
+        Route::post('/users/choose', [UserWizardController::class, 'choose'])
+            ->name('users.choose');
 
-                Route::post('/users/choose', [UserWizardController::class, 'choose'])
-                    ->name('users.choose');
+        Route::get('/users/create/employment', [UserWizardController::class, 'employmentType'])
+            ->name('users.employment');
 
-                Route::get('/users/create/employee', [UserWizardController::class, 'employeeForm'])
-                    ->name('users.employee');
+        Route::get('/users/create/employee', [UserWizardController::class, 'employeeForm'])
+            ->name('users.employee');
 
-                Route::get('/users/create/admin', [UserWizardController::class, 'adminForm'])
-                    ->name('users.admin');
-                Route::post(
-                    '/users/employee/setup',
-                    [UserWizardController::class, 'employeeSetup']
-                )
-                    ->name('users.employee.setup');
+        Route::post('/users/employee/setup', [UserWizardController::class, 'employeeSetup'])
+            ->name('users.employee.setup');
 
-                Route::post('/users/admin/setup', [UserWizardController::class, 'adminSetup'])
-                    ->name('users.admin.setup');
-            });
+        Route::get('/users/create/admin', [UserWizardController::class, 'adminForm'])
+            ->name('users.admin');
+
+        Route::post('/users/admin/setup', [UserWizardController::class, 'adminSetup'])
+            ->name('users.admin.setup');
+
+
 
         Route::get(
             '/announcements',

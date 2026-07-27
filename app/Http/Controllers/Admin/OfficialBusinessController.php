@@ -104,29 +104,17 @@ class OfficialBusinessController extends Controller
 
         /*
     |--------------------------------------------------------------------------
-    | Fill Attendance Time
+    | Copy Official Business Times to Attendance
     |--------------------------------------------------------------------------
     */
 
-        $departure = Carbon::parse($ob->departure_time)->format('H:i:s');
-        $return    = Carbon::parse($ob->expected_return_time)->format('H:i:s');
+        $attendance->morning_time_out = $ob->morning_time_out;
+        $attendance->morning_time_in  = $ob->morning_time_in;
 
-        if ($departure < '12:00:00') {
+        $attendance->afternoon_time_out = $ob->afternoon_time_out;
+        $attendance->afternoon_time_in  = $ob->afternoon_time_in;
 
-            $attendance->morning_time_out = $departure;
-        } else {
-
-            $attendance->afternoon_time_out = $departure;
-        }
-
-        if ($return < '12:00:00') {
-
-            $attendance->morning_time_in = $return;
-        } else {
-
-            $attendance->afternoon_time_in = $return;
-        }
-
+        $attendance->status = 'Present';
         $attendance->remarks = 'Official Business';
 
         $attendance->save();

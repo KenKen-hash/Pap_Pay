@@ -6,31 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class OfficialBusiness extends Model
 {
-    protected $fillable = [
+   protected $fillable = [
 
-        'user_id',
+    'user_id',
 
-        'purpose',
+    'purpose',
 
-        'destination',
+    'destination',
 
-        'ob_date',
+    'ob_date',
 
-        'departure_time',
+    'morning_time_out',
+    'morning_time_in',
 
-        'expected_return_time',
+    'afternoon_time_out',
+    'afternoon_time_in',
 
-        'proof_images',
+    'status'
 
-        'status',
-
-        'approved_by',
-
-        'approved_at',
-
-        'rejection_reason'
-
-    ];
+];
 
     protected $casts = [
 

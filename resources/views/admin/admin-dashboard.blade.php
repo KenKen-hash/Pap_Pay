@@ -30,7 +30,7 @@
             <nav class="sidebar-nav">
                 <a class="nav-link active" href="{{ route('admin-dashboard') }}">
                     <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
-                    <span class="nav-text">Dashboard</span>
+                    <span class="nav-text">Statistics</span>
                 </a>
 
                 <a class="nav-link" href="{{ route('employees.index') }}">
@@ -188,7 +188,7 @@
 
                         <div class="col-xl-3 col-sm-6">
                             <div class="metric-card metric-primary">
-                                <<div class="metric-label">Total Users
+                                <div class="metric-label">Total Users
                             </div>
 
                             <div class="metric-value">

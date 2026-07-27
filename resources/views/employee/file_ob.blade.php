@@ -513,30 +513,32 @@
 
                                     </div>
 
+                                    <!-- Departure Time -->
+                                    <div class="row mt-3">
 
-                                    <div class="col-md-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Morning Time In</label>
+                                            <input type="time" name="morning_time_in" class="form-control">
+                                        </div>
 
-                                        <label class="form-label">
-
-                                            Time From
-
-                                        </label>
-
-                                        <input type="time" name="departure_time" class="form-control" required>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Morning Time Out</label>
+                                            <input type="time" name="morning_time_out" class="form-control">
+                                        </div>
 
                                     </div>
 
+                                    <div class="row mt-3">
 
-                                    <div class="col-md-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Afternoon Time In</label>
+                                            <input type="time" name="afternoon_time_in" class="form-control">
+                                        </div>
 
-                                        <label class="form-label">
-
-                                            Time To
-
-                                        </label>
-
-                                        <input type="time" name="expected_return_time" class="form-control"
-                                            required>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Afternoon Time Out</label>
+                                            <input type="time" name="afternoon_time_out" class="form-control">
+                                        </div>
 
                                     </div>
 
@@ -663,9 +665,11 @@
                                             <th>Destination</th>
                                             <th>Purpose</th>
                                             <th>Time</th>
+                                            <th>Attendance Period</th>
                                             <th>Status</th>
                                             <th>Proof</th>
                                             <th>Action</th>
+
                                         </tr>
 
                                     </thead>
@@ -733,62 +737,92 @@
 
                                                 </td>
 
-                                            </tr>
+                                                <td>
 
-                                        @empty
+                                                    @switch($ob->attendance_period)
+                                                        @case('morning')
+                                                            <span class="badge bg-info">
 
-                                            <tr>
+                                                                Morning
 
-                                                <td colspan="7" class="text-center py-5">
+                                                            </span>
+                                                        @break
 
-                                                    <i class="bi bi-inbox fs-1 text-muted"></i>
+                                                        @case('afternoon')
+                                                            <span class="badge bg-warning text-dark">
 
-                                                    <h5 class="mt-3">
-                                                        No Official Business found
-                                                    </h5>
+                                                                Afternoon
 
-                                                    <p class="text-muted">
-                                                        Your OB requests will appear here after submission
-                                                    </p>
+                                                            </span>
+                                                        @break
+
+                                                        @case('whole_day')
+                                                            <span class="badge bg-success">
+
+                                                                Whole Day
+
+                                                            </span>
+                                                        @break
+                                                    @endswitch
 
                                                 </td>
 
                                             </tr>
-                                        @endforelse
 
-                                    </tbody>
+                                            @empty
 
-                                </table>
+                                                <tr>
+
+                                                    <td colspan="7" class="text-center py-5">
+
+                                                        <i class="bi bi-inbox fs-1 text-muted"></i>
+
+                                                        <h5 class="mt-3">
+                                                            No Official Business found
+                                                        </h5>
+
+                                                        <p class="text-muted">
+                                                            Your OB requests will appear here after submission
+                                                        </p>
+
+                                                    </td>
+
+                                                </tr>
+                                            @endforelse
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                                <div class="mt-3">
+
+                                    {{ $officialBusinesses->links() }}
+
+                                </div>
 
                             </div>
 
-                            <div class="mt-3">
-
-                                {{ $officialBusinesses->links() }}
-
-                            </div>
-
-                        </div>
-
-                    </section>
-            </main>
+                        </section>
+                </main>
 
 
-            <footer class="admin-footer">
-                <div class="container-fluid px-3 px-lg-4">
-                    <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank" class="fw-bold text-success"
-                            href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a
-                            target="_blank" class="fw-bold text-success" href="https://themewagon.com">ThemeWagon</a>
-                    </span>
-                    <span>Professional dashboard template.</span>
-                    <span>Analytics chart examples.</span>
-                </div>
-            </footer>
+                <footer class="admin-footer">
+                    <div class="container-fluid px-3 px-lg-4">
+                        <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank" class="fw-bold text-success"
+                                href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a
+                                target="_blank" class="fw-bold text-success" href="https://themewagon.com">ThemeWagon</a>
+                        </span>
+                        <span>Professional dashboard template.</span>
+                        <span>Analytics chart examples.</span>
+                    </div>
+                </footer>
+            </div>
         </div>
-    </div>
 
-    <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
-    <script src="../../../../khen/assets/js/main.js"></script>
-</body>
+        <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="../../../../khen/assets/js/main.js"></script>
+    </body>
 
-</html>
+    </html>
