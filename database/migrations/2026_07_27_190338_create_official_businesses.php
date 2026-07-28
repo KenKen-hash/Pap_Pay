@@ -12,22 +12,47 @@ return new class extends Migration
 
             $table->id();
 
+            // Employee
             $table->foreignId('user_id')
                   ->constrained()
                   ->cascadeOnDelete();
 
+            // Official Business Information
             $table->text('purpose');
 
             $table->string('destination');
 
             $table->date('ob_date');
 
-            $table->time('departure_time');
+            /*
+            |--------------------------------------------------------------------------
+            | Attendance Schedule
+            |--------------------------------------------------------------------------
+            | Used by the attendance system to determine which time logs
+            | are covered by the Official Business.
+            */
 
-            $table->time('expected_return_time');
+            $table->time('morning_time_out')->nullable();
 
-            // Multiple proof images
+            $table->time('morning_time_in')->nullable();
+
+            $table->time('afternoon_time_out')->nullable();
+
+            $table->time('afternoon_time_in')->nullable();
+
+            /*
+            |--------------------------------------------------------------------------
+            | Proof Documents
+            |--------------------------------------------------------------------------
+            */
+
             $table->json('proof_images')->nullable();
+
+            /*
+            |--------------------------------------------------------------------------
+            | Approval
+            |--------------------------------------------------------------------------
+            */
 
             $table->enum('status', [
                 'Pending',

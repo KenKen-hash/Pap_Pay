@@ -14,6 +14,10 @@ class EmployeeSalaryConfig extends Model
 
         'payroll_period',
 
+        'daily_rate',
+        
+        'overtime_rate',
+
         'sss',
 
         'philhealth',

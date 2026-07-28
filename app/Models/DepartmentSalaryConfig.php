@@ -12,6 +12,10 @@ class DepartmentSalaryConfig extends Model
 
         'default_basic_salary',
 
+        'daily_rate',
+        
+        'overtime_rate',
+
         'payroll_period',
 
         'sss',

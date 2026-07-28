@@ -77,7 +77,7 @@ class PayrollController extends Controller
         );
     }
 
-    
+
 
     public function save(Request $request)
     {
@@ -86,6 +86,10 @@ class PayrollController extends Controller
             'user_id' => 'required|exists:users,id',
 
             'basic_salary' => 'nullable|numeric',
+
+            'daily_rate' => 'nullable|numeric',
+
+            'overtime_rate' => 'nullable|numeric',
 
             'payroll_period' => 'nullable|in:Monthly,Every 15 Days,Weekly',
 
@@ -118,6 +122,10 @@ class PayrollController extends Controller
                 'basic_salary' => $request->basic_salary,
 
                 'payroll_period' => $request->payroll_period,
+
+                'daily_rate' => $request->daily_rate,
+
+                'overtime_rate' => $request->overtime_rate,
 
                 'sss' => $request->sss,
 
@@ -154,6 +162,10 @@ class PayrollController extends Controller
 
             'default_basic_salary' => 'required|numeric|min:0',
 
+            'daily_rate' => 'nullable|numeric|min:0',
+
+            'overtime_rate' => 'nullable|numeric|min:0',
+
             'payroll_period' => 'required',
 
             'sss' => 'nullable|numeric|min:0',
@@ -174,6 +186,10 @@ class PayrollController extends Controller
 
             [
                 'default_basic_salary' => $request->default_basic_salary,
+
+                'daily_rate' => $request->daily_rate,
+
+                'overtime_rate' => $request->overtime_rate,
 
                 'payroll_period' => $request->payroll_period,
 

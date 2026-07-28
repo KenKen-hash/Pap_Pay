@@ -247,7 +247,7 @@
 
                         <i class="bi bi-bank2 me-2"></i>
 
-                        Administrative Salary Configuration
+                         Administrative Salary Configuration
 
                     </h1>
 
@@ -339,6 +339,54 @@
                                 </option>
 
                             </select>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="row">
+
+                        <!-- Daily Rate -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <label class="form-label">
+                                Daily Rate
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    ₱
+                                </span>
+
+                                <input type="number" id="default_daily_rate" class="form-control" placeholder="0.00"
+                                    value="{{ old('default_daily_rate', optional($departmentConfig)->daily_rate) }}">
+
+                            </div>
+
+                        </div>
+
+                        <!-- Overtime Rate -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <label class="form-label">
+                                Overtime Rate
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    ₱
+                                </span>
+
+                                <input type="number" id="default_overtime_rate" class="form-control" placeholder="0.00"
+                                    value="{{ old('default_overtime_rate', optional($departmentConfig)->overtime_rate) }}">
+
+                            </div>
 
                         </div>
 
@@ -478,7 +526,8 @@
 
                     </h3>
 
-                    <input type="text" class="form-control" placeholder="Search employee..." style="width:300px;">
+                    <input type="text" class="form-control" placeholder="Search employee..."
+                        style="width:300px;">
 
                 </div>
 
@@ -599,6 +648,8 @@
                                             data-name="{{ $employee->first_name }} {{ $employee->last_name }}"
                                             data-employment="{{ $employee->employment_type }}"
                                             data-salary="{{ optional($employee->salaryConfig)->basic_salary ?? optional($departmentConfig)->default_basic_salary }}"
+                                            data-daily="{{ optional($employee->salaryConfig)->daily_rate ?? optional($departmentConfig)->daily_rate }}"
+                                            data-overtime="{{ optional($employee->salaryConfig)->overtime_rate ?? optional($departmentConfig)->overtime_rate }}"
                                             data-payroll="{{ optional($employee->salaryConfig)->payroll_period ?? optional($departmentConfig)->payroll_period }}"
                                             data-sss="{{ optional($employee->salaryConfig)->sss ?? optional($departmentConfig)->sss }}"
                                             data-philhealth="{{ optional($employee->salaryConfig)->philhealth ?? optional($departmentConfig)->philhealth }}"
@@ -707,15 +758,73 @@
 
                         <div class="card-body">
 
-                            <div class="input-group">
+                            <div class="row">
 
-                                <span class="input-group-text">
+                                <!-- Basic Salary -->
 
-                                    ₱
+                                <div class="col-md-6 mb-4">
 
-                                </span>
+                                    <label class="form-label">
+                                        Basic Salary
+                                    </label>
 
-                                <input type="number" id="basic_salary" class="form-control" placeholder="0.00">
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+                                            ₱
+                                        </span>
+
+                                        <input type="number" id="basic_salary" class="form-control">
+
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="row">
+
+                                <!-- Daily Rate -->
+
+                                <div class="col-md-6">
+
+                                    <label class="form-label">
+                                        Daily Rate
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+                                            ₱
+                                        </span>
+
+                                        <input type="number" id="daily_rate" class="form-control">
+
+                                    </div>
+
+                                </div>
+
+                                <!-- Overtime Rate -->
+
+                                <div class="col-md-6">
+
+                                    <label class="form-label">
+                                        Overtime Rate
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+                                            ₱
+                                        </span>
+
+                                        <input type="number" id="overtime_rate" class="form-control">
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
@@ -733,6 +842,7 @@
                         <div class="card-body">
 
                             <div class="row">
+                                <!-- Payroll Period -->
 
                                 <div class="col-md-4 mb-3">
 
@@ -743,7 +853,6 @@
                                     <input id="employee_payroll_period" class="form-control" readonly>
 
                                 </div>
-
                                 <div class="col-md-2 mb-3">
 
                                     <label class="form-label">
@@ -788,7 +897,9 @@
 
                         </div>
 
+
                     </div>
+
 
                     <!-- Additional Earnings -->
 
@@ -941,6 +1052,12 @@
                     document.getElementById("basic_salary").value =
                         this.dataset.salary ?? "";
 
+                    document.getElementById("daily_rate").value =
+                        this.dataset.daily ?? "";
+
+                    document.getElementById("overtime_rate").value =
+                        this.dataset.overtime ?? "";
+
                     document.getElementById("employee_payroll_period").value =
                         this.dataset.payroll;
 
@@ -994,6 +1111,10 @@
                         basic_salary: document.getElementById("basic_salary").value,
 
                         payroll_period: document.getElementById("employee_payroll_period").value,
+
+                        daily_rate: document.getElementById("daily_rate").value,
+
+                        overtime_rate: document.getElementById("overtime_rate").value,
 
                         sss: document.getElementById("employee_sss").value,
 
@@ -1060,6 +1181,10 @@
                         department: document.getElementById("department").value,
 
                         default_basic_salary: document.getElementById("default_basic_salary").value,
+
+                        daily_rate: document.getElementById("default_daily_rate").value,
+
+                        overtime_rate: document.getElementById("default_overtime_rate").value,
 
                         payroll_period: document.getElementById("payroll_period").value,
 
