@@ -162,7 +162,7 @@ Route::middleware(['auth', 'role:admin'])
             '/payroll/default/save',
             [PayrollController::class, 'saveDepartmentConfig']
         )->name('payroll.default.save');
-        
+
 
         Route::view('/payslip_list', 'admin.payslip_list')
             ->name('payslip_list');
@@ -258,6 +258,15 @@ Route::middleware(['auth', 'role:admin'])
             [EmployeeController::class, 'reactivate']
         )
             ->name('employees.reactivate');
+
+
+
+        Route::get('/admin/payroll/generate', [PayrollController::class, 'generate'])
+            ->name('payroll.generate');
+        Route::get('/admin/payslips/employees', [PayrollController::class, 'getEmployees'])
+            ->name('payslip.employees');
+        Route::post('/admin/payslips/preview', [PayrollController::class, 'previewPayroll'])
+            ->name('payslip.preview');
     });
 
 

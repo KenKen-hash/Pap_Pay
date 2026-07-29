@@ -21,24 +21,32 @@ class Attendance extends Model
 
         'hours_worked',
 
+        'late_minutes',
+
+        'undertime_minutes',
+
         'status',
 
         'remarks',
     ];
 
-   protected $casts = [
+    protected $casts = [
 
-    'date' => 'date',
+        'date' => 'date',
 
-    'morning_time_in' => 'datetime',
-    'morning_time_out' => 'datetime',
+        'morning_time_in' => 'datetime',
+        'morning_time_out' => 'datetime',
 
-    'afternoon_time_in' => 'datetime',
-    'afternoon_time_out' => 'datetime',
+        'afternoon_time_in' => 'datetime',
+        'afternoon_time_out' => 'datetime',
 
-    'hours_worked' => 'decimal:2',
-];
-    
+        'hours_worked' => 'decimal:2',
+
+        'late_minutes' => 'integer',
+
+        'undertime_minutes' => 'integer',
+    ];
+
     protected $with = ['user'];
 
     /**

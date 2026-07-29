@@ -13,8 +13,12 @@ class DepartmentSalaryConfig extends Model
         'default_basic_salary',
 
         'daily_rate',
-        
+
         'overtime_rate',
+
+        'late_deduction_rate',
+
+        'undertime_deduction_rate',
 
         'payroll_period',
 
@@ -24,7 +28,7 @@ class DepartmentSalaryConfig extends Model
 
         'pagibig',
 
-        'hmo'
+        'hmo',
 
     ];
 }

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\EmployeeSalaryConfig;
 use App\Models\DepartmentSalaryConfig;
+use App\Models\Attendance;
 
 class PayrollController extends Controller
 {
@@ -91,6 +92,10 @@ class PayrollController extends Controller
 
             'overtime_rate' => 'nullable|numeric',
 
+            'late_deduction_rate' => 'nullable|numeric',
+
+            'undertime_deduction_rate' => 'nullable|numeric',
+
             'payroll_period' => 'nullable|in:Monthly,Every 15 Days,Weekly',
 
             'sss' => 'nullable|numeric',
@@ -126,6 +131,10 @@ class PayrollController extends Controller
                 'daily_rate' => $request->daily_rate,
 
                 'overtime_rate' => $request->overtime_rate,
+
+                'late_deduction_rate' => $request->late_deduction_rate,
+
+                'undertime_deduction_rate' => $request->undertime_deduction_rate,
 
                 'sss' => $request->sss,
 
@@ -166,6 +175,10 @@ class PayrollController extends Controller
 
             'overtime_rate' => 'nullable|numeric|min:0',
 
+            'late_deduction_rate' => 'nullable|numeric|min:0',
+
+            'undertime_deduction_rate' => 'nullable|numeric|min:0',
+
             'payroll_period' => 'required',
 
             'sss' => 'nullable|numeric|min:0',
@@ -191,6 +204,10 @@ class PayrollController extends Controller
 
                 'overtime_rate' => $request->overtime_rate,
 
+                'late_deduction_rate' => $request->late_deduction_rate,
+
+                'undertime_deduction_rate' => $request->undertime_deduction_rate,
+
                 'payroll_period' => $request->payroll_period,
 
                 'sss' => $request->sss,
@@ -206,6 +223,41 @@ class PayrollController extends Controller
 
         return response()->json([
             'success' => true
+        ]);
+    }
+
+    public function getEmployees(Request $request)
+    {
+        $departments = $request->departments;
+
+        $employees = User::where('role', 'employee')
+            ->whereIn('department', $departments)
+            ->orderBy('last_name')
+            ->get([
+                'id',
+                'employee_id',
+                'first_name',
+                'last_name',
+                'department'
+            ]);
+
+        return response()->json($employees);
+    }
+
+    public function previewPayroll(Request $request)
+    {
+        $request->validate([
+            'period_start' => 'required|date',
+            'period_end'   => 'required|date',
+            'employees'    => 'required|array',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Preview request received.',
+            'employees' => $request->employees,
+            'period_start' => $request->period_start,
+            'period_end' => $request->period_end,
         ]);
     }
 }

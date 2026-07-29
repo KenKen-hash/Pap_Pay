@@ -4,13 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="adminHMD professional admin dashboard template">
     <title>Charts | adminHMD</title>
 
     <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../../khen/assets/css/style.css">
+
+    <style>
+        .department-card {
+
+            cursor: pointer;
+
+            transition: .25s;
+
+        }
+
+        .department-card:hover {
+
+            transform: translateY(-3px);
+
+            border-color: #198754;
+
+            box-shadow: 0 0 15px rgba(25, 135, 84, .15);
+
+        }
+    </style>
 </head>
+
+
 
 <body>
     <div class="admin-shell">
@@ -207,96 +230,137 @@
                 </div>
 
 
-
                 <div class="card shadow-sm border-0 mb-4">
 
-                    <div class="card-body p-4">
+                    <div class="card-header bg-white">
 
-                        <div class="row align-items-center">
+                        <h4 class="fw-bold mb-0">
 
-                            <div class="col-lg-8">
+                            <i class="bi bi-receipt-cutoff text-success me-2"></i>
 
-                                <span class="badge bg-success mb-3">
+                            Generate Employee Payslips
 
-                                    Payroll Cycle
+                        </h4>
 
-                                </span>
+                    </div>
 
-                                <h3 class="fw-bold">
+                    <div class="card-body">
 
-                                    Generate Employee Payslips
+                        <!-- Payroll Period -->
 
-                                </h3>
+                        <div class="row mb-4">
 
-                                <p class="text-muted">
+                            <div class="col-md-6">
 
-                                    Generate payslips for all employees in the selected payroll period.
-                                    Every generated payslip will automatically be stored in the database
-                                    and become available in each employee's account.
+                                <label class="form-label fw-semibold">
+
+                                    Payroll Start Date
+
+                                </label>
+
+                                <input type="date" id="period_start" class="form-control">
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label fw-semibold">
+
+                                    Payroll End Date
+
+                                </label>
+
+                                <input type="date" id="period_end" class="form-control">
+
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+                        <!-- Departments -->
+
+                        <h5 class="fw-bold mb-3">
+
+                            Select Department(s)
+
+                        </h5>
+
+                        <div class="row">
+
+                            @php
+
+                                $departments = ['Elementary', 'JHS', 'SHS', 'College', 'Admin', 'Laborers'];
+
+                            @endphp
+
+                            @foreach ($departments as $department)
+                                <div class="col-lg-4 col-md-6 mb-3">
+
+                                    <div class="card border department-card h-100">
+
+                                        <div class="card-body">
+
+                                            <div class="form-check">
+
+                                                <input class="form-check-input department-checkbox" type="checkbox"
+                                                    value="{{ $department }}" id="{{ $department }}">
+
+                                                <label class="form-check-label fw-semibold"
+                                                    for="{{ $department }}">
+
+                                                    {{ $department }}
+
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            @endforeach
+
+                        </div>
+
+                        <hr>
+
+                        <!-- Employee List -->
+
+                        <h5 class="fw-bold mb-3">
+
+                            Employees
+
+                        </h5>
+
+                        <div id="employeeContainer" class="border rounded p-4 bg-light">
+
+                            <div class="text-center text-muted">
+
+                                <i class="bi bi-people fs-1"></i>
+
+                                <p class="mt-3 mb-0">
+
+                                    Select one or more departments to load employees.
 
                                 </p>
 
-                                <div class="row mt-4">
-
-                                    <div class="col-md-4">
-
-                                        <small class="text-muted">
-                                            Payroll Period
-                                        </small>
-
-                                        <h5>
-                                            July 1 - July 15
-                                        </h5>
-
-                                    </div>
-
-                                    <div class="col-md-4">
-
-                                        <small class="text-muted">
-                                            Employees
-                                        </small>
-
-                                        <h5>
-                                            48 Employees
-                                        </h5>
-
-                                    </div>
-
-                                    <div class="col-md-4">
-
-                                        <small class="text-muted">
-                                            Status
-                                        </small>
-
-                                        <h5 class="text-success">
-
-                                            Ready
-
-                                        </h5>
-
-                                    </div>
-
-                                </div>
-
                             </div>
 
-                            <div class="col-lg-4 text-center">
+                        </div>
 
-                                <i class="bi bi-file-earmark-text-fill text-success" style="font-size:70px;"></i>
+                        <div class="text-end mt-4">
 
-                                <div class="mt-3">
+                            <button class="btn btn-success btn-lg" id="previewPayroll">
 
-                                    <button class="btn btn-success btn-lg px-5">
+                                <i class="bi bi-search me-2"></i>
 
-                                        <i class="bi bi-send-check me-2"></i>
+                                Preview Payroll
 
-                                        Generate & Distribute Payslips
+                            </button>
 
-                                    </button>
-
-                                </div>
-
-                            </div>
+                            <div id="previewContainer" class="mt-4"></div>
 
                         </div>
 
@@ -311,251 +375,251 @@
      GENERATED PAYSLIPS
 =========================================== -->
 
-<div class="card shadow-sm border-0">
+                <div class="card shadow-sm border-0">
 
-    <div class="card-header bg-white border-0 py-3">
+                    <div class="card-header bg-white border-0 py-3">
 
-        <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center">
 
-            <div>
+                            <div>
 
-                <h5 class="fw-bold mb-1">
+                                <h5 class="fw-bold mb-1">
 
-                    <i class="bi bi-clock-history text-primary me-2"></i>
+                                    <i class="bi bi-clock-history text-primary me-2"></i>
 
-                    Generated Payslips
+                                    Generated Payslips
 
-                </h5>
+                                </h5>
 
-                <small class="text-muted">
+                                <small class="text-muted">
 
-                    History of all generated payroll payslips.
+                                    History of all generated payroll payslips.
 
-                </small>
+                                </small>
 
-            </div>
+                            </div>
 
-            <button class="btn btn-outline-success btn-sm">
+                            <button class="btn btn-outline-success btn-sm">
 
-                <i class="bi bi-arrow-repeat me-2"></i>
+                                <i class="bi bi-arrow-repeat me-2"></i>
 
-                Refresh
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <div class="card-body">
-
-        <div class="table-responsive">
-
-            <table class="table table-hover align-middle">
-
-                <thead class="table-light">
-
-                    <tr>
-
-                        <th>#</th>
-
-                        <th>Payroll Period</th>
-
-                        <th>Employees</th>
-
-                        <th>Generated On</th>
-
-                        <th>Status</th>
-
-                        <th class="text-center">
-
-                            Actions
-
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    <tr>
-
-                        <td>1</td>
-
-                        <td>
-
-                            July 1 - July 15, 2026
-
-                        </td>
-
-                        <td>
-
-                            48 Employees
-
-                        </td>
-
-                        <td>
-
-                            July 15, 2026
-
-                        </td>
-
-                        <td>
-
-                            <span class="badge bg-success">
-
-                                Distributed
-
-                            </span>
-
-                        </td>
-
-                        <td class="text-center">
-
-                            <button class="btn btn-sm btn-outline-primary">
-
-                                <i class="bi bi-eye"></i>
+                                Refresh
 
                             </button>
 
-                            <button class="btn btn-sm btn-outline-danger">
+                        </div>
 
-                                <i class="bi bi-file-earmark-pdf"></i>
+                    </div>
 
-                            </button>
+                    <div class="card-body">
 
-                            <button class="btn btn-sm btn-outline-success">
+                        <div class="table-responsive">
 
-                                <i class="bi bi-send-check"></i>
+                            <table class="table table-hover align-middle">
 
-                            </button>
+                                <thead class="table-light">
 
-                        </td>
+                                    <tr>
 
-                    </tr>
+                                        <th>#</th>
 
-                    <tr>
+                                        <th>Payroll Period</th>
 
-                        <td>2</td>
+                                        <th>Employees</th>
 
-                        <td>
+                                        <th>Generated On</th>
 
-                            June 16 - June 30, 2026
+                                        <th>Status</th>
 
-                        </td>
+                                        <th class="text-center">
 
-                        <td>
+                                            Actions
 
-                            47 Employees
+                                        </th>
 
-                        </td>
+                                    </tr>
 
-                        <td>
+                                </thead>
 
-                            June 30, 2026
+                                <tbody>
 
-                        </td>
+                                    <tr>
 
-                        <td>
+                                        <td>1</td>
 
-                            <span class="badge bg-success">
+                                        <td>
 
-                                Distributed
+                                            July 1 - July 15, 2026
 
-                            </span>
+                                        </td>
 
-                        </td>
+                                        <td>
 
-                        <td class="text-center">
+                                            48 Employees
 
-                            <button class="btn btn-sm btn-outline-primary">
+                                        </td>
 
-                                <i class="bi bi-eye"></i>
+                                        <td>
 
-                            </button>
+                                            July 15, 2026
 
-                            <button class="btn btn-sm btn-outline-danger">
+                                        </td>
 
-                                <i class="bi bi-file-earmark-pdf"></i>
+                                        <td>
 
-                            </button>
+                                            <span class="badge bg-success">
 
-                            <button class="btn btn-sm btn-outline-success">
+                                                Distributed
 
-                                <i class="bi bi-send-check"></i>
+                                            </span>
 
-                            </button>
+                                        </td>
 
-                        </td>
+                                        <td class="text-center">
 
-                    </tr>
+                                            <button class="btn btn-sm btn-outline-primary">
 
-                    <tr>
+                                                <i class="bi bi-eye"></i>
 
-                        <td>3</td>
+                                            </button>
 
-                        <td>
+                                            <button class="btn btn-sm btn-outline-danger">
 
-                            June 1 - June 15, 2026
+                                                <i class="bi bi-file-earmark-pdf"></i>
 
-                        </td>
+                                            </button>
 
-                        <td>
+                                            <button class="btn btn-sm btn-outline-success">
 
-                            46 Employees
+                                                <i class="bi bi-send-check"></i>
 
-                        </td>
+                                            </button>
 
-                        <td>
+                                        </td>
 
-                            June 15, 2026
+                                    </tr>
 
-                        </td>
+                                    <tr>
 
-                        <td>
+                                        <td>2</td>
 
-                            <span class="badge bg-success">
+                                        <td>
 
-                                Distributed
+                                            June 16 - June 30, 2026
 
-                            </span>
+                                        </td>
 
-                        </td>
+                                        <td>
 
-                        <td class="text-center">
+                                            47 Employees
 
-                            <button class="btn btn-sm btn-outline-primary">
+                                        </td>
 
-                                <i class="bi bi-eye"></i>
+                                        <td>
 
-                            </button>
+                                            June 30, 2026
 
-                            <button class="btn btn-sm btn-outline-danger">
+                                        </td>
 
-                                <i class="bi bi-file-earmark-pdf"></i>
+                                        <td>
 
-                            </button>
+                                            <span class="badge bg-success">
 
-                            <button class="btn btn-sm btn-outline-success">
+                                                Distributed
 
-                                <i class="bi bi-send-check"></i>
+                                            </span>
 
-                            </button>
+                                        </td>
 
-                        </td>
+                                        <td class="text-center">
 
-                    </tr>
+                                            <button class="btn btn-sm btn-outline-primary">
 
-                </tbody>
+                                                <i class="bi bi-eye"></i>
 
-            </table>
+                                            </button>
 
-        </div>
+                                            <button class="btn btn-sm btn-outline-danger">
 
-    </div>
+                                                <i class="bi bi-file-earmark-pdf"></i>
 
-</div>
+                                            </button>
+
+                                            <button class="btn btn-sm btn-outline-success">
+
+                                                <i class="bi bi-send-check"></i>
+
+                                            </button>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>3</td>
+
+                                        <td>
+
+                                            June 1 - June 15, 2026
+
+                                        </td>
+
+                                        <td>
+
+                                            46 Employees
+
+                                        </td>
+
+                                        <td>
+
+                                            June 15, 2026
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="badge bg-success">
+
+                                                Distributed
+
+                                            </span>
+
+                                        </td>
+
+                                        <td class="text-center">
+
+                                            <button class="btn btn-sm btn-outline-primary">
+
+                                                <i class="bi bi-eye"></i>
+
+                                            </button>
+
+                                            <button class="btn btn-sm btn-outline-danger">
+
+                                                <i class="bi bi-file-earmark-pdf"></i>
+
+                                            </button>
+
+                                            <button class="btn btn-sm btn-outline-success">
+
+                                                <i class="bi bi-send-check"></i>
+
+                                            </button>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
 
 
@@ -576,6 +640,196 @@
 
     <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
     <script src="../../../../khen/assets/js/main.js"></script>
+
+
+    <script>
+        const employeeContainer = document.getElementById('employeeContainer');
+
+        const departmentCheckboxes =
+            document.querySelectorAll('.department-checkbox');
+
+        departmentCheckboxes.forEach(box => {
+
+            box.addEventListener('change', loadEmployees);
+
+        });
+
+        function loadEmployees() {
+
+            const selectedDepartments = [];
+
+            document.querySelectorAll('.department-checkbox:checked')
+                .forEach(box => {
+
+                    selectedDepartments.push(box.value);
+
+                });
+
+            if (selectedDepartments.length === 0) {
+
+                employeeContainer.innerHTML = `
+
+            <div class="text-center text-muted">
+
+                <i class="bi bi-people fs-1"></i>
+
+                <p class="mt-3">
+
+                    Select one or more departments to load employees.
+
+                </p>
+
+            </div>
+
+        `;
+
+                return;
+
+            }
+
+            fetch(
+                    "{{ route('payslip.employees') }}?departments[]=" +
+                    selectedDepartments.join("&departments[]=")
+                )
+
+                .then(response => response.json())
+
+                .then(employees => {
+
+                    let html = `
+
+            <div class="form-check mb-3">
+
+                <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="selectAll"
+                    checked>
+
+                <label
+                    class="form-check-label fw-bold">
+
+                    Select All
+
+                </label>
+
+            </div>
+
+            <hr>
+
+        `;
+
+                    employees.forEach(employee => {
+
+                        html += `
+
+                <div class="form-check mb-2">
+
+                    <input
+                        class="form-check-input employee-checkbox"
+                        type="checkbox"
+                        checked
+                        value="${employee.id}">
+
+                    <label class="form-check-label">
+
+                        <strong>
+
+                            ${employee.first_name}
+                            ${employee.last_name}
+
+                        </strong>
+
+                        <br>
+
+                        <small>
+
+                            ${employee.employee_id}
+                            •
+                            ${employee.department}
+
+                        </small>
+
+                    </label>
+
+                </div>
+
+            `;
+
+                    });
+
+                    employeeContainer.innerHTML = html;
+
+                    document.getElementById('selectAll')
+                        .addEventListener('change', function() {
+
+                            document
+                                .querySelectorAll('.employee-checkbox')
+                                .forEach(box => {
+
+                                    box.checked = this.checked;
+
+                                });
+
+                        });
+
+                });
+
+        }
+
+        document.getElementById('previewPayroll').addEventListener('click', function() {
+
+            const employees = [];
+
+            document.querySelectorAll('.employee-checkbox:checked').forEach(box => {
+                employees.push(box.value);
+            });
+
+            fetch("{{ route('payslip.preview') }}", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                        "Accept": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        period_start: document.getElementById("period_start").value,
+
+                        period_end: document.getElementById("period_end").value,
+
+                        employees: employees
+
+                    })
+
+                })
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    console.log(data);
+
+                    document.getElementById("previewContainer").innerHTML = `
+            <div class="alert alert-success">
+                Preview request received successfully.
+            </div>
+        `;
+
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                });
+
+        });
+    </script>
+
 </body>
 
 </html>

@@ -15,8 +15,12 @@ class EmployeeSalaryConfig extends Model
         'payroll_period',
 
         'daily_rate',
-        
+
         'overtime_rate',
+
+        'late_deduction_rate',
+
+        'undertime_deduction_rate',
 
         'sss',
 
@@ -33,6 +37,8 @@ class EmployeeSalaryConfig extends Model
         'teaching_load',
 
         'use_department_default'
+
+
 
     ];
 
