@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\UserWizardController;
 use App\Http\Controllers\Admin\PayrollController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\PayslipController as AdminPayslipController;
+use App\Http\Controllers\Admin\ReportController;
 
 
 
@@ -179,9 +180,6 @@ Route::middleware(['auth', 'role:admin'])
         Route::view('/departments', 'admin.departments')
             ->name('departments');
 
-        Route::view('/reports', 'admin.reports')
-            ->name('reports');
-
         Route::view('/settings', 'admin.settings')
             ->name('settings');
 
@@ -287,6 +285,58 @@ Route::middleware(['auth', 'role:admin'])
             '/payslip-history/{period_start}/{period_end}',
             [AdminPayslipController::class, 'history']
         )->name('admin.payslips.history');
+
+
+
+        Route::get('/reports', [ReportController::class, 'index'])
+            ->name('reports');
+
+
+
+        Route::prefix('reports')->name('reports.')->group(function () {
+
+            Route::get(
+                '/payroll',
+                [ReportController::class, 'payroll']
+            )
+                ->name('payroll');
+
+            Route::get(
+                '/attendance',
+                [ReportController::class, 'attendance']
+            )
+                ->name('attendance');
+
+            Route::get(
+                '/employee',
+                [ReportController::class, 'employee']
+            )
+                ->name('employee');
+
+            Route::get(
+                '/leave',
+                [ReportController::class, 'leave']
+            )
+                ->name('leave');
+
+            Route::get(
+                '/official-business',
+                [ReportController::class, 'ob']
+            )
+                ->name('ob');
+
+            Route::get(
+                '/salary',
+                [ReportController::class, 'salary']
+            )
+                ->name('salary');
+
+            Route::get(
+                '/contributions',
+                [ReportController::class, 'contributions']
+            )
+                ->name('contributions');
+        });
     });
 
 

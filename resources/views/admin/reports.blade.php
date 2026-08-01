@@ -173,7 +173,9 @@
 
             <main class="dashboard-content">
                 <div class="container-fluid px-3 px-lg-4 py-4">
-                    <div class="page-heading">
+
+                    <div class="page-heading mb-4">
+
                         <div class="page-heading-copy">
 
                             <span class="page-icon">
@@ -183,645 +185,343 @@
                             <div>
 
                                 <p class="eyebrow mb-1">
-                                    Payroll Management
+                                    Reporting Center
                                 </p>
 
-                                <h1 class="h3 mb-1">
-                                    Payroll Reports
-                                </h1>
+                                <h2>
+                                    Reports Dashboard
+                                </h2>
 
-                                <p class="text-muted mb-0">
-                                    Generate payroll reports, review employee salaries, and download payroll summaries
-                                    every payroll period.
+                                <p class="text-muted">
+
+                                    Generate and download reports from every module of the Payroll Management System.
+
                                 </p>
 
                             </div>
 
                         </div>
+
+                    </div>
+                    <div class="row g-4 mb-5">
+
+                        <div class="col-lg-3 mb-4">
+
+                            <div class="card border-0 shadow-sm">
+
+                                <div class="card-body">
+
+                                    <small>Total Employees</small>
+
+                                    <h2>{{ $employeeCount }}</h2>
+
+                                    <i class="bi bi-people fs-1 text-primary"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-3 mb-4">
+
+                            <div class="card border-0 shadow-sm">
+
+                                <div class="card-body">
+
+                                    <small>Attendance Records</small>
+
+                                    <h2>{{ $attendanceCount }}</h2>
+
+                                    <i class="bi bi-calendar-check fs-1 text-success"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-3 mb-4">
+
+                            <div class="card border-0 shadow-sm">
+
+                                <div class="card-body">
+
+                                    <small>Leave Requests</small>
+
+                                    <h2>{{ $leaveCount }}</h2>
+
+                                    <i class="bi bi-calendar-x fs-1 text-danger"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-3 mb-4">
+
+                            <div class="card border-0 shadow-sm">
+
+                                <div class="card-body">
+
+                                    <small>Released Payslips</small>
+
+                                    <h2>{{ $releasedPayslips }}</h2>
+
+                                    <i class="bi bi-receipt fs-1 text-warning"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <section class="panel">
-                        <!-- ==========================================
-     PAYROLL SUMMARY
-=========================================== -->
 
-                        <div class="row g-4 mb-4">
 
-                            <div class="col-lg-3 col-md-6">
 
-                                <div class="card shadow-sm border-0 h-100">
+                    <div class="row mt-4">
 
-                                    <div class="card-body">
+    <div class="col-md-6 col-lg-4 mb-4">
 
-                                        <div class="d-flex justify-content-between">
+        <a href="{{ route('reports.payroll') }}" class="text-decoration-none">
 
-                                            <div>
+            <div class="card shadow-sm h-100">
 
-                                                <small class="text-muted">
-                                                    Employees
-                                                </small>
+                <div class="card-body text-center">
 
-                                                <h3 class="fw-bold mt-2">
-                                                    48
-                                                </h3>
+                    <i class="bi bi-cash-stack display-4 text-success"></i>
 
-                                            </div>
+                    <h5 class="mt-3">
+                        Payroll Reports
+                    </h5>
 
-                                            <i class="bi bi-people-fill fs-1 text-primary"></i>
+                    <p class="text-muted">
 
-                                        </div>
+                        Payroll summaries and payroll periods.
 
-                                    </div>
+                    </p>
 
-                                </div>
-
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-
-                                <div class="card shadow-sm border-0 h-100">
-
-                                    <div class="card-body">
-
-                                        <div class="d-flex justify-content-between">
-
-                                            <div>
-
-                                                <small class="text-muted">
-                                                    Total Hours
-                                                </small>
-
-                                                <h3 class="fw-bold mt-2">
-                                                    3,245 hrs
-                                                </h3>
-
-                                            </div>
-
-                                            <i class="bi bi-clock-history fs-1 text-success"></i>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-
-                                <div class="card shadow-sm border-0 h-100">
-
-                                    <div class="card-body">
-
-                                        <div class="d-flex justify-content-between">
-
-                                            <div>
-
-                                                <small class="text-muted">
-                                                    Total Payroll
-                                                </small>
-
-                                                <h3 class="fw-bold mt-2">
-                                                    ₱582,460
-                                                </h3>
-
-                                            </div>
-
-                                            <i class="bi bi-cash-stack fs-1 text-warning"></i>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-
-                                <div class="card shadow-sm border-0 h-100">
-
-                                    <div class="card-body">
-
-                                        <div class="d-flex justify-content-between">
-
-                                            <div>
-
-                                                <small class="text-muted">
-                                                    Status
-                                                </small>
-
-                                                <h4 class="fw-bold text-success mt-2">
-                                                    Ready
-                                                </h4>
-
-                                            </div>
-
-                                            <i class="bi bi-check-circle-fill fs-1 text-success"></i>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <!-- ==========================================
-     PAYROLL PERIOD
-=========================================== -->
-
-                        <div class="card shadow-sm border-0 mb-4">
-
-                            <div class="card-header bg-white border-0 py-3">
-
-                                <h5 class="mb-1 fw-bold">
-                                    <i class="bi bi-calendar-range text-primary me-2"></i>
-                                    Payroll Period
-                                </h5>
-
-                                <small class="text-muted">
-                                    Select the payroll period before generating the payroll report.
-                                </small>
-
-                            </div>
-
-                            <div class="card-body">
-
-                                <div class="row">
-
-                                    <div class="col-md-4 mb-3">
-
-                                        <label class="form-label fw-semibold">
-                                            Payroll Start Date
-                                        </label>
-
-                                        <input type="date" class="form-control">
-
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-
-                                        <label class="form-label fw-semibold">
-                                            Payroll End Date
-                                        </label>
-
-                                        <input type="date" class="form-control">
-
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-
-                                        <label class="form-label fw-semibold">
-                                            Payroll Status
-                                        </label>
-
-                                        <input type="text" class="form-control bg-light"
-                                            value="Ready for Generation" readonly>
-
-                                    </div>
-
-                                </div>
-
-                                <hr>
-
-                                <div class="d-flex flex-wrap gap-3">
-
-                                    <button class="btn btn-success">
-
-                                        <i class="bi bi-gear-fill me-2"></i>
-
-                                        Generate Payroll Report
-
-                                    </button>
-
-                                    <button class="btn btn-danger">
-
-                                        <i class="bi bi-file-earmark-pdf-fill me-2"></i>
-
-                                        Download PDF
-
-                                    </button>
-
-                                    <button class="btn btn-primary">
-
-                                        <i class="bi bi-file-earmark-spreadsheet-fill me-2"></i>
-
-                                        Download CSV
-
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-<!-- ==========================================
-     PAYROLL REPORT PREVIEW
-=========================================== -->
-
-<div class="card shadow-sm border-0 mb-4">
-
-    <div class="card-header bg-white border-0 py-3">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-            <div>
-
-                <h5 class="fw-bold mb-1">
-
-                    <i class="bi bi-table text-primary me-2"></i>
-
-                    Payroll Report Preview
-
-                </h5>
-
-                <small class="text-muted">
-
-                    Employee payroll summary for the selected payroll period.
-
-                </small>
+                </div>
 
             </div>
 
-            <span class="badge bg-success fs-6">
-
-                July 1 - July 15, 2026
-
-            </span>
-
-        </div>
+        </a>
 
     </div>
 
-    <div class="card-body">
+    <div class="col-md-6 col-lg-4 mb-4">
 
-        <div class="table-responsive">
+        <a href="{{ route('reports.attendance') }}" class="text-decoration-none">
 
-            <table class="table table-hover align-middle">
+            <div class="card shadow-sm h-100">
 
-                <thead class="table-light">
+                <div class="card-body text-center">
 
-                    <tr>
+                    <i class="bi bi-calendar-check display-4 text-primary"></i>
 
-                        <th>#</th>
-                        <th>Employee ID</th>
-                        <th>Employee Name</th>
-                        <th>Department</th>
-                        <th>Worked Hours</th>
-                        <th>Hourly Rate</th>
-                        <th>Gross Salary</th>
+                    <h5 class="mt-3">
 
-                    </tr>
+                        Attendance Reports
 
-                </thead>
+                    </h5>
 
-                <tbody>
+                    <p class="text-muted">
 
-                    <tr>
+                        Daily attendance records.
 
-                        <td>1</td>
-                        <td>EMP-1001</td>
-                        <td>Juan Dela Cruz</td>
-                        <td>Senior High School</td>
-                        <td>96 hrs</td>
-                        <td>₱200.00</td>
-                        <td class="fw-bold text-success">
-                            ₱19,200.00
-                        </td>
+                    </p>
 
-                    </tr>
+                </div>
 
-                    <tr>
+            </div>
 
-                        <td>2</td>
-                        <td>EMP-1002</td>
-                        <td>Maria Santos</td>
-                        <td>Elementary</td>
-                        <td>92 hrs</td>
-                        <td>₱190.00</td>
-                        <td class="fw-bold text-success">
-                            ₱17,480.00
-                        </td>
+        </a>
 
-                    </tr>
+    </div>
 
-                    <tr>
+    <div class="col-md-6 col-lg-4 mb-4">
 
-                        <td>3</td>
-                        <td>EMP-1003</td>
-                        <td>Pedro Reyes</td>
-                        <td>Non-Teaching</td>
-                        <td>90 hrs</td>
-                        <td>₱180.00</td>
-                        <td class="fw-bold text-success">
-                            ₱16,200.00
-                        </td>
+        <a href="{{ route('reports.employee') }}" class="text-decoration-none">
 
-                    </tr>
+            <div class="card shadow-sm h-100">
 
-                    <tr>
+                <div class="card-body text-center">
 
-                        <td>4</td>
-                        <td>EMP-1004</td>
-                        <td>Ana Cruz</td>
-                        <td>College</td>
-                        <td>94 hrs</td>
-                        <td>₱210.00</td>
-                        <td class="fw-bold text-success">
-                            ₱19,740.00
-                        </td>
+                    <i class="bi bi-people display-4 text-info"></i>
 
-                    </tr>
+                    <h5 class="mt-3">
 
-                    <tr>
+                        Employee Reports
 
-                        <td>5</td>
-                        <td>EMP-1005</td>
-                        <td>Michael Garcia</td>
-                        <td>Accounting</td>
-                        <td>88 hrs</td>
-                        <td>₱175.00</td>
-                        <td class="fw-bold text-success">
-                            ₱15,400.00
-                        </td>
+                    </h5>
 
-                    </tr>
+                    <p class="text-muted">
 
-                </tbody>
+                        Employee master list.
 
-            </table>
+                    </p>
 
-        </div>
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    <div class="col-md-6 col-lg-4 mb-4">
+
+        <a href="{{ route('reports.leave') }}" class="text-decoration-none">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body text-center">
+
+                    <i class="bi bi-calendar-x display-4 text-danger"></i>
+
+                    <h5 class="mt-3">
+
+                        Leave Reports
+
+                    </h5>
+
+                    <p class="text-muted">
+
+                        Leave applications.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    <div class="col-md-6 col-lg-4 mb-4">
+
+        <a href="{{ route('reports.ob') }}" class="text-decoration-none">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body text-center">
+
+                    <i class="bi bi-briefcase display-4 text-secondary"></i>
+
+                    <h5 class="mt-3">
+
+                        Official Business
+
+                    </h5>
+
+                    <p class="text-muted">
+
+                        Official Business records.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    <div class="col-md-6 col-lg-4 mb-4">
+
+        <a href="{{ route('reports.salary') }}" class="text-decoration-none">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body text-center">
+
+                    <i class="bi bi-wallet2 display-4 text-warning"></i>
+
+                    <h5 class="mt-3">
+
+                        Salary Reports
+
+                    </h5>
+
+                    <p class="text-muted">
+
+                        Salary configuration.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    <div class="col-md-6 col-lg-4 mb-4">
+
+        <a href="{{ route('reports.contributions') }}" class="text-decoration-none">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body text-center">
+
+                    <i class="bi bi-bank display-4 text-success"></i>
+
+                    <h5 class="mt-3">
+
+                        Government Contributions
+
+                    </h5>
+
+                    <p class="text-muted">
+
+                        SSS, PhilHealth, Pag-IBIG and HMO.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </a>
 
     </div>
 
 </div>
 
+                    
+                    
+
+                   
+
+                    
+
+                 
+
+                </div>
+
+        </div>
 
 
-<!-- ==========================================
-     PAYROLL REPORT HISTORY
-=========================================== -->
 
-<div class="card shadow-sm border-0">
+        </main>
 
-    <div class="card-header bg-white border-0 py-3">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-            <div>
-
-                <h5 class="fw-bold mb-1">
-
-                    <i class="bi bi-clock-history text-primary me-2"></i>
-
-                    Payroll Report History
-
-                </h5>
-
-                <small class="text-muted">
-
-                    View all previously generated payroll reports.
-
-                </small>
-
+        <footer class="admin-footer">
+            <div class="container-fluid px-3 px-lg-4">
+                <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank" class="fw-bold text-success"
+                        href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a
+                        target="_blank" class="fw-bold text-success" href="https://themewagon.com">ThemeWagon</a>
+                </span>
+                <span>Professional dashboard template.</span>
+                <span>Alert component examples.</span>
             </div>
-
-            <span class="badge bg-primary">
-
-                Total Reports : 5
-
-            </span>
-
-        </div>
-
+        </footer>
     </div>
-
-    <div class="card-body">
-
-        <div class="table-responsive">
-
-            <table class="table table-hover align-middle">
-
-                <thead class="table-light">
-
-                    <tr>
-
-                        <th>#</th>
-
-                        <th>Payroll Period</th>
-
-                        <th>Employees</th>
-
-                        <th>Total Payroll</th>
-
-                        <th>Generated On</th>
-
-                        <th>Status</th>
-
-                        <th class="text-center">Actions</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    <tr>
-
-                        <td>1</td>
-
-                        <td>
-                            July 1 - July 15, 2026
-                        </td>
-
-                        <td>48</td>
-
-                        <td class="fw-bold text-success">
-                            ₱582,460.00
-                        </td>
-
-                        <td>
-                            July 15, 2026
-                        </td>
-
-                        <td>
-
-                            <span class="badge bg-success">
-
-                                Completed
-
-                            </span>
-
-                        </td>
-
-                        <td class="text-center">
-
-                            <button class="btn btn-sm btn-outline-primary">
-
-                                <i class="bi bi-eye"></i>
-
-                            </button>
-
-                            <button class="btn btn-sm btn-outline-danger">
-
-                                <i class="bi bi-file-earmark-pdf"></i>
-
-                            </button>
-
-                            <button class="btn btn-sm btn-outline-success">
-
-                                <i class="bi bi-download"></i>
-
-                            </button>
-
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>2</td>
-
-                        <td>June 16 - June 30, 2026</td>
-
-                        <td>47</td>
-
-                        <td class="fw-bold text-success">
-
-                            ₱575,900.00
-
-                        </td>
-
-                        <td>
-
-                            June 30, 2026
-
-                        </td>
-
-                        <td>
-
-                            <span class="badge bg-success">
-
-                                Completed
-
-                            </span>
-
-                        </td>
-
-                        <td class="text-center">
-
-                            <button class="btn btn-sm btn-outline-primary">
-
-                                <i class="bi bi-eye"></i>
-
-                            </button>
-
-                            <button class="btn btn-sm btn-outline-danger">
-
-                                <i class="bi bi-file-earmark-pdf"></i>
-
-                            </button>
-
-                            <button class="btn btn-sm btn-outline-success">
-
-                                <i class="bi bi-download"></i>
-
-                            </button>
-
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>3</td>
-
-                        <td>June 1 - June 15, 2026</td>
-
-                        <td>46</td>
-
-                        <td class="fw-bold text-success">
-
-                            ₱563,280.00
-
-                        </td>
-
-                        <td>
-
-                            June 15, 2026
-
-                        </td>
-
-                        <td>
-
-                            <span class="badge bg-success">
-
-                                Completed
-
-                            </span>
-
-                        </td>
-
-                        <td class="text-center">
-
-                            <button class="btn btn-sm btn-outline-primary">
-
-                                <i class="bi bi-eye"></i>
-
-                            </button>
-
-                            <button class="btn btn-sm btn-outline-danger">
-
-                                <i class="bi bi-file-earmark-pdf"></i>
-
-                            </button>
-
-                            <button class="btn btn-sm btn-outline-success">
-
-                                <i class="bi bi-download"></i>
-
-                            </button>
-
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-                    </section>
-                </div>
-            </main>
-
-            <footer class="admin-footer">
-                <div class="container-fluid px-3 px-lg-4">
-                    <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank" class="fw-bold text-success"
-                            href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a
-                            target="_blank" class="fw-bold text-success" href="https://themewagon.com">ThemeWagon</a>
-                    </span>
-                    <span>Professional dashboard template.</span>
-                    <span>Alert component examples.</span>
-                </div>
-            </footer>
-        </div>
     </div>
 
     <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>

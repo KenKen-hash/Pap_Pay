@@ -142,6 +142,12 @@ class EmployeeController extends Controller
             'bio' => 'nullable|string',
         ]);
 
+        $validated['name'] = trim(
+            $validated['first_name'] . ' ' .
+                (!empty($validated['middle_name']) ? $validated['middle_name'] . ' ' : '') .
+                $validated['last_name']
+        );
+
         $employee->update($validated);
 
         return response()->json([
