@@ -24,6 +24,8 @@ use App\Http\Controllers\Admin\FaceAttendanceController;
 use App\Http\Controllers\Admin\UserWizardController;
 use App\Http\Controllers\Admin\PayrollController;
 use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\PayslipController as AdminPayslipController;
+
 
 
 Route::get('/', function () {
@@ -69,6 +71,9 @@ Route::middleware(['auth', 'role:employee'])
 
         Route::get('/payslip', [PayslipController::class, 'index'])
             ->name('payslip');
+
+        Route::get('/payslip/download/{id}', [PayslipController::class, 'download'])
+            ->name('payslip.download');
 
         Route::get('/my_profile', function () {
             return view('employee.my_profile');
@@ -163,9 +168,10 @@ Route::middleware(['auth', 'role:admin'])
             [PayrollController::class, 'saveDepartmentConfig']
         )->name('payroll.default.save');
 
-
-        Route::view('/payslip_list', 'admin.payslip_list')
-            ->name('payslip_list');
+        Route::get(
+            '/payslip_list',
+            [AdminPayslipController::class, 'index']
+        )->name('payslip_list');
 
         Route::view('/official_business', 'admin.official_business')
             ->name('official_business');
@@ -261,12 +267,26 @@ Route::middleware(['auth', 'role:admin'])
 
 
 
-        Route::get('/admin/payroll/generate', [PayrollController::class, 'generate'])
+        Route::get('/payroll/generate', [PayrollController::class, 'generate'])
             ->name('payroll.generate');
-        Route::get('/admin/payslips/employees', [PayrollController::class, 'getEmployees'])
+        Route::get('/payslips/employees', [PayrollController::class, 'getEmployees'])
             ->name('payslip.employees');
-        Route::post('/admin/payslips/preview', [PayrollController::class, 'previewPayroll'])
+        Route::post('/payslips/preview', [PayrollController::class, 'previewPayroll'])
             ->name('payslip.preview');
+        Route::post(
+            '/payslips/generate',
+            [PayrollController::class, 'generatePayslips']
+        )->name('payslip.generate');
+
+        Route::get(
+            '/payslips/{payslip}',
+            [AdminPayslipController::class, 'show']
+        )->name('admin.payslips.show');
+
+        Route::get(
+            '/payslip-history/{period_start}/{period_end}',
+            [AdminPayslipController::class, 'history']
+        )->name('admin.payslips.history');
     });
 
 

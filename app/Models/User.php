@@ -131,4 +131,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(EmployeeSalaryConfig::class);
     }
+
+    public function payslips()
+    {
+        return $this->hasMany(Payslip::class);
+    }
 }

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\EmployeeSalaryConfig;
 use App\Models\DepartmentSalaryConfig;
 use App\Models\Attendance;
+use App\Models\Payslip;
+use App\Services\PayrollService;
 
 class PayrollController extends Controller
 {
@@ -19,7 +21,16 @@ class PayrollController extends Controller
             ->get()
             ->groupBy('department');
 
-        return view('admin.payroll', compact('employees'));
+        $payslips = Payslip::latest()
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->period_start . '_' . $item->period_end;
+            });
+
+        return view('admin.payroll', compact(
+            'employees',
+            'payslips'
+        ));
     }
 
     public function department($department)
@@ -244,6 +255,7 @@ class PayrollController extends Controller
         return response()->json($employees);
     }
 
+
     public function previewPayroll(Request $request)
     {
         $request->validate([
@@ -252,12 +264,266 @@ class PayrollController extends Controller
             'employees'    => 'required|array',
         ]);
 
+        $preview = [];
+
+        foreach ($request->employees as $employeeId) {
+
+            $employee = User::with('salaryConfig')->find($employeeId);
+
+            if (!$employee) {
+                continue;
+            }
+
+            $config = $employee->salaryConfig;
+
+            if (!$config) {
+                continue;
+            }
+
+            /*
+        |--------------------------------------------------------------------------
+        | Attendance
+        |--------------------------------------------------------------------------
+        */
+
+            $attendance = Attendance::where('user_id', $employee->id)
+                ->whereBetween('date', [
+                    $request->period_start,
+                    $request->period_end
+                ])
+                ->get();
+
+            $presentDays = $attendance
+                ->where('status', 'Present')
+                ->count();
+
+            $lateMinutes = $attendance->sum('late_minutes');
+
+            $undertimeMinutes = $attendance->sum('undertime_minutes');
+
+            /*
+        |--------------------------------------------------------------------------
+        | Earnings
+        |--------------------------------------------------------------------------
+        */
+
+            $basicPay = $config->daily_rate * $presentDays;
+
+            $grossSalary =
+                $basicPay +
+                $config->ot_rate +
+                $config->honorarium +
+                $config->teaching_load;
+
+            /*
+        |--------------------------------------------------------------------------
+        | Benefits
+        |--------------------------------------------------------------------------
+        */
+
+            $benefits =
+                (
+                    $config->sss +
+                    $config->philhealth +
+                    $config->pagibig +
+                    $config->hmo
+                ) / 2;
+
+            /*
+        |--------------------------------------------------------------------------
+        | Deductions
+        |--------------------------------------------------------------------------
+        */
+
+            $lateDeduction =
+                $lateMinutes *
+                $config->late_deduction_rate;
+
+            $undertimeDeduction =
+                $undertimeMinutes *
+                $config->undertime_deduction_rate;
+
+            /*
+        |--------------------------------------------------------------------------
+        | Net Salary
+        |--------------------------------------------------------------------------
+        */
+
+            $netSalary =
+                $grossSalary
+                - $benefits
+                - $lateDeduction
+                - $undertimeDeduction;
+
+            $preview[] = [
+
+                'id' => $employee->id,
+
+                'name' =>
+                $employee->first_name . ' ' .
+                    $employee->last_name,
+
+                'department' => $employee->department,
+
+                'present_days' => $presentDays,
+
+                'late_minutes' => $lateMinutes,
+
+                'undertime_minutes' => $undertimeMinutes,
+
+                'gross_salary' => round($grossSalary, 2),
+
+                'benefits' => round($benefits, 2),
+
+                'late_deduction' => round($lateDeduction, 2),
+
+                'undertime_deduction' => round($undertimeDeduction, 2),
+
+                'net_salary' => round($netSalary, 2),
+
+            ];
+        }
+
         return response()->json([
             'success' => true,
-            'message' => 'Preview request received.',
-            'employees' => $request->employees,
-            'period_start' => $request->period_start,
-            'period_end' => $request->period_end,
+            'preview' => $preview
+        ]);
+    }
+
+    public function generatePayslips(Request $request)
+    {
+        $request->validate([
+
+            'period_start' => 'required|date',
+
+            'period_end' => 'required|date',
+
+            'employees' => 'required|array',
+
+        ]);
+        $generated = 0;
+        $skipped = 0;
+
+        foreach ($request->employees as $employeeId) {
+
+            $employee = User::with('salaryConfig')->find($employeeId);
+
+            $existingPayslip = Payslip::where('user_id', $employeeId)
+                ->where('period_start', $request->period_start)
+                ->where('period_end', $request->period_end)
+                ->exists();
+
+            if ($existingPayslip) {
+
+                $skipped++;
+
+                continue;
+            }
+
+            if (!$employee || !$employee->salaryConfig) {
+                continue;
+            }
+
+            $config = $employee->salaryConfig;
+
+            $attendance = Attendance::where('user_id', $employee->id)
+                ->whereBetween('date', [
+                    $request->period_start,
+                    $request->period_end
+                ])
+                ->get();
+
+            $presentDays = $attendance
+                ->where('status', 'Present')
+                ->count();
+
+            $lateMinutes = $attendance->sum('late_minutes');
+
+            $undertimeMinutes = $attendance->sum('undertime_minutes');
+
+            $basicPay =
+                $config->daily_rate *
+                $presentDays;
+
+            $grossSalary =
+                $basicPay +
+                $config->ot_rate +
+                $config->honorarium +
+                $config->teaching_load;
+
+            $benefits =
+                (
+                    $config->sss +
+                    $config->philhealth +
+                    $config->pagibig +
+                    $config->hmo
+                ) / 2;
+
+            $lateDeduction =
+                $lateMinutes *
+                $config->late_deduction_rate;
+
+            $undertimeDeduction =
+                $undertimeMinutes *
+                $config->undertime_deduction_rate;
+
+            $netSalary =
+                $grossSalary
+                - $benefits
+                - $lateDeduction
+                - $undertimeDeduction;
+
+            Payslip::create([
+
+                'user_id' => $employee->id,
+
+                'period_start' => $request->period_start,
+
+                'period_end' => $request->period_end,
+
+                'present_days' => $presentDays,
+
+                'late_minutes' => $lateMinutes,
+
+                'undertime_minutes' => $undertimeMinutes,
+
+                'daily_rate' => $config->daily_rate,
+
+                'ot' => $config->ot_rate,
+
+                'honorarium' => $config->honorarium,
+
+                'teaching_load' => $config->teaching_load,
+
+                'sss' => $config->sss,
+
+                'philhealth' => $config->philhealth,
+
+                'pagibig' => $config->pagibig,
+
+                'hmo' => $config->hmo,
+
+                'late_deduction' => $lateDeduction,
+
+                'undertime_deduction' => $undertimeDeduction,
+
+                'gross_salary' => $grossSalary,
+
+                'benefits' => $benefits,
+
+                'net_salary' => $netSalary,
+
+                'status' => 'Generated',
+
+            ]);
+
+            $generated++;
+        }
+
+        return response()->json([
+            'success' => true,
+            'generated' => $generated,
+            'skipped' => $skipped,
         ]);
     }
 }

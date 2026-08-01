@@ -7,6 +7,7 @@ use App\Models\DepartmentSalaryConfig;
 use App\Models\EmployeeSalaryConfig;
 use App\Models\User;
 
+
 class PayrollService
 {
     public function compute(User $employee, $startDate, $endDate)

@@ -8,38 +8,68 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Payslip extends Model
 {
     protected $fillable = [
-        'batch_id',
+
         'user_id',
-        'employee_name',
-        'employee_id',
-        'department',
-        'position',
+
+        'period_start',
+
+        'period_end',
+
         'present_days',
-        'absent_days',
-        'late_days',
-        'basic_salary',
+
+        'late_minutes',
+
+        'undertime_minutes',
+
         'daily_rate',
-        'overtime_rate',
-        'ot_amount',
+
+        'ot',
+
         'honorarium',
+
         'teaching_load',
-        'gross_salary',
+
         'sss',
+
         'philhealth',
+
         'pagibig',
+
         'hmo',
-        'total_deductions',
+
+        'late_deduction',
+
+        'undertime_deduction',
+
+        'gross_salary',
+
+        'benefits',
+
         'net_salary',
+
         'status',
+
     ];
 
-    public function batch(): BelongsTo
-    {
-        return $this->belongsTo(PayrollBatch::class, 'batch_id');
-    }
+    protected $casts = [
 
-    public function employee(): BelongsTo
+        'period_start' => 'date',
+
+        'period_end' => 'date',
+
+        'gross_salary' => 'decimal:2',
+
+        'benefits' => 'decimal:2',
+
+        'net_salary' => 'decimal:2',
+
+    ];
+
+    /**
+     * Payslip belongs to one employee.
+     */
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 }

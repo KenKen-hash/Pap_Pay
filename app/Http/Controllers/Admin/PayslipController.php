@@ -11,9 +11,35 @@ class PayslipController extends Controller
 {
     public function index()
     {
-        $payslips = Payslip::with('user')->latest()->get();
+        $payslips = Payslip::with('user')
+            ->latest()
+            ->get()
+            ->groupBy(function ($payslip) {
+                return $payslip->period_start . '_' . $payslip->period_end;
+            });
 
-        return view('admin.payslips.index', compact('payslips'));
+        return view(
+            'admin.payslip_list',
+            compact('payslips')
+        );
+    }
+
+    public function history($period_start, $period_end)
+    {
+        $payslips = Payslip::with('user')
+            ->where('period_start', $period_start)
+            ->where('period_end', $period_end)
+            ->orderBy('user_id')
+            ->get();
+
+        return view(
+            'admin.payslip_history',
+            compact(
+                'payslips',
+                'period_start',
+                'period_end'
+            )
+        );
     }
 
     public function create()
@@ -55,5 +81,15 @@ class PayslipController extends Controller
         ]);
 
         return back()->with('success', 'Payslip released to employee');
+    }
+
+    public function show($id)
+    {
+        $payslip = Payslip::with('user')->findOrFail($id);
+
+        return view(
+            'admin.payslip_view',
+            compact('payslip')
+        );
     }
 }

@@ -247,7 +247,7 @@
 
                         <i class="bi bi-bank2 me-2"></i>
 
-                         Administrative Salary Configuration
+                        Administrative Salary Configuration
 
                     </h1>
 
@@ -385,6 +385,54 @@
 
                                 <input type="number" id="default_overtime_rate" class="form-control" placeholder="0.00"
                                     value="{{ old('default_overtime_rate', optional($departmentConfig)->overtime_rate) }}">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <!-- Late Deduction -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label">
+                                    Late Deduction Rate (Per Minute)
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        ₱
+                                    </span>
+
+                                    <input type="number" id="late_deduction_rate" class="form-control"
+                                        placeholder="2.00"
+                                        value="{{ old('late_deduction_rate', optional($departmentConfig)->late_deduction_rate) }}">
+
+                                </div>
+
+                            </div>
+
+                            <!-- Undertime Deduction -->
+
+                            <div class="col-md-6 mb-4">
+
+                                <label class="form-label">
+                                    Undertime Deduction Rate (Per Minute)
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        ₱
+                                    </span>
+
+                                    <input type="number" id="undertime_deduction_rate" class="form-control"
+                                        placeholder="2.00"
+                                        value="{{ old('undertime_deduction_rate', optional($departmentConfig)->undertime_deduction_rate) }}">
+
+                                </div>
 
                             </div>
 
@@ -650,6 +698,8 @@
                                             data-salary="{{ optional($employee->salaryConfig)->basic_salary ?? optional($departmentConfig)->default_basic_salary }}"
                                             data-daily="{{ optional($employee->salaryConfig)->daily_rate ?? optional($departmentConfig)->daily_rate }}"
                                             data-overtime="{{ optional($employee->salaryConfig)->overtime_rate ?? optional($departmentConfig)->overtime_rate }}"
+                                            data-late="{{ optional($employee->salaryConfig)->late_deduction_rate ?? optional($departmentConfig)->late_deduction_rate }}"
+                                            data-undertime="{{ optional($employee->salaryConfig)->undertime_deduction_rate ?? optional($departmentConfig)->undertime_deduction_rate }}"
                                             data-payroll="{{ optional($employee->salaryConfig)->payroll_period ?? optional($departmentConfig)->payroll_period }}"
                                             data-sss="{{ optional($employee->salaryConfig)->sss ?? optional($departmentConfig)->sss }}"
                                             data-philhealth="{{ optional($employee->salaryConfig)->philhealth ?? optional($departmentConfig)->philhealth }}"
@@ -827,6 +877,60 @@
                                 </div>
 
                             </div>
+
+
+                            <div class="row">
+
+                                <!-- Late Deduction -->
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+                                        Late Deduction Rate (Per Minute)
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">₱</span>
+
+                                        <input type="number" id="employee_late_deduction_rate" class="form-control"
+                                            placeholder="2.00">
+
+                                    </div>
+
+                                </div>
+
+                                <!-- Undertime Deduction -->
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+                                        Undertime Deduction Rate (Per Minute)
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">₱</span>
+
+                                        <input type="number" id="employee_undertime_deduction_rate"
+                                            class="form-control" placeholder="2.00">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
 
                         </div>
 
@@ -1058,6 +1162,12 @@
                     document.getElementById("overtime_rate").value =
                         this.dataset.overtime ?? "";
 
+                    document.getElementById("employee_late_deduction_rate").value =
+                        this.dataset.late ?? 2;
+
+                    document.getElementById("employee_undertime_deduction_rate").value =
+                        this.dataset.undertime ?? 2;
+
                     document.getElementById("employee_payroll_period").value =
                         this.dataset.payroll;
 
@@ -1115,6 +1225,10 @@
                         daily_rate: document.getElementById("daily_rate").value,
 
                         overtime_rate: document.getElementById("overtime_rate").value,
+
+                        late_deduction_rate: document.getElementById("employee_late_deduction_rate").value,
+
+                        undertime_deduction_rate: document.getElementById("employee_undertime_deduction_rate").value,
 
                         sss: document.getElementById("employee_sss").value,
 
@@ -1185,6 +1299,11 @@
                         daily_rate: document.getElementById("default_daily_rate").value,
 
                         overtime_rate: document.getElementById("default_overtime_rate").value,
+
+                        late_deduction_rate: document.getElementById("late_deduction_rate").value,
+
+                        undertime_deduction_rate: document.getElementById("undertime_deduction_rate")
+                            .value,
 
                         payroll_period: document.getElementById("payroll_period").value,
 

@@ -360,7 +360,63 @@
 
                             </button>
 
-                            <div id="previewContainer" class="mt-4"></div>
+
+                            <button class="btn btn-primary btn-lg ms-2 d-none" id="generatePayslips">
+
+                                <i class="bi bi-file-earmark-text me-2"></i>
+
+                                Generate Payslips
+
+                            </button>
+                            <div id="payrollPreviewSection" class="card shadow mt-4 d-none">
+
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0">
+                                        Payroll Preview
+                                    </h5>
+                                </div>
+
+                                <div class="card-body">
+
+                                    <div class="table-responsive">
+
+                                        <table class="table table-bordered table-hover">
+
+                                            <thead class="table-success">
+
+                                                <tr>
+
+                                                    <th>Employee</th>
+
+                                                    <th>Department</th>
+
+                                                    <th>Present Days</th>
+
+                                                    <th>Late</th>
+
+                                                    <th>Undertime</th>
+
+                                                    <th>Gross Salary</th>
+
+                                                    <th>Benefits</th>
+
+                                                    <th>Net Salary</th>
+
+                                                </tr>
+
+                                            </thead>
+
+                                            <tbody id="payrollPreviewBody">
+
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -443,173 +499,71 @@
 
                                 <tbody>
 
-                                    <tr>
+                                    @forelse($payslips as $period => $items)
+                                        <tr>
 
-                                        <td>1</td>
+                                            <td>{{ $loop->iteration }}</td>
 
-                                        <td>
+                                            <td>
 
-                                            July 1 - July 15, 2026
+                                                {{ \Carbon\Carbon::parse($items->first()->period_start)->format('M d, Y') }}
 
-                                        </td>
+                                                -
 
-                                        <td>
+                                                {{ \Carbon\Carbon::parse($items->first()->period_end)->format('M d, Y') }}
 
-                                            48 Employees
+                                            </td>
 
-                                        </td>
+                                            <td>
 
-                                        <td>
+                                                {{ $items->count() }} Employees
 
-                                            July 15, 2026
+                                            </td>
 
-                                        </td>
+                                            <td>
 
-                                        <td>
+                                                {{ $items->first()->created_at->format('M d, Y h:i A') }}
 
-                                            <span class="badge bg-success">
+                                            </td>
 
-                                                Distributed
+                                            <td>
 
-                                            </span>
+                                                <span class="badge bg-success">
 
-                                        </td>
+                                                    {{ $items->first()->status }}
 
-                                        <td class="text-center">
+                                                </span>
 
-                                            <button class="btn btn-sm btn-outline-primary">
+                                            </td>
 
-                                                <i class="bi bi-eye"></i>
+                                            <td class="text-center">
 
-                                            </button>
+                                                <a href="{{ route('admin.payslips.history', [
+                                                    'period_start' => $items->first()->period_start,
+                                                    'period_end' => $items->first()->period_end,
+                                                ]) }}"
+                                                    class="btn btn-sm btn-outline-primary">
 
-                                            <button class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-eye"></i>
 
-                                                <i class="bi bi-file-earmark-pdf"></i>
+                                                </a>
 
-                                            </button>
+                                            </td>
 
-                                            <button class="btn btn-sm btn-outline-success">
+                                        </tr>
 
-                                                <i class="bi bi-send-check"></i>
+                                    @empty
 
-                                            </button>
+                                        <tr>
 
-                                        </td>
+                                            <td colspan="6" class="text-center text-muted">
 
-                                    </tr>
+                                                No generated payslips yet.
 
-                                    <tr>
+                                            </td>
 
-                                        <td>2</td>
-
-                                        <td>
-
-                                            June 16 - June 30, 2026
-
-                                        </td>
-
-                                        <td>
-
-                                            47 Employees
-
-                                        </td>
-
-                                        <td>
-
-                                            June 30, 2026
-
-                                        </td>
-
-                                        <td>
-
-                                            <span class="badge bg-success">
-
-                                                Distributed
-
-                                            </span>
-
-                                        </td>
-
-                                        <td class="text-center">
-
-                                            <button class="btn btn-sm btn-outline-primary">
-
-                                                <i class="bi bi-eye"></i>
-
-                                            </button>
-
-                                            <button class="btn btn-sm btn-outline-danger">
-
-                                                <i class="bi bi-file-earmark-pdf"></i>
-
-                                            </button>
-
-                                            <button class="btn btn-sm btn-outline-success">
-
-                                                <i class="bi bi-send-check"></i>
-
-                                            </button>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <tr>
-
-                                        <td>3</td>
-
-                                        <td>
-
-                                            June 1 - June 15, 2026
-
-                                        </td>
-
-                                        <td>
-
-                                            46 Employees
-
-                                        </td>
-
-                                        <td>
-
-                                            June 15, 2026
-
-                                        </td>
-
-                                        <td>
-
-                                            <span class="badge bg-success">
-
-                                                Distributed
-
-                                            </span>
-
-                                        </td>
-
-                                        <td class="text-center">
-
-                                            <button class="btn btn-sm btn-outline-primary">
-
-                                                <i class="bi bi-eye"></i>
-
-                                            </button>
-
-                                            <button class="btn btn-sm btn-outline-danger">
-
-                                                <i class="bi bi-file-earmark-pdf"></i>
-
-                                            </button>
-
-                                            <button class="btn btn-sm btn-outline-success">
-
-                                                <i class="bi bi-send-check"></i>
-
-                                            </button>
-
-                                        </td>
-
-                                    </tr>
+                                        </tr>
+                                    @endforelse
 
                                 </tbody>
 
@@ -811,13 +765,66 @@
 
                 .then(data => {
 
-                    console.log(data);
+                    if (!data.success) return;
 
-                    document.getElementById("previewContainer").innerHTML = `
-            <div class="alert alert-success">
-                Preview request received successfully.
-            </div>
+                    const tbody = document.getElementById("payrollPreviewBody");
+
+                    tbody.innerHTML = "";
+
+                    data.preview.forEach(employee => {
+
+                        tbody.innerHTML += `
+            <tr>
+
+                <td>${employee.name}</td>
+
+                <td>${employee.department}</td>
+
+                <td class="text-center">
+                    ${employee.present_days}
+                </td>
+
+                <td class="text-center">
+                    ${employee.late_minutes}
+                </td>
+
+                <td class="text-center">
+                    ${employee.undertime_minutes}
+                </td>
+
+                <td>
+                    ₱ ${Number(employee.gross_salary).toLocaleString(undefined,{
+                        minimumFractionDigits:2,
+                        maximumFractionDigits:2
+                    })}
+                </td>
+
+                <td>
+                    ₱ ${Number(employee.benefits).toLocaleString(undefined,{
+                        minimumFractionDigits:2,
+                        maximumFractionDigits:2
+                    })}
+                </td>
+
+                <td class="fw-bold text-success">
+                    ₱ ${Number(employee.net_salary).toLocaleString(undefined,{
+                        minimumFractionDigits:2,
+                        maximumFractionDigits:2
+                    })}
+                </td>
+
+            </tr>
         `;
+
+                    });
+
+                    document
+                        .getElementById("payrollPreviewSection")
+                        .classList.remove("d-none");
+
+                    document
+                        .getElementById("generatePayslips")
+                        .classList.remove("d-none");
 
                 })
 
@@ -828,6 +835,67 @@
                 });
 
         });
+
+
+        document.getElementById("generatePayslips")
+            .addEventListener("click", function() {
+
+                const employees = [];
+
+                document
+                    .querySelectorAll(".employee-checkbox:checked")
+                    .forEach(box => {
+
+                        employees.push(box.value);
+
+                    });
+
+                fetch("{{ route('payslip.generate') }}", {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type": "application/json",
+
+                            "Accept": "application/json",
+
+                            "X-CSRF-TOKEN": document.querySelector(
+                                'meta[name="csrf-token"]'
+                            ).content
+
+                        },
+
+                        body: JSON.stringify({
+
+                            period_start: document.getElementById("period_start").value,
+
+                            period_end: document.getElementById("period_end").value,
+
+                            employees: employees
+
+                        })
+
+                    })
+
+                    .then(response => response.json())
+
+                    .then(data => {
+
+                        if (data.success) {
+
+                            alert(
+                                `${data.generated} payslip(s) generated successfully.\n\n` +
+                                `${data.skipped} employee(s) were skipped because a payslip already exists for the selected payroll period.`
+                            );
+
+                            location.reload();
+
+                        }
+
+                    });
+
+            });
     </script>
 
 </body>

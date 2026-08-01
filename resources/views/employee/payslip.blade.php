@@ -221,7 +221,7 @@
                                         <small class="text-muted">Payroll Records</small>
 
                                         <h5>
-                                            {{ $payslips->count() }} Payslips
+                                            {{ $payslips->total() }} Payslips
                                         </h5>
 
                                     </div>
@@ -310,40 +310,45 @@
                                             <tr>
 
                                                 <td>
-                                                    {{ $p->pay_period }}
+                                                    {{ $p->period_start->format('M d, Y') }}
+                                                    -
+                                                    {{ $p->period_end->format('M d, Y') }}
                                                 </td>
 
                                                 <td>
-                                                    ₱ {{ number_format($p->gross_pay ?? 0, 2) }}
+                                                    ₱ {{ number_format($p->gross_salary, 2) }}
                                                 </td>
 
                                                 <td>
                                                     ₱
-                                                    {{ number_format($p->tax + $p->sss + $p->philhealth + $p->pagibig, 2) }}
+                                                    {{ number_format(
+                                                        $p->sss + $p->philhealth + $p->pagibig + $p->hmo + $p->late_deduction + $p->undertime_deduction,
+                                                        2,
+                                                    ) }}
                                                 </td>
 
                                                 <td class="fw-bold">
-                                                    ₱ {{ number_format($p->net_pay ?? 0, 2) }}
+                                                    ₱ {{ number_format($p->net_salary, 2) }}
                                                 </td>
 
                                                 <td>
 
-                                                    @if ($p->status == 'released')
-                                                        <span class="badge bg-success">Released</span>
-                                                    @else
-                                                        <span class="badge bg-warning">Pending</span>
+                                                    @if ($p->status == 'Generated')
+                                                        <span class="badge bg-warning">Generated</span>
+                                                    @elseif ($p->status == 'Sent')
+                                                        <span class="badge bg-success">Sent</span>
+                                                    @elseif ($p->status == 'Viewed')
+                                                        <span class="badge bg-info">Viewed</span>
                                                     @endif
 
                                                 </td>
 
                                                 <td>
 
-                                                    @if ($p->status == 'released')
+                                                    @if (in_array($p->status, ['Generated', 'Sent', 'Viewed']))
                                                         <a href="{{ route('payslip.download', $p->id) }}"
                                                             class="btn btn-sm btn-outline-primary">
-
-                                                            Download
-
+                                                            <i class="bi bi-download"></i> Download
                                                         </a>
                                                     @else
                                                         <button class="btn btn-sm btn-secondary" disabled>
