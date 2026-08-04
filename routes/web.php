@@ -301,6 +301,13 @@ Route::middleware(['auth', 'role:admin'])
             )
                 ->name('payroll');
 
+            Route::get('/payroll/pdf', [ReportController::class, 'payrollPdf'])
+                ->name('payroll.pdf');
+
+
+            Route::get('/payroll/excel', [ReportController::class, 'payrollExcel'])
+                ->name('payroll.excel');
+
             Route::get(
                 '/attendance',
                 [ReportController::class, 'attendance']
@@ -308,10 +315,29 @@ Route::middleware(['auth', 'role:admin'])
                 ->name('attendance');
 
             Route::get(
+                '/attendance/pdf',
+                [ReportController::class, 'attendancePdf']
+            )->name('attendance.pdf');
+
+            Route::get(
+                '/attendance/excel',
+                [ReportController::class, 'attendanceExcel']
+            )->name('attendance.excel');
+
+            Route::get(
                 '/employee',
                 [ReportController::class, 'employee']
-            )
-                ->name('employee');
+            )->name('employee');
+
+            Route::get(
+                '/employee/pdf',
+                [ReportController::class, 'employeePdf']
+            )->name('employee.pdf');
+
+            Route::get(
+                '/employee/excel',
+                [ReportController::class, 'employeeExcel']
+            )->name('employee.excel');
 
             Route::get(
                 '/leave',
@@ -320,10 +346,30 @@ Route::middleware(['auth', 'role:admin'])
                 ->name('leave');
 
             Route::get(
+                '/leave/pdf',
+                [ReportController::class, 'leavePdf']
+            )->name('leave.pdf');
+
+            Route::get(
+                '/leave/excel',
+                [ReportController::class, 'leaveExcel']
+            )->name('leave.excel');
+
+            Route::get(
                 '/official-business',
                 [ReportController::class, 'ob']
             )
                 ->name('ob');
+
+            Route::get(
+                '/official-business/pdf',
+                [ReportController::class, 'obPdf']
+            )->name('ob.pdf');
+
+            Route::get(
+                '/official-business/excel',
+                [ReportController::class, 'obExcel']
+            )->name('ob.excel');
 
             Route::get(
                 '/salary',
@@ -332,10 +378,30 @@ Route::middleware(['auth', 'role:admin'])
                 ->name('salary');
 
             Route::get(
+                '/salary/pdf',
+                [ReportController::class, 'salaryPdf']
+            )->name('salary.pdf');
+
+            Route::get(
+                '/salary/excel',
+                [ReportController::class, 'salaryExcel']
+            )->name('salary.excel');
+
+            Route::get(
                 '/contributions',
                 [ReportController::class, 'contributions']
             )
                 ->name('contributions');
+
+            Route::get(
+                '/contributions/pdf',
+                [ReportController::class, 'contributionsPdf']
+            )->name('contributions.pdf');
+
+            Route::get(
+                '/contributions/excel',
+                [ReportController::class, 'contributionsExcel']
+            )->name('contributions.excel');
         });
     });
 
