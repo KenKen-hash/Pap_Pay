@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('holidays', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('employee_salary_configs', function (Blueprint $table) {
+            $table->dropColumn('ot_rate');
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('holidays');
+        Schema::table('employee_salary_configs', function (Blueprint $table) {
+            $table->decimal('ot_rate', 10, 2)->default(0);
+        });
     }
 };

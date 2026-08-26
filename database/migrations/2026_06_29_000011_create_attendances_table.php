@@ -17,24 +17,30 @@ return new class extends Migration
 
             // Employee
             $table->foreignId('user_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
+                ->constrained()
+                ->cascadeOnDelete();
 
             // Attendance Date
             $table->date('date');
 
-            // Morning
+            // Morning Attendance
             $table->time('morning_time_in')->nullable();
             $table->time('morning_time_out')->nullable();
 
-            // Afternoon
+            // Afternoon Attendance
             $table->time('afternoon_time_in')->nullable();
             $table->time('afternoon_time_out')->nullable();
 
             // Computed Values
-            $table->decimal('hours_worked',5,2)->default(0);
+            $table->decimal('hours_worked', 5, 2)->default(0);
 
-            $table->enum('status',[
+            // NEW COLUMN
+            $table->integer('late_minutes')->default(0);
+
+            // NEW COLUMN
+            $table->integer('undertime_minutes')->default(0);
+
+            $table->enum('status', [
                 'Present',
                 'Late',
                 'Absent',
@@ -44,10 +50,16 @@ return new class extends Migration
 
             $table->text('remarks')->nullable();
 
+            // Holiday Reference
+            $table->foreignId('holiday_id')
+                ->nullable()
+                ->constrained('holidays')
+                ->nullOnDelete();
+
             $table->timestamps();
 
             // One attendance per employee per day
-            $table->unique(['user_id','date']);
+            $table->unique(['user_id', 'date']);
         });
     }
 

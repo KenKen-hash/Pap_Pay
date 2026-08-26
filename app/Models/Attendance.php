@@ -11,6 +11,8 @@ class Attendance extends Model
 
         'user_id',
 
+        'holiday_id',
+
         'date',
 
         'morning_time_in',
@@ -22,8 +24,8 @@ class Attendance extends Model
         'hours_worked',
 
         'late_minutes',
-
         'undertime_minutes',
+        'overtime_minutes',
 
         'status',
 
@@ -43,11 +45,11 @@ class Attendance extends Model
         'hours_worked' => 'decimal:2',
 
         'late_minutes' => 'integer',
-
         'undertime_minutes' => 'integer',
+        'overtime_minutes' => 'integer',
     ];
 
-    protected $with = ['user'];
+    protected $with = ['user', 'holiday'];
 
     /**
      * Attendance belongs to one employee.
@@ -55,5 +57,13 @@ class Attendance extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Attendance may belong to one holiday.
+     */
+    public function holiday(): BelongsTo
+    {
+        return $this->belongsTo(Holiday::class);
     }
 }

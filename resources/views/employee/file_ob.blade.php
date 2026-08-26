@@ -156,15 +156,10 @@
 
                         <div class="page-heading-copy">
 
-                            <span class="page-icon">
-                                <i class="bi bi-briefcase-fill"></i>
-                            </span>
+                           
 
                             <div>
 
-                                <p class="eyebrow mb-1">
-                                    Employee Portal
-                                </p>
 
                                 <h1 class="h3 mb-1">
                                     Official Business
@@ -181,79 +176,6 @@
                     </div>
 
 
-                    <!-- ========================= -->
-                    <!-- EMPLOYEE CARD -->
-                    <!-- ========================= -->
-
-                    <section class="panel mt-3">
-
-                        <div class="panel-body">
-
-                            <div class="row align-items-center gy-4">
-
-                                <div class="col-12 col-lg-8">
-
-                                    <div
-                                        class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-3">
-
-                                        <img src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/default-avatar.png') }}"
-                                            class="rounded-circle shadow" width="90" height="90"
-                                            style="object-fit:cover;">
-
-                                        <div class="text-center text-sm-start">
-
-                                            <h3 class="mb-1">
-
-                                                {{ $employee->name }}
-
-                                            </h3>
-
-                                            <p class="text-muted mb-2">
-
-                                                {{ $employee->position }}
-
-                                            </p>
-
-                                            <span class="badge bg-primary">
-
-                                                {{ $employee->department }}
-
-                                            </span>
-
-                                            <span class="badge bg-success">
-
-                                                Employee ID :
-                                                {{ $employee->employee_id }}
-
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="col-12 col-lg-4 text-center text-lg-end">
-
-                                    <small class="text-muted">
-
-                                        Today
-
-                                    </small>
-
-                                    <h4>
-
-                                        {{ now()->format('F d, Y') }}
-
-                                    </h4>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </section>
 
 
                     <!-- ========================= -->

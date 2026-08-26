@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Notification;
 use Carbon\Carbon;
+use App\Helpers\NotificationHelper;
 
 class LeaveController extends Controller
 {
@@ -106,7 +107,7 @@ class LeaveController extends Controller
                 ]);
         }
 
-        LeaveRequest::create([
+        $leave = LeaveRequest::create([
 
             'user_id' => Auth::id(),
 
@@ -129,6 +130,13 @@ class LeaveController extends Controller
             'status' => 'Pending',
 
         ]);
+
+        NotificationHelper::notifyAdmins(
+            'New Leave Request',
+            Auth::user()->name . ' filed a leave request.',
+            'leave',
+            route('admin.leaves')
+        );
 
         return redirect()
             ->back()

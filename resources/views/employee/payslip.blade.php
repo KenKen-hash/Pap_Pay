@@ -155,11 +155,7 @@
 
                             <div class="page-heading-copy">
 
-                                <span class="page-icon">
-                                    <i class="bi bi-receipt-cutoff"></i>
-                                </span>
-
-                                <div>
+                                    <div>
 
                                     <p class="eyebrow mb-1">Employee Payroll</p>
 
@@ -176,99 +172,63 @@
                         </div>
 
 
-                        <!-- EMPLOYEE INFO CARD -->
-                        <section class="panel mt-3">
-
-                            <div class="panel-body">
-
-                                <div class="row align-items-center gy-3">
-
-                                    <div class="col-12 col-lg-8">
-
-                                        <div
-                                            class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-3">
-
-                                            <img src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/default-avatar.png') }}"
-                                                class="rounded-circle shadow" width="85" height="85"
-                                                style="object-fit:cover;">
-
-                                            <div class="text-center text-sm-start">
-
-                                                <h4 class="mb-1">
-                                                    {{ $employee->name }}
-                                                </h4>
-
-                                                <p class="text-muted mb-1">
-                                                    {{ $employee->position }}
-                                                </p>
-
-                                                <span class="badge bg-primary">
-                                                    {{ $employee->department }}
-                                                </span>
-
-                                                <span class="badge bg-dark">
-                                                    ID: {{ $employee->employee_id }}
-                                                </span>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-12 col-lg-4 text-center text-lg-end">
-
-                                        <small class="text-muted">Payroll Records</small>
-
-                                        <h5>
-                                            {{ $payslips->total() }} Payslips
-                                        </h5>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </section>
+                       
 
 
                         <!-- LATEST PAYSLIP HIGHLIGHT -->
-                        <section class="panel mt-4">
+                       <section class="panel mt-4">
 
-                            <div
-                                class="panel-body d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+    <div
+        class="panel-body d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
 
-                                <div>
+        <div>
 
-                                    <h5 class="mb-1">
-                                        Latest Payslip
-                                    </h5>
+            <h5 class="mb-1">
+                Latest Payslip
+            </h5>
 
-                                    <p class="text-muted mb-0">
-                                        Your most recent payroll record is ready for download.
-                                    </p>
+            <p class="text-muted mb-0">
+                Your most recent payroll record is ready for download.
+            </p>
 
-                                </div>
+        </div>
 
-                                @if ($payslips->first())
-                                    <a href="{{ route('payslip.download', $payslips->first()->id) }}"
-                                        class="btn btn-primary">
+        <div class="d-flex flex-column flex-sm-row gap-2">
 
-                                        <i class="bi bi-download me-1"></i>
-                                        Download Latest
+            @if ($payslips->first())
 
-                                    </a>
-                                @else
-                                    <button class="btn btn-secondary" disabled>
-                                        No Payslip Yet
-                                    </button>
-                                @endif
+                <a href="{{ route('payslip.download', $payslips->first()->id) }}"
+                    class="btn btn-primary">
 
-                            </div>
+                    <i class="bi bi-download me-1"></i>
+                    Download Latest
 
-                        </section>
+                </a>
 
+            @else
+
+                <button class="btn btn-secondary" disabled>
+                    No Payslip Yet
+                </button>
+
+            @endif
+
+            <!-- Appeal / Concern Button -->
+            <button type="button"
+                class="btn btn-outline-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#payslipConcernModal">
+
+                <i class="bi bi-exclamation-circle me-1"></i>
+                Appeal / Report Concern
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
 
                         <!-- PAYSLIP LIST -->
                         <section class="panel mt-4">
@@ -403,6 +363,158 @@
                 </footer>
         </div>
     </div>
+
+    <!-- PAYSLIP CONCERN MODAL -->
+<div class="modal fade" id="payslipConcernModal" tabindex="-1"
+    aria-labelledby="payslipConcernModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+                    <h5 class="modal-title" id="payslipConcernModalLabel">
+                        Appeal / Report Payslip Concern
+                    </h5>
+
+                    <small class="text-muted">
+                        Please provide the details of your concern.
+                    </small>
+                </div>
+
+                <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
+
+            </div>
+
+            <form method="POST"
+                action="{{ route('payslip.concern.store') }}"
+                enctype="multipart/form-data">
+
+                @csrf
+
+                <div class="modal-body">
+
+                    <!-- Payslip -->
+                    <div class="mb-3">
+
+                        <label for="payslip_id" class="form-label fw-semibold">
+                            Payslip
+                        </label>
+
+                        <select name="payslip_id"
+                            id="payslip_id"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select the payslip you have a concern about
+                            </option>
+
+                            @foreach ($payslips as $p)
+                                <option value="{{ $p->id }}">
+
+                                    {{ $p->period_start->format('M d, Y') }}
+                                    -
+                                    {{ $p->period_end->format('M d, Y') }}
+
+                                    — ₱{{ number_format($p->net_salary, 2) }}
+
+                                </option>
+                            @endforeach
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Reason -->
+                    <div class="mb-3">
+
+                        <label for="reason" class="form-label fw-semibold">
+                            Reason / Concern
+                        </label>
+
+                        <textarea name="reason"
+                            id="reason"
+                            class="form-control"
+                            rows="5"
+                            placeholder="Please explain your concern about this payslip..."
+                            maxlength="2000"
+                            required></textarea>
+
+                        <div class="form-text">
+                            Please provide enough information for HR to investigate your concern.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Attachment -->
+                    <div class="mb-3">
+
+                        <label for="attachment" class="form-label fw-semibold">
+                            Upload Payslip / Supporting Document
+                        </label>
+
+                        <input type="file"
+                            name="attachment"
+                            id="attachment"
+                            class="form-control"
+                            accept=".pdf,.jpg,.jpeg,.png">
+
+                        <div class="form-text">
+                            Optional. PDF, JPG, or PNG only. Maximum 5MB.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Notice -->
+                    <div class="alert alert-warning mb-0">
+
+                        <i class="bi bi-info-circle me-1"></i>
+
+                        Your concern will be sent to HR/Admin for review.
+                        Please make sure the information you provide is accurate.
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Cancel
+
+                    </button>
+
+                    <button type="submit"
+                        class="btn btn-danger">
+
+                        <i class="bi bi-send me-1"></i>
+                        Submit Concern
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
 
     <script src="../../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
     <script src="../../../../../khen/assets/js/main.js"></script>

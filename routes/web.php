@@ -12,6 +12,7 @@ use App\Http\Controllers\Employee\PayslipController;
 use App\Http\Controllers\Employee\LeaveController;
 use App\Http\Controllers\Employee\OfficialBusinessController as EmployeeOfficialBusinessController;
 use App\Http\Controllers\Employee\AnnouncementController as EmployeeAnnouncementController;
+use App\Http\Controllers\Employee\PayslipConcernController;
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EmployeeController;
@@ -26,7 +27,9 @@ use App\Http\Controllers\Admin\PayrollController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\PayslipController as AdminPayslipController;
 use App\Http\Controllers\Admin\ReportController;
-
+use App\Http\Controllers\Admin\HolidayController;
+use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\PayslipConcernController as AdminPayslipConcernController;
 
 
 Route::get('/', function () {
@@ -106,6 +109,10 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
 
     Route::patch('/my-profile', [EmployeeProfileController::class, 'update'])
         ->name('my_profile.update');
+
+    Route::post('/payslip/concern', [PayslipConcernController::class, 'store'])
+        ->middleware('auth')
+        ->name('payslip.concern.store');
 });
 
 /*
@@ -140,14 +147,6 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/payslips', [PayslipController::class, 'index'])
             ->name('admin.payslips');
 
-        Route::get('/payslips/create', [PayslipController::class, 'create'])
-            ->name('admin.payslips.create');
-
-        Route::post('/payslips/store', [PayslipController::class, 'store'])
-            ->name('admin.payslips.store');
-
-        Route::post('/payslips/{id}/release', [PayslipController::class, 'release'])
-            ->name('admin.payslips.release');
 
         Route::get('/leaves', [AdminLeaveController::class, 'index'])
             ->name('admin.leaves');
@@ -177,8 +176,6 @@ Route::middleware(['auth', 'role:admin'])
         Route::view('/official_business', 'admin.official_business')
             ->name('official_business');
 
-        Route::view('/departments', 'admin.departments')
-            ->name('departments');
 
         Route::view('/settings', 'admin.settings')
             ->name('settings');
@@ -276,6 +273,9 @@ Route::middleware(['auth', 'role:admin'])
             [PayrollController::class, 'generatePayslips']
         )->name('payslip.generate');
 
+        Route::get('/payslips/download/{period_start}/{period_end}', [AdminPayslipController::class, 'download'])
+            ->name('admin.payslips.download');
+
         Route::get(
             '/payslips/{payslip}',
             [AdminPayslipController::class, 'show']
@@ -285,6 +285,8 @@ Route::middleware(['auth', 'role:admin'])
             '/payslip-history/{period_start}/{period_end}',
             [AdminPayslipController::class, 'history']
         )->name('admin.payslips.history');
+
+
 
 
 
@@ -403,6 +405,50 @@ Route::middleware(['auth', 'role:admin'])
                 [ReportController::class, 'contributionsExcel']
             )->name('contributions.excel');
         });
+
+        Route::post(
+            '/payslips/{id}/mark-paid',
+            [AdminPayslipController::class, 'markPaid']
+        )->name('admin.payslips.markPaid');
+
+        Route::get('/notifications', [NotificationController::class, 'index'])
+            ->name('admin.notifications');
+
+        Route::get('/notifications/{id}/read', [NotificationController::class, 'read'])
+            ->name('admin.notifications.read');
+
+        // Payslip Concerns
+        Route::get(
+            '/payslip-concerns',
+            [AdminPayslipConcernController::class, 'index']
+        )->name('admin.payslip-concerns.index');
+
+        Route::get(
+            '/payslip-concerns/{id}',
+            [AdminPayslipConcernController::class, 'show']
+        )->name('admin.payslip-concerns.show');
+
+        Route::post(
+            '/payslip-concerns/{id}/status',
+            [AdminPayslipConcernController::class, 'updateStatus']
+        )->name('admin.payslip-concerns.status');
+
+        Route::get(
+            '/payslip-concerns/{id}/correct',
+            [AdminPayslipConcernController::class, 'editCorrection']
+        )->name('admin.payslip-concerns.correct');
+
+        Route::post(
+            '/payslip-concerns/{id}/correct',
+            [AdminPayslipConcernController::class, 'updateCorrection']
+        )->name('admin.payslip-concerns.update-correction');
+
+        Route::post(
+            '/payslip-concerns/{id}/recalculate',
+            [AdminPayslipConcernController::class, 'recalculate']
+        )->name('admin.payslip-concerns.recalculate');
+
+        Route::resource('holidays', HolidayController::class);
     });
 
 

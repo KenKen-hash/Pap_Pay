@@ -171,7 +171,7 @@ box-shadow:0 12px 25px rgba(0,0,0,.12)!important;
 
         <h2 class="fw-bold d-flex align-items-center">
 
-            <i class="bi bi-megaphone-fill text-primary me-3 ms-2"></i>
+            
 
             Announcements
 

@@ -20,9 +20,9 @@
                     aria-label="adminHMD dashboard"> <span class="brand-icon"><i class="bi bi-grid-1x2-fill"
                             aria-hidden="true"></i></span> <span class="brand-copy"> <span
                             class="brand-title">adminHMD</span> <span class="brand-subtitle">Admin Template</span>
-                    </span> 
-                </a> 
-                </div>
+                    </span>
+                </a>
+            </div>
 
             <nav class="sidebar-nav">
                 <a class="nav-link" href="{{ route('dashboard') }}">
@@ -109,10 +109,9 @@
             <main class="dashboard-content">
                 <div class="container-fluid px-3 px-lg-4 py-4">
                     <div class="page-heading">
-                        <div class="page-heading-copy"> <span class="page-icon"> <i
-                                    class="bi bi-calendar2-check"></i> </span>
+                        <div class="page-heading-copy">
+
                             <div>
-                                <p class="eyebrow mb-1">Employee</p>
                                 <h1 class="h3 mb-1">Leave Application</h1>
                                 <p class="text-muted mb-0"> Submit your leave request for approval. </p>
                             </div>
@@ -139,36 +138,7 @@
 
                                 </div>
                             @endif
-                            <div class="panel mb-4">
 
-                                <div class="d-flex align-items-center">
-
-                                    <img src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/default-avatar.png') }}"
-                                        class="rounded-circle me-3" width="70" height="70"
-                                        style="object-fit:cover;">
-
-                                    <div>
-
-                                        <h5 class="mb-1">
-                                            {{ $employee->name }}
-                                        </h5>
-
-                                        <div class="text-muted">
-                                            Employee ID :
-                                            {{ $employee->employee_id }}
-                                        </div>
-
-                                        <div class="text-muted">
-                                            {{ $employee->department }}
-                                            •
-                                            {{ $employee->position }}
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
                             <form action="{{ route('leave.store') }}" method="POST" enctype="multipart/form-data"
                                 class="panel shadow-sm"> @csrf <div class="panel-header">
                                     <div>

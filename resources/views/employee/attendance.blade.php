@@ -169,10 +169,6 @@
                     <div class="page-heading">
                         <div class="page-heading-copy">
 
-                            <span class="page-icon">
-                                <i class="bi bi-calendar-check"></i>
-                            </span>
-
                             <div>
                                 <br>
                                 <h1 class="h3 mb-1">
@@ -190,81 +186,8 @@
 
                     </div>
 
-                    <!-- Employee Card -->
 
-                    <section class="panel mt-3">
-
-                        <div class="panel-body">
-
-                            <div class="row align-items-center">
-
-                                <div class="col-lg-8">
-
-                                    <div class="d-flex align-items-center gap-3">
-
-                                        <img src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/default-avatar.png') }}"
-                                            class="rounded-circle shadow" width="90" height="90"
-                                            style="object-fit:cover;">
-
-                                        <div>
-
-                                            <h3 class="mb-1">
-
-                                                Welcome,
-                                                {{ $employee->name }}
-
-                                            </h3>
-
-                                            <p class="text-muted mb-1">
-
-                                                {{ $employee->position }}
-
-                                            </p>
-
-                                            <span class="badge bg-primary">
-
-                                                {{ $employee->department }}
-
-                                            </span>
-
-                                            <span class="badge bg-success">
-
-                                                Employee ID :
-                                                {{ $employee->employee_id }}
-
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="col-lg-4 text-end">
-
-                                    <h5 class="text-muted">
-
-                                        Today
-
-                                    </h5>
-
-                                    <h3>
-
-                                        {{ now()->format('F d, Y') }}
-
-                                    </h3>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </section>
-
-
-
-                    <!-- Summary Cards -->
+ <!-- Summary Cards -->
 
                     <section class="row g-3 mt-3">
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Payslip;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PayslipController extends Controller
 {
@@ -90,6 +91,36 @@ class PayslipController extends Controller
         return view(
             'admin.payslip_view',
             compact('payslip')
+        );
+    }
+
+    public function download($period_start, $period_end)
+    {
+        $payslips = Payslip::with('user')
+            ->where('period_start', $period_start)
+            ->where('period_end', $period_end)
+            ->get();
+
+        if ($payslips->isEmpty()) {
+            abort(404, 'No payslips found.');
+        }
+
+        $pdf = Pdf::loadView('admin.payslips.pdf', compact('payslips'));
+
+        return $pdf->download("Payslips_{$period_start}_to_{$period_end}.pdf");
+    }
+
+    public function markPaid($id)
+    {
+        $payslip = Payslip::findOrFail($id);
+
+        $payslip->update([
+            'status' => 'Paid',
+        ]);
+
+        return redirect()->back()->with(
+            'success',
+            'Payslip marked as paid successfully.'
         );
     }
 }

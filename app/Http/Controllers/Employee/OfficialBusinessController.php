@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\OfficialBusiness;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\NotificationHelper;
 
 class OfficialBusinessController extends Controller
 {
@@ -111,6 +112,12 @@ class OfficialBusinessController extends Controller
             'status' => 'Pending',
 
         ]);
+        NotificationHelper::notifyAdmins(
+            'New Official Business Request',
+            Auth::user()->name . ' filed an official business request.',
+            'ob',
+            route('official_business')
+        );
 
         return redirect()
             ->route('file_ob')
