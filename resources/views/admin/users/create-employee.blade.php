@@ -27,15 +27,12 @@
         }
 
         body {
-
             background: #081224;
             min-height: 100vh;
             overflow-x: hidden;
-
         }
 
         .background {
-
             position: fixed;
             inset: 0;
 
@@ -45,47 +42,30 @@
                 #081224;
 
             z-index: -1;
-
         }
 
         .wrapper {
-
             max-width: 1200px;
-
             margin: 50px auto;
-
             padding: 20px;
-
         }
 
         .glass {
-
             background: rgba(255, 255, 255, .08);
-
             backdrop-filter: blur(25px);
-
             border: 1px solid rgba(255, 255, 255, .15);
-
             border-radius: 25px;
-
             padding: 45px;
-
             color: white;
-
         }
 
         .step {
-
             color: #4fa3ff;
-
             font-weight: 600;
-
             letter-spacing: 2px;
-
         }
 
         .department-card {
-
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -108,31 +88,22 @@
         }
 
         .department-card:hover {
-
             transform: translateY(-6px);
-
             border-color: #4fa3ff;
-
         }
 
         .btn-check:checked+.department-card {
-
             border-color: #4fa3ff;
-
             box-shadow: 0 0 20px rgba(79, 163, 255, .5);
-
         }
 
         .department-card h5 {
-
             margin-top: 20px;
             margin-bottom: 12px;
-
             font-weight: 600;
         }
 
         .department-card p {
-
             margin: 0;
 
             min-height: 48px;
@@ -147,64 +118,42 @@
         }
 
         .department-card i {
-
             font-size: 42px;
-
             color: #4fa3ff;
-
         }
 
         .credentials {
-
             margin-top: 40px;
-
             background: rgba(255, 255, 255, .05);
-
             border-radius: 20px;
-
             padding: 30px;
-
         }
 
         .form-control {
-
             background: rgba(255, 255, 255, .08);
-
             border: none;
-
             color: white;
-
         }
 
         .form-control:focus {
-
             background: rgba(255, 255, 255, .08);
-
             color: white;
-
             box-shadow: none;
-
         }
 
         .form-control::placeholder {
-
             color: #bdbdbd;
-
         }
 
         .btn-primary {
-
             padding: 14px;
-
             font-weight: 600;
-
         }
     </style>
 
 </head>
 
 <body>
-
 
     <div class="background"></div>
 
@@ -213,148 +162,290 @@
         <div class="glass">
 
             <div class="step">
-
                 STEP 2 OF 2
-
             </div>
 
             <h2 class="mt-2">
-
                 Create Employee Account
-
             </h2>
 
             <p class="text-light opacity-75">
-
                 Select the employee department and generate temporary credentials.
-
             </p>
 
             <form action="{{ route('users.employee.setup') }}" method="POST" id="employeeForm">
 
                 @csrf
 
-                <input type="hidden" name="employment_type" value="{{ request('employment_type') }}">
+                <input
+                    type="hidden"
+                    name="employment_type"
+                    value="{{ request('employment_type') }}"
+                >
 
                 <div class="row mt-4 g-4">
 
-                    <!-- Elementary -->
-                    <div class="col-lg-4 col-md-6">
-                        <input class="btn-check" type="radio" name="department" id="elementary" value="Elementary"
-                            required>
-                        <label class="department-card" for="elementary">
-                            <i class="bi bi-house-door-fill"></i>
-                            <h5>Elementary</h5>
-                            <p>Elementary Department</p>
-                        </label>
-                    </div>
+                    {{-- =====================================================
+                         ELEMENTARY
+                         Hidden for Part-Time
+                    ====================================================== --}}
 
-                    <!-- JHS -->
+                    @if(request('employment_type') !== 'Part-Time')
+
+                        <div class="col-lg-4 col-md-6">
+
+                            <input
+                                class="btn-check"
+                                type="radio"
+                                name="department"
+                                id="elementary"
+                                value="Elementary"
+                                required
+                            >
+
+                            <label
+                                class="department-card"
+                                for="elementary"
+                            >
+
+                                <i class="bi bi-house-door-fill"></i>
+
+                                <h5>
+                                    Elementary
+                                </h5>
+
+                                <p>
+                                    Elementary Department
+                                </p>
+
+                            </label>
+
+                        </div>
+
+                    @endif
+
+
+                    {{-- =====================================================
+                         JHS
+                         Available for ALL employment types
+                    ====================================================== --}}
+
                     <div class="col-lg-4 col-md-6">
-                        <input class="btn-check" type="radio" name="department" id="jhs" value="JHS">
-                        <label class="department-card" for="jhs">
+
+                        <input
+                            class="btn-check"
+                            type="radio"
+                            name="department"
+                            id="jhs"
+                            value="JHS"
+                            {{ request('employment_type') === 'Part-Time' ? 'required' : '' }}
+                        >
+
+                        <label
+                            class="department-card"
+                            for="jhs"
+                        >
+
                             <i class="bi bi-book-fill"></i>
-                            <h5>JHS</h5>
-                            <p>Junior High School</p>
+
+                            <h5>
+                                JHS
+                            </h5>
+
+                            <p>
+                                Junior High School
+                            </p>
+
                         </label>
+
                     </div>
 
-                    <!-- SHS -->
+
+                    {{-- =====================================================
+                         SHS
+                         Available for ALL employment types
+                    ====================================================== --}}
+
                     <div class="col-lg-4 col-md-6">
-                        <input class="btn-check" type="radio" name="department" id="shs" value="SHS">
-                        <label class="department-card" for="shs">
+
+                        <input
+                            class="btn-check"
+                            type="radio"
+                            name="department"
+                            id="shs"
+                            value="SHS"
+                        >
+
+                        <label
+                            class="department-card"
+                            for="shs"
+                        >
+
                             <i class="bi bi-journal-bookmark-fill"></i>
-                            <h5>SHS</h5>
-                            <p>Senior High School</p>
+
+                            <h5>
+                                SHS
+                            </h5>
+
+                            <p>
+                                Senior High School
+                            </p>
+
                         </label>
+
                     </div>
 
-                    <!-- College -->
+
+                    {{-- =====================================================
+                         COLLEGE
+                         Available for ALL employment types
+                    ====================================================== --}}
+
                     <div class="col-lg-4 col-md-6">
-                        <input class="btn-check" type="radio" name="department" id="college" value="College">
-                        <label class="department-card" for="college">
+
+                        <input
+                            class="btn-check"
+                            type="radio"
+                            name="department"
+                            id="college"
+                            value="College"
+                        >
+
+                        <label
+                            class="department-card"
+                            for="college"
+                        >
+
                             <i class="bi bi-mortarboard-fill"></i>
-                            <h5>College</h5>
-                            <p>College Department</p>
+
+                            <h5>
+                                College
+                            </h5>
+
+                            <p>
+                                College Department
+                            </p>
+
                         </label>
+
                     </div>
 
-                    <!-- Admin -->
-                    <div class="col-lg-4 col-md-6">
-                        <input class="btn-check" type="radio" name="department" id="admin" value="Admin">
-                        <label class="department-card" for="admin">
-                            <i class="bi bi-building-fill-gear"></i>
-                            <h5>Admin</h5>
-                            <p>Administrative Personnel</p>
-                        </label>
-                    </div>
 
-                    <!-- Laborers -->
-                    <div class="col-lg-4 col-md-6">
-                        <input class="btn-check" type="radio" name="department" id="laborers" value="Laborers">
-                        <label class="department-card" for="laborers">
-                            <i class="bi bi-person-workspace"></i>
-                            <h5>Laborers</h5>
-                            <p>Maintenance & Utility Personnel</p>
-                        </label>
-                    </div>
+                    {{-- =====================================================
+                         ADMIN
+                         Hidden for Part-Time
+                    ====================================================== --}}
+
+                    @if(request('employment_type') !== 'Part-Time')
+
+                        <div class="col-lg-4 col-md-6">
+
+                            <input
+                                class="btn-check"
+                                type="radio"
+                                name="department"
+                                id="admin"
+                                value="Admin"
+                            >
+
+                            <label
+                                class="department-card"
+                                for="admin"
+                            >
+
+                                <i class="bi bi-building-fill-gear"></i>
+
+                                <h5>
+                                    Admin
+                                </h5>
+
+                                <p>
+                                    Administrative Personnel
+                                </p>
+
+                            </label>
+
+                        </div>
+
+                    @endif
+
+
+                    {{-- =====================================================
+                         LABORERS
+                         Hidden for Part-Time
+                    ====================================================== --}}
+
+                    @if(request('employment_type') !== 'Part-Time')
+
+                        <div class="col-lg-4 col-md-6">
+
+                            <input
+                                class="btn-check"
+                                type="radio"
+                                name="department"
+                                id="laborers"
+                                value="Laborers"
+                            >
+
+                            <label
+                                class="department-card"
+                                for="laborers"
+                            >
+
+                                <i class="bi bi-person-workspace"></i>
+
+                                <h5>
+                                    Laborers
+                                </h5>
+
+                                <p>
+                                    Maintenance & Utility Personnel
+                                </p>
+
+                            </label>
+
+                        </div>
+
+                    @endif
 
                 </div>
 
 
+                <div class="d-grid mt-5">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-lg"
+                    >
+
+                        Generate Credentials
+
+                        <i class="bi bi-key-fill ms-2"></i>
+
+                    </button>
+
+                </div>
+
+            </form>
+
         </div>
-
-        <div class="d-grid mt-5">
-
-            <button type="submit" class="btn btn-primary btn-lg">
-
-                Generate Credentials
-
-                <i class="bi bi-key-fill ms-2"></i>
-
-            </button>
-
-        </div>
-
-        </form>
 
     </div>
 
-    </div>
 
-    <script>
-        const generateBtn = document.getElementById("generate");
-
-        const continueBtn = document.getElementById("continueBtn");
-
-        generateBtn.addEventListener("click", () => {
-
-            const year = new Date().getFullYear();
-
-            const number = Math.floor(Math.random() * 9000) + 1000;
-
-            document.getElementById("email").value =
-                `EMP${year}${number}@pap-pay.local`;
-
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
-
-            let pass = "";
-
-            for (let i = 0; i < 10; i++) {
-
-                pass += chars.charAt(Math.floor(Math.random() * chars.length));
-
-            }
-
-            document.getElementById("password").value = pass;
-
-            continueBtn.disabled = false;
-
-        });
-    </script>
+    {{-- =========================================================
+         SUCCESS MODAL
+    ========================================================== --}}
 
     @if (session('success'))
-        <div class="modal fade" id="successModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+
+        <div
+            class="modal fade"
+            id="successModal"
+            tabindex="-1"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+        >
 
             <div class="modal-dialog modal-dialog-centered">
 
@@ -364,20 +455,19 @@
 
                         <div class="mb-4">
 
-                            <i class="bi bi-check-circle-fill text-success" style="font-size:70px;"></i>
+                            <i
+                                class="bi bi-check-circle-fill text-success"
+                                style="font-size:70px;"
+                            ></i>
 
                         </div>
 
                         <h3 class="fw-bold mb-3">
-
                             Employee Created Successfully
-
                         </h3>
 
                         <p class="text-muted">
-
                             Give these credentials to the employee.
-
                         </p>
 
                         <hr>
@@ -412,7 +502,10 @@
 
                         <div class="d-grid gap-2 mt-4">
 
-                            <a href="{{ route('employees.index') }}" class="btn btn-primary">
+                            <a
+                                href="{{ route('employees.index') }}"
+                                class="btn btn-primary"
+                            >
 
                                 <i class="bi bi-people-fill me-2"></i>
 
@@ -420,14 +513,31 @@
 
                             </a>
 
-                            <a href="{{ route('users.employment') }}" class="btn btn-success">
+
+                            <a
+                                href="{{ route('users.employment') }}"
+                                class="btn btn-success"
+                            >
+
                                 <i class="bi bi-arrow-repeat me-2"></i>
+
                                 Go to Employment Type
+
                             </a>
 
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+
+                            <button
+                                type="button"
+                                class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal"
+                            >
+
                                 <i class="bi bi-plus-circle me-2"></i>
-                                Create Another {{ $employmentType ?? request('employment_type') }} Employee
+
+                                Create Another
+                                {{ $employmentType ?? request('employment_type') }}
+                                Employee
+
                             </button>
 
                         </div>
@@ -439,11 +549,17 @@
             </div>
 
         </div>
+
     @endif
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+
     @if (session('success'))
+
         <script>
+
             document.addEventListener('DOMContentLoaded', function() {
 
                 let modal = new bootstrap.Modal(
@@ -453,7 +569,9 @@
                 modal.show();
 
             });
+
         </script>
+
     @endif
 
 </body>

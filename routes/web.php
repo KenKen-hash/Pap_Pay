@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\HolidayController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PayslipConcernController as AdminPayslipConcernController;
+use App\Http\Controllers\Admin\PartTimeSubjectController;
 
 
 Route::get('/', function () {
@@ -235,6 +236,7 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::post('/users/employee/setup', [UserWizardController::class, 'employeeSetup'])
             ->name('users.employee.setup');
+
 
         Route::get('/users/create/admin', [UserWizardController::class, 'adminForm'])
             ->name('users.admin');
@@ -449,6 +451,38 @@ Route::middleware(['auth', 'role:admin'])
         )->name('admin.payslip-concerns.recalculate');
 
         Route::resource('holidays', HolidayController::class);
+
+
+        // =========================================================
+// PART-TIME SUBJECT ASSIGNMENT
+// =========================================================
+
+Route::get(
+    '/subject-assignment',
+    [PartTimeSubjectController::class, 'index']
+)->name('subject_assignment');
+
+Route::post(
+    '/subject-assignment',
+    [PartTimeSubjectController::class, 'store']
+)->name('subject_assignment.store');
+
+Route::get(
+    '/subject-assignment/{partTimeSubject}/edit',
+    [PartTimeSubjectController::class, 'edit']
+)->name('subject_assignment.edit');
+
+Route::put(
+    '/subject-assignment/{partTimeSubject}',
+    [PartTimeSubjectController::class, 'update']
+)->name('subject_assignment.update');
+
+Route::delete(
+    '/subject-assignment/{partTimeSubject}',
+    [PartTimeSubjectController::class, 'destroy']
+)->name('subject_assignment.destroy');
+
+
     });
 
 

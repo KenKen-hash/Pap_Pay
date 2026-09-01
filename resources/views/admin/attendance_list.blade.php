@@ -63,7 +63,7 @@
                 </a>
             </div>
 
-             <nav class="sidebar-nav">
+            <nav class="sidebar-nav">
                 <a class="nav-link" href="{{ route('admin-dashboard') }}">
                     <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
                     <span class="nav-text">Home</span>
@@ -166,7 +166,7 @@
                         </button>
 
 
-                       <div class="dropdown">
+                        <div class="dropdown">
 
                             <button class="icon-button" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false" aria-label="Notifications">
@@ -235,18 +235,23 @@
                                 </span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="{{ route('payroll') }}">Profile</a></li>
-                                <li><a class="dropdown-item" href="{{ route('settings') }}">Account settings</a>
-                                </li>
                                 <li>
-                                    <hr class="dropdown-divider">
+
+                                    <form method="POST" action="{{ route('logout') }}">
+
+                                        @csrf
+
+                                        <button type="submit" class="dropdown-item">
+
+                                            Sign out
+
+                                        </button>
+
+                                    </form>
+
                                 </li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item">
-                                        Sign out
-                                    </button>
-                                </form>
+
+
                             </ul>
                         </div>
                     </div>

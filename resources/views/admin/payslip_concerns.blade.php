@@ -168,35 +168,25 @@
 
                         </button>
 
-                        <ul class="dropdown-menu dropdown-menu-end">
+                          <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
 
-                            <li>
-                                <a
-                                    class="dropdown-item"
-                                    href="{{ route('my_profile') }}"
-                                >
-                                    My Profile
-                                </a>
-                            </li>
+                                    <form method="POST" action="{{ route('logout') }}">
 
-                            <li>
+                                        @csrf
 
-                                <form method="POST" action="{{ route('logout') }}">
+                                        <button type="submit" class="dropdown-item">
 
-                                    @csrf
+                                            Sign out
 
-                                    <button
-                                        type="submit"
-                                        class="dropdown-item"
-                                    >
-                                        Sign out
-                                    </button>
+                                        </button>
 
-                                </form>
+                                    </form>
 
-                            </li>
+                                </li>
 
-                        </ul>
+
+                            </ul>
 
                     </div>
 

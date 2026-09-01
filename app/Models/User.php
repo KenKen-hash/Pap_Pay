@@ -15,6 +15,8 @@ use App\Models\OfficialBusiness;
 use App\Models\Payroll;
 use App\Models\Notification;
 use App\Models\EmployeeSalaryConfig;
+use App\Models\PartTimeSubject;
+use App\Models\PartTimeAttendance;
 
 
 class User extends Authenticatable
@@ -136,4 +138,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payslip::class);
     }
+
+    public function partTimeSubjects(): HasMany
+{
+    return $this->hasMany(
+        PartTimeSubject::class,
+        'user_id'
+    );
+}
+
+public function partTimeAttendances(): HasMany
+{
+    return $this->hasMany(
+        PartTimeAttendance::class,
+        'user_id'
+    );
+}
 }

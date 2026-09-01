@@ -1164,24 +1164,6 @@
                         <ul class="dropdown-menu dropdown-menu-end">
 
                             <li>
-                                <a class="dropdown-item"
-                                   href="{{ route('payroll') }}">
-                                    Profile
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item"
-                                   href="{{ route('settings') }}">
-                                    Account settings
-                                </a>
-                            </li>
-
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li>
 
                                 <form method="POST"
                                       action="{{ route('logout') }}">
@@ -1722,7 +1704,7 @@
 
                                 <th>Employee ID</th>
 
-                                <th>Position</th>
+                                <th>Employment Type</th>
 
                                 <th>Status</th>
 
@@ -1743,7 +1725,8 @@
                                     ($employee->middle_name ?? '') . ' ' .
                                     ($employee->last_name ?? '') . ' ' .
                                     ($employee->employee_id ?? '') . ' ' .
-                                    ($employee->position ?? '')
+                                    ($employee->position ?? '') . ' ' .
+                                    ($employee->employment_type ?? '')
                                 ) }}">
 
                                 <td>
@@ -1788,8 +1771,12 @@
                                 </td>
 
 
+                                <!-- EMPLOYMENT TYPE -->
+
                                 <td>
-                                    {{ $employee->position ?? 'N/A' }}
+
+                                    {{ $employee->employment_type ?? 'N/A' }}
+
                                 </td>
 
 

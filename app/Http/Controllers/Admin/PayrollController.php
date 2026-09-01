@@ -113,43 +113,43 @@ class PayrollController extends Controller
         $validated = $request->validate([
 
             'user_id' =>
-                'required|exists:users,id',
+            'required|exists:users,id',
 
             'basic_salary' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'daily_rate' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'overtime_rate' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'late_deduction_rate' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'undertime_deduction_rate' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'payroll_period' =>
-                'nullable|in:Monthly,Every 15 Days,Weekly',
+            'nullable|in:Monthly,Every 15 Days,Weekly',
 
             'sss' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'philhealth' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'pagibig' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'hmo' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'honorarium' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'teaching_load_units_taken' =>
-                'nullable|integer|min:0',
+            'nullable|integer|min:0',
         ]);
 
 
@@ -193,7 +193,7 @@ class PayrollController extends Controller
             $teachingLoadRequiredUnit =
                 (int) (
                     $departmentConfig
-                        ->teaching_load_unit_required
+                    ->teaching_load_unit_required
                     ?? 0
                 );
 
@@ -201,7 +201,7 @@ class PayrollController extends Controller
             $teachingLoadPrice =
                 (float) (
                     $departmentConfig
-                        ->teaching_load_price
+                    ->teaching_load_price
                     ?? 0
                 );
         }
@@ -215,8 +215,8 @@ class PayrollController extends Controller
 
         $honorarium =
             isset($validated['honorarium'])
-                ? (float) $validated['honorarium']
-                : 0;
+            ? (float) $validated['honorarium']
+            : 0;
 
 
         /*
@@ -229,62 +229,62 @@ class PayrollController extends Controller
 
             [
                 'user_id' =>
-                    $validated['user_id'],
+                $validated['user_id'],
             ],
 
             [
 
                 'basic_salary' =>
-                    $validated['basic_salary'] ?? 0,
+                $validated['basic_salary'] ?? 0,
 
                 'payroll_period' =>
-                    $validated['payroll_period']
+                $validated['payroll_period']
                     ?? (
                         $departmentConfig->payroll_period
                         ?? 'Every 15 Days'
                     ),
 
                 'daily_rate' =>
-                    $validated['daily_rate'] ?? 0,
+                $validated['daily_rate'] ?? 0,
 
                 'overtime_rate' =>
-                    $validated['overtime_rate'] ?? 0,
+                $validated['overtime_rate'] ?? 0,
 
                 'late_deduction_rate' =>
-                    $validated['late_deduction_rate'] ?? 0,
+                $validated['late_deduction_rate'] ?? 0,
 
                 'undertime_deduction_rate' =>
-                    $validated['undertime_deduction_rate'] ?? 0,
+                $validated['undertime_deduction_rate'] ?? 0,
 
                 'sss' =>
-                    $validated['sss'] ?? 0,
+                $validated['sss'] ?? 0,
 
                 'philhealth' =>
-                    $validated['philhealth'] ?? 0,
+                $validated['philhealth'] ?? 0,
 
                 'pagibig' =>
-                    $validated['pagibig'] ?? 0,
+                $validated['pagibig'] ?? 0,
 
                 'hmo' =>
-                    $validated['hmo'] ?? 0,
+                $validated['hmo'] ?? 0,
 
                 'honorarium' =>
-                    $honorarium,
+                $honorarium,
 
                 'teaching_load_units_taken' =>
-                    $validated['teaching_load_units_taken'] ?? 0,
+                $validated['teaching_load_units_taken'] ?? 0,
 
                 'teaching_load_unit_required' =>
-                    $teachingLoadRequiredUnit,
+                $teachingLoadRequiredUnit,
 
                 'teaching_load_price' =>
-                    $teachingLoadPrice,
+                $teachingLoadPrice,
 
                 'teaching_load' =>
-                    0,
+                0,
 
                 'use_department_default' =>
-                    false,
+                false,
             ]
         );
 
@@ -292,10 +292,10 @@ class PayrollController extends Controller
         return response()->json([
 
             'success' =>
-                true,
+            true,
 
             'message' =>
-                'Employee salary configuration saved successfully.',
+            'Employee salary configuration saved successfully.',
         ]);
     }
 
@@ -311,46 +311,46 @@ class PayrollController extends Controller
         $validated = $request->validate([
 
             'department' =>
-                'required|string',
+            'required|string',
 
             'default_basic_salary' =>
-                'required|numeric|min:0',
+            'required|numeric|min:0',
 
             'daily_rate' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'overtime_rate' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'late_deduction_rate' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'undertime_deduction_rate' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'payroll_period' =>
-                'required|in:Monthly,Every 15 Days,Weekly',
+            'required|in:Monthly,Every 15 Days,Weekly',
 
             'sss' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'philhealth' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'pagibig' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'hmo' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'honorarium' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
 
             'teaching_load_unit_required' =>
-                'required|integer|min:0',
+            'required|integer|min:0',
 
             'teaching_load_price' =>
-                'nullable|numeric|min:0',
+            'nullable|numeric|min:0',
         ]);
 
 
@@ -365,49 +365,49 @@ class PayrollController extends Controller
 
                 [
                     'department' =>
-                        $validated['department'],
+                    $validated['department'],
                 ],
 
                 [
 
                     'default_basic_salary' =>
-                        $validated['default_basic_salary'],
+                    $validated['default_basic_salary'],
 
                     'daily_rate' =>
-                        $validated['daily_rate'] ?? 0,
+                    $validated['daily_rate'] ?? 0,
 
                     'overtime_rate' =>
-                        $validated['overtime_rate'] ?? 0,
+                    $validated['overtime_rate'] ?? 0,
 
                     'late_deduction_rate' =>
-                        $validated['late_deduction_rate'] ?? 0,
+                    $validated['late_deduction_rate'] ?? 0,
 
                     'undertime_deduction_rate' =>
-                        $validated['undertime_deduction_rate'] ?? 0,
+                    $validated['undertime_deduction_rate'] ?? 0,
 
                     'payroll_period' =>
-                        $validated['payroll_period'],
+                    $validated['payroll_period'],
 
                     'sss' =>
-                        $validated['sss'] ?? 0,
+                    $validated['sss'] ?? 0,
 
                     'philhealth' =>
-                        $validated['philhealth'] ?? 0,
+                    $validated['philhealth'] ?? 0,
 
                     'pagibig' =>
-                        $validated['pagibig'] ?? 0,
+                    $validated['pagibig'] ?? 0,
 
                     'hmo' =>
-                        $validated['hmo'] ?? 0,
+                    $validated['hmo'] ?? 0,
 
                     'honorarium' =>
-                        $validated['honorarium'] ?? 0,
+                    $validated['honorarium'] ?? 0,
 
                     'teaching_load_unit_required' =>
-                        $validated['teaching_load_unit_required'],
+                    $validated['teaching_load_unit_required'],
 
                     'teaching_load_price' =>
-                        $validated['teaching_load_price'] ?? 0,
+                    $validated['teaching_load_price'] ?? 0,
                 ]
             );
 
@@ -423,11 +423,11 @@ class PayrollController extends Controller
                 'role',
                 'employee'
             )
-                ->where(
-                    'department',
-                    $validated['department']
-                )
-                ->get();
+            ->where(
+                'department',
+                $validated['department']
+            )
+            ->get();
 
 
         foreach ($employees as $employee) {
@@ -444,81 +444,81 @@ class PayrollController extends Controller
                 EmployeeSalaryConfig::create([
 
                     'user_id' =>
-                        $employee->id,
+                    $employee->id,
 
                     'basic_salary' =>
-                        $departmentConfig
-                            ->default_basic_salary
-                            ?? 0,
+                    $departmentConfig
+                        ->default_basic_salary
+                        ?? 0,
 
                     'payroll_period' =>
-                        $departmentConfig
-                            ->payroll_period
-                            ?? 'Every 15 Days',
+                    $departmentConfig
+                        ->payroll_period
+                        ?? 'Every 15 Days',
 
                     'daily_rate' =>
-                        $departmentConfig
-                            ->daily_rate
-                            ?? 0,
+                    $departmentConfig
+                        ->daily_rate
+                        ?? 0,
 
                     'overtime_rate' =>
-                        $departmentConfig
-                            ->overtime_rate
-                            ?? 0,
+                    $departmentConfig
+                        ->overtime_rate
+                        ?? 0,
 
                     'late_deduction_rate' =>
-                        $departmentConfig
-                            ->late_deduction_rate
-                            ?? 0,
+                    $departmentConfig
+                        ->late_deduction_rate
+                        ?? 0,
 
                     'undertime_deduction_rate' =>
-                        $departmentConfig
-                            ->undertime_deduction_rate
-                            ?? 0,
+                    $departmentConfig
+                        ->undertime_deduction_rate
+                        ?? 0,
 
                     'sss' =>
-                        $departmentConfig
-                            ->sss
-                            ?? 0,
+                    $departmentConfig
+                        ->sss
+                        ?? 0,
 
                     'philhealth' =>
-                        $departmentConfig
-                            ->philhealth
-                            ?? 0,
+                    $departmentConfig
+                        ->philhealth
+                        ?? 0,
 
                     'pagibig' =>
-                        $departmentConfig
-                            ->pagibig
-                            ?? 0,
+                    $departmentConfig
+                        ->pagibig
+                        ?? 0,
 
                     'hmo' =>
-                        $departmentConfig
-                            ->hmo
-                            ?? 0,
+                    $departmentConfig
+                        ->hmo
+                        ?? 0,
 
                     'honorarium' =>
-                        $departmentConfig
-                            ->honorarium
-                            ?? 0,
+                    $departmentConfig
+                        ->honorarium
+                        ?? 0,
 
                     'teaching_load_units_taken' =>
-                        0,
+                    0,
 
                     'teaching_load_unit_required' =>
-                        $departmentConfig
-                            ->teaching_load_unit_required
-                            ?? 0,
+                    $departmentConfig
+                        ->teaching_load_unit_required
+                        ?? 0,
 
                     'teaching_load_price' =>
-                        $departmentConfig
-                            ->teaching_load_price
-                            ?? 0,
+                    $departmentConfig
+                        ->teaching_load_price
+                        ?? 0,
 
                     'teaching_load' =>
-                        0,
+                    0,
 
                     'use_department_default' =>
-                        true,
+                    true,
                 ]);
 
                 continue;
@@ -533,14 +533,14 @@ class PayrollController extends Controller
 
             $employeeConfig->teaching_load_unit_required =
                 $departmentConfig
-                    ->teaching_load_unit_required
-                    ?? 0;
+                ->teaching_load_unit_required
+                ?? 0;
 
 
             $employeeConfig->teaching_load_price =
                 $departmentConfig
-                    ->teaching_load_price
-                    ?? 0;
+                ->teaching_load_price
+                ?? 0;
 
 
             /*
@@ -556,58 +556,58 @@ class PayrollController extends Controller
 
                 $employeeConfig->basic_salary =
                     $departmentConfig
-                        ->default_basic_salary
-                        ?? 0;
+                    ->default_basic_salary
+                    ?? 0;
 
                 $employeeConfig->payroll_period =
                     $departmentConfig
-                        ->payroll_period
-                        ?? 'Every 15 Days';
+                    ->payroll_period
+                    ?? 'Every 15 Days';
 
                 $employeeConfig->daily_rate =
                     $departmentConfig
-                        ->daily_rate
-                        ?? 0;
+                    ->daily_rate
+                    ?? 0;
 
                 $employeeConfig->overtime_rate =
                     $departmentConfig
-                        ->overtime_rate
-                        ?? 0;
+                    ->overtime_rate
+                    ?? 0;
 
                 $employeeConfig->late_deduction_rate =
                     $departmentConfig
-                        ->late_deduction_rate
-                        ?? 0;
+                    ->late_deduction_rate
+                    ?? 0;
 
                 $employeeConfig->undertime_deduction_rate =
                     $departmentConfig
-                        ->undertime_deduction_rate
-                        ?? 0;
+                    ->undertime_deduction_rate
+                    ?? 0;
 
                 $employeeConfig->sss =
                     $departmentConfig
-                        ->sss
-                        ?? 0;
+                    ->sss
+                    ?? 0;
 
                 $employeeConfig->philhealth =
                     $departmentConfig
-                        ->philhealth
-                        ?? 0;
+                    ->philhealth
+                    ?? 0;
 
                 $employeeConfig->pagibig =
                     $departmentConfig
-                        ->pagibig
-                        ?? 0;
+                    ->pagibig
+                    ?? 0;
 
                 $employeeConfig->hmo =
                     $departmentConfig
-                        ->hmo
-                        ?? 0;
+                    ->hmo
+                    ?? 0;
 
                 $employeeConfig->honorarium =
                     $departmentConfig
-                        ->honorarium
-                        ?? 0;
+                    ->honorarium
+                    ?? 0;
             }
 
 
@@ -618,24 +618,24 @@ class PayrollController extends Controller
         return response()->json([
 
             'success' =>
-                true,
+            true,
 
             'message' =>
-                'Department payroll configuration saved successfully and employee configurations were synchronized.',
+            'Department payroll configuration saved successfully and employee configurations were synchronized.',
 
             'teaching_load_unit_required' =>
-                (int) (
-                    $departmentConfig
-                        ->teaching_load_unit_required
-                    ?? 0
-                ),
+            (int) (
+                $departmentConfig
+                ->teaching_load_unit_required
+                ?? 0
+            ),
 
             'teaching_load_price' =>
-                (float) (
-                    $departmentConfig
-                        ->teaching_load_price
-                    ?? 0
-                ),
+            (float) (
+                $departmentConfig
+                ->teaching_load_price
+                ?? 0
+            ),
         ]);
     }
 
@@ -717,13 +717,9 @@ class PayrollController extends Controller
                 function ($record) {
 
                     return
-                        !empty(
-                            $record->morning_time_in
-                        )
+                        !empty($record->morning_time_in)
                         ||
-                        !empty(
-                            $record->afternoon_time_in
-                        );
+                        !empty($record->afternoon_time_in);
                 }
             );
 
@@ -1109,7 +1105,7 @@ class PayrollController extends Controller
         $teachingLoadRequiredUnit =
             (int) (
                 $departmentConfig
-                    ->teaching_load_unit_required
+                ->teaching_load_unit_required
                 ??
                 $config->teaching_load_unit_required
                 ??
@@ -1126,7 +1122,7 @@ class PayrollController extends Controller
         $teachingLoadPrice =
             (float) (
                 $departmentConfig
-                    ->teaching_load_price
+                ->teaching_load_price
                 ??
                 $config->teaching_load_price
                 ??
@@ -1173,7 +1169,6 @@ class PayrollController extends Controller
 
             $teachingLoad =
                 $fullTeachingLoadPay / 2;
-
         } else {
 
             $teachingLoad = 0;
@@ -1295,43 +1290,43 @@ class PayrollController extends Controller
         return [
 
             'attendance' =>
-                $attendance,
+            $attendance,
 
             'present_days' =>
-                $presentDays,
+            $presentDays,
 
             'worked_holidays' =>
-                $workedHolidayDays,
+            $workedHolidayDays,
 
             'total_holidays' =>
-                $totalHolidays,
+            $totalHolidays,
 
             'late_minutes' =>
-                $lateMinutes,
+            $lateMinutes,
 
             'undertime_minutes' =>
-                $undertimeMinutes,
+            $undertimeMinutes,
 
             'overtime_minutes' =>
-                $overtimeMinutes,
+            $overtimeMinutes,
 
             'overtime_hours' =>
-                round(
-                    $overtimeHours,
-                    2
-                ),
+            round(
+                $overtimeHours,
+                2
+            ),
 
             'overtime_rate' =>
-                $overtimeRate,
+            $overtimeRate,
 
             'overtime_pay' =>
-                round(
-                    $overtimePay,
-                    2
-                ),
+            round(
+                $overtimePay,
+                2
+            ),
 
             'daily_rate' =>
-                $dailyRate,
+            $dailyRate,
 
 
             /*
@@ -1341,13 +1336,13 @@ class PayrollController extends Controller
             */
 
             'holiday_pay' =>
-                round(
-                    $holidayPay,
-                    2
-                ),
+            round(
+                $holidayPay,
+                2
+            ),
 
             'holiday_dates_worked' =>
-                $holidayDatesWorked,
+            $holidayDatesWorked,
 
 
             /*
@@ -1357,22 +1352,22 @@ class PayrollController extends Controller
             */
 
             'teaching_load_units' =>
-                $additionalTeachingUnits,
+            $additionalTeachingUnits,
 
             'teaching_load_required_unit' =>
-                $teachingLoadRequiredUnit,
+            $teachingLoadRequiredUnit,
 
             'teaching_load_rate' =>
-                round(
-                    $teachingLoadPrice,
-                    2
-                ),
+            round(
+                $teachingLoadPrice,
+                2
+            ),
 
             'teaching_load' =>
-                round(
-                    $teachingLoad,
-                    2
-                ),
+            round(
+                $teachingLoad,
+                2
+            ),
 
 
             /*
@@ -1382,16 +1377,16 @@ class PayrollController extends Controller
             */
 
             'basic_pay' =>
-                round(
-                    $basicPay,
-                    2
-                ),
+            round(
+                $basicPay,
+                2
+            ),
 
             'honorarium' =>
-                round(
-                    $honorarium,
-                    2
-                ),
+            round(
+                $honorarium,
+                2
+            ),
 
 
             /*
@@ -1401,16 +1396,16 @@ class PayrollController extends Controller
             */
 
             'sss' =>
-                $sss,
+            $sss,
 
             'philhealth' =>
-                $philhealth,
+            $philhealth,
 
             'pagibig' =>
-                $pagibig,
+            $pagibig,
 
             'hmo' =>
-                $hmo,
+            $hmo,
 
 
             /*
@@ -1420,22 +1415,22 @@ class PayrollController extends Controller
             */
 
             'late_deduction_rate' =>
-                $lateDeductionRate,
+            $lateDeductionRate,
 
             'undertime_deduction_rate' =>
-                $undertimeDeductionRate,
+            $undertimeDeductionRate,
 
             'late_deduction' =>
-                round(
-                    $lateDeduction,
-                    2
-                ),
+            round(
+                $lateDeduction,
+                2
+            ),
 
             'undertime_deduction' =>
-                round(
-                    $undertimeDeduction,
-                    2
-                ),
+            round(
+                $undertimeDeduction,
+                2
+            ),
 
 
             /*
@@ -1445,22 +1440,22 @@ class PayrollController extends Controller
             */
 
             'gross_salary' =>
-                round(
-                    $grossSalary,
-                    2
-                ),
+            round(
+                $grossSalary,
+                2
+            ),
 
             'benefits' =>
-                round(
-                    $benefits,
-                    2
-                ),
+            round(
+                $benefits,
+                2
+            ),
 
             'net_salary' =>
-                round(
-                    $netSalary,
-                    2
-                ),
+            round(
+                $netSalary,
+                2
+            ),
         ];
     }
 
@@ -1476,13 +1471,13 @@ class PayrollController extends Controller
         $request->validate([
 
             'period_start' =>
-                'required|date',
+            'required|date',
 
             'period_end' =>
-                'required|date',
+            'required|date',
 
             'employees' =>
-                'required|array',
+            'required|array',
 
         ]);
 
@@ -1553,17 +1548,17 @@ class PayrollController extends Controller
                 */
 
                 'id' =>
-                    $employee->id,
+                $employee->id,
 
                 'name' =>
-                    trim(
-                        $employee->first_name
+                trim(
+                    $employee->first_name
                         . ' '
                         . $employee->last_name
-                    ),
+                ),
 
                 'department' =>
-                    $employee->department,
+                $employee->department,
 
 
                 /*
@@ -1573,12 +1568,12 @@ class PayrollController extends Controller
                 */
 
                 'basic_salary' =>
-                    (float) (
-                        $config->basic_salary ?? 0
-                    ),
+                (float) (
+                    $config->basic_salary ?? 0
+                ),
 
                 'daily_rate' =>
-                    $calculation['daily_rate'],
+                $calculation['daily_rate'],
 
 
                 /*
@@ -1588,28 +1583,28 @@ class PayrollController extends Controller
                 */
 
                 'total_attendance' =>
-                    $calculation['present_days'],
+                $calculation['present_days'],
 
                 'present_days' =>
-                    $calculation['present_days'],
+                $calculation['present_days'],
 
                 'total_holidays' =>
-                    $calculation['total_holidays'],
+                $calculation['total_holidays'],
 
                 'worked_holidays' =>
-                    $calculation['worked_holidays'],
+                $calculation['worked_holidays'],
 
                 'late_minutes' =>
-                    $calculation['late_minutes'],
+                $calculation['late_minutes'],
 
                 'undertime_minutes' =>
-                    $calculation['undertime_minutes'],
+                $calculation['undertime_minutes'],
 
                 'overtime_minutes' =>
-                    $calculation['overtime_minutes'],
+                $calculation['overtime_minutes'],
 
                 'overtime_hours' =>
-                    $calculation['overtime_hours'],
+                $calculation['overtime_hours'],
 
 
                 /*
@@ -1619,13 +1614,13 @@ class PayrollController extends Controller
                 */
 
                 'overtime_rate' =>
-                    $calculation['overtime_rate'],
+                $calculation['overtime_rate'],
 
                 'late_deduction_rate' =>
-                    $calculation['late_deduction_rate'],
+                $calculation['late_deduction_rate'],
 
                 'undertime_deduction_rate' =>
-                    $calculation['undertime_deduction_rate'],
+                $calculation['undertime_deduction_rate'],
 
 
                 /*
@@ -1635,16 +1630,16 @@ class PayrollController extends Controller
                 */
 
                 'basic_pay' =>
-                    $calculation['basic_pay'],
+                $calculation['basic_pay'],
 
                 'holiday_pay' =>
-                    $calculation['holiday_pay'],
+                $calculation['holiday_pay'],
 
                 'overtime_pay' =>
-                    $calculation['overtime_pay'],
+                $calculation['overtime_pay'],
 
                 'honorarium' =>
-                    $calculation['honorarium'],
+                $calculation['honorarium'],
 
 
                 /*
@@ -1654,16 +1649,16 @@ class PayrollController extends Controller
                 */
 
                 'teaching_load_units' =>
-                    $calculation['teaching_load_units'],
+                $calculation['teaching_load_units'],
 
                 'teaching_load_required_unit' =>
-                    $calculation['teaching_load_required_unit'],
+                $calculation['teaching_load_required_unit'],
 
                 'teaching_load_rate' =>
-                    $calculation['teaching_load_rate'],
+                $calculation['teaching_load_rate'],
 
                 'teaching_load' =>
-                    $calculation['teaching_load'],
+                $calculation['teaching_load'],
 
 
                 /*
@@ -1673,7 +1668,7 @@ class PayrollController extends Controller
                 */
 
                 'benefits' =>
-                    $calculation['benefits'],
+                $calculation['benefits'],
 
 
                 /*
@@ -1683,10 +1678,10 @@ class PayrollController extends Controller
                 */
 
                 'late_deduction' =>
-                    $calculation['late_deduction'],
+                $calculation['late_deduction'],
 
                 'undertime_deduction' =>
-                    $calculation['undertime_deduction'],
+                $calculation['undertime_deduction'],
 
 
                 /*
@@ -1696,10 +1691,10 @@ class PayrollController extends Controller
                 */
 
                 'gross_salary' =>
-                    $calculation['gross_salary'],
+                $calculation['gross_salary'],
 
                 'net_salary' =>
-                    $calculation['net_salary'],
+                $calculation['net_salary'],
             ];
         }
 
@@ -1713,10 +1708,10 @@ class PayrollController extends Controller
         return response()->json([
 
             'success' =>
-                true,
+            true,
 
             'preview' =>
-                $preview,
+            $preview,
 
         ]);
     }
@@ -1733,13 +1728,13 @@ class PayrollController extends Controller
         $request->validate([
 
             'period_start' =>
-                'required|date',
+            'required|date',
 
             'period_end' =>
-                'required|date',
+            'required|date',
 
             'employees' =>
-                'required|array',
+            'required|array',
         ]);
 
 
@@ -1777,15 +1772,15 @@ class PayrollController extends Controller
                     'user_id',
                     $employeeId
                 )
-                    ->where(
-                        'period_start',
-                        $request->period_start
-                    )
-                    ->where(
-                        'period_end',
-                        $request->period_end
-                    )
-                    ->exists();
+                ->where(
+                    'period_start',
+                    $request->period_start
+                )
+                ->where(
+                    'period_end',
+                    $request->period_end
+                )
+                ->exists();
 
 
             if ($existingPayslip) {
@@ -1835,76 +1830,76 @@ class PayrollController extends Controller
             Payslip::create([
 
                 'user_id' =>
-                    $employee->id,
+                $employee->id,
 
                 'period_start' =>
-                    $request->period_start,
+                $request->period_start,
 
                 'period_end' =>
-                    $request->period_end,
+                $request->period_end,
 
                 'present_days' =>
-                    $calculation['present_days'],
+                $calculation['present_days'],
 
                 'worked_holidays' =>
-                    $calculation['worked_holidays'],
+                $calculation['worked_holidays'],
 
                 'late_minutes' =>
-                    $calculation['late_minutes'],
+                $calculation['late_minutes'],
 
                 'undertime_minutes' =>
-                    $calculation['undertime_minutes'],
+                $calculation['undertime_minutes'],
 
                 'overtime_minutes' =>
-                    $calculation['overtime_minutes'],
+                $calculation['overtime_minutes'],
 
                 'overtime_hours' =>
-                    $calculation['overtime_hours'],
+                $calculation['overtime_hours'],
 
                 'daily_rate' =>
-                    $calculation['daily_rate'],
+                $calculation['daily_rate'],
 
                 'holiday_pay' =>
-                    $calculation['holiday_pay'],
+                $calculation['holiday_pay'],
 
                 'ot' =>
-                    $calculation['overtime_pay'],
+                $calculation['overtime_pay'],
 
                 'honorarium' =>
-                    $calculation['honorarium'],
+                $calculation['honorarium'],
 
-                'teaching_load' =>
-                    $calculation['teaching_load'],
+                'teaching_load_pay' =>
+                $calculation['teaching_load'],
 
                 'sss' =>
-                    $calculation['sss'],
+                $calculation['sss'],
 
                 'philhealth' =>
-                    $calculation['philhealth'],
+                $calculation['philhealth'],
 
                 'pagibig' =>
-                    $calculation['pagibig'],
+                $calculation['pagibig'],
 
                 'hmo' =>
-                    $calculation['hmo'],
+                $calculation['hmo'],
 
                 'late_deduction' =>
-                    $calculation['late_deduction'],
+                $calculation['late_deduction'],
 
                 'undertime_deduction' =>
-                    $calculation['undertime_deduction'],
+                $calculation['undertime_deduction'],
 
                 'gross_salary' =>
-                    $calculation['gross_salary'],
+                $calculation['gross_salary'],
 
                 'benefits' =>
-                    $calculation['benefits'],
+                $calculation['benefits'],
 
                 'net_salary' =>
-                    $calculation['net_salary'],
+                $calculation['net_salary'],
 
                 'status' =>
-                    'Generated',
+                'Generated',
             ]);
 
 
@@ -1915,17 +1910,20 @@ class PayrollController extends Controller
         return response()->json([
 
             'success' =>
-                true,
+            true,
 
             'generated' =>
-                $generated,
+            $generated,
 
             'skipped' =>
-                $skipped,
+            $skipped,
 
             'message' =>
-                $generated .
+            $generated .
                 ' payslip(s) generated successfully.',
         ]);
     }
 }
+
+
+

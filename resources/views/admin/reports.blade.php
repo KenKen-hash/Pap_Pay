@@ -193,19 +193,24 @@
                                     {{ Auth::user()->name }}
                                 </span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="{{ route('payroll') }}">Profile</a></li>
-                                <li><a class="dropdown-item" href="{{ route('settings') }}">Account settings</a>
-                                </li>
+                              <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <hr class="dropdown-divider">
+
+                                    <form method="POST" action="{{ route('logout') }}">
+
+                                        @csrf
+
+                                        <button type="submit" class="dropdown-item">
+
+                                            Sign out
+
+                                        </button>
+
+                                    </form>
+
                                 </li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item">
-                                        Sign out
-                                    </button>
-                                </form>
+
+
                             </ul>
                         </div>
                     </div>

@@ -12,13 +12,18 @@ return new class extends Migration
 
             $table->id();
 
+            // Employee who filed the leave request
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();
 
+            // Leave information
             $table->string('leave_type');
 
-            $table->string('supervisor');
+            $table->enum('leave_pay_type', [
+                'Leave with pay',
+                'Leave without pay'
+            ]);
 
             $table->date('start_date');
 
@@ -32,12 +37,15 @@ return new class extends Migration
 
             $table->string('attachment')->nullable();
 
+            // Leave request status
             $table->enum('status', [
                 'Pending',
                 'Approved',
-                'Rejected'
+                'Rejected',
+                'Cancelled'
             ])->default('Pending');
 
+            // Admin who approved/rejected the request
             $table->foreignId('approved_by')
                 ->nullable()
                 ->constrained('users')

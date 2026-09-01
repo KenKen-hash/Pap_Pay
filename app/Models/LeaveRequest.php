@@ -12,7 +12,7 @@ class LeaveRequest extends Model
 
         'leave_type',
 
-        'supervisor',
+        'leave_pay_type',
 
         'start_date',
 
@@ -37,9 +37,15 @@ class LeaveRequest extends Model
     ];
 
     protected $casts = [
+
         'start_date' => 'date',
+
         'end_date' => 'date',
+
+        'return_date' => 'date',
+
         'approved_at' => 'datetime',
+
     ];
 
     /*
@@ -57,8 +63,12 @@ class LeaveRequest extends Model
     // Admin who approved/declined
     public function approver()
     {
-        return $this->belongsTo(User::class, 'approved_by');
+        return $this->belongsTo(
+            User::class,
+            'approved_by'
+        );
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -80,6 +90,7 @@ class LeaveRequest extends Model
     {
         return $this->status === 'Declined';
     }
+
     public function isCancelled()
     {
         return $this->status === 'Cancelled';

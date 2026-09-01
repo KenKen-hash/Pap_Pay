@@ -6,28 +6,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-        content="Pap Pay professional HR and payroll management dashboard">
+    <meta name="description" content="Pap Pay professional HR and payroll management dashboard">
 
     <meta name="theme-color" content="#172554">
 
     <title>Dashboard | Pap Pay</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet"
-        href="../../../../khen/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet"
-        href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
 
     <!-- Pap Pay Main CSS -->
-    <link rel="stylesheet"
-        href="../../../../khen/assets/css/style.css">
+    <link rel="stylesheet" href="../../../../khen/assets/css/style.css">
 
 
     <style>
-
         /* ==========================================================
            PAP PAY ADMIN DASHBOARD
         ========================================================== */
@@ -182,11 +177,9 @@
             color: #ffffff;
 
             background:
-                linear-gradient(
-                    135deg,
+                linear-gradient(135deg,
                     var(--pp-primary),
-                    var(--pp-primary-dark)
-                );
+                    var(--pp-primary-dark));
 
             border-radius: 15px;
 
@@ -469,11 +462,9 @@
 
             background:
 
-                linear-gradient(
-                    135deg,
+                linear-gradient(135deg,
                     rgba(49, 87, 213, .10),
-                    rgba(49, 87, 213, .025)
-                ),
+                    rgba(49, 87, 213, .025)),
 
                 var(--pp-surface);
         }
@@ -501,11 +492,9 @@
             justify-content: center;
 
             background:
-                linear-gradient(
-                    135deg,
+                linear-gradient(135deg,
                     var(--pp-primary),
-                    var(--pp-primary-dark)
-                );
+                    var(--pp-primary-dark));
 
             color: white;
 
@@ -729,8 +718,7 @@
                 color .2s ease;
         }
 
-        .quick-link:hover
-        .quick-link-arrow {
+        .quick-link:hover .quick-link-arrow {
 
             color:
                 var(--pp-primary);
@@ -1026,8 +1014,7 @@
 
         @media (max-width: 991.98px) {
 
-            .dashboard-content
-            .container-fluid {
+            .dashboard-content .container-fluid {
 
                 padding-left:
                     18px !important;
@@ -1080,8 +1067,7 @@
                     15.5px;
             }
 
-            .dashboard-content
-            .container-fluid {
+            .dashboard-content .container-fluid {
 
                 padding-left:
                     13px !important;
@@ -1344,8 +1330,7 @@
                     15px;
             }
 
-            .dashboard-content
-            .container-fluid {
+            .dashboard-content .container-fluid {
 
                 padding-left:
                     10px !important;
@@ -1414,7 +1399,7 @@
                     flex-start;
             }
 
-            .panel-header > * {
+            .panel-header>* {
 
                 max-width:
                     100%;
@@ -1527,8 +1512,7 @@
 
         @media (max-width: 360px) {
 
-            .dashboard-content
-            .container-fluid {
+            .dashboard-content .container-fluid {
 
                 padding-left:
                     8px !important;
@@ -1700,11 +1684,9 @@
 
             background:
 
-                linear-gradient(
-                    135deg,
+                linear-gradient(135deg,
                     rgba(49, 87, 213, .16),
-                    rgba(17, 26, 43, .4)
-                ),
+                    rgba(17, 26, 43, .4)),
 
                 var(--pp-surface);
         }
@@ -2010,7 +1992,6 @@
                     1 !important;
             }
         }
-
     </style>
 
 </head>
@@ -2019,460 +2000,387 @@
 <body>
 
 
-<div class="admin-shell">
+    <div class="admin-shell">
 
 
-    <!-- ==========================================================
+        <!-- ==========================================================
          SIDEBAR BACKDROP
     ========================================================== -->
 
-    <div class="sidebar-backdrop"
-         data-sidebar-close>
-    </div>
+        <div class="sidebar-backdrop" data-sidebar-close>
+        </div>
 
 
-    <!-- ==========================================================
+        <!-- ==========================================================
          SIDEBAR
     ========================================================== -->
 
-    <aside class="admin-sidebar"
-           id="adminSidebar"
-           aria-label="Main navigation">
+        <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
 
 
-        <div class="sidebar-header">
+            <div class="sidebar-header">
 
-            <a class="brand-mark"
-               href="{{ route('admin-dashboard') }}"
-               aria-label="Admin Dashboard">
+                <a class="brand-mark" href="{{ route('admin-dashboard') }}" aria-label="Admin Dashboard">
 
-                <img src="../../../khen/assets/images/logo.jpg"
-                     alt="Pap Pay Logo"
-                     class="brand-logo">
+                    <img src="../../../khen/assets/images/logo.jpg" alt="Pap Pay Logo" class="brand-logo">
 
-            </a>
+                </a>
 
-        </div>
+            </div>
 
 
-        <nav class="sidebar-nav">
+            <nav class="sidebar-nav">
 
 
-            <a class="nav-link active"
-               href="{{ route('admin-dashboard') }}">
+                <a class="nav-link active" href="{{ route('admin-dashboard') }}">
 
-                <span class="nav-icon">
-                    <i class="bi bi-speedometer2"></i>
+                    <span class="nav-icon">
+                        <i class="bi bi-speedometer2"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Home
+                    </span>
+
+                </a>
+
+
+                <a class="nav-link" href="{{ route('employees.index') }}">
+
+                    <span class="nav-icon">
+                        <i class="bi bi-people"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Employees
+                    </span>
+
+                </a>
+
+
+                <a class="nav-link" href="{{ route('attendance_list') }}">
+
+                    <span class="nav-icon">
+                        <i class="bi bi-calendar-check"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Attendance
+                    </span>
+
+                </a>
+
+
+                <a class="nav-link" href="{{ route('admin.leaves') }}">
+
+                    <span class="nav-icon">
+                        <i class="bi bi-calendar-x"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Leave Requests
+                    </span>
+
+                </a>
+
+
+                <a class="nav-link" href="{{ route('official_business') }}">
+
+                    <span class="nav-icon">
+                        <i class="bi bi-briefcase"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Official Business (OB)
+                    </span>
+
+                </a>
+
+
+                <a class="nav-link" href="{{ route('holidays.index') }}">
+
+                    <span class="nav-icon">
+                        <i class="bi bi-gear"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Holidays
+                    </span>
+
+                </a>
+
+
+                <a class="nav-link" href="{{ route('payroll') }}">
+
+                    <span class="nav-icon">
+                        <i class="bi bi-cash-stack"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Payroll
+                    </span>
+
+                </a>
+
+
+                <a class="nav-link" href="{{ route('payslip_list') }}">
+
+                    <span class="nav-icon">
+                        <i class="bi bi-receipt"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Payslips
+                    </span>
+
+                </a>
+
+
+                <a class="nav-link" href="{{ route('admin.payslip-concerns.index') }}">
+
+                    <span class="nav-icon">
+                        <i class="bi bi-exclamation-circle"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Payslip Concerns
+                    </span>
+
+                </a>
+
+
+                <a class="nav-link" href="{{ route('reports') }}">
+
+                    <span class="nav-icon">
+                        <i class="bi bi-bar-chart"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Reports
+                    </span>
+
+                </a>
+
+
+                <a class="nav-link" href="{{ route('announcements') }}">
+
+                    <span class="nav-icon">
+                        <i class="bi bi-megaphone"></i>
+                    </span>
+
+                    <span class="nav-text">
+                        Announcements
+                    </span>
+
+                </a>
+
+
+            </nav>
+
+
+            <!-- SIDEBAR USER -->
+
+            <div class="sidebar-user">
+
+                <img class="avatar-img avatar-md sidebar-user-avatar"
+                    src="{{ Auth::user()->photo
+                        ? asset('storage/' . Auth::user()->photo)
+                        : asset('khen/assets/images/avatar/avatar.jpg') }}"
+                    alt="{{ Auth::user()->name }}">
+
+                <strong>
+                    {{ Auth::user()->name }}
+                </strong>
+
+                <small>
+                    {{ ucfirst(Auth::user()->role ?? 'Employee') }}
+                </small>
+
+            </div>
+
+
+            <div class="sidebar-footer">
+
+                <span class="status-dot"></span>
+
+                <span class="sidebar-footer-text">
+                    System running smoothly
                 </span>
 
-                <span class="nav-text">
-                    Home
-                </span>
+            </div>
 
-            </a>
 
+        </aside>
 
-            <a class="nav-link"
-               href="{{ route('employees.index') }}">
 
-                <span class="nav-icon">
-                    <i class="bi bi-people"></i>
-                </span>
-
-                <span class="nav-text">
-                    Employees
-                </span>
-
-            </a>
-
-
-            <a class="nav-link"
-               href="{{ route('attendance_list') }}">
-
-                <span class="nav-icon">
-                    <i class="bi bi-calendar-check"></i>
-                </span>
-
-                <span class="nav-text">
-                    Attendance
-                </span>
-
-            </a>
-
-
-            <a class="nav-link"
-               href="{{ route('admin.leaves') }}">
-
-                <span class="nav-icon">
-                    <i class="bi bi-calendar-x"></i>
-                </span>
-
-                <span class="nav-text">
-                    Leave Requests
-                </span>
-
-            </a>
-
-
-            <a class="nav-link"
-               href="{{ route('official_business') }}">
-
-                <span class="nav-icon">
-                    <i class="bi bi-briefcase"></i>
-                </span>
-
-                <span class="nav-text">
-                    Official Business (OB)
-                </span>
-
-            </a>
-
-
-            <a class="nav-link"
-               href="{{ route('holidays.index') }}">
-
-                <span class="nav-icon">
-                    <i class="bi bi-gear"></i>
-                </span>
-
-                <span class="nav-text">
-                    Holidays
-                </span>
-
-            </a>
-
-
-            <a class="nav-link"
-               href="{{ route('payroll') }}">
-
-                <span class="nav-icon">
-                    <i class="bi bi-cash-stack"></i>
-                </span>
-
-                <span class="nav-text">
-                    Payroll
-                </span>
-
-            </a>
-
-
-            <a class="nav-link"
-               href="{{ route('payslip_list') }}">
-
-                <span class="nav-icon">
-                    <i class="bi bi-receipt"></i>
-                </span>
-
-                <span class="nav-text">
-                    Payslips
-                </span>
-
-            </a>
-
-
-            <a class="nav-link"
-               href="{{ route('admin.payslip-concerns.index') }}">
-
-                <span class="nav-icon">
-                    <i class="bi bi-exclamation-circle"></i>
-                </span>
-
-                <span class="nav-text">
-                    Payslip Concerns
-                </span>
-
-            </a>
-
-
-            <a class="nav-link"
-               href="{{ route('reports') }}">
-
-                <span class="nav-icon">
-                    <i class="bi bi-bar-chart"></i>
-                </span>
-
-                <span class="nav-text">
-                    Reports
-                </span>
-
-            </a>
-
-
-            <a class="nav-link"
-               href="{{ route('announcements') }}">
-
-                <span class="nav-icon">
-                    <i class="bi bi-megaphone"></i>
-                </span>
-
-                <span class="nav-text">
-                    Announcements
-                </span>
-
-            </a>
-
-
-        </nav>
-
-
-        <!-- SIDEBAR USER -->
-
-        <div class="sidebar-user">
-
-            <img class="avatar-img avatar-md sidebar-user-avatar"
-                 src="{{ Auth::user()->photo
-                    ? asset('storage/' . Auth::user()->photo)
-                    : asset('khen/assets/images/avatar/avatar.jpg') }}"
-                 alt="{{ Auth::user()->name }}">
-
-            <strong>
-                {{ Auth::user()->name }}
-            </strong>
-
-            <small>
-                {{ ucfirst(Auth::user()->role ?? 'Employee') }}
-            </small>
-
-        </div>
-
-
-        <div class="sidebar-footer">
-
-            <span class="status-dot"></span>
-
-            <span class="sidebar-footer-text">
-                System running smoothly
-            </span>
-
-        </div>
-
-
-    </aside>
-
-
-    <!-- ==========================================================
+        <!-- ==========================================================
          MAIN
     ========================================================== -->
 
-    <div class="admin-main">
+        <div class="admin-main">
 
 
-        <!-- ======================================================
+            <!-- ======================================================
              NAVBAR
         ======================================================= -->
 
-        <nav class="navbar admin-navbar navbar-expand bg-white">
+            <nav class="navbar admin-navbar navbar-expand bg-white">
 
-            <div class="container-fluid px-3 px-lg-4">
-
-
-                <button class="sidebar-toggle"
-                        type="button"
-                        data-sidebar-toggle
-                        aria-controls="adminSidebar"
-                        aria-expanded="true"
-                        aria-label="Toggle sidebar">
-
-                    <span></span>
-                    <span></span>
-                    <span></span>
-
-                </button>
+                <div class="container-fluid px-3 px-lg-4">
 
 
-                <!-- SEARCH -->
+                    <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
+                        aria-expanded="true" aria-label="Toggle sidebar">
 
-                <form class="d-none d-md-flex ms-3 flex-grow-1"
-                      role="search">
-
-                    <input class="form-control search-input"
-                           type="search"
-                           placeholder="Search users, orders, reports"
-                           aria-label="Search">
-
-                </form>
-
-
-                <div class="navbar-actions ms-auto">
-
-
-                    <!-- THEME -->
-
-                    <button class="icon-button theme-toggle"
-                            type="button"
-                            data-theme-toggle
-                            aria-label="Switch color theme"
-                            title="Switch color theme">
-
-                        <i class="bi bi-moon-stars"
-                           data-theme-icon
-                           aria-hidden="true">
-                        </i>
+                        <span></span>
+                        <span></span>
+                        <span></span>
 
                     </button>
 
 
-                    <!-- NOTIFICATIONS -->
+                    <!-- SEARCH -->
 
-                    <div class="dropdown">
+                    <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
 
-                        <button class="icon-button"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                aria-label="Notifications">
+                        <input class="form-control search-input" type="search"
+                            placeholder="Search users, orders, reports" aria-label="Search">
 
-                            @if (($unreadNotifications ?? 0) > 0)
+                    </form>
 
-                                <span class="notification-dot"></span>
 
-                            @endif
+                    <div class="navbar-actions ms-auto">
 
-                            <i class="bi bi-bell"
-                               aria-hidden="true">
+
+                        <!-- THEME -->
+
+                        <button class="icon-button theme-toggle" type="button" data-theme-toggle
+                            aria-label="Switch color theme" title="Switch color theme">
+
+                            <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true">
                             </i>
 
                         </button>
 
 
-                        <div class="dropdown-menu dropdown-menu-end notification-menu">
+                        <!-- NOTIFICATIONS -->
+
+                        <div class="dropdown">
+
+                            <button class="icon-button" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false" aria-label="Notifications">
+
+                                @if (($unreadNotifications ?? 0) > 0)
+                                    <span class="notification-dot"></span>
+                                @endif
+
+                                <i class="bi bi-bell" aria-hidden="true">
+                                </i>
+
+                            </button>
 
 
-                            <div class="dropdown-header fw-bold text-body">
-                                Notifications
-                            </div>
+                            <div class="dropdown-menu dropdown-menu-end notification-menu">
 
 
-                            @forelse($notifications ?? [] as $notification)
+                                <div class="dropdown-header fw-bold text-body">
+                                    Notifications
+                                </div>
 
-                                <a class="dropdown-item {{ !$notification->is_read ? 'notification-unread' : '' }}"
-                                   href="{{ route('admin.notifications.read', $notification->id) }}">
 
-                                    <span class="notification-title">
-                                        {{ $notification->title }}
-                                    </span>
+                                @forelse($notifications ?? [] as $notification)
+                                    <a class="dropdown-item {{ !$notification->is_read ? 'notification-unread' : '' }}"
+                                        href="{{ route('admin.notifications.read', $notification->id) }}">
 
-                                    <span class="notification-message">
-                                        {{ $notification->message }}
-                                    </span>
+                                        <span class="notification-title">
+                                            {{ $notification->title }}
+                                        </span>
 
-                                    <span class="notification-time">
-                                        {{ $notification->created_at->diffForHumans() }}
-                                    </span>
+                                        <span class="notification-message">
+                                            {{ $notification->message }}
+                                        </span>
+
+                                        <span class="notification-time">
+                                            {{ $notification->created_at->diffForHumans() }}
+                                        </span>
+
+                                    </a>
+
+                                @empty
+
+                                    <div class="dropdown-item text-muted text-center py-3">
+
+                                        <i class="bi bi-bell-slash"></i>
+
+                                        <br>
+
+                                        No notifications
+
+                                    </div>
+                                @endforelse
+
+
+                                <div class="dropdown-divider"></div>
+
+
+                                <a href="{{ route('admin.notifications') }}" class="dropdown-item text-center">
+
+                                    View all notifications
 
                                 </a>
 
-                            @empty
 
-                                <div class="dropdown-item text-muted text-center py-3">
-
-                                    <i class="bi bi-bell-slash"></i>
-
-                                    <br>
-
-                                    No notifications
-
-                                </div>
-
-                            @endforelse
-
-
-                            <div class="dropdown-divider"></div>
-
-
-                            <a href="{{ route('admin.notifications') }}"
-                               class="dropdown-item text-center">
-
-                                View all notifications
-
-                            </a>
-
+                            </div>
 
                         </div>
 
-                    </div>
+
+                        <!-- PROFILE -->
+
+                        <div class="dropdown">
 
 
-                    <!-- PROFILE -->
-
-                    <div class="dropdown">
-
-
-                        <button class="profile-button dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
+                            <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
 
 
-                            <img class="avatar-img avatar-sm"
-                                 src="{{ Auth::user()->photo
-                                    ? asset('storage/' . Auth::user()->photo)
-                                    : asset('khen/assets/images/avatar/avatar.jpg') }}"
-                                 alt="{{ Auth::user()->name }}">
+                                <img class="avatar-img avatar-sm"
+                                    src="{{ Auth::user()->photo
+                                        ? asset('storage/' . Auth::user()->photo)
+                                        : asset('khen/assets/images/avatar/avatar.jpg') }}"
+                                    alt="{{ Auth::user()->name }}">
 
 
-                            <span class="profile-name d-none d-sm-inline">
-                                {{ Auth::user()->name }}
-                            </span>
+                                <span class="profile-name d-none d-sm-inline">
+                                    {{ Auth::user()->name }}
+                                </span>
 
 
-                        </button>
+                            </button>
 
 
-                        <ul class="dropdown-menu dropdown-menu-end">
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+
+                                    <form method="POST" action="{{ route('logout') }}">
+
+                                        @csrf
+
+                                        <button type="submit" class="dropdown-item">
+
+                                            Sign out
+
+                                        </button>
+
+                                    </form>
+
+                                </li>
 
 
-                            <li>
-
-                                <a class="dropdown-item"
-                                   href="{{ route('payroll') }}">
-
-                                    Profile
-
-                                </a>
-
-                            </li>
+                            </ul>
 
 
-                            <li>
-
-                                <a class="dropdown-item"
-                                   href="{{ route('settings') }}">
-
-                                    Account settings
-
-                                </a>
-
-                            </li>
-
-
-                            <li>
-
-                                <hr class="dropdown-divider">
-
-                            </li>
-
-
-                            <li>
-
-                                <form method="POST"
-                                      action="{{ route('logout') }}">
-
-                                    @csrf
-
-                                    <button type="submit"
-                                            class="dropdown-item">
-
-                                        Sign out
-
-                                    </button>
-
-                                </form>
-
-                            </li>
-
-
-                        </ul>
+                        </div>
 
 
                     </div>
@@ -2480,266 +2388,266 @@
 
                 </div>
 
-
-            </div>
-
-        </nav>
+            </nav>
 
 
-        <!-- ======================================================
+            <!-- ======================================================
              DASHBOARD CONTENT
         ======================================================= -->
 
-        <main class="dashboard-content">
+            <main class="dashboard-content">
 
 
-            <div class="container-fluid px-3 px-lg-4 py-4">
+                <div class="container-fluid px-3 px-lg-4 py-4">
 
 
-                <!-- ==================================================
+                    <!-- ==================================================
                      DASHBOARD PAGE HEADING
                 =================================================== -->
 
-                <section class="dashboard-heading">
+                    <section class="dashboard-heading">
 
 
-                    <div class="dashboard-heading-icon">
+                        <div class="dashboard-heading-icon">
 
-                        <i class="bi bi-speedometer2"></i>
+                            <i class="bi bi-speedometer2"></i>
 
-                    </div>
-
-
-                    <div class="dashboard-heading-content">
+                        </div>
 
 
-                        <h1>
-                            HR & Payroll Dashboard
-                        </h1>
+                        <div class="dashboard-heading-content">
 
 
-                        <p>
-                            Monitor employees, attendance, payroll,
-                            requests, and other HR operations from
-                            one centralized system.
-                        </p>
+                            <h1>
+                                HR & Payroll Dashboard
+                            </h1>
 
 
-                    </div>
+                            <p>
+                                Monitor employees, attendance, payroll,
+                                requests, and other HR operations from
+                                one centralized system.
+                            </p>
 
 
-                </section>
+                        </div>
 
 
-                <!-- ==================================================
+                    </section>
+
+
+                    <!-- ==================================================
                      METRICS
                 =================================================== -->
 
-                <section class="row g-3">
+                    <section class="row g-3">
 
 
-                    <!-- TOTAL USERS -->
+                        <!-- TOTAL USERS -->
 
-                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="col-12 col-sm-6 col-xl-3">
 
-                        <div class="metric-card">
+                            <div class="metric-card">
 
-                            <div class="metric-label">
-                                Total Users
+                                <div class="metric-label">
+                                    Total Users
+                                </div>
+
+                                <div class="metric-value">
+                                    {{ number_format($totalUsers ?? 0) }}
+                                </div>
+
+                                <div class="metric-meta">
+
+                                    <span class="text-success">
+                                        Employees + Administrators
+                                    </span>
+
+                                </div>
+
                             </div>
 
-                            <div class="metric-value">
-                                {{ number_format($totalUsers ?? 0) }}
-                            </div>
+                        </div>
 
-                            <div class="metric-meta">
 
-                                <span class="text-success">
-                                    Employees + Administrators
-                                </span>
+                        <!-- PRESENT -->
+
+                        <div class="col-12 col-sm-6 col-xl-3">
+
+                            <div class="metric-card metric-success">
+
+                                <div class="metric-label">
+                                    Present Today
+                                </div>
+
+                                <div class="metric-value">
+                                    {{ $presentToday ?? 0 }}
+                                </div>
+
+                                <div class="metric-meta">
+                                    Attendance rate
+                                </div>
 
                             </div>
 
                         </div>
 
-                    </div>
 
+                        <!-- LEAVES -->
 
-                    <!-- PRESENT -->
+                        <div class="col-12 col-sm-6 col-xl-3">
 
-                    <div class="col-12 col-sm-6 col-xl-3">
+                            <div class="metric-card metric-warning">
 
-                        <div class="metric-card metric-success">
+                                <div class="metric-label">
+                                    Pending Leaves
+                                </div>
 
-                            <div class="metric-label">
-                                Present Today
-                            </div>
+                                <div class="metric-value">
+                                    {{ $pendingLeaves ?? 0 }}
+                                </div>
 
-                            <div class="metric-value">
-                                {{ $presentToday ?? 0 }}
-                            </div>
+                                <div class="metric-meta">
+                                    Requires approval
+                                </div>
 
-                            <div class="metric-meta">
-                                Attendance rate
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- LEAVES -->
-
-                    <div class="col-12 col-sm-6 col-xl-3">
-
-                        <div class="metric-card metric-warning">
-
-                            <div class="metric-label">
-                                Pending Leaves
-                            </div>
-
-                            <div class="metric-value">
-                                {{ $pendingLeaves ?? 0 }}
-                            </div>
-
-                            <div class="metric-meta">
-                                Requires approval
                             </div>
 
                         </div>
 
-                    </div>
 
+                        <!-- PAYROLL -->
 
-                    <!-- PAYROLL -->
+                        <div class="col-12 col-sm-6 col-xl-3">
 
-                    <div class="col-12 col-sm-6 col-xl-3">
+                            <div class="metric-card metric-danger">
 
-                        <div class="metric-card metric-danger">
+                                <div class="metric-label">
+                                    Payroll Processed
+                                </div>
 
-                            <div class="metric-label">
-                                Payroll Processed
-                            </div>
+                                <div class="metric-value">
+                                    {{ $payrollCount ?? 0 }}
+                                </div>
 
-                            <div class="metric-value">
-                                {{ $payrollCount ?? 0 }}
-                            </div>
+                                <div class="metric-meta">
+                                    This month
+                                </div>
 
-                            <div class="metric-meta">
-                                This month
                             </div>
 
                         </div>
 
-                    </div>
+
+                    </section>
 
 
-                </section>
-
-
-                <!-- ==================================================
+                    <!-- ==================================================
                      SYSTEM DESCRIPTION
                 =================================================== -->
 
-                <section class="panel mt-4">
+                    <section class="panel mt-4">
 
 
-                    <div class="system-description">
+                        <div class="system-description">
 
 
-                        <div class="system-description-content">
+                            <div class="system-description-content">
 
 
-                            <div class="system-description-icon">
+                                <div class="system-description-icon">
 
-                                <i class="bi bi-building-check"></i>
+                                    <i class="bi bi-building-check"></i>
 
-                            </div>
-
-
-                            <div>
+                                </div>
 
 
-                                <h2>
-                                    About Pap Pay
-                                </h2>
+                                <div>
 
 
-                                <p>
-
-                                    Pap Pay is a centralized HR and
-                                    payroll management system designed
-                                    to simplify employee management,
-                                    attendance monitoring, leave
-                                    processing, official business
-                                    requests, payroll preparation,
-                                    payslip management, reporting,
-                                    and organizational announcements.
-                                    The system provides administrators
-                                    with a single workspace for managing
-                                    daily personnel and payroll
-                                    operations while maintaining
-                                    accurate and organized employee
-                                    records.
-
-                                </p>
+                                    <h2>
+                                        About Pap Pay
+                                    </h2>
 
 
-                                <div class="system-description-features">
+                                    <p>
+
+                                        Pap Pay is a centralized HR and
+                                        payroll management system designed
+                                        to simplify employee management,
+                                        attendance monitoring, leave
+                                        processing, official business
+                                        requests, payroll preparation,
+                                        payslip management, reporting,
+                                        and organizational announcements.
+                                        The system provides administrators
+                                        with a single workspace for managing
+                                        daily personnel and payroll
+                                        operations while maintaining
+                                        accurate and organized employee
+                                        records.
+
+                                    </p>
 
 
-                                    <span class="description-tag">
-
-                                        <i class="bi bi-people-fill"></i>
-
-                                        Employee Management
-
-                                    </span>
+                                    <div class="system-description-features">
 
 
-                                    <span class="description-tag">
+                                        <span class="description-tag">
 
-                                        <i class="bi bi-calendar-check"></i>
+                                            <i class="bi bi-people-fill"></i>
 
-                                        Attendance
+                                            Employee Management
 
-                                    </span>
-
-
-                                    <span class="description-tag">
-
-                                        <i class="bi bi-cash-stack"></i>
-
-                                        Payroll
-
-                                    </span>
+                                        </span>
 
 
-                                    <span class="description-tag">
+                                        <span class="description-tag">
 
-                                        <i class="bi bi-receipt"></i>
+                                            <i class="bi bi-calendar-check"></i>
 
-                                        Payslips
+                                            Attendance
 
-                                    </span>
-
-
-                                    <span class="description-tag">
-
-                                        <i class="bi bi-file-earmark-bar-graph"></i>
-
-                                        Reports
-
-                                    </span>
+                                        </span>
 
 
-                                    <span class="description-tag">
+                                        <span class="description-tag">
 
-                                        <i class="bi bi-megaphone"></i>
+                                            <i class="bi bi-cash-stack"></i>
 
-                                        Announcements
+                                            Payroll
 
-                                    </span>
+                                        </span>
+
+
+                                        <span class="description-tag">
+
+                                            <i class="bi bi-receipt"></i>
+
+                                            Payslips
+
+                                        </span>
+
+
+                                        <span class="description-tag">
+
+                                            <i class="bi bi-file-earmark-bar-graph"></i>
+
+                                            Reports
+
+                                        </span>
+
+
+                                        <span class="description-tag">
+
+                                            <i class="bi bi-megaphone"></i>
+
+                                            Announcements
+
+                                        </span>
+
+
+                                    </div>
 
 
                                 </div>
@@ -2751,42 +2659,42 @@
                         </div>
 
 
-                    </div>
+                    </section>
 
 
-                </section>
-
-
-                <!-- ==================================================
+                    <!-- ==================================================
                      QUICK LINKS
                 =================================================== -->
 
-                <section class="panel quick-links-panel">
+                    <section class="panel quick-links-panel">
 
 
-                    <div class="panel-header">
+                        <div class="panel-header">
 
 
-                        <div class="section-heading">
+                            <div class="section-heading">
 
 
-                            <div class="section-heading-icon">
+                                <div class="section-heading-icon">
 
-                                <i class="bi bi-grid-fill"></i>
+                                    <i class="bi bi-grid-fill"></i>
 
-                            </div>
+                                </div>
 
 
-                            <div class="section-heading-content">
+                                <div class="section-heading-content">
 
-                                <h2>
-                                    Quick Links
-                                </h2>
+                                    <h2>
+                                        Quick Links
+                                    </h2>
 
-                                <p>
-                                    Quickly access frequently used
-                                    Pap Pay system pages.
-                                </p>
+                                    <p>
+                                        Quickly access frequently used
+                                        Pap Pay system pages.
+                                    </p>
+
+                                </div>
+
 
                             </div>
 
@@ -2794,517 +2702,495 @@
                         </div>
 
 
-                    </div>
+                        <div class="quick-links-grid">
 
 
-                    <div class="quick-links-grid">
+                            <!-- EMPLOYEES -->
 
+                            <a href="{{ route('employees.index') }}" class="quick-link">
 
-                        <!-- EMPLOYEES -->
 
-                        <a href="{{ route('employees.index') }}"
-                           class="quick-link">
+                                <div class="quick-link-icon">
 
+                                    <i class="bi bi-people-fill"></i>
 
-                            <div class="quick-link-icon">
+                                </div>
 
-                                <i class="bi bi-people-fill"></i>
 
-                            </div>
+                                <div class="quick-link-content">
 
+                                    <span class="quick-link-title">
+                                        Employees
+                                    </span>
 
-                            <div class="quick-link-content">
+                                    <span class="quick-link-description">
+                                        Manage employee accounts and records.
+                                    </span>
 
-                                <span class="quick-link-title">
-                                    Employees
-                                </span>
+                                </div>
 
-                                <span class="quick-link-description">
-                                    Manage employee accounts and records.
-                                </span>
 
-                            </div>
+                                <i class="bi bi-chevron-right quick-link-arrow"></i>
 
 
-                            <i class="bi bi-chevron-right quick-link-arrow"></i>
+                            </a>
 
 
-                        </a>
+                            <!-- ATTENDANCE -->
 
+                            <a href="{{ route('attendance_list') }}" class="quick-link green">
 
-                        <!-- ATTENDANCE -->
 
-                        <a href="{{ route('attendance_list') }}"
-                           class="quick-link green">
+                                <div class="quick-link-icon">
 
+                                    <i class="bi bi-calendar-check-fill"></i>
 
-                            <div class="quick-link-icon">
+                                </div>
 
-                                <i class="bi bi-calendar-check-fill"></i>
 
-                            </div>
+                                <div class="quick-link-content">
 
+                                    <span class="quick-link-title">
+                                        Attendance
+                                    </span>
 
-                            <div class="quick-link-content">
+                                    <span class="quick-link-description">
+                                        Review employee attendance records.
+                                    </span>
 
-                                <span class="quick-link-title">
-                                    Attendance
-                                </span>
+                                </div>
 
-                                <span class="quick-link-description">
-                                    Review employee attendance records.
-                                </span>
 
-                            </div>
+                                <i class="bi bi-chevron-right quick-link-arrow"></i>
 
 
-                            <i class="bi bi-chevron-right quick-link-arrow"></i>
+                            </a>
 
 
-                        </a>
+                            <!-- LEAVE REQUESTS -->
 
+                            <a href="{{ route('admin.leaves') }}" class="quick-link orange">
 
-                        <!-- LEAVE REQUESTS -->
 
-                        <a href="{{ route('admin.leaves') }}"
-                           class="quick-link orange">
+                                <div class="quick-link-icon">
 
+                                    <i class="bi bi-calendar-x-fill"></i>
 
-                            <div class="quick-link-icon">
+                                </div>
 
-                                <i class="bi bi-calendar-x-fill"></i>
 
-                            </div>
+                                <div class="quick-link-content">
 
+                                    <span class="quick-link-title">
+                                        Leave Requests
+                                    </span>
 
-                            <div class="quick-link-content">
+                                    <span class="quick-link-description">
+                                        Review and approve employee leaves.
+                                    </span>
 
-                                <span class="quick-link-title">
-                                    Leave Requests
-                                </span>
+                                </div>
 
-                                <span class="quick-link-description">
-                                    Review and approve employee leaves.
-                                </span>
 
-                            </div>
+                                <i class="bi bi-chevron-right quick-link-arrow"></i>
 
 
-                            <i class="bi bi-chevron-right quick-link-arrow"></i>
+                            </a>
 
 
-                        </a>
+                            <!-- OFFICIAL BUSINESS -->
 
+                            <a href="{{ route('official_business') }}" class="quick-link cyan">
 
-                        <!-- OFFICIAL BUSINESS -->
 
-                        <a href="{{ route('official_business') }}"
-                           class="quick-link cyan">
+                                <div class="quick-link-icon">
 
+                                    <i class="bi bi-briefcase-fill"></i>
 
-                            <div class="quick-link-icon">
+                                </div>
 
-                                <i class="bi bi-briefcase-fill"></i>
 
-                            </div>
+                                <div class="quick-link-content">
 
+                                    <span class="quick-link-title">
+                                        Official Business
+                                    </span>
 
-                            <div class="quick-link-content">
+                                    <span class="quick-link-description">
+                                        Manage official business requests.
+                                    </span>
 
-                                <span class="quick-link-title">
-                                    Official Business
-                                </span>
+                                </div>
 
-                                <span class="quick-link-description">
-                                    Manage official business requests.
-                                </span>
 
-                            </div>
+                                <i class="bi bi-chevron-right quick-link-arrow"></i>
 
 
-                            <i class="bi bi-chevron-right quick-link-arrow"></i>
+                            </a>
 
 
-                        </a>
+                            <!-- PAYROLL -->
 
+                            <a href="{{ route('payroll') }}" class="quick-link green">
 
-                        <!-- PAYROLL -->
 
-                        <a href="{{ route('payroll') }}"
-                           class="quick-link green">
+                                <div class="quick-link-icon">
 
+                                    <i class="bi bi-cash-stack"></i>
 
-                            <div class="quick-link-icon">
+                                </div>
 
-                                <i class="bi bi-cash-stack"></i>
 
-                            </div>
+                                <div class="quick-link-content">
 
+                                    <span class="quick-link-title">
+                                        Payroll
+                                    </span>
 
-                            <div class="quick-link-content">
+                                    <span class="quick-link-description">
+                                        Process and manage employee payroll.
+                                    </span>
 
-                                <span class="quick-link-title">
-                                    Payroll
-                                </span>
+                                </div>
 
-                                <span class="quick-link-description">
-                                    Process and manage employee payroll.
-                                </span>
 
-                            </div>
+                                <i class="bi bi-chevron-right quick-link-arrow"></i>
 
 
-                            <i class="bi bi-chevron-right quick-link-arrow"></i>
+                            </a>
 
 
-                        </a>
+                            <!-- PAYSLIPS -->
 
+                            <a href="{{ route('payslip_list') }}" class="quick-link purple">
 
-                        <!-- PAYSLIPS -->
 
-                        <a href="{{ route('payslip_list') }}"
-                           class="quick-link purple">
+                                <div class="quick-link-icon">
 
+                                    <i class="bi bi-receipt-cutoff"></i>
 
-                            <div class="quick-link-icon">
+                                </div>
 
-                                <i class="bi bi-receipt-cutoff"></i>
 
-                            </div>
+                                <div class="quick-link-content">
 
+                                    <span class="quick-link-title">
+                                        Payslips
+                                    </span>
 
-                            <div class="quick-link-content">
+                                    <span class="quick-link-description">
+                                        View and manage employee payslips.
+                                    </span>
 
-                                <span class="quick-link-title">
-                                    Payslips
-                                </span>
+                                </div>
 
-                                <span class="quick-link-description">
-                                    View and manage employee payslips.
-                                </span>
 
-                            </div>
+                                <i class="bi bi-chevron-right quick-link-arrow"></i>
 
 
-                            <i class="bi bi-chevron-right quick-link-arrow"></i>
+                            </a>
 
 
-                        </a>
+                            <!-- REPORTS -->
 
+                            <a href="{{ route('reports') }}" class="quick-link red">
 
-                        <!-- REPORTS -->
 
-                        <a href="{{ route('reports') }}"
-                           class="quick-link red">
+                                <div class="quick-link-icon">
 
+                                    <i class="bi bi-bar-chart-fill"></i>
 
-                            <div class="quick-link-icon">
+                                </div>
 
-                                <i class="bi bi-bar-chart-fill"></i>
 
-                            </div>
+                                <div class="quick-link-content">
 
+                                    <span class="quick-link-title">
+                                        Reports
+                                    </span>
 
-                            <div class="quick-link-content">
+                                    <span class="quick-link-description">
+                                        Generate HR and payroll reports.
+                                    </span>
 
-                                <span class="quick-link-title">
-                                    Reports
-                                </span>
+                                </div>
 
-                                <span class="quick-link-description">
-                                    Generate HR and payroll reports.
-                                </span>
 
-                            </div>
+                                <i class="bi bi-chevron-right quick-link-arrow"></i>
 
 
-                            <i class="bi bi-chevron-right quick-link-arrow"></i>
+                            </a>
 
 
-                        </a>
+                            <!-- ANNOUNCEMENTS -->
 
+                            <a href="{{ route('announcements') }}" class="quick-link teal">
 
-                        <!-- ANNOUNCEMENTS -->
 
-                        <a href="{{ route('announcements') }}"
-                           class="quick-link teal">
+                                <div class="quick-link-icon">
 
+                                    <i class="bi bi-megaphone-fill"></i>
 
-                            <div class="quick-link-icon">
+                                </div>
 
-                                <i class="bi bi-megaphone-fill"></i>
 
-                            </div>
+                                <div class="quick-link-content">
 
+                                    <span class="quick-link-title">
+                                        Announcements
+                                    </span>
 
-                            <div class="quick-link-content">
+                                    <span class="quick-link-description">
+                                        Publish and manage system announcements.
+                                    </span>
 
-                                <span class="quick-link-title">
-                                    Announcements
-                                </span>
+                                </div>
 
-                                <span class="quick-link-description">
-                                    Publish and manage system announcements.
-                                </span>
 
-                            </div>
+                                <i class="bi bi-chevron-right quick-link-arrow"></i>
 
 
-                            <i class="bi bi-chevron-right quick-link-arrow"></i>
+                            </a>
 
 
-                        </a>
+                        </div>
 
 
-                    </div>
+                    </section>
 
 
-                </section>
-
-
-                <!-- ==================================================
+                    <!-- ==================================================
                      RECENT EMPLOYEES
                 =================================================== -->
 
-                <section class="panel recent-employees">
+                    <section class="panel recent-employees">
 
 
-                    <div class="panel-header">
+                        <div class="panel-header">
 
 
-                        <div class="section-heading">
+                            <div class="section-heading">
 
 
-                            <div class="section-heading-icon">
+                                <div class="section-heading-icon">
 
-                                <i class="bi bi-person-plus-fill"></i>
+                                    <i class="bi bi-person-plus-fill"></i>
+
+                                </div>
+
+
+                                <div class="section-heading-content">
+
+                                    <h2>
+                                        Recent Employees
+                                    </h2>
+
+                                    <p>
+                                        Recently added employee accounts.
+                                    </p>
+
+                                </div>
+
 
                             </div>
 
 
-                            <div class="section-heading-content">
+                            <a href="{{ route('employees.index') }}" class="btn btn-sm btn-view-all">
 
-                                <h2>
-                                    Recent Employees
-                                </h2>
+                                View All
 
-                                <p>
-                                    Recently added employee accounts.
-                                </p>
+                                <i class="bi bi-arrow-right ms-1"></i>
 
-                            </div>
+                            </a>
 
 
                         </div>
 
 
-                        <a href="{{ route('employees.index') }}"
-                           class="btn btn-sm btn-view-all">
-
-                            View All
-
-                            <i class="bi bi-arrow-right ms-1"></i>
-
-                        </a>
+                        <div class="table-responsive">
 
 
-                    </div>
+                            <table class="table align-middle employees-table">
 
 
-                    <div class="table-responsive">
-
-
-                        <table class="table align-middle employees-table">
-
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        Name
-                                    </th>
-
-                                    <th>
-                                        Department
-                                    </th>
-
-                                    <th>
-                                        Position
-                                    </th>
-
-                                    <th>
-                                        Status
-                                    </th>
-
-                                    <th>
-                                        Date Hired
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody>
-
-
-                                @forelse($recentEmployees ?? [] as $emp)
-
+                                <thead>
 
                                     <tr>
 
+                                        <th>
+                                            Name
+                                        </th>
 
-                                        <td>
+                                        <th>
+                                            Department
+                                        </th>
 
-                                            <span class="employee-name">
-                                                {{ $emp->name }}
-                                            </span>
+                                        <th>
+                                            Position
+                                        </th>
 
-                                        </td>
+                                        <th>
+                                            Status
+                                        </th>
 
-
-                                        <td>
-
-                                            <span class="employee-department">
-                                                {{ $emp->department ?? '—' }}
-                                            </span>
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <span class="employee-position">
-                                                {{ $emp->position ?? '—' }}
-                                            </span>
-
-                                        </td>
-
-
-                                        <td>
-
-
-                                            @php
-
-                                                $status =
-                                                    $emp->status ?? 'Unknown';
-
-                                                $statusClass =
-                                                    strtolower($status) === 'active'
-                                                        ? 'text-bg-success'
-                                                        : 'text-bg-secondary';
-
-                                            @endphp
-
-
-                                            <span class="badge {{ $statusClass }} employee-status">
-
-                                                {{ $status }}
-
-                                            </span>
-
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <span class="employee-date">
-
-                                                @if($emp->hire_date)
-
-                                                    {{ \Carbon\Carbon::parse($emp->hire_date)->format('M d, Y') }}
-
-                                                @else
-
-                                                    —
-
-                                                @endif
-
-                                            </span>
-
-                                        </td>
-
+                                        <th>
+                                            Date Hired
+                                        </th>
 
                                     </tr>
 
-
-                                @empty
-
-
-                                    <tr>
-
-                                        <td colspan="5"
-                                            class="text-center py-5">
+                                </thead>
 
 
-                                            <div class="text-muted">
+                                <tbody>
 
-                                                <i class="bi bi-people fs-3"></i>
 
-                                                <div class="mt-2">
+                                    @forelse($recentEmployees ?? [] as $emp)
+                                        <tr>
 
-                                                    No recent employees
+
+                                            <td>
+
+                                                <span class="employee-name">
+                                                    {{ $emp->name }}
+                                                </span>
+
+                                            </td>
+
+
+                                            <td>
+
+                                                <span class="employee-department">
+                                                    {{ $emp->department ?? '—' }}
+                                                </span>
+
+                                            </td>
+
+
+                                            <td>
+
+                                                <span class="employee-position">
+                                                    {{ $emp->position ?? '—' }}
+                                                </span>
+
+                                            </td>
+
+
+                                            <td>
+
+
+                                                @php
+
+                                                    $status = $emp->status ?? 'Unknown';
+
+                                                    $statusClass =
+                                                        strtolower($status) === 'active'
+                                                            ? 'text-bg-success'
+                                                            : 'text-bg-secondary';
+
+                                                @endphp
+
+
+                                                <span class="badge {{ $statusClass }} employee-status">
+
+                                                    {{ $status }}
+
+                                                </span>
+
+
+                                            </td>
+
+
+                                            <td>
+
+                                                <span class="employee-date">
+
+                                                    @if ($emp->hire_date)
+                                                        {{ \Carbon\Carbon::parse($emp->hire_date)->format('M d, Y') }}
+                                                    @else
+                                                        —
+                                                    @endif
+
+                                                </span>
+
+                                            </td>
+
+
+                                        </tr>
+
+
+                                    @empty
+
+
+                                        <tr>
+
+                                            <td colspan="5" class="text-center py-5">
+
+
+                                                <div class="text-muted">
+
+                                                    <i class="bi bi-people fs-3"></i>
+
+                                                    <div class="mt-2">
+
+                                                        No recent employees
+
+                                                    </div>
 
                                                 </div>
 
-                                            </div>
+
+                                            </td>
+
+                                        </tr>
+                                    @endforelse
 
 
-                                        </td>
-
-                                    </tr>
+                                </tbody>
 
 
-                                @endforelse
+                            </table>
 
 
-                            </tbody>
+                        </div>
 
 
-                        </table>
+                    </section>
 
 
-                    </div>
-
-
-                </section>
-
-
-                <!-- ==================================================
+                    <!-- ==================================================
                      FOOTER
                 =================================================== -->
 
-                <footer class="admin-footer">
+                    <footer class="admin-footer">
 
-                    <div class="container-fluid px-0">
+                        <div class="container-fluid px-0">
 
-                    </div>
+                        </div>
 
-                </footer>
-
-
-            </div>
+                    </footer>
 
 
-        </main>
+                </div>
+
+
+            </main>
+
+
+        </div>
 
 
     </div>
 
 
-</div>
 
-
-
-<!-- ==========================================================
+    <!-- ==========================================================
      JAVASCRIPT
 ========================================================== -->
 
-<script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
 
-<script src="../../../../khen/assets/js/main.js"></script>
+    <script src="../../../../khen/assets/js/main.js"></script>
 
 
 </body>

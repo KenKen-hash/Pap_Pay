@@ -107,13 +107,9 @@
         <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
 
             <div class="sidebar-header">
-                <a class="brand-mark"
-                    href="{{ route('admin-dashboard') }}"
-                    aria-label="Admin Dashboard">
+                <a class="brand-mark" href="{{ route('admin-dashboard') }}" aria-label="Admin Dashboard">
 
-                    <img src="../../../khen/assets/images/logo.jpg"
-                        alt="Pap Pay Logo"
-                        class="brand-logo">
+                    <img src="../../../khen/assets/images/logo.jpg" alt="Pap Pay Logo" class="brand-logo">
 
                 </a>
             </div>
@@ -176,8 +172,7 @@
                     <span class="nav-text">Payslips</span>
                 </a>
 
-                <a class="nav-link"
-                    href="{{ route('admin.payslip-concerns.index') }}">
+                <a class="nav-link" href="{{ route('admin.payslip-concerns.index') }}">
 
                     <span class="nav-icon">
                         <i class="bi bi-exclamation-circle"></i>
@@ -239,12 +234,8 @@
 
                 <div class="container-fluid px-3 px-lg-4">
 
-                    <button class="sidebar-toggle"
-                        type="button"
-                        data-sidebar-toggle
-                        aria-controls="adminSidebar"
-                        aria-expanded="true"
-                        aria-label="Toggle sidebar">
+                    <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
+                        aria-expanded="true" aria-label="Toggle sidebar">
 
                         <span></span>
                         <span></span>
@@ -252,44 +243,32 @@
 
                     </button>
 
-                    <form class="d-none d-md-flex ms-3 flex-grow-1"
-                        role="search">
+                    <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
 
-                        <input class="form-control search-input"
-                            type="search"
-                            placeholder="Search users, orders, reports"
-                            aria-label="Search">
+                        <input class="form-control search-input" type="search"
+                            placeholder="Search users, orders, reports" aria-label="Search">
 
                     </form>
 
                     <div class="navbar-actions ms-auto">
 
-                        <button class="icon-button theme-toggle"
-                            type="button"
-                            data-theme-toggle
-                            aria-label="Switch color theme"
-                            title="Switch color theme">
+                        <button class="icon-button theme-toggle" type="button" data-theme-toggle
+                            aria-label="Switch color theme" title="Switch color theme">
 
-                            <i class="bi bi-moon-stars"
-                                data-theme-icon
-                                aria-hidden="true"></i>
+                            <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
 
                         </button>
 
                         <div class="dropdown">
 
-                            <button class="icon-button"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                aria-label="Notifications">
+                            <button class="icon-button" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false" aria-label="Notifications">
 
                                 @if (($unreadNotifications ?? 0) > 0)
                                     <span class="notification-dot"></span>
                                 @endif
 
-                                <i class="bi bi-bell"
-                                    aria-hidden="true"></i>
+                                <i class="bi bi-bell" aria-hidden="true"></i>
 
                             </button>
 
@@ -300,7 +279,6 @@
                                 </div>
 
                                 @forelse($notifications ?? [] as $notification)
-
                                     <a class="dropdown-item {{ !$notification->is_read ? 'notification-unread' : '' }}"
                                         href="{{ route('admin.notifications.read', $notification->id) }}">
 
@@ -329,13 +307,11 @@
                                         No notifications
 
                                     </div>
-
                                 @endforelse
 
                                 <div class="dropdown-divider"></div>
 
-                                <a href="{{ route('admin.notifications') }}"
-                                    class="dropdown-item text-center">
+                                <a href="{{ route('admin.notifications') }}" class="dropdown-item text-center">
 
                                     View all notifications
 
@@ -347,9 +323,7 @@
 
                         <div class="dropdown">
 
-                            <button class="profile-button dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
+                            <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
 
                                 <img class="avatar-img avatar-sm"
@@ -363,40 +337,23 @@
                                 </span>
 
                             </button>
-
                             <ul class="dropdown-menu dropdown-menu-end">
-
                                 <li>
-                                    <a class="dropdown-item"
-                                        href="{{ route('payroll') }}">
-                                        Profile
-                                    </a>
+
+                                    <form method="POST" action="{{ route('logout') }}">
+
+                                        @csrf
+
+                                        <button type="submit" class="dropdown-item">
+
+                                            Sign out
+
+                                        </button>
+
+                                    </form>
+
                                 </li>
 
-                                <li>
-                                    <a class="dropdown-item"
-                                        href="{{ route('settings') }}">
-                                        Account settings
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-
-                                <form method="POST"
-                                    action="{{ route('logout') }}">
-
-                                    @csrf
-
-                                    <button type="submit"
-                                        class="dropdown-item">
-
-                                        Sign out
-
-                                    </button>
-
-                                </form>
 
                             </ul>
 
@@ -471,9 +428,7 @@
                                         Payroll Start Date
                                     </label>
 
-                                    <input type="date"
-                                        id="period_start"
-                                        class="form-control">
+                                    <input type="date" id="period_start" class="form-control">
 
                                 </div>
 
@@ -483,9 +438,7 @@
                                         Payroll End Date
                                     </label>
 
-                                    <input type="date"
-                                        id="period_end"
-                                        class="form-control">
+                                    <input type="date" id="period_end" class="form-control">
 
                                 </div>
 
@@ -502,18 +455,10 @@
                             <div class="row">
 
                                 @php
-                                    $departments = [
-                                        'Elementary',
-                                        'JHS',
-                                        'SHS',
-                                        'College',
-                                        'Admin',
-                                        'Laborers'
-                                    ];
+                                    $departments = ['Elementary', 'JHS', 'SHS', 'College', 'Admin', 'Laborers'];
                                 @endphp
 
                                 @foreach ($departments as $department)
-
                                     <div class="col-lg-4 col-md-6 mb-3">
 
                                         <div class="card border department-card h-100">
@@ -523,8 +468,7 @@
                                                 <div class="form-check">
 
                                                     <input class="form-check-input department-checkbox"
-                                                        type="checkbox"
-                                                        value="{{ $department }}"
+                                                        type="checkbox" value="{{ $department }}"
                                                         id="{{ $department }}">
 
                                                     <label class="form-check-label fw-semibold"
@@ -541,7 +485,6 @@
                                         </div>
 
                                     </div>
-
                                 @endforeach
 
                             </div>
@@ -554,8 +497,7 @@
                                 Employees
                             </h5>
 
-                            <div id="employeeContainer"
-                                class="border rounded p-4 bg-light">
+                            <div id="employeeContainer" class="border rounded p-4 bg-light">
 
                                 <div class="text-center text-muted">
 
@@ -574,8 +516,7 @@
 
                             <div class="text-end mt-4">
 
-                                <button class="btn btn-success btn-lg"
-                                    id="previewPayroll">
+                                <button class="btn btn-success btn-lg" id="previewPayroll">
 
                                     <i class="bi bi-search me-2"></i>
 
@@ -583,8 +524,7 @@
 
                                 </button>
 
-                                <button class="btn btn-primary btn-lg ms-2 d-none"
-                                    id="generatePayslips">
+                                <button class="btn btn-primary btn-lg ms-2 d-none" id="generatePayslips">
 
                                     <i class="bi bi-file-earmark-text me-2"></i>
 
@@ -597,8 +537,7 @@
 
                             <!-- PAYROLL PREVIEW -->
 
-                            <div id="payrollPreviewSection"
-                                class="card shadow mt-4 d-none">
+                            <div id="payrollPreviewSection" class="card shadow mt-4 d-none">
 
                                 <div class="card-header bg-success text-white">
 
@@ -622,8 +561,7 @@
                                                     Employees
                                                 </div>
 
-                                                <div class="preview-summary-value"
-                                                    id="summaryEmployees">
+                                                <div class="preview-summary-value" id="summaryEmployees">
                                                     0
                                                 </div>
 
@@ -639,8 +577,7 @@
                                                     Total Late Minutes
                                                 </div>
 
-                                                <div class="preview-summary-value text-danger"
-                                                    id="summaryLate">
+                                                <div class="preview-summary-value text-danger" id="summaryLate">
                                                     0
                                                 </div>
 
@@ -656,8 +593,7 @@
                                                     Total Undertime Minutes
                                                 </div>
 
-                                                <div class="preview-summary-value text-warning"
-                                                    id="summaryUndertime">
+                                                <div class="preview-summary-value text-warning" id="summaryUndertime">
                                                     0
                                                 </div>
 
@@ -673,8 +609,7 @@
                                                     Total Overtime Minutes
                                                 </div>
 
-                                                <div class="preview-summary-value text-success"
-                                                    id="summaryOvertime">
+                                                <div class="preview-summary-value text-success" id="summaryOvertime">
                                                     0
                                                 </div>
 
@@ -786,8 +721,7 @@
 
                                 </div>
 
-                                <button class="btn btn-outline-success btn-sm"
-                                    onclick="location.reload()">
+                                <button class="btn btn-outline-success btn-sm" onclick="location.reload()">
 
                                     <i class="bi bi-arrow-repeat me-2"></i>
 
@@ -830,7 +764,6 @@
                                     <tbody>
 
                                         @forelse($payslips as $period => $items)
-
                                             <tr>
 
                                                 <td>
@@ -895,15 +828,13 @@
 
                                             <tr>
 
-                                                <td colspan="6"
-                                                    class="text-center text-muted">
+                                                <td colspan="6" class="text-center text-muted">
 
                                                     No generated payslips yet.
 
                                                 </td>
 
                                             </tr>
-
                                         @endforelse
 
                                     </tbody>
@@ -937,7 +868,6 @@
 
 
     <script>
-
         const employeeContainer =
             document.getElementById('employeeContainer');
 
@@ -993,23 +923,23 @@
 
 
             fetch(
-                "{{ route('payslip.employees') }}?departments[]=" +
-                selectedDepartments.join("&departments[]=")
-            )
+                    "{{ route('payslip.employees') }}?departments[]=" +
+                    selectedDepartments.join("&departments[]=")
+                )
 
-            .then(response => {
+                .then(response => {
 
-                if (!response.ok) {
-                    throw new Error("Failed to load employees.");
-                }
+                    if (!response.ok) {
+                        throw new Error("Failed to load employees.");
+                    }
 
-                return response.json();
+                    return response.json();
 
-            })
+                })
 
-            .then(employees => {
+                .then(employees => {
 
-                let html = `
+                    let html = `
 
                     <div class="form-check mb-3">
 
@@ -1030,9 +960,9 @@
                 `;
 
 
-                if (!employees.length) {
+                    if (!employees.length) {
 
-                    html += `
+                        html += `
 
                         <div class="text-center text-muted py-3">
 
@@ -1046,12 +976,12 @@
 
                     `;
 
-                }
+                    }
 
 
-                employees.forEach(employee => {
+                    employees.forEach(employee => {
 
-                    html += `
+                        html += `
 
                         <div class="form-check mb-2">
 
@@ -1086,43 +1016,43 @@
 
                     `;
 
-                });
+                    });
 
 
-                employeeContainer.innerHTML = html;
+                    employeeContainer.innerHTML = html;
 
 
-                const selectAll =
-                    document.getElementById('selectAll');
+                    const selectAll =
+                        document.getElementById('selectAll');
 
 
-                if (selectAll) {
+                    if (selectAll) {
 
-                    selectAll.addEventListener(
-                        'change',
-                        function() {
+                        selectAll.addEventListener(
+                            'change',
+                            function() {
 
-                            document
-                                .querySelectorAll('.employee-checkbox')
-                                .forEach(box => {
+                                document
+                                    .querySelectorAll('.employee-checkbox')
+                                    .forEach(box => {
 
-                                    box.checked =
-                                        this.checked;
+                                        box.checked =
+                                            this.checked;
 
-                                });
+                                    });
 
-                        }
-                    );
+                            }
+                        );
 
-                }
+                    }
 
-            })
+                })
 
-            .catch(error => {
+                .catch(error => {
 
-                console.error(error);
+                    console.error(error);
 
-                employeeContainer.innerHTML = `
+                    employeeContainer.innerHTML = `
 
                     <div class="alert alert-danger mb-0">
 
@@ -1134,7 +1064,7 @@
 
                 `;
 
-            });
+                });
 
         }
 
@@ -1238,257 +1168,256 @@
 
                 fetch("{{ route('payslip.preview') }}", {
 
-                    method: "POST",
+                        method: "POST",
 
-                    headers: {
+                        headers: {
 
-                        "Content-Type": "application/json",
+                            "Content-Type": "application/json",
 
-                        "X-CSRF-TOKEN":
-                            document.querySelector(
+                            "X-CSRF-TOKEN": document.querySelector(
                                 'meta[name="csrf-token"]'
                             ).content,
 
-                        "Accept": "application/json"
+                            "Accept": "application/json"
 
-                    },
+                        },
 
-                    body: JSON.stringify({
+                        body: JSON.stringify({
 
-                        period_start: start,
+                            period_start: start,
 
-                        period_end: end,
+                            period_end: end,
 
-                        employees: employees
+                            employees: employees
+
+                        })
 
                     })
 
-                })
+                    .then(response => {
 
-                .then(response => {
+                        if (!response.ok) {
 
-                    if (!response.ok) {
+                            return response.json()
+                                .then(error => {
 
-                        return response.json()
-                            .then(error => {
+                                    throw error;
 
-                                throw error;
+                                });
 
-                            });
+                        }
 
-                    }
+                        return response.json();
 
-                    return response.json();
+                    })
 
-                })
+                    .then(data => {
 
-                .then(data => {
+                        if (!data.success) {
 
-                    if (!data.success) {
-
-                        alert(
-                            data.message ??
-                            'Unable to calculate payroll.'
-                        );
-
-                        return;
-
-                    }
-
-
-                    const tbody =
-                        document.getElementById(
-                            "payrollPreviewBody"
-                        );
-
-
-                    tbody.innerHTML = "";
-
-
-                    let totalLate = 0;
-
-                    let totalUndertime = 0;
-
-                    let totalOvertime = 0;
-
-
-                    data.preview.forEach(employee => {
-
-                        /*
-                        ------------------------------------------------
-                        Configuration values
-                        ------------------------------------------------
-                        */
-
-                        const basicSalary =
-                            Number(
-                                employee.basic_salary ??
-                                employee.salary ??
-                                0
+                            alert(
+                                data.message ??
+                                'Unable to calculate payroll.'
                             );
 
-                        const dailyRate =
-                            Number(
-                                employee.daily_rate ??
-                                0
+                            return;
+
+                        }
+
+
+                        const tbody =
+                            document.getElementById(
+                                "payrollPreviewBody"
                             );
 
 
-                        /*
-                        ------------------------------------------------
-                        ADDITIONAL TEACHING LOAD
-                        ------------------------------------------------
-                        */
-
-                        const additionalUnits =
-                            Number(
-                                employee.teaching_load_units ??
-                                0
-                            );
-
-                        const additionalUnitsPay =
-                            Number(
-                                employee.teaching_load ??
-                                0
-                            );
+                        tbody.innerHTML = "";
 
 
-                        /*
-                        ------------------------------------------------
-                        HONORARIUM
-                        ------------------------------------------------
-                        */
+                        let totalLate = 0;
 
-                        const honorarium =
-                            Number(
-                                employee.honorarium ??
-                                employee.honorarium_amount ??
-                                0
-                            );
+                        let totalUndertime = 0;
+
+                        let totalOvertime = 0;
 
 
-                        const overtimeRate =
-                            Number(
-                                employee.overtime_rate ??
-                                employee.ot_rate ??
-                                0
-                            );
+                        data.preview.forEach(employee => {
 
-                        const lateRate =
-                            Number(
-                                employee.late_deduction_rate ??
-                                0
-                            );
+                            /*
+                            ------------------------------------------------
+                            Configuration values
+                            ------------------------------------------------
+                            */
 
-                        const undertimeRate =
-                            Number(
-                                employee.undertime_deduction_rate ??
-                                0
-                            );
+                            const basicSalary =
+                                Number(
+                                    employee.basic_salary ??
+                                    employee.salary ??
+                                    0
+                                );
 
-
-                        /*
-                        ------------------------------------------------
-                        Attendance values
-                        ------------------------------------------------
-                        */
-
-                        const lateMinutes =
-                            Number(
-                                employee.late_minutes ??
-                                0
-                            );
-
-                        const undertimeMinutes =
-                            Number(
-                                employee.undertime_minutes ??
-                                0
-                            );
-
-                        const overtimeMinutes =
-                            Number(
-                                employee.overtime_minutes ??
-                                0
-                            );
+                            const dailyRate =
+                                Number(
+                                    employee.daily_rate ??
+                                    0
+                                );
 
 
-                        /*
-                        ------------------------------------------------
-                        Computed values
-                        ------------------------------------------------
-                        */
+                            /*
+                            ------------------------------------------------
+                            ADDITIONAL TEACHING LOAD
+                            ------------------------------------------------
+                            */
 
-                        const overtimePay =
-                            Number(
-                                employee.overtime_pay ??
-                                (
-                                    overtimeMinutes / 60
-                                ) * overtimeRate
-                            );
+                            const additionalUnits =
+                                Number(
+                                    employee.teaching_load_units ??
+                                    0
+                                );
 
-
-                        const lateDeduction =
-                            Number(
-                                employee.late_deduction ??
-                                lateMinutes * lateRate
-                            );
+                            const additionalUnitsPay =
+                                Number(
+                                    employee.teaching_load ??
+                                    0
+                                );
 
 
-                        const undertimeDeduction =
-                            Number(
-                                employee.undertime_deduction ??
-                                undertimeMinutes *
-                                undertimeRate
-                            );
+                            /*
+                            ------------------------------------------------
+                            HONORARIUM
+                            ------------------------------------------------
+                            */
+
+                            const honorarium =
+                                Number(
+                                    employee.honorarium ??
+                                    employee.honorarium_amount ??
+                                    0
+                                );
 
 
-                        const grossSalary =
-                            Number(
-                                employee.gross_salary ??
-                                0
-                            );
+                            const overtimeRate =
+                                Number(
+                                    employee.overtime_rate ??
+                                    employee.ot_rate ??
+                                    0
+                                );
+
+                            const lateRate =
+                                Number(
+                                    employee.late_deduction_rate ??
+                                    0
+                                );
+
+                            const undertimeRate =
+                                Number(
+                                    employee.undertime_deduction_rate ??
+                                    0
+                                );
 
 
-                        const benefits =
-                            Number(
-                                employee.benefits ??
-                                0
-                            );
+                            /*
+                            ------------------------------------------------
+                            Attendance values
+                            ------------------------------------------------
+                            */
+
+                            const lateMinutes =
+                                Number(
+                                    employee.late_minutes ??
+                                    0
+                                );
+
+                            const undertimeMinutes =
+                                Number(
+                                    employee.undertime_minutes ??
+                                    0
+                                );
+
+                            const overtimeMinutes =
+                                Number(
+                                    employee.overtime_minutes ??
+                                    0
+                                );
 
 
-                        const netSalary =
-                            Number(
-                                employee.net_salary ??
-                                (
-                                    grossSalary +
-                                    overtimePay +
-                                    benefits -
-                                    lateDeduction -
-                                    undertimeDeduction
-                                )
-                            );
+                            /*
+                            ------------------------------------------------
+                            Computed values
+                            ------------------------------------------------
+                            */
+
+                            const overtimePay =
+                                Number(
+                                    employee.overtime_pay ??
+                                    (
+                                        overtimeMinutes / 60
+                                    ) * overtimeRate
+                                );
 
 
-                        /*
-                        ------------------------------------------------
-                        Summary totals
-                        ------------------------------------------------
-                        */
-
-                        totalLate += lateMinutes;
-
-                        totalUndertime += undertimeMinutes;
-
-                        totalOvertime += overtimeMinutes;
+                            const lateDeduction =
+                                Number(
+                                    employee.late_deduction ??
+                                    lateMinutes * lateRate
+                                );
 
 
-                        /*
-                        ------------------------------------------------
-                        TABLE ROW
-                        ------------------------------------------------
-                        */
+                            const undertimeDeduction =
+                                Number(
+                                    employee.undertime_deduction ??
+                                    undertimeMinutes *
+                                    undertimeRate
+                                );
 
-                        tbody.innerHTML += `
+
+                            const grossSalary =
+                                Number(
+                                    employee.gross_salary ??
+                                    0
+                                );
+
+
+                            const benefits =
+                                Number(
+                                    employee.benefits ??
+                                    0
+                                );
+
+
+                            const netSalary =
+                                Number(
+                                    employee.net_salary ??
+                                    (
+                                        grossSalary +
+                                        overtimePay +
+                                        benefits -
+                                        lateDeduction -
+                                        undertimeDeduction
+                                    )
+                                );
+
+
+                            /*
+                            ------------------------------------------------
+                            Summary totals
+                            ------------------------------------------------
+                            */
+
+                            totalLate += lateMinutes;
+
+                            totalUndertime += undertimeMinutes;
+
+                            totalOvertime += overtimeMinutes;
+
+
+                            /*
+                            ------------------------------------------------
+                            TABLE ROW
+                            ------------------------------------------------
+                            */
+
+                            tbody.innerHTML += `
 
                             <tr>
 
@@ -1703,76 +1632,76 @@
 
                         `;
 
-                    });
+                        });
 
 
-                    /*
-                    ----------------------------------------------------
-                    UPDATE SUMMARY
-                    ----------------------------------------------------
-                    */
+                        /*
+                        ----------------------------------------------------
+                        UPDATE SUMMARY
+                        ----------------------------------------------------
+                        */
 
-                    document.getElementById(
-                        "summaryEmployees"
-                    ).textContent =
-                        data.preview.length;
-
-
-                    document.getElementById(
-                        "summaryLate"
-                    ).textContent =
-                        `${number(totalLate)} min`;
+                        document.getElementById(
+                                "summaryEmployees"
+                            ).textContent =
+                            data.preview.length;
 
 
-                    document.getElementById(
-                        "summaryUndertime"
-                    ).textContent =
-                        `${number(totalUndertime)} min`;
+                        document.getElementById(
+                                "summaryLate"
+                            ).textContent =
+                            `${number(totalLate)} min`;
 
 
-                    document.getElementById(
-                        "summaryOvertime"
-                    ).textContent =
-                        `${number(totalOvertime)} min`;
+                        document.getElementById(
+                                "summaryUndertime"
+                            ).textContent =
+                            `${number(totalUndertime)} min`;
 
 
-                    /*
-                    ----------------------------------------------------
-                    SHOW PREVIEW
-                    ----------------------------------------------------
-                    */
-
-                    document
-                        .getElementById(
-                            "payrollPreviewSection"
-                        )
-                        .classList.remove("d-none");
+                        document.getElementById(
+                                "summaryOvertime"
+                            ).textContent =
+                            `${number(totalOvertime)} min`;
 
 
-                    document
-                        .getElementById(
-                            "generatePayslips"
-                        )
-                        .classList.remove("d-none");
+                        /*
+                        ----------------------------------------------------
+                        SHOW PREVIEW
+                        ----------------------------------------------------
+                        */
 
-                })
+                        document
+                            .getElementById(
+                                "payrollPreviewSection"
+                            )
+                            .classList.remove("d-none");
 
-                .catch(error => {
 
-                    console.error(error);
+                        document
+                            .getElementById(
+                                "generatePayslips"
+                            )
+                            .classList.remove("d-none");
 
-                    alert(
-                        error.message ??
-                        'An error occurred while calculating payroll.'
-                    );
+                    })
 
-                })
+                    .catch(error => {
 
-                .finally(() => {
+                        console.error(error);
 
-                    button.disabled = false;
+                        alert(
+                            error.message ??
+                            'An error occurred while calculating payroll.'
+                        );
 
-                    button.innerHTML = `
+                    })
+
+                    .finally(() => {
+
+                        button.disabled = false;
+
+                        button.innerHTML = `
 
                         <i class="bi bi-search me-2"></i>
 
@@ -1780,7 +1709,7 @@
 
                     `;
 
-                });
+                    });
 
             });
 
@@ -1841,8 +1770,8 @@
 
 
                 if (!confirm(
-                    'Generate payslips for the selected employees?'
-                )) {
+                        'Generate payslips for the selected employees?'
+                    )) {
 
                     return;
 
@@ -1864,92 +1793,91 @@
 
                 fetch("{{ route('payslip.generate') }}", {
 
-                    method: "POST",
+                        method: "POST",
 
-                    headers: {
+                        headers: {
 
-                        "Content-Type": "application/json",
+                            "Content-Type": "application/json",
 
-                        "Accept": "application/json",
+                            "Accept": "application/json",
 
-                        "X-CSRF-TOKEN":
-                            document.querySelector(
+                            "X-CSRF-TOKEN": document.querySelector(
                                 'meta[name="csrf-token"]'
                             ).content
 
-                    },
+                        },
 
-                    body: JSON.stringify({
+                        body: JSON.stringify({
 
-                        period_start: start,
+                            period_start: start,
 
-                        period_end: end,
+                            period_end: end,
 
-                        employees: employees
+                            employees: employees
+
+                        })
 
                     })
 
-                })
+                    .then(response => {
 
-                .then(response => {
+                        if (!response.ok) {
 
-                    if (!response.ok) {
+                            return response.json()
+                                .then(error => {
 
-                        return response.json()
-                            .then(error => {
+                                    throw error;
 
-                                throw error;
+                                });
 
-                            });
+                        }
 
-                    }
+                        return response.json();
 
-                    return response.json();
+                    })
 
-                })
+                    .then(data => {
 
-                .then(data => {
+                        if (data.success) {
 
-                    if (data.success) {
+                            alert(
+
+                                `${data.generated} payslip(s) generated successfully.\n\n` +
+
+                                `${data.skipped} employee(s) were skipped because a payslip already exists for the selected payroll period.`
+
+                            );
+
+                            location.reload();
+
+                            return;
+
+                        }
+
 
                         alert(
-
-                            `${data.generated} payslip(s) generated successfully.\n\n` +
-
-                            `${data.skipped} employee(s) were skipped because a payslip already exists for the selected payroll period.`
-
+                            data.message ??
+                            'Unable to generate payslips.'
                         );
 
-                        location.reload();
+                    })
 
-                        return;
+                    .catch(error => {
 
-                    }
+                        console.error(error);
 
+                        alert(
+                            error.message ??
+                            'An error occurred while generating payslips.'
+                        );
 
-                    alert(
-                        data.message ??
-                        'Unable to generate payslips.'
-                    );
+                    })
 
-                })
+                    .finally(() => {
 
-                .catch(error => {
+                        button.disabled = false;
 
-                    console.error(error);
-
-                    alert(
-                        error.message ??
-                        'An error occurred while generating payslips.'
-                    );
-
-                })
-
-                .finally(() => {
-
-                    button.disabled = false;
-
-                    button.innerHTML = `
+                        button.innerHTML = `
 
                         <i class="bi bi-file-earmark-text me-2"></i>
 
@@ -1957,10 +1885,9 @@
 
                     `;
 
-                });
+                    });
 
             });
-
     </script>
 
 </body>

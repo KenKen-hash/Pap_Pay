@@ -2870,31 +2870,17 @@
 
             <div class="sidebar-header">
 
-                <a class="brand-mark"
-                    href="{{ route('dashboard') }}"
-                    aria-label="Employee Portal dashboard">
+            <a class="brand-mark"
+               href="{{ route('dashboard') }}"
+               aria-label="Admin Dashboard">
 
-                    <span class="brand-icon">
-                        <i class="bi bi-mortarboard-fill"
-                            aria-hidden="true">
-                        </i>
-                    </span>
+                <img src="../../../khen/assets/images/logo.jpg"
+                     alt="Pap Pay Logo"
+                     class="brand-logo">
 
-                    <span class="brand-copy">
+            </a>
 
-                        <span class="brand-title">
-                            Employee Portal
-                        </span>
-
-                        <span class="brand-subtitle">
-                            School Management
-                        </span>
-
-                    </span>
-
-                </a>
-
-            </div>
+        </div>
 
 
             <!-- Sidebar Navigation -->
