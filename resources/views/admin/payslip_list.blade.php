@@ -375,15 +375,10 @@
 
                         <div class="page-heading-copy">
 
-                            <span class="page-icon">
-                                <i class="bi bi-receipt-cutoff"></i>
-                            </span>
+
 
                             <div>
 
-                                <p class="eyebrow mb-1">
-                                    Payroll Management
-                                </p>
 
                                 <h1 class="h3 mb-1">
                                     Payslip Management

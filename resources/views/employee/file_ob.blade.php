@@ -31,14 +31,14 @@
 
 
     <!-- =========================================================
-         RESPONSIVE OFFICIAL BUSINESS PAGE
-         ========================================================= -->
+        RESPONSIVE OFFICIAL BUSINESS PAGE
+        ========================================================= -->
 
     <style>
 
         /* ========================================================
-           GLOBAL RESPONSIVE SAFETY
-           ======================================================== */
+        GLOBAL RESPONSIVE SAFETY
+        ======================================================== */
 
         html,
         body {
@@ -58,8 +58,8 @@
 
 
         /* ========================================================
-           MAIN ADMIN LAYOUT
-           ======================================================== */
+        MAIN ADMIN LAYOUT
+        ======================================================== */
 
         .admin-shell {
             width: 100%;
@@ -68,10 +68,6 @@
             overflow-x: hidden;
         }
 
-        /*
-         * Desktop sidebar is 280px.
-         * The main content must occupy only the remaining width.
-         */
         .admin-main {
             width: calc(100% - var(--sidebar-width)) !important;
             max-width: calc(100% - var(--sidebar-width)) !important;
@@ -80,10 +76,6 @@
             overflow-x: hidden;
         }
 
-
-        /*
-         * Sidebar mini mode.
-         */
         body.sidebar-mini .admin-main {
             width: calc(100% - var(--sidebar-mini-width)) !important;
             max-width: calc(100% - var(--sidebar-mini-width)) !important;
@@ -92,8 +84,8 @@
 
 
         /* ========================================================
-           NAVBAR
-           ======================================================== */
+        NAVBAR
+        ======================================================== */
 
         .admin-navbar {
             width: 100%;
@@ -119,8 +111,8 @@
 
 
         /* ========================================================
-           MAIN CONTENT
-           ======================================================== */
+        MAIN CONTENT
+        ======================================================== */
 
         .dashboard-content {
             width: 100%;
@@ -137,8 +129,8 @@
 
 
         /* ========================================================
-           PAGE HEADING
-           ======================================================== */
+        PAGE HEADING
+        ======================================================== */
 
         .page-heading {
             width: 100%;
@@ -160,17 +152,8 @@
 
 
         /* ========================================================
-           METRIC CARDS
-
-           Desktop:
-           4 cards
-
-           Tablet:
-           2 cards per row
-
-           Mobile:
-           1 card per row
-           ======================================================== */
+        METRIC CARDS
+        ======================================================== */
 
         .ob-metrics {
             width: 100%;
@@ -207,8 +190,8 @@
 
 
         /* ========================================================
-           PANELS
-           ======================================================== */
+        PANELS
+        ======================================================== */
 
         .ob-panel {
             width: 100%;
@@ -226,8 +209,8 @@
 
 
         /* ========================================================
-           FORMS
-           ======================================================== */
+        FORMS
+        ======================================================== */
 
         .ob-form {
             width: 100%;
@@ -259,8 +242,8 @@
 
 
         /* ========================================================
-           TIME INPUTS
-           ======================================================== */
+        TIME INPUTS
+        ======================================================== */
 
         .time-field {
             width: 100%;
@@ -269,8 +252,8 @@
 
 
         /* ========================================================
-           SEARCH/FILTER AREA
-           ======================================================== */
+        SEARCH/FILTER AREA
+        ======================================================== */
 
         .ob-filter-form {
             width: 100%;
@@ -298,8 +281,8 @@
 
 
         /* ========================================================
-           BUTTONS
-           ======================================================== */
+        BUTTONS
+        ======================================================== */
 
         .ob-form-actions {
             width: 100%;
@@ -308,11 +291,8 @@
 
 
         /* ========================================================
-           TABLE
-
-           Only the table scrolls horizontally.
-           The page itself NEVER becomes horizontally scrollable.
-           ======================================================== */
+        TABLE
+        ======================================================== */
 
         .ob-table-wrapper {
             width: 100%;
@@ -351,8 +331,120 @@
 
 
         /* ========================================================
-           FOOTER
-           ======================================================== */
+        MODAL RESPONSIVENESS
+        ======================================================== */
+
+        .ob-view-modal .modal-dialog {
+            width: calc(100% - 24px);
+            max-width: 850px;
+            margin: 12px auto;
+        }
+
+        .ob-view-modal .modal-content {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .ob-view-modal .modal-header,
+        .ob-view-modal .modal-body,
+        .ob-view-modal .modal-footer {
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        .ob-view-modal .modal-body {
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: calc(100vh - 190px);
+        }
+
+        .ob-detail-box {
+            width: 100%;
+            min-width: 0;
+            height: 100%;
+            padding: 14px;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            background: #f8f9fa;
+            overflow-wrap: anywhere;
+        }
+
+        .ob-detail-label {
+            display: block;
+            font-size: 0.78rem;
+            color: #6c757d;
+            margin-bottom: 4px;
+        }
+
+        .ob-detail-value {
+            display: block;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .ob-purpose-box {
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+
+        /* ========================================================
+        PROOF IMAGE MODAL
+        ======================================================== */
+
+        .ob-proof-modal .modal-dialog {
+            width: calc(100% - 24px);
+            max-width: 900px;
+            margin: 12px auto;
+        }
+
+        .ob-proof-modal .modal-content {
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .ob-proof-modal .modal-body {
+            max-height: calc(100vh - 170px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .ob-proof-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .ob-proof-image-wrapper {
+            width: 100%;
+            min-width: 0;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 8px;
+            background: #f8f9fa;
+        }
+
+        .ob-proof-image {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+
+        /* ========================================================
+        FOOTER
+        ======================================================== */
 
         .admin-footer {
             width: 100%;
@@ -368,12 +460,8 @@
 
 
         /* ========================================================
-           TABLET
-           <= 991.98px
-
-           Sidebar becomes off-canvas.
-           Main content uses complete viewport width.
-           ======================================================== */
+        TABLET
+        ======================================================== */
 
         @media (max-width: 991.98px) {
 
@@ -394,9 +482,6 @@
                 padding-right: 1rem !important;
             }
 
-            /*
-             * Metric cards become 2 columns.
-             */
             .ob-metrics > .col-xl-3 {
                 width: 50%;
             }
@@ -405,9 +490,8 @@
 
 
         /* ========================================================
-           SMALL TABLET / LARGE PHONE
-           <= 767.98px
-           ======================================================== */
+        SMALL TABLET / LARGE PHONE
+        ======================================================== */
 
         @media (max-width: 767.98px) {
 
@@ -415,11 +499,6 @@
                 padding-left: 0.85rem !important;
                 padding-right: 0.85rem !important;
             }
-
-
-            /*
-             * Navbar
-             */
 
             .admin-navbar .container-fluid {
                 padding-left: 0.75rem !important;
@@ -430,21 +509,11 @@
                 gap: 0.35rem;
             }
 
-
-            /*
-             * Metric cards become one column.
-             */
-
             .ob-metrics > .col-12,
             .ob-metrics > .col-sm-6,
             .ob-metrics > .col-xl-3 {
                 width: 100%;
             }
-
-
-            /*
-             * Form action buttons.
-             */
 
             .ob-form-actions {
                 flex-direction: column !important;
@@ -455,32 +524,41 @@
                 width: 100%;
             }
 
-
-            /*
-             * Filter buttons.
-             */
-
             .ob-filter-form button {
                 width: 100%;
             }
-
-
-            /*
-             * Panel spacing.
-             */
 
             .ob-panel .panel-body {
                 padding-left: 1rem;
                 padding-right: 1rem;
             }
 
+            .ob-view-modal .modal-dialog,
+            .ob-proof-modal .modal-dialog {
+                width: calc(100% - 16px);
+                max-width: calc(100% - 16px);
+                margin: 8px auto;
+            }
+
+            .ob-view-modal .modal-header,
+            .ob-view-modal .modal-body,
+            .ob-view-modal .modal-footer,
+            .ob-proof-modal .modal-header,
+            .ob-proof-modal .modal-body,
+            .ob-proof-modal .modal-footer {
+                padding: 14px !important;
+            }
+
+            .ob-proof-gallery {
+                grid-template-columns: 1fr;
+            }
+
         }
 
 
         /* ========================================================
-           MOBILE
-           <= 575.98px
-           ======================================================== */
+        MOBILE
+        ======================================================== */
 
         @media (max-width: 575.98px) {
 
@@ -488,11 +566,6 @@
                 padding-left: 0.65rem !important;
                 padding-right: 0.65rem !important;
             }
-
-
-            /*
-             * Page heading.
-             */
 
             .page-heading h1 {
                 font-size: 1.55rem;
@@ -503,11 +576,6 @@
                 font-size: 0.9rem;
             }
 
-
-            /*
-             * Cards.
-             */
-
             .ob-metrics {
                 --bs-gutter-x: 0.75rem;
                 --bs-gutter-y: 0.75rem;
@@ -516,11 +584,6 @@
             .ob-metrics .metric-card {
                 min-height: 140px;
             }
-
-
-            /*
-             * Panels.
-             */
 
             .ob-panel {
                 border-radius: 0.75rem;
@@ -534,40 +597,40 @@
                 padding: 1rem;
             }
 
-
-            /*
-             * Navbar profile name stays hidden.
-             */
-
             .profile-name {
                 display: none !important;
             }
-
-
-            /*
-             * Form labels.
-             */
 
             .ob-form .form-label {
                 font-size: 0.9rem;
             }
 
-
-            /*
-             * Table.
-             */
-
             .ob-table {
                 min-width: 1000px;
+            }
+
+            .ob-view-modal .modal-dialog,
+            .ob-proof-modal .modal-dialog {
+                width: calc(100% - 12px);
+                max-width: calc(100% - 12px);
+                margin: 6px auto;
+            }
+
+            .ob-view-modal .modal-body,
+            .ob-proof-modal .modal-body {
+                max-height: calc(100vh - 140px);
+            }
+
+            .ob-detail-box {
+                padding: 12px;
             }
 
         }
 
 
         /* ========================================================
-           VERY SMALL PHONES
-           <= 380px
-           ======================================================== */
+        VERY SMALL PHONES
+        ======================================================== */
 
         @media (max-width: 380px) {
 
@@ -600,8 +663,8 @@
 
 
         /* ========================================================
-           PRINT
-           ======================================================== */
+        PRINT
+        ======================================================== */
 
         @media print {
 
@@ -646,8 +709,8 @@
 
 
         <!-- =====================================================
-             SIDEBAR BACKDROP
-             ===================================================== -->
+            SIDEBAR BACKDROP
+            ===================================================== -->
 
         <div class="sidebar-backdrop"
             data-sidebar-close>
@@ -655,8 +718,8 @@
 
 
         <!-- =====================================================
-             SIDEBAR
-             ===================================================== -->
+            SIDEBAR
+            ===================================================== -->
 
         <aside class="admin-sidebar"
             id="adminSidebar"
@@ -667,17 +730,17 @@
 
             <div class="sidebar-header">
 
-            <a class="brand-mark"
-               href="{{ route('dashboard') }}"
-               aria-label="Admin Dashboard">
+                <a class="brand-mark"
+                    href="{{ route('dashboard') }}"
+                    aria-label="Admin Dashboard">
 
-                <img src="../../../khen/assets/images/logo.jpg"
-                     alt="Pap Pay Logo"
-                     class="brand-logo">
+                    <img src="../../../khen/assets/images/logo.jpg"
+                        alt="Pap Pay Logo"
+                        class="brand-logo">
 
-            </a>
+                </a>
 
-        </div>
+            </div>
 
 
             <!-- NAVIGATION -->
@@ -852,15 +915,15 @@
 
 
         <!-- =====================================================
-             MAIN
-             ===================================================== -->
+            MAIN
+            ===================================================== -->
 
         <div class="admin-main">
 
 
             <!-- =================================================
-                 NAVBAR
-                 ================================================= -->
+                NAVBAR
+                ================================================= -->
 
             <nav class="navbar admin-navbar navbar-expand bg-white">
 
@@ -1077,8 +1140,8 @@
 
 
             <!-- =================================================
-                 MAIN CONTENT
-                 ================================================= -->
+                MAIN CONTENT
+                ================================================= -->
 
             <main class="dashboard-content">
 
@@ -1087,8 +1150,8 @@
 
 
                     <!-- =================================================
-                         PAGE HEADER
-                         ================================================= -->
+                        PAGE HEADER
+                        ================================================= -->
 
                     <div class="page-heading">
 
@@ -1117,8 +1180,8 @@
 
 
                     <!-- =================================================
-                         SUMMARY CARDS
-                         ================================================= -->
+                        SUMMARY CARDS
+                        ================================================= -->
 
                     <section class="row g-3 mt-3 ob-metrics">
 
@@ -1294,8 +1357,8 @@
 
 
                     <!-- =================================================
-                         OFFICIAL BUSINESS FORM
-                         ================================================= -->
+                        OFFICIAL BUSINESS FORM
+                        ================================================= -->
 
                     <section class="panel mt-4 ob-panel">
 
@@ -1563,8 +1626,8 @@
 
 
                     <!-- =================================================
-                         SEARCH / FILTER
-                         ================================================= -->
+                        SEARCH / FILTER
+                        ================================================= -->
 
                     <section class="panel mt-4 ob-panel">
 
@@ -1906,7 +1969,11 @@
                                                     @if ($ob->proof_images)
 
                                                         <button type="button"
-                                                            class="btn btn-sm btn-outline-primary">
+                                                            class="btn btn-sm btn-outline-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#obProofModal{{ $ob->id }}">
+
+                                                            <i class="bi bi-image me-1"></i>
 
                                                             View
 
@@ -1930,7 +1997,11 @@
                                                 <td>
 
                                                     <button type="button"
-                                                        class="btn btn-sm btn-outline-primary">
+                                                        class="btn btn-sm btn-outline-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#obViewModal{{ $ob->id }}">
+
+                                                        <i class="bi bi-eye me-1"></i>
 
                                                         View
 
@@ -1939,6 +2010,533 @@
                                                 </td>
 
                                             </tr>
+
+
+                                            <!-- =================================================
+                                                OFFICIAL BUSINESS DETAILS MODAL
+                                                ================================================= -->
+
+                                            <div class="modal fade ob-view-modal"
+                                                id="obViewModal{{ $ob->id }}"
+                                                tabindex="-1"
+                                                aria-labelledby="obViewModalLabel{{ $ob->id }}"
+                                                aria-hidden="true">
+
+                                                <div class="modal-dialog modal-lg modal-dialog-centered">
+
+                                                    <div class="modal-content">
+
+
+                                                        <!-- MODAL HEADER -->
+
+                                                        <div class="modal-header">
+
+                                                            <div class="min-w-0">
+
+                                                                <h5 class="modal-title"
+                                                                    id="obViewModalLabel{{ $ob->id }}">
+
+                                                                    Official Business Details
+
+                                                                </h5>
+
+                                                                <small class="text-muted">
+
+                                                                    OB Request #{{ $ob->id }}
+
+                                                                </small>
+
+                                                            </div>
+
+
+                                                            <button type="button"
+                                                                class="btn-close"
+                                                                data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+
+                                                        </div>
+
+
+                                                        <!-- MODAL BODY -->
+
+                                                        <div class="modal-body">
+
+                                                            <div class="row g-3">
+
+
+                                                                <!-- DATE -->
+
+                                                                <div class="col-12 col-md-6">
+
+                                                                    <div class="ob-detail-box">
+
+                                                                        <span class="ob-detail-label">
+
+                                                                            Date
+
+                                                                        </span>
+
+                                                                        <span class="ob-detail-value">
+
+                                                                            {{ \Carbon\Carbon::parse($ob->ob_date)->format('M d, Y') }}
+
+                                                                        </span>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <!-- STATUS -->
+
+                                                                <div class="col-12 col-md-6">
+
+                                                                    <div class="ob-detail-box">
+
+                                                                        <span class="ob-detail-label">
+
+                                                                            Status
+
+                                                                        </span>
+
+                                                                        <span class="ob-detail-value">
+
+                                                                            @if ($ob->status == 'Pending')
+
+                                                                                <span class="badge bg-warning text-dark">
+
+                                                                                    Pending
+
+                                                                                </span>
+
+                                                                            @elseif ($ob->status == 'Approved')
+
+                                                                                <span class="badge bg-success">
+
+                                                                                    Approved
+
+                                                                                </span>
+
+                                                                            @elseif ($ob->status == 'Rejected')
+
+                                                                                <span class="badge bg-danger">
+
+                                                                                    Rejected
+
+                                                                                </span>
+
+                                                                            @else
+
+                                                                                <span class="badge bg-secondary">
+
+                                                                                    Unknown
+
+                                                                                </span>
+
+                                                                            @endif
+
+                                                                        </span>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <!-- DESTINATION -->
+
+                                                                <div class="col-12">
+
+                                                                    <div class="ob-detail-box">
+
+                                                                        <span class="ob-detail-label">
+
+                                                                            Destination
+
+                                                                        </span>
+
+                                                                        <span class="ob-detail-value">
+
+                                                                            {{ $ob->destination }}
+
+                                                                        </span>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <!-- PURPOSE -->
+
+                                                                <div class="col-12">
+
+                                                                    <div class="ob-detail-box">
+
+                                                                        <span class="ob-detail-label">
+
+                                                                            Purpose
+
+                                                                        </span>
+
+                                                                        <span class="ob-detail-value ob-purpose-box">
+
+                                                                            {{ $ob->purpose }}
+
+                                                                        </span>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <!-- DEPARTURE TIME -->
+
+                                                                <div class="col-12 col-md-6">
+
+                                                                    <div class="ob-detail-box">
+
+                                                                        <span class="ob-detail-label">
+
+                                                                            Departure Time
+
+                                                                        </span>
+
+                                                                        <span class="ob-detail-value">
+
+                                                                            @if ($ob->departure_time)
+
+                                                                                {{ \Carbon\Carbon::parse($ob->departure_time)->format('h:i A') }}
+
+                                                                            @else
+
+                                                                                Not specified
+
+                                                                            @endif
+
+                                                                        </span>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <!-- EXPECTED RETURN -->
+
+                                                                <div class="col-12 col-md-6">
+
+                                                                    <div class="ob-detail-box">
+
+                                                                        <span class="ob-detail-label">
+
+                                                                            Expected Return Time
+
+                                                                        </span>
+
+                                                                        <span class="ob-detail-value">
+
+                                                                            @if ($ob->expected_return_time)
+
+                                                                                {{ \Carbon\Carbon::parse($ob->expected_return_time)->format('h:i A') }}
+
+                                                                            @else
+
+                                                                                Not specified
+
+                                                                            @endif
+
+                                                                        </span>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <!-- ATTENDANCE PERIOD -->
+
+                                                                <div class="col-12 col-md-6">
+
+                                                                    <div class="ob-detail-box">
+
+                                                                        <span class="ob-detail-label">
+
+                                                                            Attendance Period
+
+                                                                        </span>
+
+                                                                        <span class="ob-detail-value">
+
+                                                                            @switch($ob->attendance_period)
+
+                                                                                @case('morning')
+
+                                                                                    <span class="badge bg-info">
+
+                                                                                        Morning
+
+                                                                                    </span>
+
+                                                                                @break
+
+                                                                                @case('afternoon')
+
+                                                                                    <span class="badge bg-warning text-dark">
+
+                                                                                        Afternoon
+
+                                                                                    </span>
+
+                                                                                @break
+
+                                                                                @case('whole_day')
+
+                                                                                    <span class="badge bg-success">
+
+                                                                                        Whole Day
+
+                                                                                    </span>
+
+                                                                                @break
+
+                                                                                @default
+
+                                                                                    <span class="text-muted">
+
+                                                                                        --
+
+                                                                                    </span>
+
+                                                                            @endswitch
+
+                                                                        </span>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <!-- PROOF STATUS -->
+
+                                                                <div class="col-12 col-md-6">
+
+                                                                    <div class="ob-detail-box">
+
+                                                                        <span class="ob-detail-label">
+
+                                                                            Proof Attachment
+
+                                                                        </span>
+
+                                                                        <span class="ob-detail-value">
+
+                                                                            @if ($ob->proof_images)
+
+                                                                                Available
+
+                                                                            @else
+
+                                                                                No attachment
+
+                                                                            @endif
+
+                                                                        </span>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <!-- REMARKS -->
+
+                                                                @if (!empty($ob->remarks))
+
+                                                                    <div class="col-12">
+
+                                                                        <div class="ob-detail-box">
+
+                                                                            <span class="ob-detail-label">
+
+                                                                                Remarks
+
+                                                                            </span>
+
+                                                                            <span class="ob-detail-value ob-purpose-box">
+
+                                                                                {{ $ob->remarks }}
+
+                                                                            </span>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                @endif
+
+
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <!-- MODAL FOOTER -->
+
+                                                        <div class="modal-footer">
+
+                                                            @if ($ob->proof_images)
+
+                                                                <button type="button"
+                                                                    class="btn btn-outline-primary"
+                                                                    data-bs-dismiss="modal"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#obProofModal{{ $ob->id }}">
+
+                                                                    <i class="bi bi-image me-1"></i>
+
+                                                                    View Proof
+
+                                                                </button>
+
+                                                            @endif
+
+
+                                                            <button type="button"
+                                                                class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+
+                                                                Close
+
+                                                            </button>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <!-- =================================================
+                                                PROOF IMAGES MODAL
+                                                ================================================= -->
+
+                                            @if ($ob->proof_images)
+
+                                                <div class="modal fade ob-proof-modal"
+                                                    id="obProofModal{{ $ob->id }}"
+                                                    tabindex="-1"
+                                                    aria-labelledby="obProofModalLabel{{ $ob->id }}"
+                                                    aria-hidden="true">
+
+                                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+                                                        <div class="modal-content">
+
+
+                                                            <div class="modal-header">
+
+                                                                <div>
+
+                                                                    <h5 class="modal-title"
+                                                                        id="obProofModalLabel{{ $ob->id }}">
+
+                                                                        OB Proof Attachment
+
+                                                                    </h5>
+
+                                                                    <small class="text-muted">
+
+                                                                        Request #{{ $ob->id }}
+
+                                                                    </small>
+
+                                                                </div>
+
+
+                                                                <button type="button"
+                                                                    class="btn-close"
+                                                                    data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+
+                                                            </div>
+
+
+                                                            <div class="modal-body">
+
+
+                                                                @php
+
+                                                                    $proofImages = is_array($ob->proof_images)
+                                                                        ? $ob->proof_images
+                                                                        : json_decode($ob->proof_images, true);
+
+                                                                    $proofImages = is_array($proofImages)
+                                                                        ? $proofImages
+                                                                        : [];
+
+                                                                @endphp
+
+
+                                                                @if (count($proofImages))
+
+                                                                    <div class="ob-proof-gallery">
+
+                                                                        @foreach ($proofImages as $proofImage)
+
+                                                                            <div class="ob-proof-image-wrapper">
+
+                                                                                <img src="{{ asset('storage/' . $proofImage) }}"
+                                                                                    alt="OB Proof"
+                                                                                    class="ob-proof-image">
+
+                                                                            </div>
+
+                                                                        @endforeach
+
+                                                                    </div>
+
+                                                                @else
+
+                                                                    <div class="text-center py-5">
+
+                                                                        <i class="bi bi-image fs-1 text-muted"></i>
+
+                                                                        <h5 class="mt-3">
+
+                                                                            No proof image found
+
+                                                                        </h5>
+
+                                                                        <p class="text-muted mb-0">
+
+                                                                            No proof attachment is available for this request.
+
+                                                                        </p>
+
+                                                                    </div>
+
+                                                                @endif
+
+                                                            </div>
+
+
+                                                            <div class="modal-footer">
+
+                                                                <button type="button"
+                                                                    class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">
+
+                                                                    Close
+
+                                                                </button>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            @endif
 
 
                                         @empty
@@ -1978,15 +2576,6 @@
 
                             </div>
 
-
-                            <!-- PAGINATION -->
-
-                            <div class="mt-3">
-
-                                {{ $officialBusinesses->links() }}
-
-                            </div>
-
                         </div>
 
                     </section>
@@ -1998,8 +2587,8 @@
 
 
             <!-- =================================================
-                 FOOTER
-                 ================================================= -->
+                FOOTER
+                ================================================= -->
 
             <footer class="admin-footer">
 
@@ -2059,15 +2648,15 @@
 
 
     <!-- =========================================================
-         BOOTSTRAP
-         ========================================================= -->
+        BOOTSTRAP
+        ========================================================= -->
 
     <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
 
 
     <!-- =========================================================
-         MAIN TEMPLATE JS
-         ========================================================= -->
+        MAIN TEMPLATE JS
+        ========================================================= -->
 
     <script src="../../../../khen/assets/js/main.js"></script>
 

@@ -1,3 +1,4 @@
+
 @php
     $employee = Auth::user();
 @endphp
@@ -372,10 +373,6 @@
 
         /* =========================================================
            ATTENDANCE DESKTOP TABLE
-
-           IMPORTANT:
-           No min-width is used.
-           No horizontal scrolling is required.
            ========================================================= */
 
         .attendance-table-wrapper {
@@ -555,44 +552,7 @@
         }
 
         /* =========================================================
-           PAGINATION
-           ========================================================= */
-
-        .attendance-pagination {
-            width: 100%;
-            max-width: 100%;
-            min-width: 0;
-            overflow: hidden;
-        }
-
-        .attendance-pagination nav {
-            max-width: 100%;
-            min-width: 0;
-        }
-
-        .attendance-pagination .pagination {
-            max-width: 100%;
-            margin-bottom: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            gap: 3px;
-        }
-
-        .attendance-pagination .page-item {
-            min-width: 0;
-        }
-
-        .attendance-pagination .page-link {
-            max-width: 100%;
-            overflow-wrap: anywhere;
-        }
-
-        /* =========================================================
            MODAL RESPONSIVENESS
-
-           This applies to any Bootstrap modal used on this page
-           now or later.
            ========================================================= */
 
         .modal {
@@ -694,6 +654,129 @@
         }
 
         /* =========================================================
+           RECENT ATTENDANCE / HISTORY MODAL
+           ========================================================= */
+
+        .recent-attendance-header {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .recent-attendance-header > div {
+            min-width: 0;
+        }
+
+        .view-history-btn {
+            flex: 0 0 auto;
+            white-space: nowrap;
+        }
+
+        .attendance-history-modal .modal-dialog {
+            width: calc(100% - 24px);
+            max-width: 1100px;
+            margin: 12px auto;
+        }
+
+        .attendance-history-modal .modal-content {
+            max-height: calc(100vh - 24px);
+        }
+
+        .attendance-history-modal .modal-body {
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: calc(100vh - 170px);
+        }
+
+        .attendance-history-modal .history-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .attendance-history-modal .history-table {
+            width: 100%;
+            min-width: 850px;
+            margin-bottom: 0;
+        }
+
+        .attendance-history-modal .history-table th,
+        .attendance-history-modal .history-table td {
+            white-space: normal;
+            overflow-wrap: anywhere;
+            vertical-align: middle;
+        }
+
+        .attendance-history-modal .history-mobile-list {
+            display: none;
+        }
+
+        @media (max-width: 767.98px) {
+
+            .recent-attendance-header {
+                align-items: stretch;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .view-history-btn {
+                width: 100%;
+            }
+
+            .attendance-history-modal .modal-dialog {
+                width: calc(100% - 16px);
+                max-width: calc(100% - 16px);
+                margin: 8px auto;
+            }
+
+            .attendance-history-modal .modal-content {
+                max-height: calc(100vh - 16px);
+                border-radius: 12px;
+            }
+
+            .attendance-history-modal .modal-header,
+            .attendance-history-modal .modal-body,
+            .attendance-history-modal .modal-footer {
+                padding: 14px !important;
+            }
+
+            .attendance-history-modal .modal-body {
+                max-height: calc(100vh - 145px);
+            }
+
+            .attendance-history-modal .history-table-wrapper {
+                display: none;
+            }
+
+            .attendance-history-modal .history-mobile-list {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .attendance-history-modal .attendance-mobile-card {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+
+            .attendance-history-modal .modal-dialog {
+                width: calc(100% - 12px);
+                max-width: calc(100% - 12px);
+                margin: 6px auto;
+            }
+
+            .attendance-history-modal .modal-body {
+                max-height: calc(100vh - 135px);
+            }
+        }
+
+        /* =========================================================
            LARGE DESKTOP
            ========================================================= */
 
@@ -705,7 +788,6 @@
                 flex-direction: column;
                 justify-content: center;
             }
-
         }
 
         /* =========================================================
@@ -733,13 +815,10 @@
                 justify-content: center;
                 text-align: center;
             }
-
         }
 
         /* =========================================================
            TABLET
-
-           Switch to cards before the table becomes cramped.
            ========================================================= */
 
         @media (max-width: 991.98px) {
@@ -772,21 +851,11 @@
                 padding: 0 16px 16px;
             }
 
-            .attendance-pagination {
-                padding-left: 16px;
-                padding-right: 16px;
-            }
-
-            .attendance-pagination .pagination {
-                justify-content: center;
-            }
-
             .modal-dialog,
             .modal-dialog.modal-lg,
             .modal-dialog.modal-xl {
                 max-width: calc(100vw - 24px);
             }
-
         }
 
         /* =========================================================
@@ -798,10 +867,6 @@
             .dashboard-content > .container-fluid {
                 padding: 16px !important;
             }
-
-            /* -----------------------------------------
-               Heading
-               ----------------------------------------- */
 
             .page-heading {
                 margin-top: 0;
@@ -819,10 +884,6 @@
                 line-height: 1.5;
             }
 
-            /* -----------------------------------------
-               Alerts
-               ----------------------------------------- */
-
             .attendance-alert-area {
                 margin-top: 16px;
             }
@@ -831,10 +892,6 @@
                 padding: 12px;
                 font-size: 0.9rem;
             }
-
-            /* -----------------------------------------
-               Metric cards
-               ----------------------------------------- */
 
             .dashboard-content .row.g-3 {
                 --bs-gutter-x: 12px;
@@ -850,10 +907,6 @@
                 font-size: 2rem;
             }
 
-            /* -----------------------------------------
-               Panels
-               ----------------------------------------- */
-
             .panel {
                 margin-top: 16px !important;
                 border-radius: 12px;
@@ -866,10 +919,6 @@
             .panel-body {
                 padding: 16px !important;
             }
-
-            /* -----------------------------------------
-               Today's attendance
-               ----------------------------------------- */
 
             .today-attendance-grid {
                 padding-left: 16px;
@@ -885,10 +934,6 @@
             .attendance-time-box h4 {
                 font-size: 1.15rem;
             }
-
-            /* -----------------------------------------
-               Search
-               ----------------------------------------- */
 
             .attendance-search-form {
                 padding: 0 16px 16px;
@@ -910,10 +955,6 @@
                 min-height: 46px;
             }
 
-            /* -----------------------------------------
-               Mobile attendance cards
-               ----------------------------------------- */
-
             .attendance-mobile-list {
                 display: flex;
                 flex-direction: column;
@@ -929,29 +970,6 @@
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
-            /* -----------------------------------------
-               Pagination
-               ----------------------------------------- */
-
-            .attendance-pagination {
-                padding-left: 16px;
-                padding-right: 16px;
-            }
-
-            .attendance-pagination .pagination {
-                justify-content: center;
-                gap: 2px;
-            }
-
-            .attendance-pagination .page-link {
-                padding: 6px 9px;
-                font-size: 0.85rem;
-            }
-
-            /* -----------------------------------------
-               Footer
-               ----------------------------------------- */
-
             .admin-footer {
                 padding: 16px 0 !important;
             }
@@ -962,10 +980,6 @@
                 text-align: center;
                 gap: 8px;
             }
-
-            /* -----------------------------------------
-               Navbar
-               ----------------------------------------- */
 
             .admin-navbar .container-fluid {
                 padding-left: 12px !important;
@@ -980,10 +994,6 @@
             .profile-button .profile-name {
                 display: none !important;
             }
-
-            /* -----------------------------------------
-               Modal
-               ----------------------------------------- */
 
             .modal-dialog,
             .modal-dialog.modal-lg,
@@ -1012,7 +1022,6 @@
                 width: 100%;
                 min-width: 0;
             }
-
         }
 
         /* =========================================================
@@ -1034,8 +1043,6 @@
                 font-size: 0.85rem;
             }
 
-            /* Metric cards */
-
             .metric-card {
                 min-height: 125px;
                 padding: 14px !important;
@@ -1053,8 +1060,6 @@
                 font-size: 0.78rem;
             }
 
-            /* Panels */
-
             .panel-header {
                 padding: 14px !important;
             }
@@ -1062,8 +1067,6 @@
             .panel-body {
                 padding: 14px !important;
             }
-
-            /* Today's attendance */
 
             .today-attendance-grid {
                 padding-left: 12px;
@@ -1075,15 +1078,11 @@
                 padding: 12px !important;
             }
 
-            /* Search */
-
             .attendance-search-form {
                 padding-left: 12px;
                 padding-right: 12px;
                 padding-bottom: 12px;
             }
-
-            /* Mobile cards */
 
             .attendance-mobile-list {
                 padding-left: 12px;
@@ -1111,24 +1110,10 @@
                 width: auto;
             }
 
-            /* Pagination */
-
-            .attendance-pagination {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
-
-            .attendance-pagination .pagination {
-                justify-content: center;
-            }
-
-            /* Alerts */
-
             .attendance-alert {
                 font-size: 0.85rem;
                 padding: 10px;
             }
-
         }
 
         /* =========================================================
@@ -1174,11 +1159,6 @@
                 font-size: 1rem;
             }
 
-            .attendance-pagination .page-link {
-                padding: 5px 7px;
-                font-size: 0.78rem;
-            }
-
             .modal-dialog,
             .modal-dialog.modal-lg,
             .modal-dialog.modal-xl {
@@ -1186,7 +1166,6 @@
                 max-width: calc(100% - 16px);
                 margin: 8px auto;
             }
-
         }
     </style>
 </head>
@@ -1207,18 +1186,17 @@
 
             <div class="sidebar-header">
 
-            <a class="brand-mark"
-               href="{{ route('dashboard') }}"
-               aria-label="Admin Dashboard">
+                <a class="brand-mark"
+                    href="{{ route('dashboard') }}"
+                    aria-label="Admin Dashboard">
 
-                <img src="../../../khen/assets/images/logo.jpg"
-                     alt="Pap Pay Logo"
-                     class="brand-logo">
+                    <img src="../../../khen/assets/images/logo.jpg"
+                        alt="Pap Pay Logo"
+                        class="brand-logo">
 
-            </a>
+                </a>
 
-        </div>
-
+            </div>
 
             <!-- =================================================
                  NAVIGATION
@@ -1239,7 +1217,6 @@
 
                 </a>
 
-
                 <a class="nav-link active"
                     href="{{ route('attendance') }}"
                     aria-current="page">
@@ -1254,7 +1231,6 @@
 
                 </a>
 
-
                 <a class="nav-link"
                     href="{{ route('file_leave') }}">
 
@@ -1267,7 +1243,6 @@
                     </span>
 
                 </a>
-
 
                 <a class="nav-link"
                     href="{{ route('file_ob') }}">
@@ -1282,7 +1257,6 @@
 
                 </a>
 
-
                 <a class="nav-link"
                     href="{{ route('payslip') }}">
 
@@ -1296,7 +1270,6 @@
 
                 </a>
 
-
                 <a class="nav-link"
                     href="{{ route('employee.announcements') }}">
 
@@ -1309,7 +1282,6 @@
                     </span>
 
                 </a>
-
 
                 <a class="nav-link"
                     href="{{ route('my_profile') }}">
@@ -1325,7 +1297,6 @@
                 </a>
 
             </nav>
-
 
             <!-- =================================================
                  SIDEBAR USER
@@ -1349,7 +1320,6 @@
 
             </div>
 
-
             <div class="sidebar-footer">
 
                 <span class="status-dot"></span>
@@ -1361,7 +1331,6 @@
             </div>
 
         </aside>
-
 
         <!-- =====================================================
              MAIN APPLICATION
@@ -1390,7 +1359,6 @@
 
                     </button>
 
-
                     <!-- SEARCH -->
 
                     <form class="d-none d-md-flex ms-3 flex-grow-1"
@@ -1404,7 +1372,6 @@
                             required>
 
                     </form>
-
 
                     <div class="navbar-actions ms-auto">
 
@@ -1421,7 +1388,6 @@
                                 aria-hidden="true"></i>
 
                         </button>
-
 
                         <!-- NOTIFICATIONS -->
 
@@ -1440,13 +1406,11 @@
 
                             </button>
 
-
                             <div class="dropdown-menu dropdown-menu-end notification-menu">
 
                                 <div class="dropdown-header fw-bold text-body">
                                     Notifications
                                 </div>
-
 
                                 <a class="dropdown-item"
                                     href="{{ route('attendance') }}">
@@ -1461,7 +1425,6 @@
 
                                 </a>
 
-
                                 <a class="dropdown-item"
                                     href="charts.html">
 
@@ -1474,7 +1437,6 @@
                                     </span>
 
                                 </a>
-
 
                                 <a class="dropdown-item"
                                     href="settings.html">
@@ -1492,7 +1454,6 @@
                             </div>
 
                         </div>
-
 
                         <!-- PROFILE -->
 
@@ -1515,7 +1476,6 @@
 
                             </button>
 
-
                             <ul class="dropdown-menu dropdown-menu-end">
 
                                 <li>
@@ -1529,13 +1489,11 @@
 
                                 </li>
 
-
                                 <li>
 
                                     <hr class="dropdown-divider">
 
                                 </li>
-
 
                                 <li>
 
@@ -1564,7 +1522,6 @@
                 </div>
 
             </nav>
-
 
             <!-- =================================================
                  PAGE CONTENT
@@ -1599,7 +1556,6 @@
 
                     </div>
 
-
                     <!-- =================================================
                          SESSION ALERTS
                          ================================================= -->
@@ -1630,7 +1586,6 @@
 
                     @endif
 
-
                     @if (session('error'))
 
                         <div class="attendance-alert-area">
@@ -1656,7 +1611,6 @@
                         </div>
 
                     @endif
-
 
                     @if ($errors->any())
 
@@ -1700,14 +1654,11 @@
 
                     @endif
 
-
                     <!-- =================================================
                          SUMMARY CARDS
                          ================================================= -->
 
                     <section class="row g-3 mt-3">
-
-                        <!-- PRESENT -->
 
                         <div class="col-12 col-sm-6 col-xl-3">
 
@@ -1737,9 +1688,6 @@
 
                         </div>
 
-
-                        <!-- LATE -->
-
                         <div class="col-12 col-sm-6 col-xl-3">
 
                             <article class="metric-card metric-warning">
@@ -1768,9 +1716,6 @@
 
                         </div>
 
-
-                        <!-- ABSENT -->
-
                         <div class="col-12 col-sm-6 col-xl-3">
 
                             <article class="metric-card metric-danger">
@@ -1798,9 +1743,6 @@
                             </article>
 
                         </div>
-
-
-                        <!-- LEAVE / OB -->
 
                         <div class="col-12 col-sm-6 col-xl-3">
 
@@ -1832,7 +1774,6 @@
 
                     </section>
 
-
                     <!-- =================================================
                          TODAY'S ATTENDANCE
                          ================================================= -->
@@ -1855,10 +1796,7 @@
 
                         </div>
 
-
                         <div class="row g-3 today-attendance-grid">
-
-                            <!-- MORNING IN -->
 
                             <div class="col-12 col-sm-6 col-lg-3">
 
@@ -1880,9 +1818,6 @@
 
                             </div>
 
-
-                            <!-- MORNING OUT -->
-
                             <div class="col-12 col-sm-6 col-lg-3">
 
                                 <div class="attendance-time-box border rounded p-3 text-center">
@@ -1903,9 +1838,6 @@
 
                             </div>
 
-
-                            <!-- AFTERNOON IN -->
-
                             <div class="col-12 col-sm-6 col-lg-3">
 
                                 <div class="attendance-time-box border rounded p-3 text-center">
@@ -1925,9 +1857,6 @@
                                 </div>
 
                             </div>
-
-
-                            <!-- AFTERNOON OUT -->
 
                             <div class="col-12 col-sm-6 col-lg-3">
 
@@ -1953,7 +1882,6 @@
 
                     </section>
 
-
                     <!-- =================================================
                          ATTENDANCE SEARCH
                          ================================================= -->
@@ -1976,14 +1904,11 @@
 
                         </div>
 
-
                         <form method="GET"
                             action="{{ route('attendance') }}"
                             class="attendance-search-form">
 
                             <div class="row g-3 align-items-end">
-
-                                <!-- DATE -->
 
                                 <div class="col-12 col-lg-5">
 
@@ -1998,9 +1923,6 @@
 
                                 </div>
 
-
-                                <!-- SEARCH -->
-
                                 <div class="col-12 col-sm-4 col-lg-3">
 
                                     <button type="submit"
@@ -2014,9 +1936,6 @@
 
                                 </div>
 
-
-                                <!-- RESET -->
-
                                 <div class="col-12 col-sm-4 col-lg-2">
 
                                     <a href="{{ route('attendance') }}"
@@ -2027,9 +1946,6 @@
                                     </a>
 
                                 </div>
-
-
-                                <!-- TODAY -->
 
                                 <div class="col-12 col-sm-4 col-lg-2">
 
@@ -2048,32 +1964,60 @@
 
                     </section>
 
-
                     <!-- =================================================
-                         ATTENDANCE HISTORY
+                         RECENT ATTENDANCE
                          ================================================= -->
+
+                    @php
+                        /*
+                         * Use the actual Attendance model and attendances
+                         * table used by this project.
+                         *
+                         * Main page:
+                         *   Only the 5 most recent records.
+                         *
+                         * Modal:
+                         *   All attendance records.
+                         *
+                         * No pagination is used here.
+                         */
+                        $allAttendanceRecords = \App\Models\Attendance::where('user_id', $employee->id)
+                            ->orderByDesc('date')
+                            ->get();
+
+                        $recentAttendanceRecords = $allAttendanceRecords->take(5);
+                    @endphp
 
                     <section class="panel mt-4">
 
-                        <div class="panel-header">
+                        <div class="panel-header recent-attendance-header">
 
                             <div>
 
                                 <h2 class="h5 mb-1">
-                                    Attendance History
+                                    Recent Attendance
                                 </h2>
 
                                 <p class="text-muted mb-0">
-                                    All attendance records from the Face Recognition Attendance System.
+                                    Showing your 5 most recent attendance records.
                                 </p>
 
                             </div>
 
+                            <button type="button"
+                                class="btn btn-primary view-history-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#attendanceHistoryModal">
+
+                                <i class="bi bi-clock-history me-1"></i>
+                                View All Attendance History
+
+                            </button>
+
                         </div>
 
-
                         <!-- =================================================
-                             DESKTOP TABLE
+                             RECENT ATTENDANCE DESKTOP TABLE
                              ================================================= -->
 
                         <div class="attendance-table-wrapper">
@@ -2085,36 +2029,27 @@
                                     <tr>
 
                                         <th>Date</th>
-
                                         <th>Morning In</th>
-
                                         <th>Morning Out</th>
-
                                         <th>Afternoon In</th>
-
                                         <th>Afternoon Out</th>
-
                                         <th>Hours Worked</th>
-
                                         <th>Status</th>
-
                                         <th>Remarks</th>
 
                                     </tr>
 
                                 </thead>
 
-
                                 <tbody>
 
-                                    @forelse($attendanceRecords as $attendance)
+                                    @forelse($recentAttendanceRecords as $attendance)
 
                                         <tr>
 
                                             <td>
                                                 {{ \Carbon\Carbon::parse($attendance->date)->format('M d, Y') }}
                                             </td>
-
 
                                             <td>
 
@@ -2124,7 +2059,6 @@
 
                                             </td>
 
-
                                             <td>
 
                                                 {{ $attendance->morning_time_out
@@ -2132,7 +2066,6 @@
                                                     : '--' }}
 
                                             </td>
-
 
                                             <td>
 
@@ -2142,7 +2075,6 @@
 
                                             </td>
 
-
                                             <td>
 
                                                 {{ $attendance->afternoon_time_out
@@ -2151,11 +2083,9 @@
 
                                             </td>
 
-
                                             <td>
                                                 {{ $attendance->hours_worked }} hrs
                                             </td>
-
 
                                             <td>
 
@@ -2199,7 +2129,6 @@
 
                                             </td>
 
-
                                             <td>
                                                 {{ $attendance->remarks ?? '-' }}
                                             </td>
@@ -2220,8 +2149,7 @@
                                                 </h5>
 
                                                 <p class="text-muted mb-0">
-                                                    Attendance will automatically appear here after successful Eye
-                                                    Recognition.
+                                                    Attendance will automatically appear here after successful Eye Recognition.
                                                 </p>
 
                                             </td>
@@ -2236,14 +2164,13 @@
 
                         </div>
 
-
                         <!-- =================================================
-                             MOBILE / TABLET ATTENDANCE CARDS
+                             RECENT ATTENDANCE MOBILE / TABLET CARDS
                              ================================================= -->
 
                         <div class="attendance-mobile-list">
 
-                            @forelse($attendanceRecords as $attendance)
+                            @forelse($recentAttendanceRecords as $attendance)
 
                                 <article class="attendance-mobile-card">
 
@@ -2256,7 +2183,6 @@
                                             {{ \Carbon\Carbon::parse($attendance->date)->format('M d, Y') }}
 
                                         </div>
-
 
                                         <div>
 
@@ -2302,10 +2228,7 @@
 
                                     </div>
 
-
                                     <div class="attendance-mobile-grid">
-
-                                        <!-- MORNING IN -->
 
                                         <div class="attendance-mobile-item">
 
@@ -2323,9 +2246,6 @@
 
                                         </div>
 
-
-                                        <!-- MORNING OUT -->
-
                                         <div class="attendance-mobile-item">
 
                                             <span class="attendance-mobile-label">
@@ -2341,9 +2261,6 @@
                                             </span>
 
                                         </div>
-
-
-                                        <!-- AFTERNOON IN -->
 
                                         <div class="attendance-mobile-item">
 
@@ -2361,9 +2278,6 @@
 
                                         </div>
 
-
-                                        <!-- AFTERNOON OUT -->
-
                                         <div class="attendance-mobile-item">
 
                                             <span class="attendance-mobile-label">
@@ -2380,9 +2294,6 @@
 
                                         </div>
 
-
-                                        <!-- HOURS -->
-
                                         <div class="attendance-mobile-item">
 
                                             <span class="attendance-mobile-label">
@@ -2394,9 +2305,6 @@
                                             </span>
 
                                         </div>
-
-
-                                        <!-- REMARKS -->
 
                                         <div class="attendance-mobile-item attendance-mobile-remarks">
 
@@ -2434,27 +2342,397 @@
 
                         </div>
 
+                    </section>
 
-                        <!-- =================================================
-                             PAGINATION
-                             ================================================= -->
+                    <!-- =================================================
+                         ALL ATTENDANCE HISTORY MODAL
+                         ================================================= -->
 
-                        @if ($attendanceRecords->hasPages())
+                    <div class="modal fade attendance-history-modal"
+                        id="attendanceHistoryModal"
+                        tabindex="-1"
+                        aria-labelledby="attendanceHistoryModalLabel"
+                        aria-hidden="true">
 
-                            <div class="attendance-pagination d-flex justify-content-end mt-3 px-3 pb-3">
+                        <div class="modal-dialog modal-xl modal-dialog-centered">
 
-                                {{ $attendanceRecords->links() }}
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+
+                                    <div class="min-w-0">
+
+                                        <h5 class="modal-title"
+                                            id="attendanceHistoryModalLabel">
+
+                                            Attendance History
+
+                                        </h5>
+
+                                        <p class="text-muted small mb-0">
+                                            View all your attendance records.
+                                        </p>
+
+                                    </div>
+
+                                    <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <!-- =================================================
+                                         ALL HISTORY DESKTOP TABLE
+                                         ================================================= -->
+
+                                    <div class="history-table-wrapper">
+
+                                        <table class="table table-hover align-middle history-table">
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th>Date</th>
+                                                    <th>Morning In</th>
+                                                    <th>Morning Out</th>
+                                                    <th>Afternoon In</th>
+                                                    <th>Afternoon Out</th>
+                                                    <th>Hours Worked</th>
+                                                    <th>Status</th>
+                                                    <th>Remarks</th>
+
+                                                </tr>
+
+                                            </thead>
+
+                                            <tbody>
+
+                                                @forelse($allAttendanceRecords as $attendance)
+
+                                                    <tr>
+
+                                                        <td>
+                                                            {{ \Carbon\Carbon::parse($attendance->date)->format('M d, Y') }}
+                                                        </td>
+
+                                                        <td>
+
+                                                            {{ $attendance->morning_time_in
+                                                                ? \Carbon\Carbon::parse($attendance->morning_time_in)->format('h:i A')
+                                                                : '--' }}
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            {{ $attendance->morning_time_out
+                                                                ? \Carbon\Carbon::parse($attendance->morning_time_out)->format('h:i A')
+                                                                : '--' }}
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            {{ $attendance->afternoon_time_in
+                                                                ? \Carbon\Carbon::parse($attendance->afternoon_time_in)->format('h:i A')
+                                                                : '--' }}
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            {{ $attendance->afternoon_time_out
+                                                                ? \Carbon\Carbon::parse($attendance->afternoon_time_out)->format('h:i A')
+                                                                : '--' }}
+
+                                                        </td>
+
+                                                        <td>
+                                                            {{ $attendance->hours_worked }} hrs
+                                                        </td>
+
+                                                        <td>
+
+                                                            @if ($attendance->status == 'Present')
+
+                                                                <span class="badge bg-success">
+                                                                    Present
+                                                                </span>
+
+                                                            @elseif($attendance->status == 'Late')
+
+                                                                <span class="badge bg-warning text-dark">
+                                                                    Late
+                                                                </span>
+
+                                                            @elseif($attendance->status == 'Absent')
+
+                                                                <span class="badge bg-danger">
+                                                                    Absent
+                                                                </span>
+
+                                                            @elseif($attendance->status == 'Leave')
+
+                                                                <span class="badge bg-primary">
+                                                                    Leave
+                                                                </span>
+
+                                                            @elseif($attendance->status == 'Official Business')
+
+                                                                <span class="badge bg-info text-dark">
+                                                                    Official Business
+                                                                </span>
+
+                                                            @else
+
+                                                                <span class="badge bg-secondary">
+                                                                    Unknown
+                                                                </span>
+
+                                                            @endif
+
+                                                        </td>
+
+                                                        <td>
+                                                            {{ $attendance->remarks ?? '-' }}
+                                                        </td>
+
+                                                    </tr>
+
+                                                @empty
+
+                                                    <tr>
+
+                                                        <td colspan="8"
+                                                            class="text-center py-5 attendance-empty">
+
+                                                            <i class="bi bi-calendar-x fs-1 text-muted"></i>
+
+                                                            <h5 class="mt-3">
+                                                                No attendance record found.
+                                                            </h5>
+
+                                                            <p class="text-muted mb-0">
+                                                                Attendance will automatically appear here after successful Eye Recognition.
+                                                            </p>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                @endforelse
+
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+
+                                    <!-- =================================================
+                                         ALL HISTORY MOBILE CARDS
+                                         ================================================= -->
+
+                                    <div class="history-mobile-list">
+
+                                        @forelse($allAttendanceRecords as $attendance)
+
+                                            <article class="attendance-mobile-card">
+
+                                                <div class="attendance-mobile-header">
+
+                                                    <div class="attendance-mobile-date">
+
+                                                        <i class="bi bi-calendar3 me-1"></i>
+
+                                                        {{ \Carbon\Carbon::parse($attendance->date)->format('M d, Y') }}
+
+                                                    </div>
+
+                                                    <div>
+
+                                                        @if ($attendance->status == 'Present')
+
+                                                            <span class="badge bg-success">
+                                                                Present
+                                                            </span>
+
+                                                        @elseif($attendance->status == 'Late')
+
+                                                            <span class="badge bg-warning text-dark">
+                                                                Late
+                                                            </span>
+
+                                                        @elseif($attendance->status == 'Absent')
+
+                                                            <span class="badge bg-danger">
+                                                                Absent
+                                                            </span>
+
+                                                        @elseif($attendance->status == 'Leave')
+
+                                                            <span class="badge bg-primary">
+                                                                Leave
+                                                            </span>
+
+                                                        @elseif($attendance->status == 'Official Business')
+
+                                                            <span class="badge bg-info text-dark">
+                                                                Official Business
+                                                            </span>
+
+                                                        @else
+
+                                                            <span class="badge bg-secondary">
+                                                                Unknown
+                                                            </span>
+
+                                                        @endif
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="attendance-mobile-grid">
+
+                                                    <div class="attendance-mobile-item">
+
+                                                        <span class="attendance-mobile-label">
+                                                            Morning In
+                                                        </span>
+
+                                                        <span class="attendance-mobile-value">
+
+                                                            {{ $attendance->morning_time_in
+                                                                ? \Carbon\Carbon::parse($attendance->morning_time_in)->format('h:i A')
+                                                                : '--' }}
+
+                                                        </span>
+
+                                                    </div>
+
+                                                    <div class="attendance-mobile-item">
+
+                                                        <span class="attendance-mobile-label">
+                                                            Morning Out
+                                                        </span>
+
+                                                        <span class="attendance-mobile-value">
+
+                                                            {{ $attendance->morning_time_out
+                                                                ? \Carbon\Carbon::parse($attendance->morning_time_out)->format('h:i A')
+                                                                : '--' }}
+
+                                                        </span>
+
+                                                    </div>
+
+                                                    <div class="attendance-mobile-item">
+
+                                                        <span class="attendance-mobile-label">
+                                                            Afternoon In
+                                                        </span>
+
+                                                        <span class="attendance-mobile-value">
+
+                                                            {{ $attendance->afternoon_time_in
+                                                                ? \Carbon\Carbon::parse($attendance->afternoon_time_in)->format('h:i A')
+                                                                : '--' }}
+
+                                                        </span>
+
+                                                    </div>
+
+                                                    <div class="attendance-mobile-item">
+
+                                                        <span class="attendance-mobile-label">
+                                                            Afternoon Out
+                                                        </span>
+
+                                                        <span class="attendance-mobile-value">
+
+                                                            {{ $attendance->afternoon_time_out
+                                                                ? \Carbon\Carbon::parse($attendance->afternoon_time_out)->format('h:i A')
+                                                                : '--' }}
+
+                                                        </span>
+
+                                                    </div>
+
+                                                    <div class="attendance-mobile-item">
+
+                                                        <span class="attendance-mobile-label">
+                                                            Hours Worked
+                                                        </span>
+
+                                                        <span class="attendance-mobile-value">
+                                                            {{ $attendance->hours_worked }} hrs
+                                                        </span>
+
+                                                    </div>
+
+                                                    <div class="attendance-mobile-item attendance-mobile-remarks">
+
+                                                        <span class="attendance-mobile-label">
+                                                            Remarks
+                                                        </span>
+
+                                                        <span class="attendance-mobile-value">
+                                                            {{ $attendance->remarks ?? '-' }}
+                                                        </span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </article>
+
+                                        @empty
+
+                                            <div class="text-center py-5 attendance-empty">
+
+                                                <i class="bi bi-calendar-x fs-1 text-muted"></i>
+
+                                                <h5 class="mt-3">
+                                                    No attendance record found.
+                                                </h5>
+
+                                                <p class="text-muted mb-0">
+                                                    Attendance will automatically appear here after successful Eye Recognition.
+                                                </p>
+
+                                            </div>
+
+                                        @endforelse
+
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal">
+
+                                        Close
+
+                                    </button>
+
+                                </div>
 
                             </div>
 
-                        @endif
+                        </div>
 
-                    </section>
+                    </div>
 
                 </div>
 
             </main>
-
 
             <!-- =================================================
                  FOOTER
@@ -2491,11 +2769,9 @@
 
                     </span>
 
-
                     <span>
                         Professional dashboard template.
                     </span>
-
 
                     <span>
                         User management dashboard.
@@ -2509,7 +2785,6 @@
 
     </div>
 
-
     <!-- =========================================================
          JAVASCRIPT
          ========================================================= -->
@@ -2520,3 +2795,4 @@
 </body>
 
 </html>
+

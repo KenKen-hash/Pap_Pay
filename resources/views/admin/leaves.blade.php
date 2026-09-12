@@ -11,85 +11,710 @@
     <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../../khen/assets/css/style.css">
+
+    <style>
+        /* =========================================================
+           PAP PAY - LEAVE MANAGEMENT PAGE
+           Dashboard Typography + Metric Card Styling
+        ========================================================= */
+
+        :root {
+            --pp-text-strong: #172033;
+            --pp-text-muted: #64748b;
+            --pp-border: #e8edf3;
+            --pp-card-shadow: 0 5px 18px rgba(15, 23, 42, .05);
+
+            --pp-primary: #435ebe;
+            --pp-success: #198754;
+            --pp-warning: #f59e0b;
+            --pp-danger: #dc3545;
+        }
+
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Roboto, Helvetica, Arial, sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* =========================================================
+           PAGE HEADING
+        ========================================================= */
+
+        .page-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 1.8rem;
+            padding: 4px 2px;
+        }
+
+        .page-heading-copy {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            width: 100%;
+        }
+
+        .page-heading h1,
+        .page-heading .h3 {
+            color: var(--pp-text-strong);
+            font-size: clamp(1.55rem, 2.4vw, 2.15rem) !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.035em;
+            line-height: 1.2;
+            margin: 0 0 5px !important;
+        }
+
+        .page-heading p {
+            color: var(--pp-text-muted) !important;
+            font-size: clamp(.92rem, 1.1vw, 1.02rem);
+            line-height: 1.6;
+            max-width: 950px;
+            margin: 0 !important;
+        }
+
+        /* =========================================================
+           METRIC CARDS
+           Styled to match the Home dashboard cards
+        ========================================================= */
+
+        .leave-metric-card {
+            position: relative;
+            width: 100%;
+            min-height: 128px;
+            padding: 20px 21px;
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, .04);
+            border-radius: 18px;
+            box-shadow: var(--pp-card-shadow);
+            overflow: hidden;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .leave-metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
+        }
+
+        .leave-metric-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 18px 0 0 18px;
+        }
+
+        .leave-metric-card.metric-warning::before {
+            background: var(--pp-warning);
+        }
+
+        .leave-metric-card.metric-success::before {
+            background: var(--pp-success);
+        }
+
+        .leave-metric-card.metric-danger::before {
+            background: var(--pp-danger);
+        }
+
+        .leave-metric-card.metric-primary::before {
+            background: var(--pp-primary);
+        }
+
+        .leave-metric-label {
+            display: block;
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--pp-text-muted);
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        .leave-metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .leave-metric-description {
+            margin: 5px 0 0;
+            font-size: .88rem;
+            color: var(--pp-text-muted);
+            line-height: 1.45;
+        }
+
+        .leave-metric-value.text-warning {
+            color: var(--pp-warning) !important;
+        }
+
+        .leave-metric-value.text-success {
+            color: var(--pp-success) !important;
+        }
+
+        .leave-metric-value.text-danger {
+            color: var(--pp-danger) !important;
+        }
+
+        .leave-metric-value.text-primary {
+            color: var(--pp-primary) !important;
+        }
+
+        /* =========================================================
+           MAIN PANEL
+        ========================================================= */
+
+        .leave-requests-panel {
+            background: #fff;
+            border: 1px solid var(--pp-border);
+            border-radius: 18px;
+            box-shadow: var(--pp-card-shadow);
+            overflow: hidden;
+        }
+
+        .leave-panel-header {
+            padding: 22px 24px;
+            border-bottom: 1px solid var(--pp-border);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--pp-text-strong);
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: -0.015em;
+            line-height: 1.3;
+            margin: 0 0 5px;
+        }
+
+        .section-title i {
+            color: var(--pp-primary);
+            font-size: 1.05rem;
+        }
+
+        .leave-panel-header p {
+            color: var(--pp-text-muted) !important;
+            font-size: .9rem;
+            line-height: 1.5;
+        }
+
+        /* =========================================================
+           TABLE
+        ========================================================= */
+
+        .leave-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .leave-table {
+            min-width: 1050px;
+            margin-bottom: 0;
+        }
+
+        .leave-table thead th {
+            background: #f8fafc;
+            color: #64748b;
+            border-bottom: 1px solid var(--pp-border);
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .02em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            padding: 13px 15px;
+        }
+
+        .leave-table tbody td {
+            color: #334155;
+            font-size: .9rem;
+            font-weight: 400;
+            padding: 14px 15px;
+            border-bottom: 1px solid #eef2f6;
+            vertical-align: middle;
+        }
+
+        .leave-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .leave-table tbody strong {
+            color: var(--pp-text-strong);
+            font-weight: 700;
+        }
+
+        .leave-table tbody small {
+            color: var(--pp-text-muted);
+            font-size: .78rem;
+        }
+
+        .employee-avatar {
+            width: 45px;
+            height: 45px;
+            min-width: 45px;
+            object-fit: cover;
+        }
+
+        /* =========================================================
+           STATUS BADGES
+        ========================================================= */
+
+        .leave-status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: .75rem;
+            font-weight: 700;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .leave-status-pending {
+            background: rgba(245, 158, 11, .12);
+            color: #b77900;
+        }
+
+        .leave-status-approved {
+            background: rgba(25, 135, 84, .12);
+            color: #157347;
+        }
+
+        .leave-status-rejected {
+            background: rgba(220, 53, 69, .10);
+            color: #bb2d3b;
+        }
+
+        /* =========================================================
+           VIEW BUTTON
+        ========================================================= */
+
+        .view-leave-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* =========================================================
+           MODAL
+        ========================================================= */
+
+        #leaveModal .modal-dialog {
+            max-width: 1100px;
+        }
+
+        #leaveModal .modal-content {
+            border: 0;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, .18);
+        }
+
+        #leaveModal .modal-header {
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--pp-border);
+            background: #fff;
+        }
+
+        #leaveModal .modal-title {
+            color: var(--pp-text-strong);
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -.015em;
+        }
+
+        #leaveModal .modal-body {
+            padding: 24px;
+        }
+
+        #leaveModal .modal-footer {
+            padding: 15px 22px;
+            border-top: 1px solid var(--pp-border);
+        }
+
+        #employeePhoto {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border: 4px solid #f1f5f9;
+        }
+
+        #employeeName {
+            color: var(--pp-text-strong);
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        #employeeDepartment,
+        #employeePosition {
+            color: var(--pp-text-muted);
+            font-size: .9rem;
+            margin-bottom: 3px;
+        }
+
+        .leave-details-table {
+            margin-bottom: 0;
+        }
+
+        .leave-details-table th {
+            width: 160px;
+            color: var(--pp-text-muted);
+            font-size: .84rem;
+            font-weight: 700;
+            padding: 12px 10px;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .leave-details-table td {
+            color: var(--pp-text-strong);
+            font-size: .9rem;
+            font-weight: 500;
+            padding: 12px 10px;
+            border-bottom: 1px solid #eef2f6;
+            word-break: break-word;
+        }
+
+        .remarks-label {
+            display: block;
+            color: var(--pp-text-strong);
+            font-size: .88rem;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        #remarks {
+            resize: vertical;
+            min-height: 100px;
+            border-color: #dce3eb;
+            border-radius: 10px;
+            font-size: .9rem;
+        }
+
+        #remarks:focus {
+            border-color: var(--pp-primary);
+            box-shadow: 0 0 0 .2rem rgba(67, 94, 190, .12);
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 991.98px) {
+            .dashboard-content .container-fluid {
+                padding-top: 1.25rem !important;
+                padding-bottom: 1.25rem !important;
+            }
+
+            .page-heading {
+                margin-bottom: 1.45rem;
+            }
+
+            .leave-panel-header {
+                padding: 19px 20px;
+            }
+
+            #leaveModal .modal-body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .page-heading {
+                padding: 2px 0;
+                margin-bottom: 1.25rem;
+            }
+
+            .page-heading h1,
+            .page-heading .h3 {
+                font-size: 1.55rem !important;
+            }
+
+            .page-heading p {
+                font-size: .92rem;
+            }
+
+            .row.g-3.mb-4 {
+                --bs-gutter-y: .8rem;
+            }
+
+            .leave-metric-card {
+                min-height: 118px;
+                padding: 18px 19px;
+            }
+
+            .leave-metric-value {
+                font-size: 1.8rem;
+            }
+
+            .leave-panel-header {
+                padding: 18px;
+            }
+
+            .section-title {
+                font-size: 1rem;
+            }
+
+            .leave-table thead th,
+            .leave-table tbody td {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            #leaveModal .modal-dialog {
+                margin: .5rem;
+            }
+
+            #leaveModal .modal-body {
+                padding: 18px;
+            }
+
+            #employeePhoto {
+                width: 110px;
+                height: 110px;
+            }
+
+            #employeeName {
+                font-size: 1.1rem;
+            }
+
+            .leave-details-table th {
+                width: 120px;
+            }
+
+            #leaveModal .modal-footer {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 14px 18px;
+            }
+
+            #leaveModal .modal-footer .btn {
+                flex: 1 1 auto;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .dashboard-content .container-fluid {
+                padding-left: .85rem !important;
+                padding-right: .85rem !important;
+            }
+
+            .page-heading h1,
+            .page-heading .h3 {
+                font-size: 1.4rem !important;
+            }
+
+            .page-heading p {
+                font-size: .88rem;
+            }
+
+            .leave-metric-card {
+                min-height: 110px;
+                padding: 17px 18px;
+            }
+
+            .leave-metric-label {
+                font-size: .8rem;
+            }
+
+            .leave-metric-value {
+                font-size: 1.65rem;
+            }
+
+            .leave-metric-description {
+                font-size: .82rem;
+            }
+
+            .leave-requests-panel {
+                border-radius: 15px;
+            }
+
+            .leave-panel-header {
+                padding: 16px;
+            }
+
+            .section-title {
+                font-size: .95rem;
+            }
+
+            .leave-panel-header p {
+                font-size: .82rem;
+            }
+
+            #leaveModal .modal-dialog {
+                margin: .35rem;
+            }
+
+            #leaveModal .modal-body {
+                padding: 15px;
+            }
+
+            #leaveModal .modal-header {
+                padding: 15px 16px;
+            }
+
+            #leaveModal .modal-footer {
+                padding: 12px 15px;
+            }
+
+            #leaveModal .modal-footer .btn {
+                width: 100%;
+                flex: 1 1 100%;
+            }
+
+            .leave-details-table th,
+            .leave-details-table td {
+                display: block;
+                width: 100%;
+                padding: 8px 5px;
+            }
+
+            .leave-details-table th {
+                border-bottom: 0;
+                padding-bottom: 2px;
+            }
+
+            .leave-details-table td {
+                padding-top: 2px;
+            }
+        }
+
+        /* =========================================================
+           PRINT
+        ========================================================= */
+
+        @media print {
+            .admin-sidebar,
+            .admin-navbar,
+            .admin-footer,
+            .sidebar-backdrop,
+            .page-heading,
+            .row.g-3.mb-4,
+            .modal,
+            .btn {
+                display: none !important;
+            }
+
+            .admin-main {
+                margin: 0 !important;
+                width: 100% !important;
+            }
+
+            .leave-requests-panel {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
 </head>
 
 <body>
+
     <div class="admin-shell">
+
         <div class="sidebar-backdrop" data-sidebar-close></div>
 
         <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
-           <div class="sidebar-header">
+
+            <div class="sidebar-header">
                 <a class="brand-mark" href="{{ route('admin-dashboard') }}" aria-label="Admin Dashboard">
                     <img src="../../../khen/assets/images/logo.jpg" alt="Pap Pay Logo" class="brand-logo">
                 </a>
             </div>
 
-
             <nav class="sidebar-nav">
+
                 <a class="nav-link" href="{{ route('admin-dashboard') }}">
-                    <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
+                    <span class="nav-icon">
+                        <i class="bi bi-speedometer2"></i>
+                    </span>
                     <span class="nav-text">Home</span>
                 </a>
 
                 <a class="nav-link" href="{{ route('employees.index') }}">
-                    <span class="nav-icon"><i class="bi bi-people"></i></span>
+                    <span class="nav-icon">
+                        <i class="bi bi-people"></i>
+                    </span>
                     <span class="nav-text">Employees</span>
                 </a>
 
                 <a class="nav-link" href="{{ route('attendance_list') }}">
-                    <span class="nav-icon"><i class="bi bi-calendar-check"></i></span>
+                    <span class="nav-icon">
+                        <i class="bi bi-calendar-check"></i>
+                    </span>
                     <span class="nav-text">Attendance</span>
                 </a>
 
                 <a class="nav-link active" href="{{ route('admin.leaves') }}">
-                    <span class="nav-icon"><i class="bi bi-calendar-x"></i></span>
+                    <span class="nav-icon">
+                        <i class="bi bi-calendar-x"></i>
+                    </span>
                     <span class="nav-text">Leave Requests</span>
                 </a>
+
                 <a class="nav-link" href="{{ route('official_business') }}">
-                    <span class="nav-icon"><i class="bi bi-briefcase"></i></span>
+                    <span class="nav-icon">
+                        <i class="bi bi-briefcase"></i>
+                    </span>
                     <span class="nav-text">Official Business (OB)</span>
                 </a>
 
                 <a class="nav-link" href="{{ route('holidays.index') }}">
-                    <span class="nav-icon"><i class="bi bi-gear"></i></span>
+                    <span class="nav-icon">
+                        <i class="bi bi-gear"></i>
+                    </span>
                     <span class="nav-text">Holidays</span>
                 </a>
+
                 <a class="nav-link" href="{{ route('payroll') }}">
-                    <span class="nav-icon"><i class="bi bi-cash-stack"></i></span>
+                    <span class="nav-icon">
+                        <i class="bi bi-cash-stack"></i>
+                    </span>
                     <span class="nav-text">Payroll</span>
                 </a>
 
                 <a class="nav-link" href="{{ route('payslip_list') }}">
-                    <span class="nav-icon"><i class="bi bi-receipt"></i></span>
+                    <span class="nav-icon">
+                        <i class="bi bi-receipt"></i>
+                    </span>
                     <span class="nav-text">Payslips</span>
                 </a>
-                <a class="nav-link" href="{{ route('admin.payslip-concerns.index') }}">
 
+                <a class="nav-link" href="{{ route('admin.payslip-concerns.index') }}">
                     <span class="nav-icon">
                         <i class="bi bi-exclamation-circle"></i>
                     </span>
-
-                    <span class="nav-text">
-                        Payslip Concerns
-                    </span>
-
+                    <span class="nav-text">Payslip Concerns</span>
                 </a>
 
                 <a class="nav-link" href="{{ route('reports') }}">
-                    <span class="nav-icon"><i class="bi bi-bar-chart"></i></span>
+                    <span class="nav-icon">
+                        <i class="bi bi-bar-chart"></i>
+                    </span>
                     <span class="nav-text">Reports</span>
                 </a>
 
                 <a class="nav-link" href="{{ route('announcements') }}">
-                    <span class="nav-icon"><i class="bi bi-megaphone"></i></span>
+                    <span class="nav-icon">
+                        <i class="bi bi-megaphone"></i>
+                    </span>
                     <span class="nav-text">Announcements</span>
                 </a>
 
-
             </nav>
 
+            <div class="sidebar-user">
 
-            <<div class="sidebar-user">
                 <img class="avatar-img avatar-md sidebar-user-avatar"
                     src="{{ Auth::user()->photo
                         ? asset('storage/' . Auth::user()->photo)
@@ -99,103 +724,147 @@
                 <strong>{{ Auth::user()->name }}</strong>
 
                 <small>{{ ucfirst(Auth::user()->role ?? 'Employee') }}</small>
-    </div>
 
-    <div class="sidebar-footer">
-        <span class="status-dot"></span>
-        <span class="sidebar-footer-text">System running smoothly</span>
-    </div>
-    </aside>
+            </div>
 
-    <div class="admin-main">
-        <nav class="navbar admin-navbar navbar-expand bg-white">
-            <div class="container-fluid px-3 px-lg-4">
-                <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
-                    aria-expanded="true" aria-label="Toggle sidebar">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+            <div class="sidebar-footer">
+                <span class="status-dot"></span>
+                <span class="sidebar-footer-text">System running smoothly</span>
+            </div>
 
-                <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
-                    <input class="form-control search-input" type="search"
-                        placeholder="Search users, orders, reports" aria-label="Search">
-                </form>
+        </aside>
 
-                <div class="navbar-actions ms-auto">
-                    <button class="icon-button theme-toggle" type="button" data-theme-toggle
-                        aria-label="Switch color theme" title="Switch color theme">
-                        <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
+        <div class="admin-main">
+
+            <nav class="navbar admin-navbar navbar-expand bg-white">
+
+                <div class="container-fluid px-3 px-lg-4">
+
+                    <button class="sidebar-toggle"
+                        type="button"
+                        data-sidebar-toggle
+                        aria-controls="adminSidebar"
+                        aria-expanded="true"
+                        aria-label="Toggle sidebar">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
                     </button>
 
-                    <div class="dropdown">
+                    <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
 
-                        <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                            aria-label="Notifications">
+                        <input class="form-control search-input"
+                            type="search"
+                            placeholder="Search users, orders, reports"
+                            aria-label="Search">
 
-                            @if (($unreadNotifications ?? 0) > 0)
-                                <span class="notification-dot"></span>
-                            @endif
+                    </form>
 
-                            <i class="bi bi-bell" aria-hidden="true"></i>
+                    <div class="navbar-actions ms-auto">
+
+                        <button class="icon-button theme-toggle"
+                            type="button"
+                            data-theme-toggle
+                            aria-label="Switch color theme"
+                            title="Switch color theme">
+
+                            <i class="bi bi-moon-stars"
+                                data-theme-icon
+                                aria-hidden="true"></i>
+
                         </button>
 
-                        <div class="dropdown-menu dropdown-menu-end notification-menu">
+                        <div class="dropdown">
 
-                            <div class="dropdown-header fw-bold text-body">
-                                Notifications
-                            </div>
+                            <button class="icon-button"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                aria-label="Notifications">
 
-                            @forelse($notifications ?? [] as $notification)
-                                <a class="dropdown-item {{ !$notification->is_read ? 'notification-unread' : '' }}"
-                                    href="{{ route('admin.notifications.read', $notification->id) }}">
+                                @if (($unreadNotifications ?? 0) > 0)
+                                    <span class="notification-dot"></span>
+                                @endif
 
-                                    <span class="notification-title">
-                                        {{ $notification->title }}
-                                    </span>
+                                <i class="bi bi-bell" aria-hidden="true"></i>
 
-                                    <span class="notification-message">
-                                        {{ $notification->message }}
-                                    </span>
+                            </button>
 
-                                    <span class="notification-time">
-                                        {{ $notification->created_at->diffForHumans() }}
-                                    </span>
+                            <div class="dropdown-menu dropdown-menu-end notification-menu">
+
+                                <div class="dropdown-header fw-bold text-body">
+                                    Notifications
+                                </div>
+
+                                @forelse($notifications ?? [] as $notification)
+
+                                    <a class="dropdown-item {{ !$notification->is_read ? 'notification-unread' : '' }}"
+                                        href="{{ route('admin.notifications.read', $notification->id) }}">
+
+                                        <span class="notification-title">
+                                            {{ $notification->title }}
+                                        </span>
+
+                                        <span class="notification-message">
+                                            {{ $notification->message }}
+                                        </span>
+
+                                        <span class="notification-time">
+                                            {{ $notification->created_at->diffForHumans() }}
+                                        </span>
+
+                                    </a>
+
+                                @empty
+
+                                    <div class="dropdown-item text-muted text-center py-3">
+
+                                        <i class="bi bi-bell-slash"></i>
+
+                                        <br>
+
+                                        No notifications
+
+                                    </div>
+
+                                @endforelse
+
+                                <div class="dropdown-divider"></div>
+
+                                <a href="{{ route('admin.notifications') }}"
+                                    class="dropdown-item text-center">
+
+                                    View all notifications
 
                                 </a>
 
-                            @empty
-
-                                <div class="dropdown-item text-muted text-center py-3">
-                                    <i class="bi bi-bell-slash"></i>
-                                    <br>
-                                    No notifications
-                                </div>
-                            @endforelse
-
-                            <div class="dropdown-divider"></div>
-
-                            <a href="{{ route('admin.notifications') }}" class="dropdown-item text-center">
-                                View all notifications
-                            </a>
+                            </div>
 
                         </div>
 
-                    </div>
-                    <div class="dropdown">
-                        <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <img class="avatar-img avatar-sm"
-                                src="{{ Auth::user()->photo
-                                    ? asset('storage/' . Auth::user()->photo)
-                                    : asset('khen/assets/images/avatar/avatar.jpg') }}"
-                                alt="{{ Auth::user()->name }}">
+                        <div class="dropdown">
 
-                            <span class="profile-name d-none d-sm-inline">
-                                {{ Auth::user()->name }}
-                            </span>
-                        </button>
-                         <ul class="dropdown-menu dropdown-menu-end">
+                            <button class="profile-button dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+
+                                <img class="avatar-img avatar-sm"
+                                    src="{{ Auth::user()->photo
+                                        ? asset('storage/' . Auth::user()->photo)
+                                        : asset('khen/assets/images/avatar/avatar.jpg') }}"
+                                    alt="{{ Auth::user()->name }}">
+
+                                <span class="profile-name d-none d-sm-inline">
+                                    {{ Auth::user()->name }}
+                                </span>
+
+                            </button>
+
+                            <ul class="dropdown-menu dropdown-menu-end">
+
                                 <li>
 
                                     <form method="POST" action="{{ route('logout') }}">
@@ -203,491 +872,436 @@
                                         @csrf
 
                                         <button type="submit" class="dropdown-item">
-
                                             Sign out
-
                                         </button>
 
                                     </form>
 
                                 </li>
 
-
                             </ul>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <main class="dashboard-content">
-            <div class="container-fluid px-3 px-lg-4 py-4">
-
-                <div class="page-heading">
-
-                    <div class="page-heading-copy">
-
-                        <span class="page-icon">
-
-                            <i class="bi bi-calendar2-check"></i>
-
-                        </span>
-
-                        <div>
-
-                            <p class="eyebrow mb-1">
-
-                                Human Resource
-
-                            </p>
-
-                            <h1 class="h3 mb-1">
-
-                                Leave Management
-
-                            </h1>
-
-                            <p class="text-muted">
-
-                                Manage employee leave requests, approvals and leave records.
-
-                            </p>
-
-                        </div>
-
-                    </div>
-                </div>
-                <div class="row g-3 mb-4">
-
-                    <div class="col-xl-3 col-md-6">
-
-                        <div class="panel h-100">
-
-                            <h6 class="text-muted">
-
-                                Pending Requests
-
-                            </h6>
-
-                            <h2 class="fw-bold text-warning">
-
-                                {{ $pending }}
-
-                            </h2>
-
-                            <p class="mb-0">
-
-                                Awaiting approval
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-xl-3 col-md-6">
-
-                        <div class="panel h-100">
-
-                            <h6 class="text-muted">
-
-                                Approved
-
-                            </h6>
-
-                            <h2 class="fw-bold text-success">
-
-                                {{ $approved }}
-
-                            </h2>
-
-                            <p class="mb-0">
-
-                                Approved leaves
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-xl-3 col-md-6">
-
-                        <div class="panel h-100">
-
-                            <h6 class="text-muted">
-
-                                Rejected
-
-                            </h6>
-
-                            <h2 class="fw-bold text-danger">
-
-                                {{ $rejected }}
-
-                            </h2>
-
-                            <p class="mb-0">
-
-                                Rejected requests
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-xl-3 col-md-6">
-
-                        <div class="panel h-100">
-
-                            <h6 class="text-muted">
-
-                                Employees on Leave
-
-                            </h6>
-
-                            <h2 class="fw-bold text-primary">
-
-                                {{ $onLeaveToday }}
-
-                            </h2>
-
-                            <p class="mb-0">
-
-                                Today
-
-                            </p>
 
                         </div>
 
                     </div>
 
                 </div>
-                <section class="panel">
 
-                    <div class="panel-header d-flex justify-content-between align-items-center">
+            </nav>
 
-                        <div>
+            <main class="dashboard-content">
+
+                <div class="container-fluid px-3 px-lg-4 py-4">
+
+                    <!-- PAGE HEADING -->
+
+                    <div class="page-heading">
+
+                        <div class="page-heading-copy">
+
+                            <div>
+
+                                <h1>
+                                    Leave Management
+                                </h1>
+
+                                <p>
+                                    Manage employee leave requests, approvals and leave records.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- METRICS -->
+
+                    <div class="row g-3 mb-4">
+
+                        <div class="col-xl-3 col-md-6">
+
+                            <div class="leave-metric-card metric-warning h-100">
+
+                                <span class="leave-metric-label">
+                                    Pending Requests
+                                </span>
+
+                                <h2 class="leave-metric-value text-warning">
+                                    {{ $pending }}
+                                </h2>
+
+                                <p class="leave-metric-description">
+                                    Awaiting approval
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-xl-3 col-md-6">
+
+                            <div class="leave-metric-card metric-success h-100">
+
+                                <span class="leave-metric-label">
+                                    Approved
+                                </span>
+
+                                <h2 class="leave-metric-value text-success">
+                                    {{ $approved }}
+                                </h2>
+
+                                <p class="leave-metric-description">
+                                    Approved leaves
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-xl-3 col-md-6">
+
+                            <div class="leave-metric-card metric-danger h-100">
+
+                                <span class="leave-metric-label">
+                                    Rejected
+                                </span>
+
+                                <h2 class="leave-metric-value text-danger">
+                                    {{ $rejected }}
+                                </h2>
+
+                                <p class="leave-metric-description">
+                                    Rejected requests
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-xl-3 col-md-6">
+
+                            <div class="leave-metric-card metric-primary h-100">
+
+                                <span class="leave-metric-label">
+                                    Employees on Leave
+                                </span>
+
+                                <h2 class="leave-metric-value text-primary">
+                                    {{ $onLeaveToday }}
+                                </h2>
+
+                                <p class="leave-metric-description">
+                                    Today
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- LEAVE REQUESTS -->
+
+                    <section class="leave-requests-panel">
+
+                        <div class="leave-panel-header">
 
                             <h2 class="section-title">
+
                                 <i class="bi bi-calendar2-check"></i>
+
                                 Employee Leave Requests
+
                             </h2>
 
-                            <p class="text-muted mb-0">
+                            <p class="mb-0">
                                 Review, approve or reject employee leave applications.
                             </p>
 
                         </div>
 
-                    </div>
+                        <div class="leave-table-wrapper">
 
-                    <div class="table-responsive">
+                            <table class="table table-hover align-middle leave-table">
 
-                        <table class="table table-hover align-middle">
+                                <thead>
 
-                            <thead>
-
-                                <tr>
-
-                                    <th>Leave ID</th>
-
-                                    <th>Employee</th>
-
-                                    <th>Department</th>
-
-                                    <th>Leave Type</th>
-
-                                    <th>Leave Period</th>
-
-                                    <th>Days</th>
-
-                                    <th>Status</th>
-
-                                    <th>Filed On</th>
-
-                                    <th class="text-end">Action</th>
-
-                                </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                                @forelse($leaveRequests as $leave)
                                     <tr>
 
-                                        <td>
+                                        <th>Leave ID</th>
+                                        <th>Employee</th>
+                                        <th>Department</th>
+                                        <th>Leave Type</th>
+                                        <th>Leave Period</th>
+                                        <th>Days</th>
+                                        <th>Status</th>
+                                        <th>Filed On</th>
+                                        <th class="text-end">Action</th>
 
-                                            <strong>
+                                    </tr>
 
-                                                LV-{{ str_pad($leave->id, 5, '0', STR_PAD_LEFT) }}
+                                </thead>
 
-                                            </strong>
+                                <tbody>
 
-                                        </td>
+                                    @forelse($leaveRequests as $leave)
 
-                                        <td>
+                                        <tr>
 
-                                            <div class="d-flex align-items-center">
+                                            <td>
 
-                                                @if ($leave->user->photo)
-                                                    <img src="{{ asset('storage/' . $leave->user->photo) }}"
-                                                        width="45" height="45" class="rounded-circle me-2">
-                                                @else
-                                                    <img src="{{ asset('images/default-avatar.png') }}"
-                                                        width="45" height="45" class="rounded-circle me-2">
-                                                @endif
+                                                <strong>
+                                                    LV-{{ str_pad($leave->id, 5, '0', STR_PAD_LEFT) }}
+                                                </strong>
 
-                                                <div>
+                                            </td>
 
-                                                    <strong>
+                                            <td>
 
-                                                        {{ $leave->user->name }}
+                                                <div class="d-flex align-items-center">
 
-                                                    </strong>
+                                                    @if ($leave->user->photo)
 
-                                                    <br>
+                                                        <img src="{{ asset('storage/' . $leave->user->photo) }}"
+                                                            class="rounded-circle me-2 employee-avatar"
+                                                            alt="{{ $leave->user->name }}">
 
-                                                    <small>
+                                                    @else
 
-                                                        {{ $leave->user->employee_id }}
+                                                        <img src="{{ asset('images/default-avatar.png') }}"
+                                                            class="rounded-circle me-2 employee-avatar"
+                                                            alt="Default avatar">
 
-                                                    </small>
+                                                    @endif
+
+                                                    <div>
+
+                                                        <strong>
+                                                            {{ $leave->user->name }}
+                                                        </strong>
+
+                                                        <br>
+
+                                                        <small>
+                                                            {{ $leave->user->employee_id }}
+                                                        </small>
+
+                                                    </div>
 
                                                 </div>
 
-                                            </div>
+                                            </td>
 
-                                        </td>
+                                            <td>
+                                                {{ $leave->user->department }}
+                                            </td>
 
-                                        <td>
+                                            <td>
+                                                {{ $leave->leave_type }}
+                                            </td>
 
-                                            {{ $leave->user->department }}
+                                            <td>
 
-                                        </td>
+                                                {{ $leave->start_date->format('M d, Y') }}
 
-                                        <td>
+                                                <br>
 
-                                            {{ $leave->leave_type }}
+                                                <small>to</small>
 
-                                        </td>
+                                                <br>
 
-                                        <td>
+                                                {{ $leave->end_date->format('M d, Y') }}
 
-                                            {{ $leave->start_date->format('M d, Y') }}
+                                            </td>
 
-                                            <br>
+                                            <td>
+                                                {{ $leave->days }}
+                                            </td>
 
-                                            <small>
+                                            <td>
 
-                                                to
+                                                @if ($leave->status == 'Pending')
 
-                                            </small>
+                                                    <span class="leave-status-badge leave-status-pending">
+                                                        Pending
+                                                    </span>
 
-                                            <br>
+                                                @elseif($leave->status == 'Approved')
 
-                                            {{ $leave->end_date->format('M d, Y') }}
+                                                    <span class="leave-status-badge leave-status-approved">
+                                                        Approved
+                                                    </span>
 
-                                        </td>
+                                                @else
 
-                                        <td>
+                                                    <span class="leave-status-badge leave-status-rejected">
+                                                        Rejected
+                                                    </span>
 
-                                            {{ $leave->days }}
+                                                @endif
 
-                                        </td>
+                                            </td>
 
-                                        <td>
+                                            <td>
+                                                {{ $leave->created_at->format('M d, Y') }}
+                                            </td>
 
-                                            @if ($leave->status == 'Pending')
-                                                <span class="badge bg-warning">
+                                            <td class="text-end">
 
-                                                    Pending
+                                                <button class="btn btn-primary btn-sm viewLeaveBtn view-leave-btn"
+                                                    data-id="{{ $leave->id }}"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#leaveModal">
 
-                                                </span>
-                                            @elseif($leave->status == 'Approved')
-                                                <span class="badge bg-success">
+                                                    <i class="bi bi-eye"></i>
 
-                                                    Approved
+                                                    View
 
-                                                </span>
-                                            @else
-                                                <span class="badge bg-danger">
+                                                </button>
 
-                                                    Rejected
+                                            </td>
 
-                                                </span>
-                                            @endif
+                                        </tr>
 
-                                        </td>
+                                    @empty
 
-                                        <td>
+                                        <tr>
 
-                                            {{ $leave->created_at->format('M d, Y') }}
+                                            <td colspan="9" class="text-center py-5">
 
-                                        </td>
+                                                <h5 class="mb-0">
+                                                    No leave requests found.
+                                                </h5>
 
-                                        <td class="text-end">
+                                            </td>
 
-                                            <button class="btn btn-primary btn-sm viewLeaveBtn"
-                                                data-id="{{ $leave->id }}" data-bs-toggle="modal"
-                                                data-bs-target="#leaveModal">
+                                        </tr>
 
-                                                <i class="bi bi-eye"></i>
+                                    @endforelse
 
-                                                View
+                                </tbody>
 
-                                            </button>
+                            </table>
 
-                                        </td>
+                        </div>
 
-                                    </tr>
+                    </section>
 
-                                @empty
+                </div>
 
-                                    <tr>
+            </main>
 
-                                        <td colspan="9" class="text-center py-5">
+            <!-- LEAVE MODAL -->
 
-                                            <h5>No leave requests found.</h5>
+            <div class="modal fade"
+                id="leaveModal"
+                tabindex="-1"
+                aria-labelledby="leaveModalLabel"
+                aria-hidden="true">
 
-                                        </td>
+                <div class="modal-dialog modal-xl modal-dialog-centered">
 
-                                    </tr>
-                                @endforelse
+                    <div class="modal-content">
 
-                            </tbody>
+                        <div class="modal-header">
 
-                        </table>
+                            <h5 class="modal-title" id="leaveModalLabel">
+                                Leave Request Details
+                            </h5>
 
-                    </div>
-                    <div class="modal fade" id="leaveModal" tabindex="-1">
+                            <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close">
+                            </button>
 
-                        <div class="modal-dialog modal-xl">
+                        </div>
 
-                            <div class="modal-content">
+                        <div class="modal-body">
 
-                                <div class="modal-header">
+                            <div class="row g-4">
 
-                                    <h5 class="modal-title">
+                                <div class="col-md-4 text-center">
 
-                                        Leave Request Details
+                                    <img id="employeePhoto"
+                                        src=""
+                                        class="rounded-circle mb-3"
+                                        alt="Employee Photo">
 
-                                    </h5>
+                                    <h4 id="employeeName"></h4>
 
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                    </button>
+                                    <p id="employeeDepartment"></p>
+
+                                    <p id="employeePosition"></p>
 
                                 </div>
 
-                                <div class="modal-body">
+                                <div class="col-md-8">
 
-                                    <div class="row">
+                                    <table class="table leave-details-table">
 
-                                        <div class="col-md-4 text-center">
+                                        <tr>
 
-                                            <img id="employeePhoto" src="" class="rounded-circle mb-3"
-                                                width="140" height="140">
+                                            <th>Leave Type</th>
 
-                                            <h4 id="employeeName"></h4>
+                                            <td id="leaveType"></td>
 
-                                            <p id="employeeDepartment"></p>
+                                        </tr>
 
-                                            <p id="employeePosition"></p>
+                                        <tr>
 
-                                        </div>
+                                            <th>Leave Period</th>
 
-                                        <div class="col-md-8">
+                                            <td id="leavePeriod"></td>
 
-                                            <table class="table">
+                                        </tr>
 
-                                                <tr>
+                                        <tr>
 
-                                                    <th>Leave Type</th>
+                                            <th>Total Days</th>
 
-                                                    <td id="leaveType"></td>
+                                            <td id="leaveDays"></td>
 
-                                                </tr>
+                                        </tr>
 
-                                                <tr>
+                                        <tr>
 
-                                                    <th>Leave Period</th>
+                                            <th>Status</th>
 
-                                                    <td id="leavePeriod"></td>
+                                            <td id="leaveStatus"></td>
 
-                                                </tr>
+                                        </tr>
 
-                                                <tr>
+                                        <tr>
 
-                                                    <th>Total Days</th>
+                                            <th>Reason</th>
 
-                                                    <td id="leaveDays"></td>
+                                            <td id="leaveReason"></td>
 
-                                                </tr>
+                                        </tr>
 
-                                                <tr>
+                                        <tr>
 
-                                                    <th>Status</th>
+                                            <th>Attachment</th>
 
-                                                    <td id="leaveStatus"></td>
+                                            <td id="attachment"></td>
 
-                                                </tr>
+                                        </tr>
 
-                                                <tr>
+                                    </table>
 
-                                                    <th>Reason</th>
+                                    <div class="mt-4">
 
-                                                    <td id="leaveReason"></td>
+                                        <label class="remarks-label">
+                                            Remarks
+                                        </label>
 
-                                                </tr>
-
-                                                <tr>
-
-                                                    <th>Attachment</th>
-
-                                                    <td id="attachment"></td>
-
-                                                </tr>
-
-                                            </table>
-
-                                            <div class="mt-4">
-
-                                                <label>
-
-                                                    Remarks
-
-                                                </label>
-
-                                                <textarea class="form-control" id="remarks" rows="4"></textarea>
-
-                                            </div>
-
-                                        </div>
+                                        <textarea class="form-control"
+                                            id="remarks"
+                                            rows="4"></textarea>
 
                                     </div>
-
-                                </div>
-
-                                <div class="modal-footer">
-
-                                    <button class="btn btn-success" id="approveBtn">
-
-                                        Approve
-
-                                    </button>
-
-                                    <button class="btn btn-danger" id="rejectBtn">
-
-                                        Reject
-
-                                    </button>
-
-                                    <button class="btn btn-secondary" data-bs-dismiss="modal">
-
-                                        Close
-
-                                    </button>
 
                                 </div>
 
@@ -695,23 +1309,49 @@
 
                         </div>
 
+                        <div class="modal-footer">
+
+                            <button class="btn btn-success" id="approveBtn">
+                                Approve
+                            </button>
+
+                            <button class="btn btn-danger" id="rejectBtn">
+                                Reject
+                            </button>
+
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+
+                        </div>
+
                     </div>
-                </section>
-        </main>
 
-
-        <footer class="admin-footer">
-            <div class="container-fluid px-3 px-lg-4">
+                </div>
 
             </div>
-        </footer>
+
+            <footer class="admin-footer">
+
+                <div class="container-fluid px-3 px-lg-4">
+                </div>
+
+            </footer>
+
+        </div>
+
     </div>
-    </div>
+
     <input type="hidden" id="leaveId">
 
     <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
     <script src="../../../../khen/assets/js/main.js"></script>
+
     <script>
+        /* =========================================================
+           VIEW LEAVE REQUEST
+        ========================================================= */
+
         document.querySelectorAll('.viewLeaveBtn').forEach(button => {
 
             button.addEventListener('click', function() {
@@ -720,52 +1360,84 @@
 
                 fetch('/admin/leaves/' + id)
 
-                    .then(response => response.json())
+                    .then(response => {
+
+                        if (!response.ok) {
+                            throw new Error('Failed to load leave request.');
+                        }
+
+                        return response.json();
+
+                    })
 
                     .then(data => {
 
-                        document.getElementById('employeeName').innerHTML = data.user.name;
+                        document.getElementById('employeeName').innerHTML =
+                            data.user.name;
 
-                        document.getElementById('leaveId').value = data.id;
+                        document.getElementById('leaveId').value =
+                            data.id;
 
-                        document.getElementById('employeeDepartment').innerHTML = data.user.department;
+                        document.getElementById('employeeDepartment').innerHTML =
+                            data.user.department;
 
-                        document.getElementById('employeePosition').innerHTML = data.user.position;
+                        document.getElementById('employeePosition').innerHTML =
+                            data.user.position;
 
-                        document.getElementById('leaveType').innerHTML = data.leave_type;
+                        document.getElementById('leaveType').innerHTML =
+                            data.leave_type;
 
                         document.getElementById('leavePeriod').innerHTML =
                             data.start_date + " - " + data.end_date;
 
-                        document.getElementById('leaveDays').innerHTML = data.days;
+                        document.getElementById('leaveDays').innerHTML =
+                            data.days;
 
-                        document.getElementById('leaveStatus').innerHTML = data.status;
+                        document.getElementById('leaveStatus').innerHTML =
+                            data.status;
 
-                        document.getElementById('leaveReason').innerHTML = data.reason;
+                        document.getElementById('leaveReason').innerHTML =
+                            data.reason;
+
+                        document.getElementById('remarks').value =
+                            data.remarks ?? '';
 
                         if (data.user.photo) {
 
-                            document.getElementById('employeePhoto').src = '/storage/' + data.user
-                                .photo;
+                            document.getElementById('employeePhoto').src =
+                                '/storage/' + data.user.photo;
 
                         } else {
 
-                            document.getElementById('employeePhoto').src = '/images/default-avatar.png';
+                            document.getElementById('employeePhoto').src =
+                                '/images/default-avatar.png';
 
                         }
 
                         if (data.attachment) {
 
                             document.getElementById('attachment').innerHTML =
-                                '<a href="/storage/' + data.attachment +
-                                '" target="_blank" class="btn btn-outline-primary btn-sm">Download Attachment</a>';
+                                '<a href="/storage/' +
+                                data.attachment +
+                                '" target="_blank" class="btn btn-outline-primary btn-sm">' +
+                                '<i class="bi bi-paperclip me-1"></i>' +
+                                'Download Attachment' +
+                                '</a>';
 
                         } else {
 
-                            document.getElementById('attachment').innerHTML = 'No attachment uploaded';
+                            document.getElementById('attachment').innerHTML =
+                                '<span class="text-muted">No attachment uploaded</span>';
 
                         }
 
+                    })
+
+                    .catch(error => {
+
+                        console.error(error);
+
+                        alert('Unable to load the leave request details.');
 
                     });
 
@@ -773,6 +1445,10 @@
 
         });
 
+
+        /* =========================================================
+           APPROVE LEAVE
+        ========================================================= */
 
         document.getElementById('approveBtn').addEventListener('click', function() {
 
@@ -786,7 +1462,8 @@
 
                         'Content-Type': 'application/json',
 
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        'X-CSRF-TOKEN':
+                            document.querySelector('meta[name="csrf-token"]').content
 
                     },
 
@@ -794,7 +1471,8 @@
 
                         status: 'Approved',
 
-                        remarks: document.getElementById('remarks').value
+                        remarks:
+                            document.getElementById('remarks').value
 
                     })
 
@@ -816,9 +1494,23 @@
 
                     }
 
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    alert('Something went wrong while approving the leave request.');
+
                 });
 
         });
+
+
+        /* =========================================================
+           REJECT LEAVE
+        ========================================================= */
+
         document.getElementById('rejectBtn').addEventListener('click', function() {
 
             const id = document.getElementById('leaveId').value;
@@ -831,7 +1523,8 @@
 
                         'Content-Type': 'application/json',
 
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        'X-CSRF-TOKEN':
+                            document.querySelector('meta[name="csrf-token"]').content
 
                     },
 
@@ -839,7 +1532,8 @@
 
                         status: 'Rejected',
 
-                        remarks: document.getElementById('remarks').value
+                        remarks:
+                            document.getElementById('remarks').value
 
                     })
 
@@ -861,10 +1555,19 @@
 
                     }
 
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    alert('Something went wrong while rejecting the leave request.');
+
                 });
 
         });
     </script>
+
 </body>
 
 </html>

@@ -31,6 +31,8 @@ use App\Http\Controllers\Admin\HolidayController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PayslipConcernController as AdminPayslipConcernController;
 use App\Http\Controllers\Admin\PartTimeSubjectController;
+use App\Http\Controllers\Admin\PartTimeAttendanceKioskController;
+use App\Http\Controllers\Admin\PartTimeKioskController;
 
 
 Route::get('/', function () {
@@ -481,6 +483,27 @@ Route::delete(
     '/subject-assignment/{partTimeSubject}',
     [PartTimeSubjectController::class, 'destroy']
 )->name('subject_assignment.destroy');
+
+
+Route::get(
+    '/part-time-kiosk',
+    [PartTimeKioskController::class, 'index']
+)->name('part_time_kiosk');
+
+Route::get(
+    '/part-time-attendance-kiosk',
+    [PartTimeAttendanceKioskController::class, 'index']
+)->name('part_time_attendance_kiosk');
+
+Route::get(
+    '/part-time-attendance/faces',
+    [PartTimeAttendanceKioskController::class, 'faces']
+)->name('part_time_attendance_kiosk.faces');
+
+Route::post(
+    '/part-time-attendance/record',
+    [PartTimeAttendanceKioskController::class, 'record']
+)->name('part_time_attendance_kiosk.record');
 
 
     });

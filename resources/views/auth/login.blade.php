@@ -1,177 +1,1993 @@
+
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-50">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAP PAY - Administrative Control Hub</title>
-    <!-- Tailwind CSS CDN -->
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <meta name="description" content="PAP PAY Payroll Management System">
+
+    <title>PAP PAY | Payroll Management System</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .cyber-mesh {
-            background-image: 
-                radial-gradient(at 10% 20%, rgba(56, 189, 248, 0.15) 0px, transparent 45%),
-                radial-gradient(at 90% 10%, rgba(99, 102, 241, 0.12) 0px, transparent 45%),
-                radial-gradient(at 50% 80%, rgba(20, 184, 166, 0.08) 0px, transparent 50%);
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: [
+                            'Inter',
+                            'ui-sans-serif',
+                            'system-ui',
+                            '-apple-system',
+                            'BlinkMacSystemFont',
+                            '"Segoe UI"',
+                            'sans-serif'
+                        ],
+                    },
+
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'float-reverse': 'floatReverse 9s ease-in-out infinite',
+                        'pulse-soft': 'pulseSoft 3s ease-in-out infinite',
+                    },
+
+                    keyframes: {
+
+                        float: {
+                            '0%, 100%': {
+                                transform: 'translateY(0)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-18px)'
+                            }
+                        },
+
+                        floatReverse: {
+                            '0%, 100%': {
+                                transform: 'translateY(0)'
+                            },
+                            '50%': {
+                                transform: 'translateY(18px)'
+                            }
+                        },
+
+                        pulseSoft: {
+                            '0%, 100%': {
+                                opacity: '0.4'
+                            },
+                            '50%': {
+                                opacity: '1'
+                            }
+                        }
+                    }
+                }
+            }
         }
+    </script>
+
+
+    <style>
+
+        /* =========================================================
+           BASE
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            min-height: 100%;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            color: #1e293b;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================================
+           LIGHT FUTURISTIC BACKGROUND
+        ========================================================= */
+
+        .page-background {
+
+            background:
+                radial-gradient(
+                    circle at 8% 10%,
+                    rgba(59, 130, 246, 0.14),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 92% 12%,
+                    rgba(14, 165, 233, 0.13),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 80% 90%,
+                    rgba(99, 102, 241, 0.10),
+                    transparent 30%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #f8fbff 0%,
+                    #eef6ff 50%,
+                    #f9fbff 100%
+                );
+        }
+
+
+        /* =========================================================
+           BACKGROUND GRID
+        ========================================================= */
+
+        .grid-background {
+
+            background-image:
+                linear-gradient(
+                    rgba(37, 99, 235, 0.045) 1px,
+                    transparent 1px
+                ),
+
+                linear-gradient(
+                    90deg,
+                    rgba(37, 99, 235, 0.045) 1px,
+                    transparent 1px
+                );
+
+            background-size: 44px 44px;
+
+            mask-image:
+                radial-gradient(
+                    ellipse at center,
+                    black 15%,
+                    transparent 80%
+                );
+
+            -webkit-mask-image:
+                radial-gradient(
+                    ellipse at center,
+                    black 15%,
+                    transparent 80%
+                );
+        }
+
+
+        /* =========================================================
+           MAIN CARD
+        ========================================================= */
+
+        .main-card {
+
+            background:
+                rgba(255, 255, 255, 0.88);
+
+            border:
+                1px solid rgba(148, 163, 184, 0.18);
+
+            box-shadow:
+                0 35px 90px rgba(30, 64, 175, 0.10),
+                0 10px 35px rgba(15, 23, 42, 0.05);
+
+            backdrop-filter:
+                blur(24px);
+
+            -webkit-backdrop-filter:
+                blur(24px);
+        }
+
+
+        /* =========================================================
+           TOP ACCENT
+        ========================================================= */
+
+        .top-accent {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #60a5fa,
+                    #22d3ee,
+                    #818cf8,
+                    transparent
+                );
+        }
+
+
+        /* =========================================================
+           LOGO
+        ========================================================= */
+
+        .logo-box {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #4f46e5
+                );
+
+            box-shadow:
+                0 12px 30px rgba(37, 99, 235, 0.22),
+                0 0 0 5px rgba(59, 130, 246, 0.06);
+        }
+
+
+        /* =========================================================
+           FEATURE CARDS
+        ========================================================= */
+
+        .feature-card {
+
+            background:
+                rgba(248, 250, 252, 0.90);
+
+            border:
+                1px solid #e2e8f0;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease,
+                background 0.25s ease;
+        }
+
+
+        .feature-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            background:
+                #ffffff;
+
+            border-color:
+                #bfdbfe;
+
+            box-shadow:
+                0 14px 30px rgba(37, 99, 235, 0.08);
+        }
+
+
+        /* =========================================================
+           LOGIN PANEL
+        ========================================================= */
+
+        .login-panel {
+
+            background:
+                rgba(255, 255, 255, 0.95);
+
+            border:
+                1px solid #e2e8f0;
+
+            box-shadow:
+                0 20px 45px rgba(15, 23, 42, 0.06);
+        }
+
+
+        /* =========================================================
+           INPUTS
+        ========================================================= */
+
+        .login-input {
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid #cbd5e1;
+
+            color:
+                #0f172a;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .login-input:hover {
+
+            border-color:
+                #94a3b8;
+        }
+
+
+        .login-input:focus {
+
+            outline:
+                none;
+
+            border-color:
+                #3b82f6;
+
+            background:
+                #ffffff;
+
+            box-shadow:
+                0 0 0 4px rgba(59, 130, 246, 0.10);
+        }
+
+
+        .login-input::placeholder {
+
+            color:
+                #94a3b8;
+        }
+
+
+        /* =========================================================
+           LOGIN BUTTON
+        ========================================================= */
+
+        .login-button {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #2563eb,
+                    #4f46e5
+                );
+
+            box-shadow:
+                0 12px 25px rgba(37, 99, 235, 0.20);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                filter 0.2s ease;
+        }
+
+
+        .login-button::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            top:
+                0;
+
+            left:
+                -120%;
+
+            width:
+                70%;
+
+            height:
+                100%;
+
+            transform:
+                skewX(-20deg);
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,0.25),
+                    transparent
+                );
+
+            transition:
+                left 0.65s ease;
+        }
+
+
+        .login-button:hover::before {
+
+            left:
+                140%;
+        }
+
+
+        .login-button:hover {
+
+            transform:
+                translateY(-2px);
+
+            filter:
+                brightness(1.05);
+
+            box-shadow:
+                0 16px 32px rgba(37, 99, 235, 0.25);
+        }
+
+
+        .login-button:active {
+
+            transform:
+                scale(0.985);
+        }
+
+
+        /* =========================================================
+           STATUS DOT
+        ========================================================= */
+
+        .status-dot {
+
+            box-shadow:
+                0 0 0 4px rgba(34, 197, 94, 0.08),
+                0 0 14px rgba(34, 197, 94, 0.45);
+        }
+
+
+        /* =========================================================
+           DECORATIVE ORBS
+        ========================================================= */
+
+        .blue-orb {
+
+            background:
+                rgba(59, 130, 246, 0.12);
+
+            filter:
+                blur(85px);
+        }
+
+
+        .cyan-orb {
+
+            background:
+                rgba(6, 182, 212, 0.10);
+
+            filter:
+                blur(95px);
+        }
+
+
+        .violet-orb {
+
+            background:
+                rgba(99, 102, 241, 0.09);
+
+            filter:
+                blur(100px);
+        }
+
+
+        /* =========================================================
+           SYSTEM LINE
+        ========================================================= */
+
+        .system-line {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(59, 130, 246, 0.30),
+                    transparent
+                );
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1023px) {
+
+            .main-card {
+                max-width: 760px;
+            }
+
+        }
+
+
+        @media (max-width: 639px) {
+
+            .grid-background {
+
+                background-size:
+                    28px 28px;
+            }
+
+
+            .main-card {
+
+                border-radius:
+                    22px;
+            }
+
+
+            .feature-card {
+
+                padding:
+                    14px;
+            }
+
+        }
+
+
+        @media (max-width: 380px) {
+
+            .main-card {
+
+                border-radius:
+                    18px;
+            }
+
+        }
+
+
+        @media (max-height: 700px) {
+
+            .page-container {
+
+                padding-top:
+                    25px;
+
+                padding-bottom:
+                    70px;
+            }
+
+        }
+
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+
+                animation-duration:
+                    0.01ms !important;
+
+                animation-iteration-count:
+                    1 !important;
+
+                transition-duration:
+                    0.01ms !important;
+            }
+
+        }
+
     </style>
+
 </head>
-<body class="h-full font-sans antialiased text-slate-700 selection:bg-indigo-500/10 overflow-x-hidden flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 cyber-mesh relative bg-gradient-to-tr from-slate-100 via-slate-50 to-sky-100/30">
 
-    <!-- TECHNICAL SYSTEM LINE INFRASTRUCTURE -->
-    <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.12)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none"></div>
 
-    <!-- MAIN INTERFACE CONSOLE SURFACE -->
-    <div class="w-full max-w-5xl bg-white/70 backdrop-blur-2xl border border-slate-200/80 rounded-[2.5rem] shadow-[0_25px_70px_-15px_rgba(148,163,184,0.25)] p-1 sm:p-2 lg:p-3 relative overflow-hidden">
-        
-        <!-- Subtle Vector Border Glow Gradient -->
-        <div class="absolute inset-0 bg-gradient-to-br from-sky-400/20 via-transparent to-indigo-400/20 rounded-[2.5rem] pointer-events-none"></div>
+<body class="page-background">
 
-        <!-- Inner Layout Container Block -->
-        <div class="bg-white/80 rounded-[2.2rem] p-6 sm:p-10 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-            
-            <!-- LEFT TELEMETRY FRAME (Lg: 5 Columns) -->
-            <div class="lg:col-span-5 space-y-10 lg:pr-6">
-                
-                <!-- System Active HUD Badge -->
-                <div class="inline-flex items-center space-x-2.5 bg-sky-50 border border-sky-200 px-3.5 py-1.5 rounded-full text-[10px] uppercase tracking-[0.25em] font-black text-sky-600 shadow-sm">
-                    <span class="h-1.5 w-1.5 rounded-full bg-sky-500 animate-pulse"></span>
-                    <span>System Active Node</span>
-                </div>
 
-                <!-- High-End Branding Architecture -->
-                <div class="space-y-4">
-                    <h1 class="text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-none">
-                        PAP <br class="hidden lg:block"/>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 via-indigo-500 to-blue-600">PAY</span>
-                    </h1>
-                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">School Payroll Network Architecture</p>
-                </div>
+    <!-- =========================================================
+         BACKGROUND DECORATION
+    ========================================================== -->
 
-                <!-- Strategic Context Block -->
-                <p class="text-sm text-slate-500 font-normal leading-relaxed">
-                    A streamlined digital interface engine engineered for parsing administrative calculations, personnel accounts, and continuous infrastructure auditing.
-                </p>
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
 
-                <!-- UI Live Telemetry Fields -->
-                <div class="grid grid-cols-2 gap-3 pt-6 border-t border-slate-100">
-                    <div class="bg-slate-50/80 border border-slate-200/60 p-3.5 rounded-xl shadow-sm">
-                        <div class="text-[9px] text-slate-400 uppercase tracking-widest font-black">CORE VER</div>
-                        <div class="text-xs font-mono font-bold text-sky-600 mt-1">4.2.1//STABLE</div>
-                    </div>
-                    <div class="bg-slate-50/80 border border-slate-200/60 p-3.5 rounded-xl shadow-sm">
-                        <div class="text-[9px] text-slate-400 uppercase tracking-widest font-black">DATA ACCESS</div>
-                        <div class="text-xs font-mono font-bold text-indigo-600 mt-1 flex items-center gap-1.5">
-                            <span class="h-1 w-1 rounded-full bg-indigo-500"></span>
-                            SSL_SECURED
-                        </div>
-                    </div>
-                </div>
 
-            </div>
+        <!-- Grid -->
 
-            <!-- RIGHT AUTHENTICATION MODULE (Lg: 7 Columns) -->
-            <div class="lg:col-span-7 bg-slate-50/50 border border-slate-200 p-6 sm:p-10 rounded-3xl relative overflow-hidden shadow-inner">
-                
-                <!-- Ambient Backdrop Aura Behind Inputs -->
-                <div class="absolute -top-24 -right-24 w-48 h-48 bg-sky-400/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="grid-background absolute inset-0"></div>
 
-                <div class="mb-8">
-                    <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Identity Authentication</h2>
-                    <p class="text-xs text-slate-400 mt-1">Inject authorization parameters to initiate link bypass.</p>
-                </div>
 
-                <!-- Live Laravel Feedback Panel -->
-                @if (session('status'))
-                    <div class="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-xs text-emerald-700 rounded-xl shadow-sm">
-                        {{ session('status') }}
-                    </div>
-                @endif
+        <!-- Blue Orb -->
 
-                <!-- Input Element Form Grid -->
-                <form method="POST" action="{{ route('login') }}" class="space-y-6">
-                    @csrf
+        <div
+            class="blue-orb
+                   absolute
+                   -top-32
+                   -left-32
+                   w-72
+                   h-72
+                   sm:w-[28rem]
+                   sm:h-[28rem]
+                   rounded-full
+                   animate-float">
+        </div>
 
-                    <!-- Identity Field Block -->
-                    <div class="space-y-2">
-                        <label for="email" class="block text-[10px] font-black uppercase tracking-[0.15em] text-sky-600">
-                            Clearance Access Handle (Email)
-                        </label>
-                        <input 
-                            id="email" 
-                            type="email" 
-                            name="email" 
-                            value="{{ old('email') }}" 
-                            required 
-                            autofocus 
-                            autocomplete="username"
-                            placeholder="operator@system.edu"
-                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 placeholder-slate-300 text-sm focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-100 transition-all duration-300 font-mono shadow-sm"
-                        />
-                        @if ($errors->has('email'))
-                            <p class="text-xs text-rose-600 font-medium mt-1.5 tracking-wide">{{ $errors->first('email') }}</p>
-                        @endif
-                    </div>
 
-                    <!-- Passkey Field Block -->
-                    <div class="space-y-2">
-                        <label for="password" class="block text-[10px] font-black uppercase tracking-[0.15em] text-sky-600">
-                            Secure Network Cipher (Password)
-                        </label>
-                        <input 
-                            id="password" 
-                            type="password" 
-                            name="password" 
-                            required 
-                            autocomplete="current-password"
-                            placeholder="••••••••••••"
-                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 placeholder-slate-300 text-sm focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-100 transition-all duration-300 font-mono shadow-sm"
-                        />
-                        @if ($errors->has('password'))
-                            <p class="text-xs text-rose-600 font-medium mt-1.5 tracking-wide">{{ $errors->first('password') }}</p>
-                        @endif
-                    </div>
+        <!-- Cyan Orb -->
 
-                    <!-- Form Navigation Control Matrix -->
-                    <div class="flex items-center justify-between pt-1">
-                        <label class="flex items-center group cursor-pointer select-none">
-                            <input 
-                                id="remember_me" 
-                                type="checkbox" 
-                                name="remember"
-                                class="w-4 h-4 rounded border-slate-300 bg-white text-sky-500 focus:ring-0 focus:ring-offset-0 focus:outline-none checked:bg-sky-500 checked:border-sky-500 transition duration-150"
-                            >
-                            <span class="ml-2.5 text-xs font-bold text-slate-400 group-hover:text-sky-500 transition duration-150">
-                                PERSIST RECON-LINK
-                            </span>
-                        </label>
+        <div
+            class="cyan-orb
+                   absolute
+                   top-1/4
+                   -right-40
+                   w-80
+                   h-80
+                   sm:w-[32rem]
+                   sm:h-[32rem]
+                   rounded-full
+                   animate-float-reverse">
+        </div>
 
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-xs font-bold text-sky-600 hover:text-sky-500 transition duration-150 uppercase tracking-wider">
-                                Recover Access?
-                            </a>
-                        @endif
-                    </div>
 
-                    <!-- Authorization Interface Trigger Link -->
-                    <div class="pt-2">
-                        <button 
-                            type="submit" 
-                            class="w-full bg-gradient-to-r from-sky-500 via-indigo-500 to-blue-600 hover:from-sky-400 hover:to-indigo-500 text-white py-4 px-6 rounded-xl font-black text-xs tracking-[0.2em] uppercase transition duration-300 shadow-md shadow-sky-200 active:scale-[0.99] transform active:translate-y-0"
-                        >
-                            Establish Database Connection
-                        </button>
-                    </div>
+        <!-- Violet Orb -->
 
-                </form>
-            </div>
+        <div
+            class="violet-orb
+                   absolute
+                   -bottom-40
+                   left-1/3
+                   w-80
+                   h-80
+                   sm:w-[34rem]
+                   sm:h-[34rem]
+                   rounded-full
+                   animate-float">
+        </div>
+
+
+        <!-- Small Decorative Dots -->
+
+        <div class="absolute top-[15%] left-[7%]">
+
+            <span
+                class="block
+                       w-1.5
+                       h-1.5
+                       rounded-full
+                       bg-blue-400
+                       status-dot
+                       animate-pulse-soft">
+            </span>
 
         </div>
+
+
+        <div class="absolute top-[30%] right-[9%]">
+
+            <span
+                class="block
+                       w-1.5
+                       h-1.5
+                       rounded-full
+                       bg-cyan-400
+                       animate-pulse-soft">
+            </span>
+
+        </div>
+
+
+        <div class="absolute bottom-[22%] left-[9%]">
+
+            <span
+                class="block
+                       w-1
+                       h-1
+                       rounded-full
+                       bg-indigo-400
+                       animate-pulse-soft">
+            </span>
+
+        </div>
+
+
+        <div class="absolute bottom-[14%] right-[16%]">
+
+            <span
+                class="block
+                       w-1.5
+                       h-1.5
+                       rounded-full
+                       bg-blue-400
+                       animate-pulse-soft">
+            </span>
+
+        </div>
+
     </div>
 
-    <!-- GLOBAL FOOTER LOGISTIC MATRIX -->
-    <p class="absolute bottom-4 left-0 right-0 text-center text-slate-400 text-[9px] tracking-[0.3em] font-black uppercase pointer-events-none">
-        &copy; {{ date('Y') }} PAP PAY // DISTRIBUTED ADMINISTRATION NET NODE // ALL RIGHTS PROTECTED.
-    </p>
+
+
+    <!-- =========================================================
+         MAIN PAGE
+    ========================================================== -->
+
+    <main
+        class="page-container
+               relative
+               z-10
+               min-h-screen
+               flex
+               items-center
+               justify-center
+               px-3
+               py-6
+               sm:px-6
+               sm:py-10
+               lg:px-8">
+
+
+        <div
+            class="w-full
+                   max-w-6xl">
+
+
+            <!-- =================================================
+                 MAIN CARD
+            ================================================== -->
+
+            <div
+                class="main-card
+                       relative
+                       rounded-3xl
+                       overflow-hidden">
+
+
+                <!-- Top accent -->
+
+                <div
+                    class="absolute
+                           top-0
+                           left-0
+                           right-0
+                           h-1
+                           top-accent">
+                </div>
+
+
+
+                <!-- =================================================
+                     CONTENT
+                ================================================== -->
+
+                <div
+                    class="grid
+                           grid-cols-1
+                           lg:grid-cols-12">
+
+
+                    <!-- =============================================
+                         LEFT INFORMATION
+                    ============================================== -->
+
+                    <section
+                        class="lg:col-span-7
+                               relative
+                               p-6
+                               sm:p-10
+                               md:p-12
+                               lg:p-14
+                               xl:p-16
+                               flex
+                               flex-col
+                               justify-center
+                               overflow-hidden">
+
+
+                        <!-- Decorative glow -->
+
+                        <div
+                            class="absolute
+                                   -top-32
+                                   -left-32
+                                   w-80
+                                   h-80
+                                   rounded-full
+                                   bg-blue-500/10
+                                   blur-3xl">
+                        </div>
+
+
+                        <div
+                            class="relative
+                                   z-10">
+
+
+                            <!-- =====================================
+                                 BRAND
+                            ====================================== -->
+
+                            <div
+                                class="flex
+                                       items-center
+                                       gap-3
+                                       mb-8">
+
+
+                                <!-- Logo -->
+
+                                <div
+                                    class="logo-box
+                                           w-12
+                                           h-12
+                                           sm:w-14
+                                           sm:h-14
+                                           rounded-2xl
+                                           flex
+                                           items-center
+                                           justify-center
+                                           flex-shrink-0">
+
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="w-6 h-6 sm:w-7 sm:h-7 text-white"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        stroke-width="1.8">
+
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="9.5" />
+
+                                        <path
+                                            stroke-linecap="round"
+                                            d="M12 7v10" />
+
+                                        <path
+                                            stroke-linecap="round"
+                                            d="M8.5 9.5c0-1.1 1.57-2 3.5-2s3.5.9 3.5 2-1.57 2-3.5 2-3.5.9-3.5 2 1.57 2 3.5 2 3.5-.9 3.5-2" />
+
+                                    </svg>
+
+                                </div>
+
+
+                                <div>
+
+                                    <div
+                                        class="text-xl
+                                               sm:text-2xl
+                                               font-black
+                                               tracking-tight
+                                               text-slate-900">
+
+                                        PAP
+                                        <span class="text-blue-600">
+                                            PAY
+                                        </span>
+
+                                    </div>
+
+
+                                    <div
+                                        class="text-[9px]
+                                               sm:text-[10px]
+                                               uppercase
+                                               tracking-[0.18em]
+                                               font-bold
+                                               text-slate-400">
+
+                                        Payroll Management System
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- =====================================
+                                 SYSTEM STATUS
+                            ====================================== -->
+
+                            <div
+                                class="inline-flex
+                                       items-center
+                                       gap-2
+                                       px-3
+                                       py-1.5
+                                       rounded-full
+                                       bg-emerald-50
+                                       border
+                                       border-emerald-100
+                                       mb-6">
+
+
+                                <span
+                                    class="w-1.5
+                                           h-1.5
+                                           rounded-full
+                                           bg-emerald-500
+                                           status-dot
+                                           animate-pulse">
+                                </span>
+
+
+                                <span
+                                    class="text-[9px]
+                                           sm:text-[10px]
+                                           uppercase
+                                           tracking-[0.2em]
+                                           font-bold
+                                           text-emerald-600">
+
+                                    System Online
+
+                                </span>
+
+                            </div>
+
+
+
+                            <!-- =====================================
+                                 MAIN HEADING
+                            ====================================== -->
+
+                            <div
+                                class="max-w-2xl">
+
+
+                                <h1
+                                    class="text-3xl
+                                           sm:text-4xl
+                                           md:text-5xl
+                                           lg:text-5xl
+                                           xl:text-6xl
+                                           font-black
+                                           tracking-tight
+                                           leading-[1.05]
+                                           text-slate-900">
+
+                                    Payroll made
+                                    <br>
+
+                                    <span
+                                        class="text-transparent
+                                               bg-clip-text
+                                               bg-gradient-to-r
+                                               from-blue-600
+                                               via-indigo-600
+                                               to-cyan-500">
+
+                                        simple.
+
+                                    </span>
+
+                                </h1>
+
+
+                                <p
+                                    class="mt-5
+                                           text-sm
+                                           sm:text-base
+                                           leading-7
+                                           text-slate-500
+                                           max-w-xl">
+
+                                    Manage employees, attendance, salary,
+                                    benefits, and payslips in one secure
+                                    and easy-to-use system.
+
+                                </p>
+
+                            </div>
+
+
+
+                            <!-- =====================================
+                                 FEATURES
+                            ====================================== -->
+
+                            <div
+                                class="mt-8
+                                       sm:mt-10
+                                       grid
+                                       grid-cols-1
+                                       sm:grid-cols-3
+                                       gap-3">
+
+
+                                <!-- Attendance -->
+
+                                <div
+                                    class="feature-card
+                                           rounded-2xl
+                                           p-4">
+
+
+                                    <div
+                                        class="w-9
+                                               h-9
+                                               rounded-xl
+                                               bg-blue-50
+                                               text-blue-600
+                                               flex
+                                               items-center
+                                               justify-center
+                                               mb-3">
+
+
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="w-5 h-5"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            stroke-width="1.7">
+
+                                            <rect
+                                                x="3"
+                                                y="4"
+                                                width="18"
+                                                height="17"
+                                                rx="2" />
+
+                                            <path
+                                                stroke-linecap="round"
+                                                d="M8 2v4M16 2v4M3 9h18" />
+
+                                        </svg>
+
+                                    </div>
+
+
+                                    <p
+                                        class="text-xs
+                                               font-bold
+                                               text-slate-800">
+
+                                        Attendance
+
+                                    </p>
+
+
+                                    <p
+                                        class="text-[10px]
+                                               sm:text-[11px]
+                                               text-slate-500
+                                               mt-1">
+
+                                        Track work time
+
+                                    </p>
+
+                                </div>
+
+
+
+                                <!-- Salary -->
+
+                                <div
+                                    class="feature-card
+                                           rounded-2xl
+                                           p-4">
+
+
+                                    <div
+                                        class="w-9
+                                               h-9
+                                               rounded-xl
+                                               bg-indigo-50
+                                               text-indigo-600
+                                               flex
+                                               items-center
+                                               justify-center
+                                               mb-3">
+
+
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="w-5 h-5"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            stroke-width="1.7">
+
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="9" />
+
+                                            <path
+                                                stroke-linecap="round"
+                                                d="M12 7v10" />
+
+                                            <path
+                                                stroke-linecap="round"
+                                                d="M8.5 9.5c0-1.1 1.57-2 3.5-2s3.5.9 3.5 2-1.57 2-3.5 2-3.5.9-3.5 2 1.57 2 3.5 2 3.5-.9 3.5-2" />
+
+                                        </svg>
+
+                                    </div>
+
+
+                                    <p
+                                        class="text-xs
+                                               font-bold
+                                               text-slate-800">
+
+                                        Salary
+
+                                    </p>
+
+
+                                    <p
+                                        class="text-[10px]
+                                               sm:text-[11px]
+                                               text-slate-500
+                                               mt-1">
+
+                                        Manage payroll
+
+                                    </p>
+
+                                </div>
+
+
+
+                                <!-- Payslip -->
+
+                                <div
+                                    class="feature-card
+                                           rounded-2xl
+                                           p-4">
+
+
+                                    <div
+                                        class="w-9
+                                               h-9
+                                               rounded-xl
+                                               bg-cyan-50
+                                               text-cyan-600
+                                               flex
+                                               items-center
+                                               justify-center
+                                               mb-3">
+
+
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="w-5 h-5"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            stroke-width="1.7">
+
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M6 3h9l4 4v14H6a2 2 0 01-2-2V5a2 2 0 012-2z" />
+
+                                            <path
+                                                stroke-linecap="round"
+                                                d="M15 3v5h5" />
+
+                                            <path
+                                                stroke-linecap="round"
+                                                d="M8 12h7M8 16h7" />
+
+                                        </svg>
+
+                                    </div>
+
+
+                                    <p
+                                        class="text-xs
+                                               font-bold
+                                               text-slate-800">
+
+                                        Payslip
+
+                                    </p>
+
+
+                                    <p
+                                        class="text-[10px]
+                                               sm:text-[11px]
+                                               text-slate-500
+                                               mt-1">
+
+                                        View salary details
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- =====================================
+                                 SYSTEM LINE
+                            ====================================== -->
+
+                            <div
+                                class="mt-8
+                                       sm:mt-10
+                                       flex
+                                       items-center
+                                       gap-3">
+
+
+                                <div
+                                    class="h-px
+                                           flex-1
+                                           system-line">
+                                </div>
+
+
+                                <span
+                                    class="text-[8px]
+                                           sm:text-[9px]
+                                           uppercase
+                                           tracking-[0.25em]
+                                           text-slate-400
+                                           font-bold
+                                           whitespace-nowrap">
+
+                                    Secure Payroll Platform
+
+                                </span>
+
+
+                                <div
+                                    class="h-px
+                                           flex-1
+                                           system-line">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- =============================================
+                         LOGIN SECTION
+                    ============================================== -->
+
+                    <section
+                        class="lg:col-span-5
+                               relative
+                               p-5
+                               sm:p-8
+                               md:p-10
+                               lg:p-10
+                               xl:p-12
+                               flex
+                               items-center
+                               border-t
+                               lg:border-t-0
+                               lg:border-l
+                               border-slate-200">
+
+
+                        <!-- Background glow -->
+
+                        <div
+                            class="absolute
+                                   -top-32
+                                   -right-32
+                                   w-80
+                                   h-80
+                                   rounded-full
+                                   bg-blue-500/5
+                                   blur-3xl
+                                   pointer-events-none">
+                        </div>
+
+
+
+                        <!-- LOGIN PANEL -->
+
+                        <div
+                            class="login-panel
+                                   relative
+                                   w-full
+                                   rounded-3xl
+                                   p-6
+                                   sm:p-8
+                                   md:p-9
+                                   xl:p-10">
+
+
+                            <!-- Small top accent -->
+
+                            <div
+                                class="absolute
+                                       top-0
+                                       left-8
+                                       right-8
+                                       h-px
+                                       bg-gradient-to-r
+                                       from-transparent
+                                       via-blue-400
+                                       to-transparent">
+                            </div>
+
+
+
+                            <!-- =====================================
+                                 LOGIN HEADER
+                            ====================================== -->
+
+                            <div
+                                class="mb-7">
+
+
+                                <h2
+                                    class="text-2xl
+                                           sm:text-3xl
+                                           font-black
+                                           tracking-tight
+                                           text-slate-900">
+
+                                    Sign in
+
+                                </h2>
+
+
+                                <p
+                                    class="text-sm
+                                           text-slate-500
+                                           mt-2
+                                           leading-6">
+
+                                    Enter your account details to continue.
+
+                                </p>
+
+                            </div>
+
+
+
+                            <!-- =====================================
+                                 STATUS MESSAGE
+                            ====================================== -->
+
+                            @if (session('status'))
+
+                                <div
+                                    class="mb-6
+                                           rounded-xl
+                                           border
+                                           border-emerald-200
+                                           bg-emerald-50
+                                           p-4
+                                           flex
+                                           items-start
+                                           gap-3">
+
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="w-5 h-5 text-emerald-600 flex-shrink-0"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        stroke-width="2">
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M5 13l4 4L19 7" />
+
+                                    </svg>
+
+
+                                    <p
+                                        class="text-sm
+                                               leading-5
+                                               text-emerald-700">
+
+                                        {{ session('status') }}
+
+                                    </p>
+
+                                </div>
+
+                            @endif
+
+
+
+                            <!-- =====================================
+                                 LOGIN FORM
+                            ====================================== -->
+
+                            <form
+                                method="POST"
+                                action="{{ route('login') }}"
+                                class="space-y-5">
+
+                                @csrf
+
+
+                                <!-- =================================
+                                     EMAIL
+                                ================================== -->
+
+                                <div>
+
+                                    <label
+                                        for="email"
+                                        class="block
+                                               text-sm
+                                               font-semibold
+                                               text-slate-700
+                                               mb-2">
+
+                                        Email Address
+
+                                    </label>
+
+
+                                    <div
+                                        class="relative">
+
+
+                                        <!-- Email icon -->
+
+                                        <div
+                                            class="absolute
+                                                   inset-y-0
+                                                   left-0
+                                                   pl-4
+                                                   flex
+                                                   items-center
+                                                   pointer-events-none">
+
+
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="w-5 h-5 text-slate-400"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                stroke-width="1.7">
+
+                                                <rect
+                                                    x="3"
+                                                    y="5"
+                                                    width="18"
+                                                    height="14"
+                                                    rx="2" />
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    d="M4 7l8 6 8-6" />
+
+                                            </svg>
+
+                                        </div>
+
+
+                                        <input
+                                            id="email"
+                                            type="email"
+                                            name="email"
+                                            value="{{ old('email') }}"
+                                            required
+                                            autofocus
+                                            autocomplete="username"
+                                            placeholder="Enter your email"
+                                            class="login-input
+                                                   w-full
+                                                   rounded-xl
+                                                   pl-12
+                                                   pr-4
+                                                   py-3.5
+                                                   sm:py-4
+                                                   text-sm
+                                                   font-medium" />
+
+                                    </div>
+
+
+                                    @if ($errors->has('email'))
+
+                                        <p
+                                            class="mt-2
+                                                   text-xs
+                                                   font-medium
+                                                   text-red-600">
+
+                                            {{ $errors->first('email') }}
+
+                                        </p>
+
+                                    @endif
+
+                                </div>
+
+
+
+                                <!-- =================================
+                                     PASSWORD
+                                ================================== -->
+
+                                <div>
+
+
+                                    <label
+                                        for="password"
+                                        class="block
+                                               text-sm
+                                               font-semibold
+                                               text-slate-700
+                                               mb-2">
+
+                                        Password
+
+                                    </label>
+
+
+                                    <div
+                                        class="relative">
+
+
+                                        <!-- Lock icon -->
+
+                                        <div
+                                            class="absolute
+                                                   inset-y-0
+                                                   left-0
+                                                   pl-4
+                                                   flex
+                                                   items-center
+                                                   pointer-events-none">
+
+
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="w-5 h-5 text-slate-400"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                stroke-width="1.7">
+
+                                                <rect
+                                                    x="4"
+                                                    y="10"
+                                                    width="16"
+                                                    height="10"
+                                                    rx="2" />
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    d="M8 10V7a4 4 0 018 0v3" />
+
+                                            </svg>
+
+                                        </div>
+
+
+                                        <input
+                                            id="password"
+                                            type="password"
+                                            name="password"
+                                            required
+                                            autocomplete="current-password"
+                                            placeholder="Enter your password"
+                                            class="login-input
+                                                   w-full
+                                                   rounded-xl
+                                                   pl-12
+                                                   pr-12
+                                                   py-3.5
+                                                   sm:py-4
+                                                   text-sm
+                                                   font-medium" />
+
+
+                                        <!-- Show password -->
+
+                                        <button
+                                            type="button"
+                                            id="togglePassword"
+                                            class="absolute
+                                                   inset-y-0
+                                                   right-0
+                                                   px-4
+                                                   flex
+                                                   items-center
+                                                   text-slate-400
+                                                   hover:text-blue-600
+                                                   transition"
+                                            aria-label="Show password">
+
+
+                                            <!-- Eye open -->
+
+                                            <svg
+                                                id="eyeOpen"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="w-5 h-5"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                stroke-width="1.7">
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z" />
+
+                                                <circle
+                                                    cx="12"
+                                                    cy="12"
+                                                    r="2.5" />
+
+                                            </svg>
+
+
+                                            <!-- Eye closed -->
+
+                                            <svg
+                                                id="eyeClosed"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="w-5 h-5 hidden"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                                stroke-width="1.7">
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    d="M3 3l18 18" />
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M10.6 10.6a2 2 0 002.8 2.8" />
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M9.9 5.3A10.8 10.8 0 0112 5c6 0 9.5 7 9.5 7a18 18 0 01-3.1 3.9" />
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M6.2 6.2C3.8 8 2.5 12 2.5 12a17.8 17.8 0 004.7 5.2A9.9 9.9 0 0012 19c1.1 0 2.1-.2 3-.5" />
+
+                                            </svg>
+
+                                        </button>
+
+                                    </div>
+
+
+                                    @if ($errors->has('password'))
+
+                                        <p
+                                            class="mt-2
+                                                   text-xs
+                                                   font-medium
+                                                   text-red-600">
+
+                                            {{ $errors->first('password') }}
+
+                                        </p>
+
+                                    @endif
+
+                                </div>
+
+
+
+                                <!-- =================================
+                                     REMEMBER ME
+                                ================================== -->
+
+                                <div>
+
+                                    <label
+                                        class="inline-flex
+                                               items-center
+                                               cursor-pointer
+                                               select-none">
+
+
+                                        <input
+                                            id="remember_me"
+                                            type="checkbox"
+                                            name="remember"
+                                            class="w-4
+                                                   h-4
+                                                   rounded
+                                                   border-slate-300
+                                                   text-blue-600
+                                                   focus:ring-blue-500">
+
+
+                                        <span
+                                            class="ml-2.5
+                                                   text-sm
+                                                   text-slate-500">
+
+                                            Remember me
+
+                                        </span>
+
+                                    </label>
+
+                                </div>
+
+
+
+                                <!-- =================================
+                                     SIGN IN BUTTON
+                                ================================== -->
+
+                                <button
+                                    type="submit"
+                                    class="login-button
+                                           w-full
+                                           flex
+                                           items-center
+                                           justify-center
+                                           gap-2
+                                           rounded-xl
+                                           py-3.5
+                                           sm:py-4
+                                           px-6
+                                           text-sm
+                                           font-bold
+                                           text-white">
+
+
+                                    <span>
+                                        Sign In
+                                    </span>
+
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="w-4 h-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        stroke-width="2">
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M5 12h14M13 6l6 6-6 6" />
+
+                                    </svg>
+
+                                </button>
+
+                            </form>
+
+
+
+                            <!-- =====================================
+                                 SECURITY NOTE
+                            ====================================== -->
+
+                            <div
+                                class="mt-7
+                                       pt-6
+                                       border-t
+                                       border-slate-100">
+
+
+                                <div
+                                    class="flex
+                                           items-center
+                                           justify-center
+                                           gap-2">
+
+
+                                    <span
+                                        class="flex
+                                               items-center
+                                               justify-center
+                                               w-5
+                                               h-5
+                                               rounded-full
+                                               bg-emerald-50
+                                               text-emerald-600">
+
+
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="w-3 h-3"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            stroke-width="2.5">
+
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M5 13l4 4L19 7" />
+
+                                        </svg>
+
+                                    </span>
+
+
+                                    <span
+                                        class="text-[11px]
+                                               text-slate-400">
+
+                                        Your account is secure
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <footer
+                class="mt-5
+                       sm:mt-6
+                       text-center
+                       px-4">
+
+
+                <div
+                    class="flex
+                           flex-wrap
+                           items-center
+                           justify-center
+                           gap-x-3
+                           gap-y-1
+                           text-[9px]
+                           sm:text-[10px]
+                           uppercase
+                           tracking-[0.15em]
+                           text-slate-400
+                           font-semibold">
+
+
+                    <span>
+                        PAP PAY
+                    </span>
+
+
+                    <span class="text-slate-300">
+                        /
+                    </span>
+
+
+                    <span>
+                        Payroll Management
+                    </span>
+
+
+                    <span class="text-slate-300">
+                        /
+                    </span>
+
+
+                    <span>
+                        Secure System
+                    </span>
+
+                </div>
+
+
+                <p
+                    class="mt-2
+                           text-[9px]
+                           sm:text-[10px]
+                           text-slate-400">
+
+                    © {{ date('Y') }} PAP PAY. All rights reserved.
+
+                </p>
+
+            </footer>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================================================
+         PASSWORD TOGGLE
+    ========================================================== -->
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const passwordInput =
+                document.getElementById('password');
+
+            const togglePassword =
+                document.getElementById('togglePassword');
+
+            const eyeOpen =
+                document.getElementById('eyeOpen');
+
+            const eyeClosed =
+                document.getElementById('eyeClosed');
+
+
+            if (
+                passwordInput &&
+                togglePassword &&
+                eyeOpen &&
+                eyeClosed
+            ) {
+
+                togglePassword.addEventListener(
+                    'click',
+                    function () {
+
+                        const isHidden =
+                            passwordInput.type === 'password';
+
+
+                        passwordInput.type =
+                            isHidden
+                                ? 'text'
+                                : 'password';
+
+
+                        eyeOpen.classList.toggle(
+                            'hidden',
+                            isHidden
+                        );
+
+
+                        eyeClosed.classList.toggle(
+                            'hidden',
+                            !isHidden
+                        );
+
+
+                        togglePassword.setAttribute(
+                            'aria-label',
+                            isHidden
+                                ? 'Hide password'
+                                : 'Show password'
+                        );
+
+                    }
+                );
+
+            }
+
+        });
+
+    </script>
 
 </body>
+
 </html>

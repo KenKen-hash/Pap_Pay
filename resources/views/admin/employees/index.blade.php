@@ -75,20 +75,23 @@
 
         /* =========================================================
            PAGE HEADER
+           Matches Home dashboard typography and spacing
         ========================================================= */
 
         .employee-page-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 25px;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 1.8rem;
+            padding: 4px 2px;
         }
 
         .employee-page-title {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 15px;
+            min-width: 0;
         }
 
         .employee-page-icon {
@@ -102,17 +105,25 @@
             color: #fff;
             font-size: 25px;
             box-shadow: 0 8px 20px rgba(25, 135, 84, .18);
+            flex-shrink: 0;
         }
 
         .employee-page-title h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 0;
+            color: #1e293b;
+            font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            line-height: 1.2;
+            margin: 0 0 5px;
         }
 
         .employee-page-title p {
-            margin: 3px 0 0;
-            color: #64748b;
+            color: #64748b !important;
+            font-size: clamp(.92rem, 1.1vw, 1.02rem);
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 950px;
+            margin: 0;
         }
 
 
@@ -732,17 +743,32 @@
         @media (max-width: 768px) {
 
             .employee-page-header {
-                align-items: flex-start;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 16px;
+            }
+
+            .employee-page-title {
+                width: 100%;
             }
 
             .employee-page-title h1 {
-                font-size: 1.4rem;
+                font-size: clamp(1.45rem, 5vw, 1.85rem);
+            }
+
+            .employee-page-title p {
+                font-size: .95rem;
             }
 
             .employee-page-icon {
                 width: 48px;
                 height: 48px;
                 font-size: 20px;
+            }
+
+            .employee-page-header > .btn {
+                width: 100%;
+                justify-content: center;
             }
 
             .department-card {
@@ -1205,12 +1231,6 @@
 
                     <div class="employee-page-title">
 
-                        <div class="employee-page-icon">
-
-                            <i class="bi bi-people"></i>
-
-                        </div>
-
                         <div>
 
                             <h1>
@@ -1324,9 +1344,7 @@
                             </div>
 
                             <div class="metric-value">
-
                                 {{ $inactiveEmployees->count() }}
-
                             </div>
 
                         </div>
@@ -1349,10 +1367,14 @@
                                 data-bs-target="#elementaryModal">
 
                             <div class="department-icon icon-elementary">
+
                                 <i class="bi bi-house-door-fill"></i>
+
                             </div>
 
-                            <h4>Elementary</h4>
+                            <h4>
+                                Elementary
+                            </h4>
 
                             <p>
                                 View and manage elementary teachers and personnel.
@@ -1367,7 +1389,9 @@
                             </span>
 
                             <span class="department-arrow">
+
                                 <i class="bi bi-arrow-right"></i>
+
                             </span>
 
                         </button>
@@ -1383,10 +1407,14 @@
                                 data-bs-target="#jhsModal">
 
                             <div class="department-icon icon-jhs">
+
                                 <i class="bi bi-book-fill"></i>
+
                             </div>
 
-                            <h4>Junior High School</h4>
+                            <h4>
+                                Junior High School
+                            </h4>
 
                             <p>
                                 View and manage Junior High School personnel.
@@ -1401,7 +1429,9 @@
                             </span>
 
                             <span class="department-arrow">
+
                                 <i class="bi bi-arrow-right"></i>
+
                             </span>
 
                         </button>
@@ -1417,10 +1447,14 @@
                                 data-bs-target="#shsModal">
 
                             <div class="department-icon icon-shs">
+
                                 <i class="bi bi-journal-bookmark-fill"></i>
+
                             </div>
 
-                            <h4>Senior High School</h4>
+                            <h4>
+                                Senior High School
+                            </h4>
 
                             <p>
                                 View and manage Senior High School personnel.
@@ -1435,7 +1469,9 @@
                             </span>
 
                             <span class="department-arrow">
+
                                 <i class="bi bi-arrow-right"></i>
+
                             </span>
 
                         </button>
@@ -1451,10 +1487,14 @@
                                 data-bs-target="#collegeModal">
 
                             <div class="department-icon icon-college">
+
                                 <i class="bi bi-mortarboard-fill"></i>
+
                             </div>
 
-                            <h4>College</h4>
+                            <h4>
+                                College
+                            </h4>
 
                             <p>
                                 View and manage college faculty and employees.
@@ -1469,7 +1509,9 @@
                             </span>
 
                             <span class="department-arrow">
+
                                 <i class="bi bi-arrow-right"></i>
+
                             </span>
 
                         </button>
@@ -1485,10 +1527,14 @@
                                 data-bs-target="#adminModal">
 
                             <div class="department-icon icon-admin">
+
                                 <i class="bi bi-building-fill"></i>
+
                             </div>
 
-                            <h4>Administrative</h4>
+                            <h4>
+                                Administrative
+                            </h4>
 
                             <p>
                                 View and manage administrative personnel.
@@ -1503,7 +1549,9 @@
                             </span>
 
                             <span class="department-arrow">
+
                                 <i class="bi bi-arrow-right"></i>
+
                             </span>
 
                         </button>
@@ -1519,10 +1567,14 @@
                                 data-bs-target="#laborersModal">
 
                             <div class="department-icon icon-laborers">
+
                                 <i class="bi bi-person-workspace"></i>
+
                             </div>
 
-                            <h4>Laborers</h4>
+                            <h4>
+                                Laborers
+                            </h4>
 
                             <p>
                                 View and manage maintenance and labor personnel.
@@ -1537,7 +1589,9 @@
                             </span>
 
                             <span class="department-arrow">
+
                                 <i class="bi bi-arrow-right"></i>
+
                             </span>
 
                         </button>
@@ -1552,13 +1606,14 @@
 
 
         <footer class="admin-footer">
+
             <div class="container-fluid px-3 px-lg-4"></div>
+
         </footer>
 
     </div>
 
 </div>
-
 
 
 <!-- =============================================================
@@ -1627,6 +1682,7 @@
 
         <div class="modal-content">
 
+
             <div class="modal-header">
 
                 <div>
@@ -1640,11 +1696,14 @@
                     </h5>
 
                     <small>
+
                         {{ $department['employees']->count() }}
                         employee(s) registered in this department.
+
                     </small>
 
                 </div>
+
 
                 <button type="button"
                         class="btn-close"
@@ -1657,6 +1716,7 @@
 
             <div class="modal-body">
 
+
                 <div class="row mb-3">
 
                     <div class="col-md-6">
@@ -1664,7 +1724,9 @@
                         <div class="input-group">
 
                             <span class="input-group-text bg-white">
+
                                 <i class="bi bi-search"></i>
+
                             </span>
 
                             <input type="search"
@@ -1676,6 +1738,7 @@
 
                     </div>
 
+
                     <div class="col-md-6 text-md-end mt-2 mt-md-0">
 
                         <span class="badge bg-light text-dark p-2">
@@ -1683,6 +1746,7 @@
                             <i class="bi bi-people me-1"></i>
 
                             {{ $department['employees']->count() }}
+
                             Employees
 
                         </span>
@@ -1700,15 +1764,25 @@
 
                             <tr>
 
-                                <th>Employee</th>
+                                <th>
+                                    Employee
+                                </th>
 
-                                <th>Employee ID</th>
+                                <th>
+                                    Employee ID
+                                </th>
 
-                                <th>Employment Type</th>
+                                <th>
+                                    Employment Type
+                                </th>
 
-                                <th>Status</th>
+                                <th>
+                                    Status
+                                </th>
 
-                                <th class="text-center">Actions</th>
+                                <th class="text-center">
+                                    Actions
+                                </th>
 
                             </tr>
 
@@ -1728,6 +1802,7 @@
                                     ($employee->position ?? '') . ' ' .
                                     ($employee->employment_type ?? '')
                                 ) }}">
+
 
                                 <td>
 
@@ -1750,7 +1825,9 @@
                                             </div>
 
                                             <div class="employee-id">
+
                                                 {{ $employee->email }}
+
                                             </div>
 
                                         </div>
@@ -1770,8 +1847,6 @@
 
                                 </td>
 
-
-                                <!-- EMPLOYMENT TYPE -->
 
                                 <td>
 
@@ -1918,7 +1993,6 @@
 @endforeach
 
 
-
 <!-- =============================================================
      VIEW EMPLOYEE MODAL
 ============================================================== -->
@@ -1931,6 +2005,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
 
         <div class="modal-content">
+
 
             <div class="modal-header employee-view-header">
 
@@ -1987,7 +2062,6 @@
 </div>
 
 
-
 <!-- =============================================================
      EDIT EMPLOYEE MODAL
 ============================================================== -->
@@ -2015,7 +2089,9 @@
                     </h5>
 
                     <small>
+
                         Update employee account and employment information.
+
                     </small>
 
                 </div>
@@ -2033,6 +2109,7 @@
             <form id="editEmployeeForm">
 
                 @csrf
+
 
                 <div class="modal-body">
 
@@ -2056,6 +2133,7 @@
 
 
                         <div class="row g-3">
+
 
                             <div class="col-md-4">
 
@@ -2336,7 +2414,6 @@
 
                             </div>
 
-
                         </div>
 
                     </div>
@@ -2416,6 +2493,7 @@
 
                     </button>
 
+
                     <button type="submit"
                             class="btn btn-primary">
 
@@ -2436,7 +2514,6 @@
 </div>
 
 
-
 <!-- =============================================================
      DEACTIVATE MODAL
 ============================================================== -->
@@ -2449,6 +2526,7 @@
     <div class="modal-dialog modal-dialog-centered">
 
         <div class="modal-content">
+
 
             <div class="modal-header">
 
@@ -2503,6 +2581,7 @@
 
                 </p>
 
+
                 <input type="hidden"
                        id="deactivateEmployeeId">
 
@@ -2518,6 +2597,7 @@
                     Cancel
 
                 </button>
+
 
                 <button type="button"
                         class="btn btn-danger"
@@ -2538,7 +2618,6 @@
 </div>
 
 
-
 <!-- =============================================================
      INACTIVE EMPLOYEES MODAL
 ============================================================== -->
@@ -2551,6 +2630,7 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
 
         <div class="modal-content">
+
 
             <div class="modal-header">
 
@@ -2565,7 +2645,9 @@
                     </h5>
 
                     <small>
+
                         Manage employees whose accounts are currently inactive.
+
                     </small>
 
                 </div>
@@ -2589,12 +2671,29 @@
 
                             <tr>
 
-                                <th>Employee</th>
-                                <th>ID</th>
-                                <th>Department</th>
-                                <th>Position</th>
-                                <th>Status</th>
-                                <th class="text-center">Action</th>
+                                <th>
+                                    Employee
+                                </th>
+
+                                <th>
+                                    ID
+                                </th>
+
+                                <th>
+                                    Department
+                                </th>
+
+                                <th>
+                                    Position
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th class="text-center">
+                                    Action
+                                </th>
 
                             </tr>
 
@@ -2640,17 +2739,23 @@
 
 
                                 <td>
+
                                     {{ $employee->employee_id ?? 'N/A' }}
+
                                 </td>
 
 
                                 <td>
+
                                     {{ $employee->department ?? 'N/A' }}
+
                                 </td>
 
 
                                 <td>
+
                                     {{ $employee->position ?? 'N/A' }}
+
                                 </td>
 
 
@@ -2713,7 +2818,6 @@
 </div>
 
 
-
 <!-- =============================================================
      JAVASCRIPT
 ============================================================== -->
@@ -2725,6 +2829,7 @@
 <script>
 
 document.addEventListener("DOMContentLoaded", function () {
+
 
     /* =========================================================
        CSRF
@@ -2775,7 +2880,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
         });
-
 
 
     /* =========================================================
@@ -2837,174 +2941,267 @@ document.addEventListener("DOMContentLoaded", function () {
                     details.innerHTML = `
 
                         <div class="col-md-6">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Employee ID
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.employee_id ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-6">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Email
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.email ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-6">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Department
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.department ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-6">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Position
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.position ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-4">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Gender
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.gender ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-4">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Birth Date
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.birth_date ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-4">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Contact Number
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.contact_number ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-6">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Employment Type
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.employment_type ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-6">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Salary Grade
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.salary_grade ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-6">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Hire Date
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.hire_date ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-6">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Status
                                 </span>
+
                                 <div class="employee-info-value">
+
                                     <span class="badge ${
                                         employee.status === "Active"
                                             ? "bg-success"
                                             : "bg-danger"
                                     }">
+
                                         ${employee.status ?? "-"}
+
                                     </span>
+
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-12">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Address
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.address ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-6">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Emergency Contact
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.emergency_contact_person ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-md-6">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Emergency Number
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.emergency_contact_number ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
+
                         <div class="col-12">
+
                             <div class="employee-info-card">
+
                                 <span class="employee-info-label">
                                     Bio
                                 </span>
+
                                 <div class="employee-info-value">
                                     ${employee.bio ?? "-"}
                                 </div>
+
                             </div>
+
                         </div>
 
                     `;
@@ -3033,7 +3230,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-
     /* =========================================================
        EDIT EMPLOYEE
     ========================================================= */
@@ -3044,6 +3240,7 @@ document.addEventListener("DOMContentLoaded", function () {
             button.addEventListener("click", function () {
 
                 const url = this.dataset.url;
+
 
                 fetch(url, {
 
@@ -3068,56 +3265,74 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 .then(employee => {
 
+
                     document.getElementById("employee_id").value =
                         employee.id ?? "";
+
 
                     document.getElementById("first_name").value =
                         employee.first_name ?? "";
 
+
                     document.getElementById("middle_name").value =
                         employee.middle_name ?? "";
+
 
                     document.getElementById("last_name").value =
                         employee.last_name ?? "";
 
+
                     document.getElementById("email").value =
                         employee.email ?? "";
+
 
                     document.getElementById("contact_number").value =
                         employee.contact_number ?? "";
 
+
                     document.getElementById("department").value =
                         employee.department ?? "";
+
 
                     document.getElementById("position").value =
                         employee.position ?? "";
 
+
                     document.getElementById("gender").value =
                         employee.gender ?? "";
+
 
                     document.getElementById("employment_type").value =
                         employee.employment_type ?? "";
 
+
                     document.getElementById("status").value =
                         employee.status ?? "";
+
 
                     document.getElementById("salary_grade").value =
                         employee.salary_grade ?? "";
 
+
                     document.getElementById("birth_date").value =
                         employee.birth_date ?? "";
+
 
                     document.getElementById("address").value =
                         employee.address ?? "";
 
+
                     document.getElementById("emergency_contact_person").value =
                         employee.emergency_contact_person ?? "";
+
 
                     document.getElementById("emergency_contact_number").value =
                         employee.emergency_contact_number ?? "";
 
+
                     document.getElementById("hire_date").value =
                         employee.hire_date ?? "";
+
 
                     document.getElementById("bio").value =
                         employee.bio ?? "";
@@ -3144,7 +3359,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
         });
-
 
 
     /* =========================================================
@@ -3179,17 +3393,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const formData =
                 new FormData(this);
 
-
-            /*
-             * IMPORTANT:
-             *
-             * Laravel resource route:
-             *
-             * PUT/PATCH /admin/employees/{employee}
-             *
-             * We send POST with _method=PUT so Laravel
-             * converts the request into a PUT request.
-             */
 
             formData.set("_method", "PUT");
 
@@ -3243,6 +3446,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     console.error(data);
 
+
                     if (data.errors) {
 
                         const validationErrors =
@@ -3253,6 +3457,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         throw new Error(validationErrors);
 
                     }
+
 
                     throw new Error(
                         data.message ||
@@ -3298,7 +3503,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =========================================================
        DEACTIVATE EMPLOYEE
     ========================================================= */
@@ -3307,6 +3511,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .forEach(button => {
 
             button.addEventListener("click", function () {
+
 
                 document.getElementById(
                     "deactivateEmployeeId"
@@ -3333,7 +3538,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-
     /* =========================================================
        CONFIRM DEACTIVATE
     ========================================================= */
@@ -3347,6 +3551,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (confirmDeactivate) {
 
         confirmDeactivate.addEventListener("click", function () {
+
 
             const id =
                 document.getElementById(
@@ -3441,7 +3646,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =========================================================
        REACTIVATE EMPLOYEE
     ========================================================= */
@@ -3450,6 +3654,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .forEach(button => {
 
             button.addEventListener("click", function () {
+
 
                 const id =
                     this.dataset.id;
@@ -3531,7 +3736,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-
     /* =========================================================
        CLEAN UP BOOTSTRAP BACKDROP
     ========================================================= */
@@ -3541,18 +3745,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             modal.addEventListener("hidden.bs.modal", function () {
 
+
                 document.querySelectorAll(".modal-backdrop")
                     .forEach(backdrop => backdrop.remove());
 
 
                 document.body.classList.remove("modal-open");
 
+
                 document.body.style.removeProperty("padding-right");
 
             });
 
         });
-
 
 });
 

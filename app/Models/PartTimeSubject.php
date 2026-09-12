@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PartTimeSubject extends Model
 {
-    use HasFactory;
+    protected $table = 'part_time_subjects';
 
     protected $fillable = [
         'user_id',
@@ -30,10 +29,7 @@ class PartTimeSubject extends Model
 
     public function employee(): BelongsTo
     {
-        return $this->belongsTo(
-            User::class,
-            'user_id'
-        );
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function attendances(): HasMany

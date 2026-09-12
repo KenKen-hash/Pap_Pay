@@ -35,18 +35,6 @@ class Payslip extends Model
 
         /*
         |--------------------------------------------------------------------------
-        | Part-Time Payroll
-        |--------------------------------------------------------------------------
-        */
-
-        'part_time_subject_count',
-
-        'part_time_present_classes',
-
-        'part_time_pay',
-
-        /*
-        |--------------------------------------------------------------------------
         | Rates
         |--------------------------------------------------------------------------
         */
@@ -139,7 +127,6 @@ class Payslip extends Model
         'status',
     ];
 
-
     protected $casts = [
 
         'period_start' => 'date',
@@ -163,18 +150,6 @@ class Payslip extends Model
         'overtime_minutes' => 'integer',
 
         'overtime_hours' => 'decimal:2',
-
-        /*
-        |--------------------------------------------------------------------------
-        | Part-Time Payroll
-        |--------------------------------------------------------------------------
-        */
-
-        'part_time_subject_count' => 'integer',
-
-        'part_time_present_classes' => 'integer',
-
-        'part_time_pay' => 'decimal:2',
 
         /*
         |--------------------------------------------------------------------------
@@ -255,7 +230,6 @@ class Payslip extends Model
         'net_salary' => 'decimal:2',
     ];
 
-
     /**
      * Payslip belongs to one employee.
      */
@@ -263,7 +237,6 @@ class Payslip extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 
     /**
      * Original payslip that this correction came from.
@@ -275,7 +248,6 @@ class Payslip extends Model
             'corrected_from'
         );
     }
-
 
     /**
      * Payslips created as corrections of this payslip.

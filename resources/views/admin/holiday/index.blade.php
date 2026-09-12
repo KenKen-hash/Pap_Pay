@@ -223,12 +223,10 @@
                     <!-- Page Heading -->
                     <div class="page-heading">
                         <div class="page-heading-copy">
-                            <span class="page-icon">
-                                <i class="bi bi-calendar-event"></i>
-                            </span>
+                            
 
                             <div>
-                                <p class="eyebrow mb-1">Payroll Management</p>
+
                                 <h1 class="h3 mb-1">Holiday Management</h1>
                                 <p class="text-muted mb-0">
                                     Manage holidays that affect attendance and payroll computation.

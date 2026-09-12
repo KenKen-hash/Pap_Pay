@@ -2408,18 +2408,13 @@
                     <section class="dashboard-heading">
 
 
-                        <div class="dashboard-heading-icon">
-
-                            <i class="bi bi-speedometer2"></i>
-
-                        </div>
 
 
                         <div class="dashboard-heading-content">
 
 
                             <h1>
-                                HR & Payroll Dashboard
+                                Home
                             </h1>
 
 

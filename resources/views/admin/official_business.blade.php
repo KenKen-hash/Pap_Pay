@@ -22,7 +22,787 @@
     <link rel="stylesheet"
         href="../../../../khen/assets/css/style.css">
 
+
+    <style>
+        /* =========================================================
+           PAP PAY - OFFICIAL BUSINESS
+           Dashboard Typography + Metric Card Styling
+           ========================================================= */
+
+        :root {
+            --pp-text-strong: #172033;
+            --pp-text-muted: #64748b;
+            --pp-border: #e8edf3;
+            --pp-card-shadow: 0 5px 18px rgba(15, 23, 42, .05);
+
+            --pp-primary: #435ebe;
+            --pp-success: #198754;
+            --pp-warning: #f59e0b;
+            --pp-danger: #dc3545;
+        }
+
+
+        /* =========================================================
+           GLOBAL TYPOGRAPHY
+           ========================================================= */
+
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Roboto, Helvetica, Arial, sans-serif;
+
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+
+        /* =========================================================
+           PAGE HEADING
+           Same typography as Home dashboard
+           ========================================================= */
+
+        .ob-page-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+
+            margin-bottom: 1.8rem;
+            padding: 4px 2px;
+        }
+
+
+        .ob-page-heading h1 {
+            color: var(--pp-text-strong);
+
+            font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+
+            font-weight: 800;
+
+            letter-spacing: -0.035em;
+
+            line-height: 1.2;
+
+            margin: 0 0 5px;
+        }
+
+
+        .ob-page-heading p {
+            color: var(--pp-text-muted) !important;
+
+            font-size: clamp(.92rem, 1.1vw, 1.02rem);
+
+            line-height: 1.6;
+
+            max-width: 950px;
+
+            margin: 0;
+        }
+
+
+        /* =========================================================
+           METRIC CARDS
+           Same overall design as Home dashboard
+           ========================================================= */
+
+        .ob-metric-card {
+            position: relative;
+
+            width: 100%;
+
+            min-height: 128px;
+
+            padding: 20px 21px;
+
+            background: #fff;
+
+            border: 1px solid rgba(0, 0, 0, .04);
+
+            border-radius: 18px;
+
+            box-shadow: var(--pp-card-shadow);
+
+            overflow: hidden;
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
+
+
+        .ob-metric-card:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 24px rgba(15, 23, 42, .08);
+        }
+
+
+        .ob-metric-card::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 4px;
+
+            border-radius: 18px 0 0 18px;
+        }
+
+
+        .ob-metric-card.metric-warning::before {
+            background: var(--pp-warning);
+        }
+
+
+        .ob-metric-card.metric-success::before {
+            background: var(--pp-success);
+        }
+
+
+        .ob-metric-card.metric-danger::before {
+            background: var(--pp-danger);
+        }
+
+
+        .ob-metric-card.metric-primary::before {
+            background: var(--pp-primary);
+        }
+
+
+        .ob-metric-label {
+            display: block;
+
+            font-size: .85rem;
+
+            font-weight: 600;
+
+            color: var(--pp-text-muted);
+
+            line-height: 1.4;
+
+            margin-bottom: 4px;
+        }
+
+
+        .ob-metric-value {
+            font-size: 2rem;
+
+            font-weight: 800;
+
+            line-height: 1.2;
+
+            margin: 0;
+
+            letter-spacing: -0.02em;
+        }
+
+
+        .ob-metric-description {
+            margin: 5px 0 0;
+
+            font-size: .88rem;
+
+            color: var(--pp-text-muted);
+
+            line-height: 1.45;
+        }
+
+
+        .ob-metric-value.text-warning {
+            color: var(--pp-warning) !important;
+        }
+
+
+        .ob-metric-value.text-success {
+            color: var(--pp-success) !important;
+        }
+
+
+        .ob-metric-value.text-danger {
+            color: var(--pp-danger) !important;
+        }
+
+
+        .ob-metric-value.text-primary {
+            color: var(--pp-primary) !important;
+        }
+
+
+        /* =========================================================
+           MAIN OFFICIAL BUSINESS PANEL
+           ========================================================= */
+
+        .ob-main-panel {
+            background: #fff;
+
+            border: 1px solid var(--pp-border);
+
+            border-radius: 18px;
+
+            box-shadow: var(--pp-card-shadow);
+
+            overflow: hidden;
+        }
+
+
+        .ob-panel-body {
+            padding: 24px;
+        }
+
+
+        /* =========================================================
+           SEARCH / FILTERS
+           ========================================================= */
+
+        .ob-filter-form {
+            margin-bottom: 1.5rem;
+        }
+
+
+        .ob-filter-form .form-control,
+        .ob-filter-form .form-select {
+            min-height: 42px;
+
+            border-color: #dce3eb;
+
+            border-radius: 9px;
+
+            font-size: .9rem;
+        }
+
+
+        .ob-filter-form .form-control:focus,
+        .ob-filter-form .form-select:focus {
+            border-color: var(--pp-primary);
+
+            box-shadow:
+                0 0 0 .2rem rgba(67, 94, 190, .12);
+        }
+
+
+        .ob-search-button {
+            min-height: 42px;
+
+            border-radius: 9px;
+
+            font-size: .9rem;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           TABLE
+           ========================================================= */
+
+        .ob-table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+
+            -webkit-overflow-scrolling: touch;
+        }
+
+
+        .ob-table {
+            min-width: 850px;
+
+            margin-bottom: 0;
+        }
+
+
+        .ob-table thead th {
+            background: #f8fafc;
+
+            color: #64748b;
+
+            border-bottom: 1px solid var(--pp-border);
+
+            font-size: .78rem;
+
+            font-weight: 700;
+
+            letter-spacing: .02em;
+
+            text-transform: uppercase;
+
+            white-space: nowrap;
+
+            padding: 13px 15px;
+        }
+
+
+        .ob-table tbody td {
+            color: #334155;
+
+            font-size: .9rem;
+
+            font-weight: 400;
+
+            padding: 14px 15px;
+
+            border-bottom: 1px solid #eef2f6;
+
+            vertical-align: middle;
+        }
+
+
+        .ob-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+
+        .ob-table tbody strong {
+            color: var(--pp-text-strong);
+
+            font-weight: 700;
+        }
+
+
+        .ob-table tbody small {
+            color: var(--pp-text-muted);
+
+            font-size: .78rem;
+        }
+
+
+        /* =========================================================
+           STATUS BADGES
+           ========================================================= */
+
+        .ob-status-badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 5px 10px;
+
+            border-radius: 999px;
+
+            font-size: .75rem;
+
+            font-weight: 700;
+
+            line-height: 1.2;
+
+            white-space: nowrap;
+        }
+
+
+        .ob-status-pending {
+            background: rgba(245, 158, 11, .12);
+
+            color: #b77900;
+        }
+
+
+        .ob-status-approved {
+            background: rgba(25, 135, 84, .12);
+
+            color: #157347;
+        }
+
+
+        .ob-status-rejected {
+            background: rgba(220, 53, 69, .10);
+
+            color: #bb2d3b;
+        }
+
+
+        /* =========================================================
+           VIEW BUTTON
+           ========================================================= */
+
+        .ob-view-button {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 5px;
+
+            font-weight: 600;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================================
+           PAGINATION
+           ========================================================= */
+
+        .ob-pagination {
+            margin-top: 1.25rem;
+        }
+
+
+        .ob-pagination nav {
+            display: flex;
+
+            justify-content: center;
+        }
+
+
+        .ob-pagination .pagination {
+            margin-bottom: 0;
+
+            flex-wrap: wrap;
+        }
+
+
+        /* =========================================================
+           MODAL
+           ========================================================= */
+
+        .ob-modal .modal-dialog {
+            max-width: 900px;
+        }
+
+
+        .ob-modal .modal-content {
+            border: 0;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 60px rgba(15, 23, 42, .18);
+        }
+
+
+        .ob-modal .modal-header {
+            padding: 18px 22px;
+
+            border-bottom: 1px solid var(--pp-border);
+
+            background: #fff;
+        }
+
+
+        .ob-modal .modal-title {
+            color: var(--pp-text-strong);
+
+            font-size: 1.15rem;
+
+            font-weight: 800;
+
+            letter-spacing: -.015em;
+        }
+
+
+        .ob-modal .modal-body {
+            padding: 24px;
+        }
+
+
+        .ob-modal .modal-footer {
+            padding: 15px 22px;
+
+            border-top: 1px solid var(--pp-border);
+        }
+
+
+        .ob-modal .form-label {
+            color: var(--pp-text-strong);
+
+            font-size: .85rem;
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+        }
+
+
+        .ob-modal .form-control.bg-light {
+            color: #334155;
+
+            background: #f8fafc !important;
+
+            border-color: #e3e8ee;
+
+            border-radius: 9px;
+
+            min-height: 42px;
+
+            font-size: .9rem;
+
+            line-height: 1.5;
+        }
+
+
+        .ob-modal .form-control.bg-light[style*="min-height"] {
+            min-height: 80px;
+        }
+
+
+        .ob-proof-image {
+            display: block;
+
+            width: 100%;
+
+            max-height: 230px;
+
+            object-fit: cover;
+
+            border: 1px solid #e1e7ee !important;
+
+            border-radius: 10px !important;
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
+
+
+        .ob-proof-image:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 6px 18px rgba(15, 23, 42, .10);
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 991.98px) {
+
+            .dashboard-content .container-fluid {
+                padding-top: 1.25rem !important;
+
+                padding-bottom: 1.25rem !important;
+            }
+
+
+            .ob-page-heading {
+                margin-bottom: 1.45rem;
+            }
+
+
+            .ob-panel-body {
+                padding: 20px;
+            }
+
+
+            .ob-modal .modal-body {
+                padding: 20px;
+            }
+
+        }
+
+
+        @media (max-width: 767.98px) {
+
+            .ob-page-heading {
+                padding: 2px 0;
+
+                margin-bottom: 1.25rem;
+            }
+
+
+            .ob-page-heading h1 {
+                font-size: 1.55rem;
+            }
+
+
+            .ob-page-heading p {
+                font-size: .92rem;
+            }
+
+
+            .ob-metric-card {
+                min-height: 118px;
+
+                padding: 18px 19px;
+            }
+
+
+            .ob-metric-value {
+                font-size: 1.8rem;
+            }
+
+
+            .ob-panel-body {
+                padding: 18px;
+            }
+
+
+            .ob-filter-form .row {
+                row-gap: 10px;
+            }
+
+
+            .ob-modal .modal-dialog {
+                margin: .5rem;
+            }
+
+
+            .ob-modal .modal-body {
+                padding: 18px;
+            }
+
+
+            .ob-modal .modal-footer {
+                display: flex;
+
+                flex-wrap: wrap;
+
+                gap: 8px;
+
+                padding: 14px 18px;
+            }
+
+
+            .ob-modal .modal-footer form {
+                flex: 1 1 auto;
+            }
+
+
+            .ob-modal .modal-footer form .btn,
+            .ob-modal .modal-footer > .btn {
+                width: 100%;
+            }
+
+        }
+
+
+        @media (max-width: 575.98px) {
+
+            .dashboard-content .container-fluid {
+                padding-left: .85rem !important;
+
+                padding-right: .85rem !important;
+            }
+
+
+            .ob-page-heading h1 {
+                font-size: 1.4rem;
+            }
+
+
+            .ob-page-heading p {
+                font-size: .88rem;
+            }
+
+
+            .ob-metric-card {
+                min-height: 110px;
+
+                padding: 17px 18px;
+            }
+
+
+            .ob-metric-label {
+                font-size: .8rem;
+            }
+
+
+            .ob-metric-value {
+                font-size: 1.65rem;
+            }
+
+
+            .ob-metric-description {
+                font-size: .82rem;
+            }
+
+
+            .ob-main-panel {
+                border-radius: 15px;
+            }
+
+
+            .ob-panel-body {
+                padding: 15px;
+            }
+
+
+            .ob-table thead th,
+            .ob-table tbody td {
+                padding-left: 12px;
+
+                padding-right: 12px;
+            }
+
+
+            .ob-modal .modal-dialog {
+                margin: .35rem;
+            }
+
+
+            .ob-modal .modal-header {
+                padding: 15px 16px;
+            }
+
+
+            .ob-modal .modal-body {
+                padding: 15px;
+            }
+
+
+            .ob-modal .modal-footer {
+                padding: 12px 15px;
+            }
+
+
+            .ob-modal .modal-footer form {
+                flex: 1 1 100%;
+            }
+
+
+            .ob-modal .modal-footer form .btn,
+            .ob-modal .modal-footer > .btn {
+                width: 100%;
+            }
+
+        }
+
+
+        /* =========================================================
+           PRINT
+           ========================================================= */
+
+        @media print {
+
+            .admin-sidebar,
+            .admin-navbar,
+            .admin-footer,
+            .sidebar-backdrop,
+            .ob-page-heading,
+            .ob-filter-form,
+            .ob-pagination,
+            .modal,
+            .btn {
+                display: none !important;
+            }
+
+
+            .admin-main {
+                margin: 0 !important;
+
+                width: 100% !important;
+            }
+
+
+            .ob-main-panel {
+                box-shadow: none;
+
+                border: 1px solid #ddd;
+            }
+
+        }
+    </style>
+
 </head>
+
 
 <body>
 
@@ -420,14 +1200,17 @@
                             </button>
 
 
-                             <ul class="dropdown-menu dropdown-menu-end">
+                            <ul class="dropdown-menu dropdown-menu-end">
+
                                 <li>
 
-                                    <form method="POST" action="{{ route('logout') }}">
+                                    <form method="POST"
+                                        action="{{ route('logout') }}">
 
                                         @csrf
 
-                                        <button type="submit" class="dropdown-item">
+                                        <button type="submit"
+                                            class="dropdown-item">
 
                                             Sign out
 
@@ -436,7 +1219,6 @@
                                     </form>
 
                                 </li>
-
 
                             </ul>
 
@@ -458,98 +1240,118 @@
                 <div class="container-fluid px-3 px-lg-4 py-4">
 
 
-                    <h2 class="mb-4">
+                    <!-- PAGE HEADING -->
 
-                        Official Business Management
+                    <div class="ob-page-heading">
 
-                    </h2>
+                        <div>
+
+                            <h1>
+                                Official Business Management
+                            </h1>
+
+                            <p>
+                                Manage employee official business requests, approvals and records.
+                            </p>
+
+                        </div>
+
+                    </div>
 
 
                     <!-- =================================================
-                         SUMMARY CARDS
+                         SUMMARY METRICS
                          ================================================= -->
 
-                    <div class="row mb-4">
+                    <div class="row g-3 mb-4">
 
 
-                        <div class="col-md-3">
+                        <!-- PENDING -->
 
-                            <div class="card shadow-sm">
+                        <div class="col-xl-3 col-md-6">
 
-                                <div class="card-body">
+                            <div class="ob-metric-card metric-warning h-100">
 
-                                    <h6>
-                                        Pending
-                                    </h6>
+                                <span class="ob-metric-label">
+                                    Pending
+                                </span>
 
-                                    <h2>
-                                        {{ $pendingOB }}
-                                    </h2>
+                                <h2 class="ob-metric-value text-warning">
+                                    {{ $pendingOB }}
+                                </h2>
 
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-md-3">
-
-                            <div class="card shadow-sm">
-
-                                <div class="card-body">
-
-                                    <h6>
-                                        Approved
-                                    </h6>
-
-                                    <h2>
-                                        {{ $approvedOB }}
-                                    </h2>
-
-                                </div>
+                                <p class="ob-metric-description">
+                                    Awaiting approval
+                                </p>
 
                             </div>
 
                         </div>
 
 
-                        <div class="col-md-3">
+                        <!-- APPROVED -->
 
-                            <div class="card shadow-sm">
+                        <div class="col-xl-3 col-md-6">
 
-                                <div class="card-body">
+                            <div class="ob-metric-card metric-success h-100">
 
-                                    <h6>
-                                        Rejected
-                                    </h6>
+                                <span class="ob-metric-label">
+                                    Approved
+                                </span>
 
-                                    <h2>
-                                        {{ $rejectedOB }}
-                                    </h2>
+                                <h2 class="ob-metric-value text-success">
+                                    {{ $approvedOB }}
+                                </h2>
 
-                                </div>
+                                <p class="ob-metric-description">
+                                    Approved requests
+                                </p>
 
                             </div>
 
                         </div>
 
 
-                        <div class="col-md-3">
+                        <!-- REJECTED -->
 
-                            <div class="card shadow-sm">
+                        <div class="col-xl-3 col-md-6">
 
-                                <div class="card-body">
+                            <div class="ob-metric-card metric-danger h-100">
 
-                                    <h6>
-                                        Total
-                                    </h6>
+                                <span class="ob-metric-label">
+                                    Rejected
+                                </span>
 
-                                    <h2>
-                                        {{ $totalOB }}
-                                    </h2>
+                                <h2 class="ob-metric-value text-danger">
+                                    {{ $rejectedOB }}
+                                </h2>
 
-                                </div>
+                                <p class="ob-metric-description">
+                                    Rejected requests
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- TOTAL -->
+
+                        <div class="col-xl-3 col-md-6">
+
+                            <div class="ob-metric-card metric-primary h-100">
+
+                                <span class="ob-metric-label">
+                                    Total
+                                </span>
+
+                                <h2 class="ob-metric-value text-primary">
+                                    {{ $totalOB }}
+                                </h2>
+
+                                <p class="ob-metric-description">
+                                    All official business requests
+                                </p>
 
                             </div>
 
@@ -559,23 +1361,24 @@
 
 
                     <!-- =================================================
-                         OFFICIAL BUSINESS TABLE
+                         OFFICIAL BUSINESS PANEL
                          ================================================= -->
 
-                    <div class="card shadow-sm">
-
-                        <div class="card-body">
+                    <div class="ob-main-panel">
 
 
-                            <!-- SEARCH -->
+                        <div class="ob-panel-body">
+
+
+                            <!-- SEARCH / FILTER -->
 
                             <form method="GET"
-                                class="mb-4">
+                                class="ob-filter-form">
 
-                                <div class="row">
+                                <div class="row g-2">
 
 
-                                    <div class="col-md-5">
+                                    <div class="col-lg-5 col-md-6">
 
                                         <input type="text"
                                             name="search"
@@ -586,7 +1389,7 @@
                                     </div>
 
 
-                                    <div class="col-md-3">
+                                    <div class="col-lg-3 col-md-6">
 
                                         <select name="status"
                                             class="form-select">
@@ -624,7 +1427,7 @@
                                     </div>
 
 
-                                    <div class="col-md-2">
+                                    <div class="col-lg-2 col-md-6">
 
                                         <input type="date"
                                             name="date"
@@ -634,9 +1437,12 @@
                                     </div>
 
 
-                                    <div class="col-md-2">
+                                    <div class="col-lg-2 col-md-6">
 
-                                        <button class="btn btn-primary w-100">
+                                        <button class="btn btn-primary w-100 ob-search-button"
+                                            type="submit">
+
+                                            <i class="bi bi-search me-1"></i>
 
                                             Search
 
@@ -651,9 +1457,9 @@
 
                             <!-- TABLE -->
 
-                            <div class="table-responsive">
+                            <div class="ob-table-wrapper">
 
-                                <table class="table table-hover align-middle">
+                                <table class="table table-hover align-middle ob-table">
 
                                     <thead>
 
@@ -702,7 +1508,7 @@
 
                                                     <br>
 
-                                                    <small class="text-muted">
+                                                    <small>
 
                                                         {{ $ob->user->employee_id }}
 
@@ -750,26 +1556,20 @@
 
                                                     @if ($ob->status == 'Pending')
 
-                                                        <span class="badge bg-warning">
-
+                                                        <span class="ob-status-badge ob-status-pending">
                                                             Pending
-
                                                         </span>
 
                                                     @elseif($ob->status == 'Approved')
 
-                                                        <span class="badge bg-success">
-
+                                                        <span class="ob-status-badge ob-status-approved">
                                                             Approved
-
                                                         </span>
 
                                                     @else
 
-                                                        <span class="badge bg-danger">
-
+                                                        <span class="ob-status-badge ob-status-rejected">
                                                             Rejected
-
                                                         </span>
 
                                                     @endif
@@ -779,7 +1579,7 @@
 
                                                 <td>
 
-                                                    <button class="btn btn-sm btn-outline-primary"
+                                                    <button class="btn btn-sm btn-outline-primary ob-view-button"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#obModal{{ $ob->id }}">
 
@@ -798,9 +1598,11 @@
                                             <tr>
 
                                                 <td colspan="6"
-                                                    class="text-center">
+                                                    class="text-center py-5">
 
-                                                    No Official Business Requests
+                                                    <h5 class="mb-0">
+                                                        No Official Business Requests
+                                                    </h5>
 
                                                 </td>
 
@@ -817,7 +1619,7 @@
 
                             <!-- PAGINATION -->
 
-                            <div class="mt-3">
+                            <div class="ob-pagination">
 
                                 {{ $officialBusinesses->links() }}
 
@@ -839,7 +1641,7 @@
 
             @foreach($officialBusinesses as $ob)
 
-                <div class="modal fade"
+                <div class="modal fade ob-modal"
                     id="obModal{{ $ob->id }}"
                     tabindex="-1"
                     aria-labelledby="obModalLabel{{ $ob->id }}"
@@ -876,18 +1678,15 @@
 
                             <div class="modal-body">
 
-
-                                <!-- EMPLOYEE -->
-
-                                <div class="row">
+                                <div class="row g-3">
 
 
-                                    <div class="col-md-6 mb-3">
+                                    <!-- EMPLOYEE -->
 
-                                        <label class="form-label fw-bold">
+                                    <div class="col-md-6">
 
+                                        <label class="form-label">
                                             Employee
-
                                         </label>
 
                                         <div class="form-control bg-light">
@@ -901,12 +1700,10 @@
 
                                     <!-- EMPLOYEE ID -->
 
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6">
 
-                                        <label class="form-label fw-bold">
-
+                                        <label class="form-label">
                                             Employee ID
-
                                         </label>
 
                                         <div class="form-control bg-light">
@@ -920,12 +1717,10 @@
 
                                     <!-- DEPARTMENT -->
 
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6">
 
-                                        <label class="form-label fw-bold">
-
+                                        <label class="form-label">
                                             Department
-
                                         </label>
 
                                         <div class="form-control bg-light">
@@ -939,38 +1734,30 @@
 
                                     <!-- STATUS -->
 
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6">
 
-                                        <label class="form-label fw-bold">
-
+                                        <label class="form-label">
                                             Status
-
                                         </label>
 
                                         <div class="form-control bg-light">
 
                                             @if($ob->status === 'Pending')
 
-                                                <span class="badge bg-warning text-dark">
-
+                                                <span class="ob-status-badge ob-status-pending">
                                                     Pending
-
                                                 </span>
 
                                             @elseif($ob->status === 'Approved')
 
-                                                <span class="badge bg-success">
-
+                                                <span class="ob-status-badge ob-status-approved">
                                                     Approved
-
                                                 </span>
 
                                             @else
 
-                                                <span class="badge bg-danger">
-
+                                                <span class="ob-status-badge ob-status-rejected">
                                                     Rejected
-
                                                 </span>
 
                                             @endif
@@ -980,17 +1767,12 @@
                                     </div>
 
 
-                                    <!-- =================================================
-                                         EMPLOYEE INPUT 1
-                                         PURPOSE
-                                         ================================================= -->
+                                    <!-- PURPOSE -->
 
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12">
 
-                                        <label class="form-label fw-bold">
-
+                                        <label class="form-label">
                                             Purpose
-
                                         </label>
 
                                         <div class="form-control bg-light"
@@ -1003,17 +1785,12 @@
                                     </div>
 
 
-                                    <!-- =================================================
-                                         EMPLOYEE INPUT 2
-                                         DESTINATION
-                                         ================================================= -->
+                                    <!-- DESTINATION -->
 
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6">
 
-                                        <label class="form-label fw-bold">
-
+                                        <label class="form-label">
                                             Destination
-
                                         </label>
 
                                         <div class="form-control bg-light">
@@ -1025,17 +1802,12 @@
                                     </div>
 
 
-                                    <!-- =================================================
-                                         EMPLOYEE INPUT 3
-                                         DATE
-                                         ================================================= -->
+                                    <!-- DATE -->
 
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6">
 
-                                        <label class="form-label fw-bold">
-
+                                        <label class="form-label">
                                             Date
-
                                         </label>
 
                                         <div class="form-control bg-light">
@@ -1049,17 +1821,12 @@
                                     </div>
 
 
-                                    <!-- =================================================
-                                         EMPLOYEE INPUT 4
-                                         MORNING TIME IN
-                                         ================================================= -->
+                                    <!-- MORNING TIME IN -->
 
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6">
 
-                                        <label class="form-label fw-bold">
-
+                                        <label class="form-label">
                                             Morning Time In
-
                                         </label>
 
                                         <div class="form-control bg-light">
@@ -1079,17 +1846,12 @@
                                     </div>
 
 
-                                    <!-- =================================================
-                                         EMPLOYEE INPUT 5
-                                         MORNING TIME OUT
-                                         ================================================= -->
+                                    <!-- MORNING TIME OUT -->
 
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6">
 
-                                        <label class="form-label fw-bold">
-
+                                        <label class="form-label">
                                             Morning Time Out
-
                                         </label>
 
                                         <div class="form-control bg-light">
@@ -1109,17 +1871,12 @@
                                     </div>
 
 
-                                    <!-- =================================================
-                                         EMPLOYEE INPUT 6
-                                         AFTERNOON TIME IN
-                                         ================================================= -->
+                                    <!-- AFTERNOON TIME IN -->
 
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6">
 
-                                        <label class="form-label fw-bold">
-
+                                        <label class="form-label">
                                             Afternoon Time In
-
                                         </label>
 
                                         <div class="form-control bg-light">
@@ -1139,17 +1896,12 @@
                                     </div>
 
 
-                                    <!-- =================================================
-                                         EMPLOYEE INPUT 7
-                                         AFTERNOON TIME OUT
-                                         ================================================= -->
+                                    <!-- AFTERNOON TIME OUT -->
 
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-6">
 
-                                        <label class="form-label fw-bold">
-
+                                        <label class="form-label">
                                             Afternoon Time Out
-
                                         </label>
 
                                         <div class="form-control bg-light">
@@ -1169,17 +1921,12 @@
                                     </div>
 
 
-                                    <!-- =================================================
-                                         EMPLOYEE INPUT 8
-                                         ATTACHMENT / PROOF IMAGES
-                                         ================================================= -->
+                                    <!-- PROOF IMAGES -->
 
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12">
 
-                                        <label class="form-label fw-bold">
-
+                                        <label class="form-label">
                                             Attachment / Proof Images
-
                                         </label>
 
 
@@ -1195,7 +1942,7 @@
                                                             target="_blank">
 
                                                             <img src="{{ asset('storage/' . $image) }}"
-                                                                class="img-fluid rounded border"
+                                                                class="img-fluid ob-proof-image"
                                                                 alt="OB Proof Image">
 
                                                         </a>
