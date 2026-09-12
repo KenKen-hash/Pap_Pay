@@ -2419,6 +2419,89 @@
                     </div>
 
 
+                    <!-- GOVERNMENT BENEFITS / IDENTIFICATION -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+
+                            <i class="bi bi-card-checklist me-2 text-success"></i>
+
+                            Government Benefits Numbers
+
+                        </div>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-3">
+
+                                <label class="form-label">
+                                    SSS Number
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="sss_number"
+                                       name="sss_number"
+                                       maxlength="30"
+                                       autocomplete="off">
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <label class="form-label">
+                                    PhilHealth Number
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="philhealth_number"
+                                       name="philhealth_number"
+                                       maxlength="30"
+                                       autocomplete="off">
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <label class="form-label">
+                                    Pag-IBIG Number
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="pagibig_number"
+                                       name="pagibig_number"
+                                       maxlength="30"
+                                       autocomplete="off">
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <label class="form-label">
+                                    TIN
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="tin"
+                                       name="tin"
+                                       maxlength="30"
+                                       autocomplete="off">
+
+                            </div>
+
+                        </div>
+
+                        <div class="small text-muted mt-2">
+                            Enter the employee's government-issued benefit and tax identification numbers.
+                        </div>
+
+                    </div>
+
+
                     <!-- EMERGENCY -->
 
                     <div class="form-section">
@@ -3332,6 +3415,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     document.getElementById("hire_date").value =
                         employee.hire_date ?? "";
+
+
+                    document.getElementById("sss_number").value =
+                        employee.sss_number ?? "";
+
+
+                    document.getElementById("philhealth_number").value =
+                        employee.philhealth_number ?? "";
+
+
+                    document.getElementById("pagibig_number").value =
+                        employee.pagibig_number ?? "";
+
+
+                    document.getElementById("tin").value =
+                        employee.tin ?? "";
 
 
                     document.getElementById("bio").value =

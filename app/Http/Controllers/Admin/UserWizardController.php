@@ -51,169 +51,339 @@ class UserWizardController extends Controller
         return view('admin.users.create-admin');
     }
 
-
-
+    /*
+    |--------------------------------------------------------------------------
+    | Employee Setup
+    |--------------------------------------------------------------------------
+    */
 
     public function employeeSetup(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'employment_type' => 'required|in:Regular,Contractual,Part-Time',
             'department' => 'required|in:Elementary,JHS,SHS,College,Admin,Laborers',
+
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+
+            'position' => 'nullable|string|max:255',
+            'status' => 'nullable|in:Active,Inactive',
+            'salary_grade' => 'nullable|string|max:255',
+            'contact_number' => 'nullable|string|max:255',
+            'gender' => 'nullable|string|max:50',
+            'birth_date' => 'nullable|date',
+            'address' => 'nullable|string',
+            'hire_date' => 'nullable|date',
+
+            'sss_number' => 'nullable|string|max:30',
+            'philhealth_number' => 'nullable|string|max:30',
+            'pagibig_number' => 'nullable|string|max:30',
+            'tin' => 'nullable|string|max:30',
+
+            'emergency_contact_person' => 'nullable|string|max:255',
+            'emergency_contact_number' => 'nullable|string|max:255',
+            'bio' => 'nullable|string',
         ]);
 
-        /*
-    |--------------------------------------------------------------------------
-    | Generate Employee ID
-    |--------------------------------------------------------------------------
-    */
+        $name = trim(
+            $validated['first_name'] . ' ' .
+            (!empty($validated['middle_name'])
+                ? $validated['middle_name'] . ' '
+                : '') .
+            $validated['last_name']
+        );
 
         $year = now()->year;
 
-        $nextId = User::max('id') + 1;
+        $nextId = (User::max('id') ?? 0) + 1;
 
-        $employeeId = 'EMP' . $year . str_pad($nextId, 4, '0', STR_PAD_LEFT);
-
-        /*
-    |--------------------------------------------------------------------------
-    | Generate Credentials
-    |--------------------------------------------------------------------------
-    */
+        $employeeId =
+            'EMP' . $year . str_pad($nextId, 4, '0', STR_PAD_LEFT);
 
         $email = strtolower($employeeId) . '@pap-pay.local';
 
         $plainPassword = Str::password(10);
 
-        /*
-    |--------------------------------------------------------------------------
-    | Create User
-    |--------------------------------------------------------------------------
-    */
-
-        $user = User::create([
-
-            'name' => 'New Employee',
+        User::create([
+            'first_name' => $validated['first_name'],
+            'middle_name' => $validated['middle_name'] ?? null,
+            'last_name' => $validated['last_name'],
+            'name' => $name,
 
             'employee_id' => $employeeId,
+            'department' => $validated['department'],
+            'position' => $validated['position'] ?? null,
+            'contact_number' => $validated['contact_number'] ?? null,
 
-            'department' => $request->department,
+            'gender' => $validated['gender'] ?? null,
+            'birth_date' => $validated['birth_date'] ?? null,
+            'address' => $validated['address'] ?? null,
 
-            'employment_type' => $request->employment_type,
+            'emergency_contact_person' =>
+                $validated['emergency_contact_person'] ?? null,
+
+            'emergency_contact_number' =>
+                $validated['emergency_contact_number'] ?? null,
+
+            'hire_date' => $validated['hire_date'] ?? null,
+            'employment_type' => $validated['employment_type'],
+            'salary_grade' => $validated['salary_grade'] ?? null,
+
+            'sss_number' => $validated['sss_number'] ?? null,
+            'philhealth_number' => $validated['philhealth_number'] ?? null,
+            'pagibig_number' => $validated['pagibig_number'] ?? null,
+            'tin' => $validated['tin'] ?? null,
+
+            'bio' => $validated['bio'] ?? null,
+
+            'status' => $validated['status'] ?? 'Active',
 
             'email' => $email,
-
             'password' => Hash::make($plainPassword),
-
             'role' => 'employee',
-
-            'force_password_change' => true
-
+            'force_password_change' => true,
         ]);
 
         return back()->with([
-
             'success' => true,
-
             'email' => $email,
-
             'password' => $plainPassword,
-
             'employee_id' => $employeeId,
-
         ]);
     }
 
-    public function adminSetup(Request $request)
-    {
-        $request->validate([
-            'category' => 'required|in:HR,VP Finance,Accounts Receivable,Accounts Payable'
-        ]);
-
-        /*
+    /*
     |--------------------------------------------------------------------------
-    | Generate Admin ID
+    | Administrator Setup
     |--------------------------------------------------------------------------
     */
+
+    public function adminSetup(Request $request)
+    {
+        $validated = $request->validate([
+            'category' => 'required|in:HR,VP,Accounts Payable',
+
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'contact_number' => 'nullable|string|max:255',
+            'gender' => 'nullable|string|max:50',
+            'birth_date' => 'nullable|date',
+            'address' => 'nullable|string',
+        ]);
+
+        $name = trim(
+            $validated['first_name'] . ' ' .
+            (!empty($validated['middle_name'])
+                ? $validated['middle_name'] . ' '
+                : '') .
+            $validated['last_name']
+        );
 
         $year = now()->year;
 
         $lastAdmin = Admin::latest('id')->first();
 
-        $nextNumber = $lastAdmin ? $lastAdmin->id + 1 : 1;
+        $nextNumber = $lastAdmin
+            ? $lastAdmin->id + 1
+            : 1;
 
-        $adminId = 'ADM' . $year . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
-
-        /*
-    |--------------------------------------------------------------------------
-    | Generate Credentials
-    |--------------------------------------------------------------------------
-    */
+        $adminId =
+            'ADM' . $year . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
 
         $email = strtolower($adminId) . '@pap-pay.local';
 
         $plainPassword = Str::password(10);
 
-        /*
-    |--------------------------------------------------------------------------
-    | Save User + Admin
-    |--------------------------------------------------------------------------
-    */
-
         DB::transaction(function () use (
             $adminId,
             $email,
             $plainPassword,
-            $request
+            $name,
+            $validated
         ) {
-
-            // Create login account
-
             $user = User::create([
+                'first_name' => $validated['first_name'],
+                'middle_name' => $validated['middle_name'] ?? null,
+                'last_name' => $validated['last_name'],
+                'name' => $name,
 
-                'name' => 'New Administrator',
+                'contact_number' =>
+                    $validated['contact_number'] ?? null,
+
+                'gender' =>
+                    $validated['gender'] ?? null,
+
+                'birth_date' =>
+                    $validated['birth_date'] ?? null,
+
+                'address' =>
+                    $validated['address'] ?? null,
 
                 'email' => $email,
-
                 'password' => Hash::make($plainPassword),
-
                 'role' => 'admin',
-
                 'force_password_change' => true,
-
+                'status' => 'Active',
             ]);
 
-            // Create admin profile
-
             Admin::create([
-
                 'user_id' => $user->id,
-
                 'admin_id' => $adminId,
-
-                'name' => 'New Administrator',
-
-                'category' => $request->category,
-
+                'name' => $name,
+                'category' => $validated['category'],
+                'department' => null,
                 'email' => $email,
-
                 'password' => Hash::make($plainPassword),
-
                 'force_password_change' => true,
-
             ]);
         });
 
         return redirect()
             ->route('users.admin')
             ->with([
-
                 'success' => true,
-
                 'admin_id' => $adminId,
+                'email' => $email,
+                'password' => $plainPassword,
+            ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Department Head Form
+    |--------------------------------------------------------------------------
+    */
+
+    public function departmentHeadForm()
+    {
+        return view('admin.users.create-department-head');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Department Head Setup
+    |--------------------------------------------------------------------------
+    */
+
+    public function departmentHeadSetup(Request $request)
+    {
+        $validated = $request->validate([
+            'category' => 'required|in:Department Heads',
+
+            'department' =>
+                'required|in:Elementary,JHS,SHS,College,Admin,Laborers',
+
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'contact_number' => 'nullable|string|max:255',
+            'gender' => 'nullable|string|max:50',
+            'birth_date' => 'nullable|date',
+            'address' => 'nullable|string',
+        ]);
+
+        $name = trim(
+            $validated['first_name'] . ' ' .
+            (!empty($validated['middle_name'])
+                ? $validated['middle_name'] . ' '
+                : '') .
+            $validated['last_name']
+        );
+
+        $year = now()->year;
+
+        $lastAdmin = Admin::latest('id')->first();
+
+        $nextNumber = $lastAdmin
+            ? $lastAdmin->id + 1
+            : 1;
+
+        $adminId =
+            'ADM' . $year . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+
+        $email = strtolower($adminId) . '@pap-pay.local';
+
+        $plainPassword = Str::password(10);
+
+        DB::transaction(function () use (
+            $adminId,
+            $email,
+            $plainPassword,
+            $name,
+            $validated
+        ) {
+            /*
+             * Create the user account.
+             * The department is stored here.
+             */
+            $user = User::create([
+                'first_name' => $validated['first_name'],
+                'middle_name' => $validated['middle_name'] ?? null,
+                'last_name' => $validated['last_name'],
+                'name' => $name,
+
+                'department' => $validated['department'],
+
+                'contact_number' =>
+                    $validated['contact_number'] ?? null,
+
+                'gender' =>
+                    $validated['gender'] ?? null,
+
+                'birth_date' =>
+                    $validated['birth_date'] ?? null,
+
+                'address' =>
+                    $validated['address'] ?? null,
 
                 'email' => $email,
-
-                'password' => $plainPassword,
-
+                'password' => Hash::make($plainPassword),
+                'role' => 'admin',
+                'force_password_change' => true,
+                'status' => 'Active',
             ]);
+
+            /*
+             * Create the administrator record.
+             *
+             * IMPORTANT:
+             * The selected department is also stored here.
+             */
+            $admin = new Admin();
+
+            $admin->user_id = $user->id;
+            $admin->admin_id = $adminId;
+            $admin->name = $name;
+            $admin->category = 'Department Heads';
+            $admin->department = $validated['department'];
+            $admin->email = $email;
+            $admin->password = Hash::make($plainPassword);
+            $admin->force_password_change = true;
+
+            $admin->save();
+        });
+
+        return redirect()
+            ->route('users.department-head')
+            ->with([
+                'success' => true,
+                'admin_id' => $adminId,
+                'department' => $validated['department'],
+                'email' => $email,
+                'password' => $plainPassword,
+            ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Existing Admin Setup
+    |--------------------------------------------------------------------------
+    */
+
+    public function adminSetupLegacy(Request $request)
+    {
+        return $this->adminSetup($request);
     }
 }

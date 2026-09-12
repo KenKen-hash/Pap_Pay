@@ -58,6 +58,12 @@ class User extends Authenticatable
         'face_embedding',
         'face_registered_at',
 
+
+        'sss_number',
+        'philhealth_number',
+        'pagibig_number',
+        'tin',
+
         'username',
         'force_password_change',
         'role',
@@ -140,18 +146,29 @@ class User extends Authenticatable
     }
 
     public function partTimeSubjects(): HasMany
-{
-    return $this->hasMany(
-        PartTimeSubject::class,
-        'user_id'
-    );
-}
+    {
+        return $this->hasMany(
+            PartTimeSubject::class,
+            'user_id'
+        );
+    }
 
-public function partTimeAttendances(): HasMany
-{
-    return $this->hasMany(
-        PartTimeAttendance::class,
-        'user_id'
-    );
-}
+    public function partTimeAttendances(): HasMany
+    {
+        return $this->hasMany(
+            PartTimeAttendance::class,
+            'user_id'
+        );
+    }
+
+
+    public function additionalEarnings(): HasMany
+    {
+        return $this->hasMany(AdditionalEarning::class, 'user_id');
+    }
+
+    public function teachingLoads(): HasMany
+    {
+        return $this->hasMany(TeachingLoad::class, 'user_id');
+    }
 }

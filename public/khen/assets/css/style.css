@@ -2123,3 +2123,526 @@ html[data-theme="dark"] {
         transition: none !important;
     }
 }
+
+
+/* =========================================================
+   PAP PAY ADMIN GLOBAL SEARCH
+   ========================================================= */
+
+.admin-search-form {
+    position: relative;
+    min-width: 0;
+}
+
+.admin-search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+}
+
+.admin-search-input {
+    width: 100%;
+    height: 42px;
+    padding: 0 78px 0 42px;
+    border: 1px solid #d9e1f0;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #172554;
+    font-size: 0.9rem;
+    font-weight: 500;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.admin-search-input::placeholder {
+    color: #8b96aa;
+}
+
+.admin-search-input:focus {
+    background: #ffffff;
+    border-color: #3157d5;
+    box-shadow: 0 0 0 3px rgba(49, 87, 213, 0.10);
+}
+
+.admin-search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    color: #64748b;
+    font-size: 1rem;
+    pointer-events: none;
+}
+
+.admin-search-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #64748b;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.admin-search-clear.show {
+    display: flex;
+}
+
+.admin-search-clear:hover {
+    background: #eef2ff;
+    color: #3157d5;
+}
+
+.admin-search-results {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    max-height: 420px;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14);
+    padding: 7px;
+    z-index: 1050;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px);
+    pointer-events: none;
+
+    transition:
+        opacity 0.15s ease,
+        transform 0.15s ease,
+        visibility 0.15s ease;
+}
+
+.admin-search-results.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.admin-search-result {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #172554;
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.admin-search-result:hover {
+    background: #f4f7ff;
+    color: #172554;
+    text-decoration: none;
+}
+
+.admin-search-result-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef2ff;
+    color: #3157d5;
+    font-size: 0.95rem;
+}
+
+.admin-search-result-content {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.admin-search-result-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.admin-search-result-description {
+    font-size: 0.75rem;
+    color: #64748b;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-search-result-arrow {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    transition:
+        color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.admin-search-result:hover .admin-search-result-arrow {
+    color: #3157d5;
+    transform: translateX(2px);
+}
+
+.admin-search-no-results {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 13px;
+    color: #64748b;
+}
+
+.admin-search-no-results > i {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+}
+
+.admin-search-no-results > div {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.admin-search-no-results strong {
+    color: #334155;
+    font-size: 0.84rem;
+}
+
+.admin-search-no-results span {
+    font-size: 0.74rem;
+    color: #94a3b8;
+}
+
+/* Dark mode */
+
+[data-theme="dark"] .admin-search-input,
+body.dark-mode .admin-search-input {
+    background: #111827;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+[data-theme="dark"] .admin-search-input:focus,
+body.dark-mode .admin-search-input:focus {
+    background: #0f172a;
+    border-color: #4f6fe8;
+}
+
+[data-theme="dark"] .admin-search-results,
+body.dark-mode .admin-search-results {
+    background: #111827;
+    border-color: #334155;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] .admin-search-result,
+body.dark-mode .admin-search-result {
+    color: #f8fafc;
+}
+
+[data-theme="dark"] .admin-search-result:hover,
+body.dark-mode .admin-search-result:hover {
+    background: #1e293b;
+}
+
+[data-theme="dark"] .admin-search-result-description,
+body.dark-mode .admin-search-result-description {
+    color: #94a3b8;
+}
+
+[data-theme="dark"] .admin-search-result-icon,
+body.dark-mode .admin-search-result-icon {
+    background: rgba(79, 111, 232, 0.14);
+    color: #8ea4ff;
+}
+
+[data-theme="dark"] .admin-search-result-arrow,
+body.dark-mode .admin-search-result-arrow {
+    color: #64748b;
+}
+
+[data-theme="dark"] .admin-search-no-results strong,
+body.dark-mode .admin-search-no-results strong {
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .admin-search-no-results > i,
+body.dark-mode .admin-search-no-results > i {
+    background: #1e293b;
+    color: #64748b;
+}
+
+/* Mobile */
+
+@media (max-width: 767.98px) {
+
+    .admin-search-wrapper {
+        max-width: none;
+    }
+
+    .admin-search-input {
+        height: 40px;
+        font-size: 0.85rem;
+    }
+
+    .admin-search-results {
+        max-height: 55vh;
+    }
+
+    .admin-search-result-description {
+        max-width: 180px;
+    }
+}
+
+/* ==========================================================
+   PAP PAY SIDEBAR NOTIFICATION / ALERT BADGE
+   Global
+========================================================== */
+
+.nav-link {
+    position: relative;
+}
+
+
+/* Notification wrapper */
+
+.sidebar-nav .nav-link.has-notification {
+    padding-right: 42px;
+}
+
+
+/* Notification badge */
+
+.sidebar-nav .nav-link .sidebar-notification-badge {
+
+    position: absolute;
+
+    top: 50%;
+
+    right: 12px;
+
+    transform: translateY(-50%);
+
+    min-width: 20px;
+    height: 20px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 6px;
+
+    background: #dc3545;
+
+    color: #ffffff;
+
+    border-radius: 999px;
+
+    font-size: 0.68rem;
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 2px 7px rgba(220, 53, 69, 0.28);
+
+    z-index: 5;
+}
+
+
+/* Small red alert dot */
+
+.sidebar-nav .nav-link .sidebar-notification-dot {
+
+    position: absolute;
+
+    top: 50%;
+
+    right: 17px;
+
+    width: 9px;
+    height: 9px;
+
+    transform: translateY(-50%);
+
+    background: #dc3545;
+
+    border: 2px solid #ffffff;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 2px 6px rgba(220, 53, 69, 0.35);
+
+    z-index: 5;
+
+    animation:
+        sidebarNotificationPulse 1.8s ease-in-out infinite;
+}
+
+
+/* Notification pulse */
+
+@keyframes sidebarNotificationPulse {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 0 0 rgba(220, 53, 69, 0.35);
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 5px rgba(220, 53, 69, 0);
+    }
+}
+
+
+/* ==========================================================
+   SIDEBAR NOTIFICATION COLORS
+========================================================== */
+
+.sidebar-nav .nav-link .sidebar-notification-badge.success {
+    background: #198754;
+}
+
+.sidebar-nav .nav-link .sidebar-notification-badge.warning {
+    background: #f59e0b;
+}
+
+.sidebar-nav .nav-link .sidebar-notification-badge.info {
+    background: #0d6efd;
+}
+
+.sidebar-nav .nav-link .sidebar-notification-badge.danger {
+    background: #dc3545;
+}
+
+
+/* ==========================================================
+   SIDEBAR COLLAPSED STATE
+========================================================== */
+
+.admin-sidebar.collapsed .nav-link .sidebar-notification-badge {
+
+    top: 8px;
+
+    right: 5px;
+
+    transform: none;
+
+    min-width: 17px;
+    height: 17px;
+
+    padding: 0 4px;
+
+    font-size: 0.58rem;
+}
+
+
+/* Collapsed dot */
+
+.admin-sidebar.collapsed .nav-link .sidebar-notification-dot {
+
+    top: 7px;
+
+    right: 5px;
+
+    transform: none;
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 767.98px) {
+
+    .sidebar-nav .nav-link.has-notification {
+        padding-right: 42px;
+    }
+
+    .sidebar-nav .nav-link .sidebar-notification-badge {
+
+        right: 13px;
+
+        min-width: 20px;
+        height: 20px;
+
+        font-size: 0.67rem;
+    }
+
+    .sidebar-nav .nav-link .sidebar-notification-dot {
+
+        right: 17px;
+    }
+}
+
+
+/* ==========================================================
+   DARK MODE
+========================================================== */
+
+[data-theme="dark"] .sidebar-nav .nav-link .sidebar-notification-dot,
+body.dark-mode .sidebar-nav .nav-link .sidebar-notification-dot {
+
+    border-color: #111a2b;
+}
+
+
+[data-theme="dark"] .sidebar-nav .nav-link .sidebar-notification-badge,
+body.dark-mode .sidebar-nav .nav-link .sidebar-notification-badge {
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+
+/* ==========================================================
+   REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .sidebar-nav .nav-link .sidebar-notification-dot {
+
+        animation: none;
+    }
+}

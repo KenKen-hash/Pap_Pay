@@ -1,36 +1,23 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Elementary Salary Configuration | PAP PAY</title>
 
-    <meta
-        name="csrf-token"
-        content="{{ csrf_token() }}"
-    >
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <style>
 
@@ -51,16 +38,12 @@
             inset: 0;
 
             background:
-                radial-gradient(
-                    circle at top left,
+                radial-gradient(circle at top left,
                     #6ee7b755,
-                    transparent 35%
-                ),
-                radial-gradient(
-                    circle at bottom right,
+                    transparent 35%),
+                radial-gradient(circle at bottom right,
                     #34d39955,
-                    transparent 35%
-                ),
+                    transparent 35%),
                 #e9faf4;
 
             z-index: -1;
@@ -244,6 +227,43 @@
             border-bottom: 1px solid #d1fae5;
         }
 
+        .auto-calculated {
+            background: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        .additional-entry,
+        .teaching-entry {
+            background: #f8fffb;
+            border: 1px solid #d1fae5;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .additional-entry:last-child,
+        .teaching-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .add-entry-btn {
+            border: 1px dashed #10b981;
+            color: #059669;
+            background: #ecfdf5;
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-weight: 600;
+        }
+
+        .add-entry-btn:hover {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .remove-entry-btn {
+            border-radius: 10px;
+        }
+
         @media (max-width: 991px) {
 
             .wrapper {
@@ -292,525 +312,151 @@
                 width: 100%;
             }
 
+            .modal-dialog {
+                margin: 8px;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            .card-body {
+                padding: 15px;
+            }
+
+            .add-entry-btn {
+                width: 100%;
+            }
+
+            .teaching-entry,
+            .additional-entry {
+                padding: 15px;
+            }
+
         }
 
     </style>
 
 </head>
 
-
 <body>
 
-<div class="background"></div>
+    <div class="background"></div>
 
+    <div class="wrapper">
 
-<div class="wrapper">
+        <div class="glass">
 
-    <div class="glass">
+            <!-- ========================================================= -->
+            <!-- PAGE HEADER -->
+            <!-- ========================================================= -->
 
+            <div class="d-flex justify-content-between align-items-start mb-4 header-actions">
 
-        <!-- ========================================================= -->
-        <!-- PAGE HEADER -->
-        <!-- ========================================================= -->
+                <div>
 
-        <div class="d-flex justify-content-between align-items-start mb-4 header-actions">
+                    <h1 class="page-title">
 
-            <div>
+                        <i class="bi bi-bank2 me-2"></i>
 
-                <h1 class="page-title">
+                        Elementary Salary Configuration
 
-                    <i class="bi bi-bank2 me-2"></i>
+                    </h1>
 
-                    Elementary Salary Configuration
+                    <p class="page-subtitle">
 
-                </h1>
+                        Configure the default payroll settings for all Elementary employees.
+                        Individual employees can also have their own salary configuration.
 
-                <p class="page-subtitle">
+                    </p>
 
-                    Configure the default payroll settings for all Elementary employees.
-                    Individual employees can also have their own salary configuration.
+                </div>
 
-                </p>
+                <a href="{{ route('payroll') }}" class="btn btn-outline-success px-4 py-2">
+
+                    <i class="bi bi-arrow-left-circle me-2"></i>
+
+                    Back to Payroll
+
+                </a>
 
             </div>
 
 
-            <a
-                href="{{ route('payroll') }}"
-                class="btn btn-outline-success px-4 py-2"
-            >
+            <!-- ========================================================= -->
+            <!-- DEFAULT CONFIGURATION -->
+            <!-- ========================================================= -->
 
-                <i class="bi bi-arrow-left-circle me-2"></i>
+            <div class="section">
 
-                Back to Payroll
+                <div class="section-title">
 
-            </a>
+                    <i class="bi bi-sliders"></i>
 
-        </div>
-
-
-        <!-- ========================================================= -->
-        <!-- DEFAULT CONFIGURATION -->
-        <!-- ========================================================= -->
-
-        <div class="section">
-
-            <div class="section-title">
-
-                <i class="bi bi-sliders"></i>
-
-                Default Salary Configuration
-
-            </div>
-
-
-            <form id="departmentConfigForm">
-
-                <input
-                    type="hidden"
-                    id="department"
-                    value="{{ $department }}"
-                >
-
-
-                <!-- BASIC SALARY / PAYROLL PERIOD -->
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-4">
-
-                        <label class="form-label">
-                            Default Basic Salary
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                ₱
-                            </span>
-
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                id="default_basic_salary"
-                                class="form-control"
-                                placeholder="22000"
-                                value="{{ old('default_basic_salary', optional($departmentConfig)->default_basic_salary ?? 0) }}"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="col-md-6 mb-4">
-
-                        <label class="form-label">
-                            Payroll Period
-                        </label>
-
-                        <select
-                            id="payroll_period"
-                            class="form-select"
-                        >
-
-                            <option
-                                value="Every 15 Days"
-                                {{ optional($departmentConfig)->payroll_period == 'Every 15 Days' ? 'selected' : '' }}
-                            >
-                                Every 15 Days
-                            </option>
-
-                            <option
-                                value="Monthly"
-                                {{ optional($departmentConfig)->payroll_period == 'Monthly' ? 'selected' : '' }}
-                            >
-                                Monthly
-                            </option>
-
-                            <option
-                                value="Weekly"
-                                {{ optional($departmentConfig)->payroll_period == 'Weekly' ? 'selected' : '' }}
-                            >
-                                Weekly
-                            </option>
-
-                        </select>
-
-                        <div class="small-note mt-2">
-
-                            Your current payroll calculation is designed around
-                            a 15-day cycle.
-
-                        </div>
-
-                    </div>
+                    Default Salary Configuration
 
                 </div>
 
+                <form id="departmentConfigForm">
 
-                <!-- DAILY / OVERTIME -->
+                    <input type="hidden" id="department" value="{{ $department }}">
 
-                <div class="row">
 
-                    <div class="col-md-6 mb-4">
-
-                        <label class="form-label">
-                            Daily Rate
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                ₱
-                            </span>
-
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                id="default_daily_rate"
-                                class="form-control"
-                                placeholder="540"
-                                value="{{ old('daily_rate', optional($departmentConfig)->daily_rate ?? 0) }}"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="col-md-6 mb-4">
-
-                        <label class="form-label">
-
-                            Overtime Rate
-
-                            <span class="text-muted">
-                                (Per Hour)
-                            </span>
-
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                ₱
-                            </span>
-
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                id="default_overtime_rate"
-                                class="form-control"
-                                placeholder="120"
-                                value="{{ old('overtime_rate', optional($departmentConfig)->overtime_rate ?? 0) }}"
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- LATE / UNDERTIME -->
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-4">
-
-                        <label class="form-label">
-
-                            Late Deduction Rate
-
-                            <span class="text-muted">
-                                (Per Minute)
-                            </span>
-
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                ₱
-                            </span>
-
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                id="late_deduction_rate"
-                                class="form-control"
-                                placeholder="2"
-                                value="{{ old('late_deduction_rate', optional($departmentConfig)->late_deduction_rate ?? 0) }}"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="col-md-6 mb-4">
-
-                        <label class="form-label">
-
-                            Undertime Deduction Rate
-
-                            <span class="text-muted">
-                                (Per Minute)
-                            </span>
-
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                ₱
-                            </span>
-
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                id="undertime_deduction_rate"
-                                class="form-control"
-                                placeholder="2"
-                                value="{{ old('undertime_deduction_rate', optional($departmentConfig)->undertime_deduction_rate ?? 0) }}"
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <hr class="my-4">
-
-
-                <!-- BENEFITS -->
-
-                <h5 class="mb-4">
-
-                    <i class="bi bi-shield-check text-success me-2"></i>
-
-                    Monthly Benefits / Contributions
-
-                </h5>
-
-
-                <div class="row">
-
-                    <div class="col-lg-3 col-md-6 mb-3">
-
-                        <label class="form-label">
-                            SSS
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                ₱
-                            </span>
-
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                id="sss"
-                                class="form-control"
-                                value="{{ old('sss', optional($departmentConfig)->sss ?? 0) }}"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="col-lg-3 col-md-6 mb-3">
-
-                        <label class="form-label">
-                            PhilHealth
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                ₱
-                            </span>
-
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                id="philhealth"
-                                class="form-control"
-                                value="{{ old('philhealth', optional($departmentConfig)->philhealth ?? 0) }}"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="col-lg-3 col-md-6 mb-3">
-
-                        <label class="form-label">
-                            Pag-IBIG
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                ₱
-                            </span>
-
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                id="pagibig"
-                                class="form-control"
-                                value="{{ old('pagibig', optional($departmentConfig)->pagibig ?? 0) }}"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="col-lg-3 col-md-6 mb-3">
-
-                        <label class="form-label">
-                            HMO
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                ₱
-                            </span>
-
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                id="hmo"
-                                class="form-control"
-                                value="{{ old('hmo', optional($departmentConfig)->hmo ?? 0) }}"
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ===================================================== -->
-                <!-- FIXED: DEPARTMENT DEFAULT HONORARIUM -->
-                <!-- ===================================================== -->
-
-                <div class="row mt-3">
-
-                    <div class="col-md-6">
-
-                        <label class="form-label">
-
-                            Honorarium / Stipend
-
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                ₱
-                            </span>
-
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                id="default_honorarium"
-                                class="form-control"
-                                value="{{ old('honorarium', optional($departmentConfig)->honorarium ?? 0) }}"
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <hr class="my-4">
-
-
-                <!-- ===================================================== -->
-                <!-- TEACHING LOAD CONFIGURATION -->
-                <!-- ===================================================== -->
-
-                <div class="teaching-box">
-
-                    <div class="d-flex align-items-center mb-3">
-
-                        <i class="bi bi-book-half fs-3 text-success me-3"></i>
-
-                        <div>
-
-                            <h5 class="mb-1">
-                                Teaching Load Configuration
-                            </h5>
-
-                            <div class="small-note">
-                                Set the number of units covered by the teaching-load price.
-                            </div>
-
-                        </div>
-
-                    </div>
-
+                    <!-- PAYROLL PERIOD -->
 
                     <div class="row">
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-4">
 
                             <label class="form-label">
-                                Teaching Load Unit Required
+                                Payroll Period
                             </label>
 
-                            <div class="input-group">
+                            <select id="payroll_period" class="form-select">
 
-                                <span class="input-group-text">
-                                    <i class="bi bi-123"></i>
-                                </span>
+                                <option value="Every 15 Days"
+                                    {{ optional($departmentConfig)->payroll_period == 'Every 15 Days' ? 'selected' : '' }}>
+                                    Every 15 Days
+                                </option>
 
-                                <input
-                                    type="number"
-                                    min="0"
-                                    step="1"
-                                    id="teaching_load_unit_required"
-                                    class="form-control"
-                                    placeholder="3"
-                                    value="{{ old('teaching_load_unit_required', optional($departmentConfig)->teaching_load_unit_required ?? 0) }}"
-                                >
+                                <option value="Monthly"
+                                    {{ optional($departmentConfig)->payroll_period == 'Monthly' ? 'selected' : '' }}>
+                                    Monthly
+                                </option>
 
-                            </div>
+                                <option value="Weekly"
+                                    {{ optional($departmentConfig)->payroll_period == 'Weekly' ? 'selected' : '' }}>
+                                    Weekly
+                                </option>
+
+                            </select>
 
                             <div class="small-note mt-2">
-                                Example: 3 units
+
+                                Your current payroll calculation is designed around
+                                a 15-day cycle.
+
                             </div>
 
                         </div>
 
+                    </div>
 
-                        <div class="col-md-6 mb-3">
+
+                    <!-- LATE / UNDERTIME -->
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-4">
 
                             <label class="form-label">
-                                Teaching Load Price
+
+                                Late Deduction Rate
+
+                                <span class="text-muted">
+                                    (Per Minute)
+                                </span>
+
                             </label>
 
                             <div class="input-group">
@@ -819,20 +465,43 @@
                                     ₱
                                 </span>
 
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    id="teaching_load_price"
+                                <input type="text"
+                                    inputmode="decimal"
+                                    id="late_deduction_rate"
                                     class="form-control"
-                                    placeholder="1000"
-                                    value="{{ old('teaching_load_price', optional($departmentConfig)->teaching_load_price ?? 0) }}"
-                                >
+                                    placeholder="2"
+                                    value="{{ old('late_deduction_rate', optional($departmentConfig)->late_deduction_rate ?? 0) }}">
 
                             </div>
 
-                            <div class="small-note mt-2">
-                                Price for the required number of units.
+                        </div>
+
+
+                        <div class="col-md-6 mb-4">
+
+                            <label class="form-label">
+
+                                Undertime Deduction Rate
+
+                                <span class="text-muted">
+                                    (Per Minute)
+                                </span>
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    ₱
+                                </span>
+
+                                <input type="text"
+                                    inputmode="decimal"
+                                    id="undertime_deduction_rate"
+                                    class="form-control"
+                                    placeholder="2"
+                                    value="{{ old('undertime_deduction_rate', optional($departmentConfig)->undertime_deduction_rate ?? 0) }}">
+
                             </div>
 
                         </div>
@@ -840,483 +509,1177 @@
                     </div>
 
 
-                    <div class="alert alert-success mb-0 mt-2">
+                    <hr class="my-4">
 
-                        <i class="bi bi-info-circle me-2"></i>
 
-                        <strong>Example:</strong>
+                    <!-- BENEFITS -->
 
-                        If required units = 3 and price = ₱1,000:
+                    <h5 class="mb-4">
 
-                        <br>
+                        <i class="bi bi-shield-check text-success me-2"></i>
 
-                        6 additional units =
+                        Monthly Benefits / Contributions
 
-                        <strong>
-                            (6 ÷ 3) × ₱1,000 = ₱2,000
-                        </strong>
+                    </h5>
 
-                        full-period amount.
 
-                        <br>
+                    <div class="row">
 
-                        For a 15-day payroll:
+                        <div class="col-lg-3 col-md-6 mb-3">
 
-                        <strong>
-                            ₱2,000 ÷ 2 = ₱1,000
-                        </strong>
+                            <label class="form-label">
+                                SSS
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    ₱
+                                </span>
+
+                                <input type="text"
+                                    inputmode="decimal"
+                                    id="sss"
+                                    class="form-control"
+                                    value="{{ old('sss', optional($departmentConfig)->sss ?? 0) }}">
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+
+                            <label class="form-label">
+                                PhilHealth
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    ₱
+                                </span>
+
+                                <input type="text"
+                                    inputmode="decimal"
+                                    id="philhealth"
+                                    class="form-control"
+                                    value="{{ old('philhealth', optional($departmentConfig)->philhealth ?? 0) }}">
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Pag-IBIG
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    ₱
+                                </span>
+
+                                <input type="text"
+                                    inputmode="decimal"
+                                    id="pagibig"
+                                    class="form-control"
+                                    value="{{ old('pagibig', optional($departmentConfig)->pagibig ?? 0) }}">
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 mb-3">
+
+                            <label class="form-label">
+                                HMO
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    ₱
+                                </span>
+
+                                <input type="text"
+                                    inputmode="decimal"
+                                    id="hmo"
+                                    class="form-control"
+                                    value="{{ old('hmo', optional($departmentConfig)->hmo ?? 0) }}">
+
+                            </div>
+
+                        </div>
 
                     </div>
+
+
+                    <!-- SAVE -->
+
+                    <div class="text-end mt-4">
+
+                        <button type="button"
+                            id="saveDepartmentConfig"
+                            class="save-btn">
+
+                            <i class="bi bi-check-circle me-2"></i>
+
+                            Save Default Configuration
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- ========================================================= -->
+            <!-- EMPLOYEE LIST -->
+            <!-- ========================================================= -->
+
+            <div class="section">
+
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+
+                    <h3 class="section-title mb-0">
+
+                        <i class="bi bi-people-fill"></i>
+
+                        Elementary Employees
+
+                    </h3>
+
+
+                    <input type="text"
+                        id="employeeSearch"
+                        class="form-control"
+                        placeholder="Search employee..."
+                        style="max-width:300px;">
 
                 </div>
 
 
-                <!-- SAVE -->
+                <div class="table-responsive">
 
-                <div class="text-end mt-4">
+                    <table class="table table-hover align-middle">
 
-                    <button
-                        type="button"
-                        id="saveDepartmentConfig"
-                        class="save-btn"
-                    >
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Employee
+                                </th>
+
+                                <th>
+                                    Employment Type
+                                </th>
+
+                                <th>
+                                    Basic Salary
+                                </th>
+
+                                <th>
+                                    Additional Units
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="employeeTableBody">
+
+                            @forelse ($employees as $employee)
+
+                                @php
+
+                                    $salaryConfig = $employee->salaryConfig;
+
+                                    $defaultBasic =
+                                        optional($departmentConfig)->default_basic_salary ?? 0;
+
+                                    $basicSalary =
+                                        $salaryConfig?->basic_salary ?? $defaultBasic;
+
+                                    $additionalUnits =
+                                        $salaryConfig?->teaching_load_units_taken ?? 0;
+
+
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Existing Additional Earnings
+                                    |--------------------------------------------------------------------------
+                                    */
+
+                                    $existingAdditionalEarnings =
+                                        ($additionalEarnings ?? collect())->get(
+                                            $employee->id,
+                                            collect()
+                                        );
+
+
+                                    $additionalEarningsJson =
+                                        $existingAdditionalEarnings
+                                            ->map(function ($earning) {
+
+                                                return [
+                                                    'id' => $earning->id ?? null,
+                                                    'amount' => $earning->amount,
+                                                    'remarks' => $earning->remarks,
+                                                ];
+
+                                            })
+                                            ->values()
+                                            ->all();
+
+
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Existing Additional Teaching Loads
+                                    |--------------------------------------------------------------------------
+                                    */
+
+                                    $existingTeachingLoads =
+                                        ($teachingLoads ?? collect())->get(
+                                            $employee->id,
+                                            collect()
+                                        );
+
+
+                                    $teachingLoadsJson =
+                                        $existingTeachingLoads
+                                            ->map(function ($teachingLoad) {
+
+                                                return [
+                                                    'id' => $teachingLoad->id ?? null,
+                                                    'department' => $teachingLoad->department,
+                                                    'subject' => $teachingLoad->subject,
+                                                    'units' => $teachingLoad->units ?? 0,
+                                                    'rate' => $teachingLoad->rate,
+                                                    'remarks' => $teachingLoad->remarks,
+                                                ];
+
+                                            })
+                                            ->values()
+                                            ->all();
+
+                                @endphp
+
+
+                                <tr class="employee-row">
+
+
+                                    <!-- EMPLOYEE -->
+
+                                    <td>
+
+                                        <div class="d-flex align-items-center">
+
+                                            <img class="employee-photo"
+                                                src="{{ $employee->photo
+                                                    ? asset('storage/' . $employee->photo)
+                                                    : asset('khen/assets/images/avatar/avatar.jpg') }}"
+                                                alt="Employee">
+
+                                            <div>
+
+                                                <strong>
+
+                                                    {{ $employee->first_name }}
+
+                                                    {{ $employee->last_name }}
+
+                                                </strong>
+
+                                                <br>
+
+                                                <small class="text-muted">
+
+                                                    {{ $employee->employee_id }}
+
+                                                </small>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- EMPLOYMENT -->
+
+                                    <td>
+
+                                        @if ($employee->employment_type === 'Regular')
+
+                                            <span class="badge badge-regular">
+                                                Regular
+                                            </span>
+
+                                        @elseif ($employee->employment_type === 'Contractual')
+
+                                            <span class="badge badge-contractual">
+                                                Contractual
+                                            </span>
+
+                                        @else
+
+                                            <span class="badge badge-parttime">
+                                                Part-Time
+                                            </span>
+
+                                        @endif
+
+                                    </td>
+
+
+                                    <!-- BASIC SALARY -->
+
+                                    <td>
+
+                                        ₱{{ number_format($basicSalary, 2) }}
+
+                                    </td>
+
+
+                                    <!-- TEACHING UNITS -->
+
+                                    <td>
+
+                                        @if ($additionalUnits > 0)
+
+                                            <span class="badge bg-success">
+
+                                                {{ $additionalUnits }}
+
+                                                {{ $additionalUnits == 1 ? 'Unit' : 'Units' }}
+
+                                            </span>
+
+                                        @else
+
+                                            <span class="text-muted">
+                                                0 Units
+                                            </span>
+
+                                        @endif
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        @if ($salaryConfig)
+
+                                            <span class="badge bg-success">
+                                                Individual Configured
+                                            </span>
+
+                                        @else
+
+                                            <span class="badge bg-secondary">
+                                                Using Department Default
+                                            </span>
+
+                                        @endif
+
+                                    </td>
+
+
+                                    <!-- ACTION -->
+
+                                    <td>
+
+                                        <button type="button"
+                                            class="btn configure-btn configureEmployee"
+
+                                            data-id="{{ $employee->id }}"
+
+                                            data-name="{{ $employee->first_name }} {{ $employee->last_name }}"
+
+                                            data-employment="{{ $employee->employment_type }}"
+
+                                            data-photo="{{ $employee->photo
+                                                ? asset('storage/' . $employee->photo)
+                                                : asset('khen/assets/images/avatar/avatar.jpg') }}"
+
+                                            data-salary="{{ $salaryConfig?->basic_salary ?? $defaultBasic }}"
+
+                                            data-daily="{{ $salaryConfig?->daily_rate ?? (optional($departmentConfig)->daily_rate ?? 0) }}"
+
+                                            data-overtime="{{ $salaryConfig?->overtime_rate ?? (optional($departmentConfig)->overtime_rate ?? 0) }}"
+
+                                            data-late="{{ $salaryConfig?->late_deduction_rate ?? (optional($departmentConfig)->late_deduction_rate ?? 0) }}"
+
+                                            data-undertime="{{ $salaryConfig?->undertime_deduction_rate ?? (optional($departmentConfig)->undertime_deduction_rate ?? 0) }}"
+
+                                            data-payroll="{{ $salaryConfig?->payroll_period ?? (optional($departmentConfig)->payroll_period ?? 'Every 15 Days') }}"
+
+                                            data-sss="{{ $salaryConfig?->sss ?? (optional($departmentConfig)->sss ?? 0) }}"
+
+                                            data-philhealth="{{ $salaryConfig?->philhealth ?? (optional($departmentConfig)->philhealth ?? 0) }}"
+
+                                            data-pagibig="{{ $salaryConfig?->pagibig ?? (optional($departmentConfig)->pagibig ?? 0) }}"
+
+                                            data-hmo="{{ $employee->employment_type === 'Regular'
+                                                ? ($salaryConfig?->hmo ?? (optional($departmentConfig)->hmo ?? 0))
+                                                : 0 }}"
+
+                                            data-honorarium="{{ $salaryConfig?->honorarium ?? (optional($departmentConfig)->honorarium ?? 0) }}"
+
+                                            data-teaching-units="{{ $salaryConfig?->teaching_load_units_taken ?? 0 }}"
+
+                                            data-additional-earnings='@json($additionalEarningsJson, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)'
+
+                                            data-teaching-loads='@json($teachingLoadsJson, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)'>
+
+                                            <i class="bi bi-pencil-square me-1"></i>
+
+                                            Configure
+
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+
+                            @empty
+
+                                <tr>
+
+                                    <td colspan="6"
+                                        class="text-center py-5 text-muted">
+
+                                        <i class="bi bi-people fs-1 d-block mb-2"></i>
+
+                                        No Elementary employees found.
+
+                                    </td>
+
+                                </tr>
+
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =============================================================== -->
+    <!-- EMPLOYEE SALARY CONFIGURATION MODAL -->
+    <!-- =============================================================== -->
+
+    <div class="modal fade"
+        id="employeeSalaryModal"
+        tabindex="-1"
+        aria-hidden="true">
+
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+
+            <div class="modal-content border-0 shadow-lg">
+
+
+                <!-- HEADER -->
+
+                <div class="modal-header text-white">
+
+                    <h4 class="modal-title">
+
+                        <i class="bi bi-person-badge me-2"></i>
+
+                        Employee Salary Configuration
+
+                    </h4>
+
+                    <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+
+                    <input type="hidden" id="employee_id">
+
+
+                    <!-- ================================================= -->
+                    <!-- EMPLOYEE INFORMATION -->
+                    <!-- ================================================= -->
+
+                    <div class="card border-0 shadow-sm mb-4">
+
+                        <div class="card-body">
+
+                            <div class="row align-items-center">
+
+                                <div class="col-md-2 text-center mb-3 mb-md-0">
+
+                                    <img id="modalPhoto"
+                                        src="{{ asset('khen/assets/images/avatar/avatar.jpg') }}"
+                                        class="rounded-circle"
+                                        style="
+                                            width:90px;
+                                            height:90px;
+                                            object-fit:cover;
+                                        ">
+
+                                </div>
+
+
+                                <div class="col-md-10">
+
+                                    <h3 id="modalName"
+                                        class="mb-2">
+                                    </h3>
+
+                                    <span class="badge bg-success"
+                                        id="modalEmployment">
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- BASIC SALARY & AUTOMATIC RATES -->
+                    <!-- ================================================= -->
+
+                    <div class="card shadow-sm mb-4">
+
+                        <div class="card-header">
+
+                            <strong>
+
+                                <i class="bi bi-wallet2 me-2"></i>
+
+                                Basic Salary & Rates
+
+                            </strong>
+
+                        </div>
+
+
+                        <div class="card-body">
+
+                            <div class="row">
+
+
+                                <!-- BASIC SALARY -->
+
+                                <div class="col-md-4 mb-3">
+
+                                    <label class="form-label">
+                                        Basic Salary
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+                                            ₱
+                                        </span>
+
+                                        <input type="number"
+                                            step="0.01"
+                                            min="0"
+                                            id="basic_salary"
+                                            class="form-control">
+
+                                    </div>
+
+                                    <div class="small-note mt-2">
+
+                                        Daily rate is automatically calculated
+                                        from Basic Salary ÷ 26.
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- DAILY RATE -->
+
+                                <div class="col-md-4 mb-3">
+
+                                    <label class="form-label">
+                                        Daily Rate
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+                                            ₱
+                                        </span>
+
+                                        <input type="text"
+                                            id="daily_rate"
+                                            class="form-control auto-calculated"
+                                            readonly>
+
+                                    </div>
+
+                                    <div class="small-note mt-2">
+
+                                        Basic Salary ÷ 26
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- OVERTIME -->
+
+                                <div class="col-md-4 mb-3">
+
+                                    <label class="form-label">
+
+                                        Overtime Rate
+
+                                        <span class="text-muted">
+                                            (Per Hour)
+                                        </span>
+
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+                                            ₱
+                                        </span>
+
+                                        <input type="text"
+                                            id="overtime_rate"
+                                            class="form-control auto-calculated"
+                                            readonly>
+
+                                    </div>
+
+                                    <div class="small-note mt-2">
+
+                                        Daily Rate ÷ 8
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- LATE -->
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+
+                                        Late Deduction
+
+                                        <span class="text-muted">
+                                            (Per Minute)
+                                        </span>
+
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+                                            ₱
+                                        </span>
+
+                                        <input type="number"
+                                            step="0.01"
+                                            min="0"
+                                            id="employee_late_deduction_rate"
+                                            class="form-control">
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- UNDERTIME -->
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+
+                                        Undertime Deduction
+
+                                        <span class="text-muted">
+                                            (Per Minute)
+                                        </span>
+
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+                                            ₱
+                                        </span>
+
+                                        <input type="number"
+                                            step="0.01"
+                                            min="0"
+                                            id="employee_undertime_deduction_rate"
+                                            class="form-control">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- PAYROLL / BENEFITS -->
+                    <!-- ================================================= -->
+
+                    <div class="card shadow-sm mb-4">
+
+                        <div class="card-header">
+
+                            <strong>
+
+                                <i class="bi bi-shield-check me-2"></i>
+
+                                Payroll & Benefits
+
+                            </strong>
+
+                        </div>
+
+
+                        <div class="card-body">
+
+                            <div class="row">
+
+
+                                <div class="col-md-4 mb-3">
+
+                                    <label class="form-label">
+                                        Payroll Period
+                                    </label>
+
+                                    <input id="employee_payroll_period"
+                                        class="form-control"
+                                        readonly>
+
+                                </div>
+
+
+                                <div class="col-md-2 mb-3">
+
+                                    <label class="form-label">
+                                        SSS
+                                    </label>
+
+                                    <input type="number"
+                                        step="0.01"
+                                        min="0"
+                                        id="employee_sss"
+                                        class="form-control">
+
+                                </div>
+
+
+                                <div class="col-md-2 mb-3">
+
+                                    <label class="form-label">
+                                        PhilHealth
+                                    </label>
+
+                                    <input type="number"
+                                        step="0.01"
+                                        min="0"
+                                        id="employee_philhealth"
+                                        class="form-control">
+
+                                </div>
+
+
+                                <div class="col-md-2 mb-3">
+
+                                    <label class="form-label">
+                                        Pag-IBIG
+                                    </label>
+
+                                    <input type="number"
+                                        step="0.01"
+                                        min="0"
+                                        id="employee_pagibig"
+                                        class="form-control">
+
+                                </div>
+
+
+                                <div class="col-md-2 mb-3">
+
+                                    <label class="form-label">
+                                        HMO
+                                    </label>
+
+                                    <input type="number"
+                                        step="0.01"
+                                        min="0"
+                                        id="employee_hmo"
+                                        class="form-control">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- ADDITIONAL EARNINGS -->
+                    <!-- ================================================= -->
+
+                    <div class="card shadow-sm mb-4">
+
+                        <div class="card-header">
+
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                                <strong>
+
+                                    <i class="bi bi-plus-circle me-2"></i>
+
+                                    Additional Earnings
+
+                                </strong>
+
+
+                                <button type="button"
+                                    class="btn add-entry-btn"
+                                    id="addAdditionalEarning">
+
+                                    <i class="bi bi-plus-circle me-1"></i>
+
+                                    Add Additional Earning
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="card-body">
+
+                            <div id="additionalEarningsContainer"></div>
+
+
+                            <div id="noAdditionalEarnings"
+                                class="text-muted text-center py-3">
+
+                                <i class="bi bi-info-circle me-1"></i>
+
+                                No additional earnings added.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- ADDITIONAL TEACHING LOAD -->
+                    <!-- ================================================= -->
+
+                    <div class="card shadow-sm mb-4">
+
+                        <div class="card-header">
+
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                                <strong>
+
+                                    <i class="bi bi-book-half me-2"></i>
+
+                                    Additional Teaching Load
+
+                                </strong>
+
+
+                                <button type="button"
+                                    class="btn add-entry-btn"
+                                    id="addTeachingLoad">
+
+                                    <i class="bi bi-plus-circle me-1"></i>
+
+                                    Add Teaching Load
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="card-body">
+
+                            <div id="teachingLoadContainer"></div>
+
+
+                            <div id="noTeachingLoad"
+                                class="text-muted text-center py-3">
+
+                                <i class="bi bi-info-circle me-1"></i>
+
+                                No additional teaching load added.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- FOOTER -->
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Cancel
+
+                    </button>
+
+
+                    <button type="button"
+                        class="btn btn-success"
+                        id="saveEmployeeSalary">
 
                         <i class="bi bi-check-circle me-2"></i>
 
-                        Save Default Configuration
+                        Save Configuration
 
                     </button>
 
                 </div>
 
-            </form>
-
-        </div>
-
-
-        <!-- ========================================================= -->
-        <!-- EMPLOYEE LIST -->
-        <!-- ========================================================= -->
-
-        <div class="section">
-
-            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-
-                <h3 class="section-title mb-0">
-
-                    <i class="bi bi-people-fill"></i>
-
-                    Elementary Employees
-
-                </h3>
-
-
-                <input
-                    type="text"
-                    id="employeeSearch"
-                    class="form-control"
-                    placeholder="Search employee..."
-                    style="max-width:300px;"
-                >
-
-            </div>
-
-
-            <div class="table-responsive">
-
-                <table class="table table-hover align-middle">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Employee
-                            </th>
-
-                            <th>
-                                Employment Type
-                            </th>
-
-                            <th>
-                                Basic Salary
-                            </th>
-
-                            <th>
-                                Additional Units
-                            </th>
-
-                            <th>
-                                Status
-                            </th>
-
-                            <th>
-                                Action
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody id="employeeTableBody">
-
-                        @forelse ($employees as $employee)
-
-                            @php
-
-                                $salaryConfig =
-                                    $employee->salaryConfig;
-
-                                $defaultBasic =
-                                    optional($departmentConfig)->default_basic_salary ?? 0;
-
-                                $basicSalary =
-                                    $salaryConfig?->basic_salary
-                                    ?? $defaultBasic;
-
-                                $additionalUnits =
-                                    $salaryConfig?->teaching_load_units_taken
-                                    ?? 0;
-
-                            @endphp
-
-
-                            <tr class="employee-row">
-
-
-                                <!-- EMPLOYEE -->
-
-                                <td>
-
-                                    <div class="d-flex align-items-center">
-
-                                        <img
-                                            class="employee-photo"
-                                            src="{{ $employee->photo
-                                                ? asset('storage/' . $employee->photo)
-                                                : asset('khen/assets/images/avatar/avatar.jpg') }}"
-                                            alt="Employee"
-                                        >
-
-                                        <div>
-
-                                            <strong>
-
-                                                {{ $employee->first_name }}
-
-                                                {{ $employee->last_name }}
-
-                                            </strong>
-
-                                            <br>
-
-                                            <small class="text-muted">
-
-                                                {{ $employee->employee_id }}
-
-                                            </small>
-
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-
-                                <!-- EMPLOYMENT -->
-
-                                <td>
-
-                                    @if ($employee->employment_type === 'Regular')
-
-                                        <span class="badge badge-regular">
-                                            Regular
-                                        </span>
-
-                                    @elseif ($employee->employment_type === 'Contractual')
-
-                                        <span class="badge badge-contractual">
-                                            Contractual
-                                        </span>
-
-                                    @else
-
-                                        <span class="badge badge-parttime">
-                                            Part-Time
-                                        </span>
-
-                                    @endif
-
-                                </td>
-
-
-                                <!-- BASIC SALARY -->
-
-                                <td>
-
-                                    ₱{{ number_format($basicSalary, 2) }}
-
-                                </td>
-
-
-                                <!-- TEACHING UNITS -->
-
-                                <td>
-
-                                    @if ($additionalUnits > 0)
-
-                                        <span class="badge bg-success">
-
-                                            {{ $additionalUnits }}
-
-                                            {{ $additionalUnits == 1 ? 'Unit' : 'Units' }}
-
-                                        </span>
-
-                                    @else
-
-                                        <span class="text-muted">
-                                            0 Units
-                                        </span>
-
-                                    @endif
-
-                                </td>
-
-
-                                <!-- STATUS -->
-
-                                <td>
-
-                                    @if ($salaryConfig)
-
-                                        <span class="badge bg-success">
-                                            Individual Configured
-                                        </span>
-
-                                    @else
-
-                                        <span class="badge bg-secondary">
-                                            Using Department Default
-                                        </span>
-
-                                    @endif
-
-                                </td>
-
-
-                                <!-- ACTION -->
-
-                                <td>
-
-                                    <button
-                                        type="button"
-                                        class="btn configure-btn configureEmployee"
-
-                                        data-id="{{ $employee->id }}"
-
-                                        data-name="{{ $employee->first_name }} {{ $employee->last_name }}"
-
-                                        data-employment="{{ $employee->employment_type }}"
-
-                                        data-photo="{{ $employee->photo
-                                            ? asset('storage/' . $employee->photo)
-                                            : asset('khen/assets/images/avatar/avatar.jpg') }}"
-
-                                        data-salary="{{ $salaryConfig?->basic_salary ?? $defaultBasic }}"
-
-                                        data-daily="{{ $salaryConfig?->daily_rate ?? optional($departmentConfig)->daily_rate ?? 0 }}"
-
-                                        data-overtime="{{ $salaryConfig?->overtime_rate ?? optional($departmentConfig)->overtime_rate ?? 0 }}"
-
-                                        data-late="{{ $salaryConfig?->late_deduction_rate ?? optional($departmentConfig)->late_deduction_rate ?? 0 }}"
-
-                                        data-undertime="{{ $salaryConfig?->undertime_deduction_rate ?? optional($departmentConfig)->undertime_deduction_rate ?? 0 }}"
-
-                                        data-payroll="{{ $salaryConfig?->payroll_period ?? optional($departmentConfig)->payroll_period ?? 'Every 15 Days' }}"
-
-                                        data-sss="{{ $salaryConfig?->sss ?? optional($departmentConfig)->sss ?? 0 }}"
-
-                                        data-philhealth="{{ $salaryConfig?->philhealth ?? optional($departmentConfig)->philhealth ?? 0 }}"
-
-                                        data-pagibig="{{ $salaryConfig?->pagibig ?? optional($departmentConfig)->pagibig ?? 0 }}"
-
-                                        data-hmo="{{ $employee->employment_type === 'Regular'
-                                            ? ($salaryConfig?->hmo ?? optional($departmentConfig)->hmo ?? 0)
-                                            : 0 }}"
-
-                                        data-honorarium="{{ $salaryConfig?->honorarium ?? optional($departmentConfig)->honorarium ?? 0 }}"
-
-                                        data-teaching-units="{{ $salaryConfig?->teaching_load_units_taken ?? 0 }}"
-                                    >
-
-                                        <i class="bi bi-pencil-square me-1"></i>
-
-                                        Configure
-
-                                    </button>
-
-                                </td>
-
-                            </tr>
-
-
-                        @empty
-
-                            <tr>
-
-                                <td
-                                    colspan="6"
-                                    class="text-center py-5 text-muted"
-                                >
-
-                                    <i class="bi bi-people fs-1 d-block mb-2"></i>
-
-                                    No Elementary employees found.
-
-                                </td>
-
-                            </tr>
-
-                        @endforelse
-
-                    </tbody>
-
-                </table>
-
             </div>
 
         </div>
-
 
     </div>
 
-</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
+    <script>
 
-<!-- =============================================================== -->
-<!-- EMPLOYEE SALARY CONFIGURATION MODAL -->
-<!-- =============================================================== -->
-
-<div
-    class="modal fade"
-    id="employeeSalaryModal"
-    tabindex="-1"
-    aria-hidden="true"
->
-
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-
-        <div class="modal-content border-0 shadow-lg">
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
 
 
-            <!-- HEADER -->
+                /*
+                |--------------------------------------------------------------------------
+                | Bootstrap Modal
+                |--------------------------------------------------------------------------
+                */
 
-            <div class="modal-header text-white">
-
-                <h4 class="modal-title">
-
-                    <i class="bi bi-person-badge me-2"></i>
-
-                    Employee Salary Configuration
-
-                </h4>
-
-                <button
-                    type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="modal"
-                ></button>
-
-            </div>
+                const modalElement =
+                    document.getElementById(
+                        "employeeSalaryModal"
+                    );
 
 
-            <div class="modal-body">
+                const employeeModal =
+                    new bootstrap.Modal(
+                        modalElement
+                    );
 
 
-                <input
-                    type="hidden"
-                    id="employee_id"
-                >
+                /*
+                |--------------------------------------------------------------------------
+                | Automatic Daily Rate / Overtime Rate
+                |--------------------------------------------------------------------------
+                */
+
+                function updateAutomaticRates() {
+
+                    const basicSalary =
+                        parseFloat(
+                            document.getElementById(
+                                "basic_salary"
+                            ).value
+                        ) || 0;
 
 
-                <!-- EMPLOYEE INFORMATION -->
-
-                <div class="card border-0 shadow-sm mb-4">
-
-                    <div class="card-body">
-
-                        <div class="row align-items-center">
-
-                            <div class="col-md-2 text-center mb-3 mb-md-0">
-
-                                <img
-                                    id="modalPhoto"
-                                    src="{{ asset('khen/assets/images/avatar/avatar.jpg') }}"
-                                    class="rounded-circle"
-                                    style="
-                                        width:90px;
-                                        height:90px;
-                                        object-fit:cover;
-                                    "
-                                >
-
-                            </div>
+                    const dailyRate =
+                        basicSalary / 26;
 
 
-                            <div class="col-md-10">
-
-                                <h3
-                                    id="modalName"
-                                    class="mb-2"
-                                ></h3>
+                    const overtimeRate =
+                        dailyRate / 8;
 
 
-                                <span
-                                    class="badge bg-success"
-                                    id="modalEmployment"
-                                ></span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
+                    document.getElementById(
+                        "daily_rate"
+                    ).value =
+                        dailyRate.toFixed(2);
 
 
+                    document.getElementById(
+                        "overtime_rate"
+                    ).value =
+                        overtimeRate.toFixed(2);
 
-                <!-- BASIC SALARY -->
-
-                <div class="card shadow-sm mb-4">
-
-                    <div class="card-header">
-
-                        <strong>
-
-                            <i class="bi bi-wallet2 me-2"></i>
-
-                            Basic Salary & Rates
-
-                        </strong>
-
-                    </div>
+                }
 
 
-                    <div class="card-body">
+                document
+                    .getElementById(
+                        "basic_salary"
+                    )
+                    .addEventListener(
+                        "input",
+                        updateAutomaticRates
+                    );
 
-                        <div class="row">
+
+                /*
+                |--------------------------------------------------------------------------
+                | HTML Escape Helper
+                |--------------------------------------------------------------------------
+                */
+
+                function escapeHtml(value) {
+
+                    if (
+                        value === null ||
+                        value === undefined
+                    ) {
+
+                        return "";
+
+                    }
 
 
-                            <!-- BASIC -->
+                    return String(value)
+                        .replace(
+                            /&/g,
+                            "&amp;"
+                        )
+                        .replace(
+                            /</g,
+                            "&lt;"
+                        )
+                        .replace(
+                            />/g,
+                            "&gt;"
+                        )
+                        .replace(
+                            /"/g,
+                            "&quot;"
+                        )
+                        .replace(
+                            /'/g,
+                            "&#039;"
+                        );
 
-                            <div class="col-md-6 mb-3">
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Additional Earnings
+                |--------------------------------------------------------------------------
+                */
+
+                const additionalEarningsContainer =
+                    document.getElementById(
+                        "additionalEarningsContainer"
+                    );
+
+
+                const noAdditionalEarnings =
+                    document.getElementById(
+                        "noAdditionalEarnings"
+                    );
+
+
+                function updateAdditionalEarningsMessage() {
+
+                    noAdditionalEarnings.style.display =
+                        additionalEarningsContainer.children.length === 0
+                            ? ""
+                            : "none";
+
+                }
+
+
+                function createAdditionalEarning(
+                    amount = "",
+                    remarks = ""
+                ) {
+
+                    const entry =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    entry.className =
+                        "additional-entry";
+
+
+                    entry.innerHTML =
+                        `
+
+                        <div class="row align-items-end">
+
+                            <div class="col-md-5 mb-3 mb-md-0">
 
                                 <label class="form-label">
-                                    Basic Salary
+                                    Amount
                                 </label>
 
                                 <div class="input-group">
@@ -1326,11 +1689,11 @@
                                     </span>
 
                                     <input
-                                        type="number"
-                                        step="0.01"
-                                        min="0"
-                                        id="basic_salary"
-                                        class="form-control"
+                                        type="text"
+                                        inputmode="decimal"
+                                        class="form-control additional-earning-amount"
+                                        placeholder="0.00"
+                                        value="${escapeHtml(amount)}"
                                     >
 
                                 </div>
@@ -1338,173 +1701,182 @@
                             </div>
 
 
-                            <!-- DAILY -->
-
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-5 mb-3 mb-md-0">
 
                                 <label class="form-label">
-                                    Daily Rate
-                                </label>
-
-                                <div class="input-group">
-
-                                    <span class="input-group-text">
-                                        ₱
-                                    </span>
-
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        min="0"
-                                        id="daily_rate"
-                                        class="form-control"
-                                    >
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- OVERTIME -->
-
-                            <div class="col-md-6 mb-3">
-
-                                <label class="form-label">
-
-                                    Overtime Rate
-
-                                    <span class="text-muted">
-                                        (Per Hour)
-                                    </span>
-
-                                </label>
-
-                                <div class="input-group">
-
-                                    <span class="input-group-text">
-                                        ₱
-                                    </span>
-
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        min="0"
-                                        id="overtime_rate"
-                                        class="form-control"
-                                    >
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- LATE -->
-
-                            <div class="col-md-6 mb-3">
-
-                                <label class="form-label">
-
-                                    Late Deduction
-
-                                    <span class="text-muted">
-                                        (Per Minute)
-                                    </span>
-
-                                </label>
-
-                                <div class="input-group">
-
-                                    <span class="input-group-text">
-                                        ₱
-                                    </span>
-
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        min="0"
-                                        id="employee_late_deduction_rate"
-                                        class="form-control"
-                                    >
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- UNDERTIME -->
-
-                            <div class="col-md-6 mb-3">
-
-                                <label class="form-label">
-
-                                    Undertime Deduction
-
-                                    <span class="text-muted">
-                                        (Per Minute)
-                                    </span>
-
-                                </label>
-
-                                <div class="input-group">
-
-                                    <span class="input-group-text">
-                                        ₱
-                                    </span>
-
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        min="0"
-                                        id="employee_undertime_deduction_rate"
-                                        class="form-control"
-                                    >
-
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- PAYROLL / BENEFITS -->
-
-                <div class="card shadow-sm mb-4">
-
-                    <div class="card-header">
-
-                        <strong>
-
-                            <i class="bi bi-shield-check me-2"></i>
-
-                            Payroll & Benefits
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="card-body">
-
-                        <div class="row">
-
-
-                            <div class="col-md-4 mb-3">
-
-                                <label class="form-label">
-                                    Payroll Period
+                                    Remarks
                                 </label>
 
                                 <input
-                                    id="employee_payroll_period"
-                                    class="form-control"
-                                    readonly
+                                    type="text"
+                                    class="form-control additional-earning-remarks"
+                                    placeholder="Enter remarks"
+                                    value="${escapeHtml(remarks)}"
                                 >
+
+                            </div>
+
+
+                            <div class="col-md-2 mb-3 mb-md-0">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-danger w-100 remove-entry-btn remove-additional-earning"
+                                >
+
+                                    <i class="bi bi-trash me-1"></i>
+
+                                    Remove
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        `;
+
+
+                    additionalEarningsContainer.appendChild(
+                        entry
+                    );
+
+
+                    entry
+                        .querySelector(
+                            ".remove-additional-earning"
+                        )
+                        .addEventListener(
+                            "click",
+                            function() {
+
+                                entry.remove();
+
+                                updateAdditionalEarningsMessage();
+
+                            }
+                        );
+
+
+                    updateAdditionalEarningsMessage();
+
+                }
+
+
+                document
+                    .getElementById(
+                        "addAdditionalEarning"
+                    )
+                    .addEventListener(
+                        "click",
+                        function() {
+
+                            createAdditionalEarning();
+
+                        }
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Additional Teaching Load
+                |--------------------------------------------------------------------------
+                */
+
+                const teachingLoadContainer =
+                    document.getElementById(
+                        "teachingLoadContainer"
+                    );
+
+
+                const noTeachingLoad =
+                    document.getElementById(
+                        "noTeachingLoad"
+                    );
+
+
+                function updateTeachingLoadMessage() {
+
+                    noTeachingLoad.style.display =
+                        teachingLoadContainer.children.length === 0
+                            ? ""
+                            : "none";
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Create Teaching Load Entry
+                |--------------------------------------------------------------------------
+                */
+
+                function createTeachingLoad(
+                    department = "",
+                    subject = "",
+                    units = 0,
+                    rate = "",
+                    remarks = ""
+                ) {
+
+                    const entry =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    entry.className =
+                        "teaching-entry";
+
+
+                    entry.innerHTML =
+                        `
+
+                        <div class="row align-items-end">
+
+                            <div class="col-md-3 mb-3">
+
+                                <label class="form-label">
+                                    Department
+                                </label>
+
+                                <select
+                                    class="form-select teaching-load-department"
+                                >
+
+                                    <option value="">
+                                        Select Department
+                                    </option>
+
+                                    <option
+                                        value="Elementary"
+                                        ${department === "Elementary" ? "selected" : ""}
+                                    >
+                                        Elementary
+                                    </option>
+
+                                    <option
+                                        value="JHS"
+                                        ${department === "JHS" ? "selected" : ""}
+                                    >
+                                        JHS
+                                    </option>
+
+                                    <option
+                                        value="SHS"
+                                        ${department === "SHS" ? "selected" : ""}
+                                    >
+                                        SHS
+                                    </option>
+
+                                    <option
+                                        value="College"
+                                        ${department === "College" ? "selected" : ""}
+                                    >
+                                        College
+                                    </option>
+
+                                </select>
 
                             </div>
 
@@ -1512,237 +1884,41 @@
                             <div class="col-md-2 mb-3">
 
                                 <label class="form-label">
-                                    SSS
+                                    Subject
                                 </label>
 
                                 <input
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    id="employee_sss"
-                                    class="form-control"
+                                    type="text"
+                                    class="form-control teaching-load-subject"
+                                    placeholder="Subject"
+                                    value="${escapeHtml(subject)}"
                                 >
 
                             </div>
 
 
-                            <div class="col-md-2 mb-3">
+                            <div class="col-md-1 mb-3">
 
                                 <label class="form-label">
-                                    PhilHealth
-                                </label>
-
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    id="employee_philhealth"
-                                    class="form-control"
-                                >
-
-                            </div>
-
-
-                            <div class="col-md-2 mb-3">
-
-                                <label class="form-label">
-                                    Pag-IBIG
-                                </label>
-
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    id="employee_pagibig"
-                                    class="form-control"
-                                >
-
-                            </div>
-
-
-                            <div class="col-md-2 mb-3">
-
-                                <label class="form-label">
-                                    HMO
-                                </label>
-
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    id="employee_hmo"
-                                    class="form-control"
-                                >
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- ADDITIONAL EARNINGS -->
-
-                <div class="card shadow-sm mb-4">
-
-                    <div class="card-header">
-
-                        <strong>
-
-                            <i class="bi bi-plus-circle me-2"></i>
-
-                            Additional Earnings
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="card-body">
-
-                        <div class="row">
-
-
-                            <!-- ================================================= -->
-                            <!-- FIXED: INDIVIDUAL EMPLOYEE HONORARIUM -->
-                            <!-- ================================================= -->
-
-                            <div class="col-md-6 mb-3">
-
-                                <label class="form-label">
-                                    Honorarium / Stipend
-                                </label>
-
-                                <div class="input-group">
-
-                                    <span class="input-group-text">
-                                        ₱
-                                    </span>
-
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        min="0"
-                                        id="employee_honorarium"
-                                        class="form-control"
-                                    >
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- OT EXPLANATION -->
-
-                            <div class="col-md-6 mb-3">
-
-                                <label class="form-label">
-                                    Overtime Calculation
-                                </label>
-
-                                <div class="alert alert-info mb-0">
-
-                                    <i class="bi bi-info-circle me-1"></i>
-
-                                    Overtime pay is automatically calculated from
-                                    attendance overtime minutes using the
-                                    overtime hourly rate.
-
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- ================================================= -->
-                <!-- TEACHING LOAD -->
-                <!-- ================================================= -->
-
-                <div class="card shadow-sm mb-4">
-
-                    <div class="card-header">
-
-                        <strong>
-
-                            <i class="bi bi-book-half me-2"></i>
-
-                            Additional Teaching Load
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="card-body">
-
-                        <div class="row">
-
-
-                            <!-- EMPLOYEE UNITS -->
-
-                            <div class="col-md-4 mb-3">
-
-                                <label class="form-label">
-                                    Employee Additional Units
+                                    Units
                                 </label>
 
                                 <input
                                     type="number"
                                     min="0"
                                     step="1"
-                                    id="teaching_load_units_taken"
-                                    class="form-control"
-                                >
-
-                                <div class="small-note mt-2">
-
-                                    Whole numbers only.
-
-                                    <br>
-
-                                    Example: 3, 6, 9
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- REQUIRED -->
-
-                            <div class="col-md-4 mb-3">
-
-                                <label class="form-label">
-                                    Required Units
-                                </label>
-
-                                <input
-                                    type="number"
-                                    id="display_teaching_required"
-                                    class="form-control"
-                                    value="{{ optional($departmentConfig)->teaching_load_unit_required ?? 0 }}"
-                                    readonly
+                                    class="form-control teaching-load-units"
+                                    placeholder="0"
+                                    value="${escapeHtml(units)}"
                                 >
 
                             </div>
 
 
-                            <!-- PRICE -->
-
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-2 mb-3">
 
                                 <label class="form-label">
-                                    Price
+                                    Rate
                                 </label>
 
                                 <div class="input-group">
@@ -1752,537 +1928,566 @@
                                     </span>
 
                                     <input
-                                        type="number"
-                                        id="display_teaching_price"
-                                        class="form-control"
-                                        value="{{ optional($departmentConfig)->teaching_load_price ?? 0 }}"
-                                        readonly
+                                        type="text"
+                                        inputmode="decimal"
+                                        class="form-control teaching-load-rate"
+                                        placeholder="0.00"
+                                        value="${escapeHtml(rate)}"
                                     >
 
                                 </div>
 
                             </div>
 
-                        </div>
+
+                            <div class="col-md-2 mb-3">
+
+                                <label class="form-label">
+                                    Remarks
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control teaching-load-remarks"
+                                    placeholder="Remarks"
+                                    value="${escapeHtml(remarks)}"
+                                >
+
+                            </div>
 
 
-                        <!-- TEACHING LOAD CALCULATION -->
+                            <div class="col-md-2 mb-3">
 
-                        <div class="teaching-result mt-3">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-danger w-100 remove-entry-btn remove-teaching-load"
+                                >
 
-                            <div class="row text-center">
+                                    <i class="bi bi-trash me-1"></i>
 
+                                    Remove
 
-                                <div class="col-md-4 mb-3 mb-md-0">
-
-                                    <div class="small-note">
-                                        Full-Period Teaching Load
-                                    </div>
-
-                                    <div
-                                        class="summary-value"
-                                        id="fullTeachingLoadDisplay"
-                                    >
-                                        ₱0.00
-                                    </div>
-
-                                </div>
-
-
-                                <div class="col-md-4 mb-3 mb-md-0">
-
-                                    <div class="small-note">
-                                        15-Day Teaching Load
-                                    </div>
-
-                                    <div
-                                        class="summary-value"
-                                        id="halfTeachingLoadDisplay"
-                                    >
-                                        ₱0.00
-                                    </div>
-
-                                </div>
-
-
-                                <div class="col-md-4">
-
-                                    <div class="small-note">
-                                        Formula
-                                    </div>
-
-                                    <div
-                                        class="fw-semibold"
-                                        id="teachingFormulaDisplay"
-                                    >
-                                        0 ÷ 0 × ₱0 ÷ 2
-                                    </div>
-
-                                </div>
-
+                                </button>
 
                             </div>
 
                         </div>
 
-
-                        <div class="alert alert-success mt-3 mb-0">
-
-                            <i class="bi bi-calculator me-2"></i>
-
-                            The system automatically calculates:
-
-                            <strong>
-                                Employee Units ÷ Required Units × Price ÷ 2
-                            </strong>
-
-                            for each 15-day payroll.
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-            <!-- FOOTER -->
-
-            <div class="modal-footer">
-
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                >
-                    Cancel
-                </button>
-
-
-                <button
-                    type="button"
-                    class="btn btn-success"
-                    id="saveEmployeeSalary"
-                >
-
-                    <i class="bi bi-check-circle me-2"></i>
-
-                    Save Configuration
-
-                </button>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-></script>
-
-
-<script>
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Bootstrap Modal
-        |--------------------------------------------------------------------------
-        */
-
-        const modalElement =
-            document.getElementById(
-                "employeeSalaryModal"
-            );
-
-        const employeeModal =
-            new bootstrap.Modal(
-                modalElement
-            );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Department Teaching Load Values
-        |--------------------------------------------------------------------------
-        */
-
-        const departmentRequiredUnits =
-            Number(
-                document.getElementById(
-                    "display_teaching_required"
-                ).value || 0
-            );
-
-
-        const departmentTeachingPrice =
-            Number(
-                document.getElementById(
-                    "display_teaching_price"
-                ).value || 0
-            );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Teaching Load Preview
-        |--------------------------------------------------------------------------
-        */
-
-        function updateTeachingLoadPreview() {
-
-            const units =
-                Number(
-                    document.getElementById(
-                        "teaching_load_units_taken"
-                    ).value || 0
-                );
-
-
-            const required =
-                departmentRequiredUnits;
-
-
-            const price =
-                departmentTeachingPrice;
-
-
-            let fullAmount = 0;
-
-
-            if (
-                units > 0 &&
-                required > 0 &&
-                price > 0
-            ) {
-
-                fullAmount =
-                    (
-                        units /
-                        required
-                    ) *
-                    price;
-
-            }
-
-
-            const fifteenDayAmount =
-                fullAmount / 2;
-
-
-            document.getElementById(
-                "fullTeachingLoadDisplay"
-            ).textContent =
-                "₱" +
-                fullAmount.toLocaleString(
-                    "en-PH",
-                    {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }
-                );
-
-
-            document.getElementById(
-                "halfTeachingLoadDisplay"
-            ).textContent =
-                "₱" +
-                fifteenDayAmount.toLocaleString(
-                    "en-PH",
-                    {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }
-                );
-
-
-            document.getElementById(
-                "teachingFormulaDisplay"
-            ).textContent =
-                units +
-                " ÷ " +
-                required +
-                " × ₱" +
-                price.toLocaleString(
-                    "en-PH",
-                    {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }
-                ) +
-                " ÷ 2";
-
-        }
-
-
-        document
-            .getElementById(
-                "teaching_load_units_taken"
-            )
-            .addEventListener(
-                "input",
-                updateTeachingLoadPreview
-            );
-
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Configure Employee Buttons
-        |--------------------------------------------------------------------------
-        */
-
-        document
-            .querySelectorAll(
-                ".configureEmployee"
-            )
-            .forEach(
-                function (button) {
-
-                    button.addEventListener(
-                        "click",
-                        function () {
-
-
-                            /*
-                             * Employee ID
-                             */
-
-                            document.getElementById(
-                                "employee_id"
-                            ).value =
-                                this.dataset.id;
-
-
-                            /*
-                             * Employee Information
-                             */
-
-                            document.getElementById(
-                                "modalName"
-                            ).textContent =
-                                this.dataset.name;
-
-
-                            document.getElementById(
-                                "modalEmployment"
-                            ).textContent =
-                                this.dataset.employment;
-
-
-                            document.getElementById(
-                                "modalPhoto"
-                            ).src =
-                                this.dataset.photo;
-
-
-
-                            /*
-                             * Salary
-                             */
-
-                            document.getElementById(
-                                "basic_salary"
-                            ).value =
-                                this.dataset.salary || 0;
-
-
-                            document.getElementById(
-                                "daily_rate"
-                            ).value =
-                                this.dataset.daily || 0;
-
-
-                            document.getElementById(
-                                "overtime_rate"
-                            ).value =
-                                this.dataset.overtime || 0;
-
-
-
-                            /*
-                             * Deductions
-                             */
-
-                            document.getElementById(
-                                "employee_late_deduction_rate"
-                            ).value =
-                                this.dataset.late || 0;
-
-
-                            document.getElementById(
-                                "employee_undertime_deduction_rate"
-                            ).value =
-                                this.dataset.undertime || 0;
-
-
-
-                            /*
-                             * Payroll
-                             */
-
-                            document.getElementById(
-                                "employee_payroll_period"
-                            ).value =
-                                this.dataset.payroll ||
-                                "Every 15 Days";
-
-
-
-                            /*
-                             * Benefits
-                             */
-
-                            document.getElementById(
-                                "employee_sss"
-                            ).value =
-                                this.dataset.sss || 0;
-
-
-                            document.getElementById(
-                                "employee_philhealth"
-                            ).value =
-                                this.dataset.philhealth || 0;
-
-
-                            document.getElementById(
-                                "employee_pagibig"
-                            ).value =
-                                this.dataset.pagibig || 0;
-
-
-                            document.getElementById(
-                                "employee_hmo"
-                            ).value =
-                                this.dataset.hmo || 0;
-
-
-
-                            /*
-                             * ==================================================
-                             * FIXED: INDIVIDUAL HONORARIUM
-                             * ==================================================
-                             *
-                             * This now targets employee_honorarium,
-                             * NOT the department default honorarium.
-                             */
-
-                            document.getElementById(
-                                "employee_honorarium"
-                            ).value =
-                                this.dataset.honorarium || 0;
-
-
-
-                            /*
-                             * Teaching Units
-                             */
-
-                            document.getElementById(
-                                "teaching_load_units_taken"
-                            ).value =
-                                this.dataset.teachingUnits || 0;
-
-
-                            /*
-                             * Update teaching load calculation.
-                             */
-
-                            updateTeachingLoadPreview();
-
-
-                            /*
-                             * Open modal.
-                             */
-
-                            employeeModal.show();
-
-                        }
-
-                    );
-
-                }
-            );
-
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Save Employee Configuration
-        |--------------------------------------------------------------------------
-        */
-
-        document
-            .getElementById(
-                "saveEmployeeSalary"
-            )
-            .addEventListener(
-                "click",
-                async function () {
-
-
-                    const button =
-                        this;
-
-
-                    button.disabled =
-                        true;
-
-
-                    button.innerHTML =
-                        `
-                        <span
-                            class="spinner-border spinner-border-sm me-2"
-                        ></span>
-                        Saving...
                         `;
 
 
-                    try {
+                    teachingLoadContainer.appendChild(
+                        entry
+                    );
 
 
-                        const response =
-                            await fetch(
-                                "{{ route('payroll.save') }}",
-                                {
+                    entry
+                        .querySelector(
+                            ".remove-teaching-load"
+                        )
+                        .addEventListener(
+                            "click",
+                            function() {
 
-                                    method:
-                                        "POST",
+                                entry.remove();
 
-                                    headers:
+                                updateTeachingLoadMessage();
+
+                            }
+                        );
+
+
+                    updateTeachingLoadMessage();
+
+                }
+
+
+                document
+                    .getElementById(
+                        "addTeachingLoad"
+                    )
+                    .addEventListener(
+                        "click",
+                        function() {
+
+                            createTeachingLoad();
+
+                        }
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Load Existing Additional Earnings
+                |--------------------------------------------------------------------------
+                */
+
+                function loadAdditionalEarnings(
+                    earnings
+                ) {
+
+                    additionalEarningsContainer.innerHTML =
+                        "";
+
+
+                    if (
+                        !Array.isArray(earnings) ||
+                        earnings.length === 0
+                    ) {
+
+                        updateAdditionalEarningsMessage();
+
+                        return;
+
+                    }
+
+
+                    earnings.forEach(
+                        function(earning) {
+
+                            createAdditionalEarning(
+                                earning.amount ?? "",
+                                earning.remarks ?? ""
+                            );
+
+                        }
+                    );
+
+
+                    updateAdditionalEarningsMessage();
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Load Existing Teaching Loads
+                |--------------------------------------------------------------------------
+                */
+
+                function loadTeachingLoads(
+                    teachingLoads
+                ) {
+
+                    teachingLoadContainer.innerHTML =
+                        "";
+
+
+                    if (
+                        !Array.isArray(teachingLoads) ||
+                        teachingLoads.length === 0
+                    ) {
+
+                        updateTeachingLoadMessage();
+
+                        return;
+
+                    }
+
+
+                    teachingLoads.forEach(
+                        function(teachingLoad) {
+
+                            createTeachingLoad(
+                                teachingLoad.department ?? "",
+                                teachingLoad.subject ?? "",
+                                teachingLoad.units ?? 0,
+                                teachingLoad.rate ?? "",
+                                teachingLoad.remarks ?? ""
+                            );
+
+                        }
+                    );
+
+
+                    updateTeachingLoadMessage();
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Configure Employee Buttons
+                |--------------------------------------------------------------------------
+                */
+
+                document
+                    .querySelectorAll(
+                        ".configureEmployee"
+                    )
+                    .forEach(
+                        function(button) {
+
+                            button.addEventListener(
+                                "click",
+                                function() {
+
+
+                                    document.getElementById(
+                                        "employee_id"
+                                    ).value =
+                                        this.dataset.id;
+
+
+                                    document.getElementById(
+                                        "modalName"
+                                    ).textContent =
+                                        this.dataset.name;
+
+
+                                    document.getElementById(
+                                        "modalEmployment"
+                                    ).textContent =
+                                        this.dataset.employment;
+
+
+                                    document.getElementById(
+                                        "modalPhoto"
+                                    ).src =
+                                        this.dataset.photo;
+
+
+                                    document.getElementById(
+                                        "basic_salary"
+                                    ).value =
+                                        this.dataset.salary || 0;
+
+
+                                    updateAutomaticRates();
+
+
+                                    document.getElementById(
+                                        "employee_late_deduction_rate"
+                                    ).value =
+                                        this.dataset.late || 0;
+
+
+                                    document.getElementById(
+                                        "employee_undertime_deduction_rate"
+                                    ).value =
+                                        this.dataset.undertime || 0;
+
+
+                                    document.getElementById(
+                                        "employee_payroll_period"
+                                    ).value =
+                                        this.dataset.payroll ||
+                                        "Every 15 Days";
+
+
+                                    document.getElementById(
+                                        "employee_sss"
+                                    ).value =
+                                        this.dataset.sss || 0;
+
+
+                                    document.getElementById(
+                                        "employee_philhealth"
+                                    ).value =
+                                        this.dataset.philhealth || 0;
+
+
+                                    document.getElementById(
+                                        "employee_pagibig"
+                                    ).value =
+                                        this.dataset.pagibig || 0;
+
+
+                                    document.getElementById(
+                                        "employee_hmo"
+                                    ).value =
+                                        this.dataset.hmo || 0;
+
+
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Load Existing Additional Earnings
+                                    |--------------------------------------------------------------------------
+                                    */
+
+                                    let additionalEarnings = [];
+
+
+                                    try {
+
+                                        additionalEarnings =
+                                            JSON.parse(
+                                                this.dataset.additionalEarnings || "[]"
+                                            );
+
+                                    } catch (error) {
+
+                                        console.error(
+                                            "Unable to load additional earnings:",
+                                            error,
+                                            this.dataset.additionalEarnings
+                                        );
+
+                                        additionalEarnings = [];
+
+                                    }
+
+
+                                    loadAdditionalEarnings(
+                                        additionalEarnings
+                                    );
+
+
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Load Existing Teaching Loads
+                                    |--------------------------------------------------------------------------
+                                    */
+
+                                    let teachingLoads = [];
+
+
+                                    try {
+
+                                        teachingLoads =
+                                            JSON.parse(
+                                                this.dataset.teachingLoads || "[]"
+                                            );
+
+                                    } catch (error) {
+
+                                        console.error(
+                                            "Unable to load teaching loads:",
+                                            error,
+                                            this.dataset.teachingLoads
+                                        );
+
+                                        teachingLoads = [];
+
+                                    }
+
+
+                                    loadTeachingLoads(
+                                        teachingLoads
+                                    );
+
+
+                                    employeeModal.show();
+
+                                }
+
+                            );
+
+                        }
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Save Employee Configuration
+                |--------------------------------------------------------------------------
+                */
+
+                document
+                    .getElementById(
+                        "saveEmployeeSalary"
+                    )
+                    .addEventListener(
+                        "click",
+                        async function() {
+
+
+                            const button =
+                                this;
+
+
+                            button.disabled =
+                                true;
+
+
+                            button.innerHTML =
+                                `
+                                    <span
+                                        class="spinner-border spinner-border-sm me-2"
+                                    ></span>
+                                    Saving...
+                                `;
+
+
+                            try {
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Collect Additional Earnings
+                                |--------------------------------------------------------------------------
+                                */
+
+                                const additionalEarnings = [];
+
+
+                                document
+                                    .querySelectorAll(
+                                        "#additionalEarningsContainer .additional-entry"
+                                    )
+                                    .forEach(
+                                        function(entry) {
+
+                                            const amount =
+                                                entry
+                                                    .querySelector(
+                                                        ".additional-earning-amount"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            const remarks =
+                                                entry
+                                                    .querySelector(
+                                                        ".additional-earning-remarks"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            if (
+                                                amount !== "" ||
+                                                remarks !== ""
+                                            ) {
+
+                                                additionalEarnings.push({
+
+                                                    amount: amount,
+
+                                                    remarks: remarks
+
+                                                });
+
+                                            }
+
+                                        }
+                                    );
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Collect Additional Teaching Loads
+                                |--------------------------------------------------------------------------
+                                */
+
+                                const teachingLoads = [];
+
+
+                                document
+                                    .querySelectorAll(
+                                        "#teachingLoadContainer .teaching-entry"
+                                    )
+                                    .forEach(
+                                        function(entry) {
+
+                                            const department =
+                                                entry
+                                                    .querySelector(
+                                                        ".teaching-load-department"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            const subject =
+                                                entry
+                                                    .querySelector(
+                                                        ".teaching-load-subject"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            const units =
+                                                entry
+                                                    .querySelector(
+                                                        ".teaching-load-units"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            const rate =
+                                                entry
+                                                    .querySelector(
+                                                        ".teaching-load-rate"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            const remarks =
+                                                entry
+                                                    .querySelector(
+                                                        ".teaching-load-remarks"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            if (
+                                                department !== "" ||
+                                                subject !== "" ||
+                                                units !== "" ||
+                                                rate !== "" ||
+                                                remarks !== ""
+                                            ) {
+
+                                                teachingLoads.push({
+
+                                                    department: department,
+
+                                                    subject: subject,
+
+                                                    units:
+                                                        units !== ""
+                                                            ? parseInt(units, 10)
+                                                            : 0,
+
+                                                    rate: rate,
+
+                                                    remarks: remarks
+
+                                                });
+
+                                            }
+
+                                        }
+                                    );
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Save Employee Configuration
+                                |--------------------------------------------------------------------------
+                                */
+
+                                const response =
+                                    await fetch(
+                                        "{{ route('payroll.save') }}",
                                         {
 
-                                            "Content-Type":
-                                                "application/json",
+                                            method: "POST",
 
-                                            "X-CSRF-TOKEN":
-                                                document
-                                                    .querySelector(
-                                                        'meta[name="csrf-token"]'
-                                                    )
-                                                    .content,
+                                            headers: {
 
-                                            "Accept":
-                                                "application/json"
+                                                "Content-Type":
+                                                    "application/json",
 
-                                        },
+                                                "X-CSRF-TOKEN":
+                                                    document
+                                                        .querySelector(
+                                                            'meta[name="csrf-token"]'
+                                                        )
+                                                        .content,
 
+                                                "Accept":
+                                                    "application/json"
 
-                                    body:
-                                        JSON.stringify(
-                                            {
+                                            },
+
+                                            body: JSON.stringify({
 
                                                 user_id:
                                                     document
@@ -2291,22 +2496,12 @@ document.addEventListener(
                                                         )
                                                         .value,
 
-
                                                 basic_salary:
                                                     document
                                                         .getElementById(
                                                             "basic_salary"
                                                         )
                                                         .value,
-
-
-                                                payroll_period:
-                                                    document
-                                                        .getElementById(
-                                                            "employee_payroll_period"
-                                                        )
-                                                        .value,
-
 
                                                 daily_rate:
                                                     document
@@ -2315,14 +2510,12 @@ document.addEventListener(
                                                         )
                                                         .value,
 
-
                                                 overtime_rate:
                                                     document
                                                         .getElementById(
                                                             "overtime_rate"
                                                         )
                                                         .value,
-
 
                                                 late_deduction_rate:
                                                     document
@@ -2331,7 +2524,6 @@ document.addEventListener(
                                                         )
                                                         .value,
 
-
                                                 undertime_deduction_rate:
                                                     document
                                                         .getElementById(
@@ -2339,6 +2531,12 @@ document.addEventListener(
                                                         )
                                                         .value,
 
+                                                payroll_period:
+                                                    document
+                                                        .getElementById(
+                                                            "employee_payroll_period"
+                                                        )
+                                                        .value,
 
                                                 sss:
                                                     document
@@ -2347,14 +2545,12 @@ document.addEventListener(
                                                         )
                                                         .value,
 
-
                                                 philhealth:
                                                     document
                                                         .getElementById(
                                                             "employee_philhealth"
                                                         )
                                                         .value,
-
 
                                                 pagibig:
                                                     document
@@ -2363,7 +2559,6 @@ document.addEventListener(
                                                         )
                                                         .value,
 
-
                                                 hmo:
                                                     document
                                                         .getElementById(
@@ -2371,171 +2566,168 @@ document.addEventListener(
                                                         )
                                                         .value,
 
+                                                additional_earnings:
+                                                    additionalEarnings,
 
-                                                /*
-                                                |--------------------------------------------------------------------------
-                                                | FIXED HONORARIUM
-                                                |--------------------------------------------------------------------------
-                                                |
-                                                | The HTML field is now employee_honorarium,
-                                                | but the JSON key remains "honorarium"
-                                                | because that is what PayrollController::save()
-                                                | expects.
-                                                |
-                                                */
+                                                teaching_loads:
+                                                    teachingLoads
 
-                                                honorarium:
-                                                    document
-                                                        .getElementById(
-                                                            "employee_honorarium"
-                                                        )
-                                                        .value,
+                                            })
+
+                                        }
+                                    );
 
 
-                                                teaching_load_units_taken:
-                                                    document
-                                                        .getElementById(
-                                                            "teaching_load_units_taken"
-                                                        )
-                                                        .value
+                                const data =
+                                    await response.json();
 
-                                            }
 
-                                        )
+                                if (!response.ok) {
+
+                                    let errorMessage =
+                                        data.message ||
+                                        "Unable to save employee configuration.";
+
+
+                                    if (data.errors) {
+
+                                        const validationErrors =
+                                            Object.values(
+                                                data.errors
+                                            ).flat();
+
+
+                                        if (
+                                            validationErrors.length > 0
+                                        ) {
+
+                                            errorMessage =
+                                                validationErrors.join(
+                                                    "\n"
+                                                );
+
+                                        }
+
+                                    }
+
+
+                                    throw new Error(
+                                        errorMessage
+                                    );
 
                                 }
 
-                            );
+
+                                if (data.success) {
+
+                                    alert(
+                                        "Employee salary configuration saved successfully."
+                                    );
 
 
-                        const data =
-                            await response.json();
+                                    location.reload();
+
+                                } else {
+
+                                    throw new Error(
+                                        data.message ||
+                                        "Unable to save configuration."
+                                    );
+
+                                }
 
 
-                        if (!response.ok) {
+                            } catch (error) {
 
-                            throw new Error(
-                                data.message ||
-                                "Unable to save employee configuration."
-                            );
+                                console.error(
+                                    error
+                                );
+
+
+                                alert(
+                                    error.message ||
+                                    "Something went wrong while saving the configuration."
+                                );
+
+
+                                button.disabled =
+                                    false;
+
+
+                                button.innerHTML =
+                                    `
+                                        <i class="bi bi-check-circle me-2"></i>
+                                        Save Configuration
+                                    `;
+
+                            }
 
                         }
 
-
-                        if (data.success) {
-
-                            alert(
-                                "Employee salary configuration saved successfully."
-                            );
+                    );
 
 
-                            location.reload();
+                /*
+                |--------------------------------------------------------------------------
+                | Save Department Default Configuration
+                |--------------------------------------------------------------------------
+                */
 
-                        } else {
-
-                            throw new Error(
-                                data.message ||
-                                "Unable to save configuration."
-                            );
-
-                        }
-
-
-                    } catch (error) {
-
-
-                        console.error(error);
+                document
+                    .getElementById(
+                        "saveDepartmentConfig"
+                    )
+                    .addEventListener(
+                        "click",
+                        async function() {
 
 
-                        alert(
-                            error.message ||
-                            "Something went wrong while saving the configuration."
-                        );
+                            const button =
+                                this;
 
 
-                        button.disabled =
-                            false;
+                            button.disabled =
+                                true;
 
 
-                        button.innerHTML =
-                            `
-                            <i class="bi bi-check-circle me-2"></i>
-                            Save Configuration
-                            `;
-
-                    }
-
-                }
-
-            );
+                            button.innerHTML =
+                                `
+                                    <span
+                                        class="spinner-border spinner-border-sm me-2"
+                                    ></span>
+                                    Saving...
+                                `;
 
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Save Department Default Configuration
-        |--------------------------------------------------------------------------
-        */
-
-        document
-            .getElementById(
-                "saveDepartmentConfig"
-            )
-            .addEventListener(
-                "click",
-                async function () {
+                            try {
 
 
-                    const button =
-                        this;
-
-
-                    button.disabled =
-                        true;
-
-
-                    button.innerHTML =
-                        `
-                        <span
-                            class="spinner-border spinner-border-sm me-2"
-                        ></span>
-                        Saving...
-                        `;
-
-
-                    try {
-
-
-                        const response =
-                            await fetch(
-                                "{{ route('payroll.default.save') }}",
-                                {
-
-                                    method:
-                                        "POST",
-
-                                    headers:
+                                const response =
+                                    await fetch(
+                                        "{{ route('payroll.default.save') }}",
                                         {
 
-                                            "Content-Type":
-                                                "application/json",
+                                            method: "POST",
 
-                                            "Accept":
-                                                "application/json",
+                                            headers: {
 
-                                            "X-CSRF-TOKEN":
-                                                document
-                                                    .querySelector(
-                                                        'meta[name="csrf-token"]'
-                                                    )
-                                                    .content
+                                                "Content-Type":
+                                                    "application/json",
 
-                                        },
+                                                "Accept":
+                                                    "application/json",
+
+                                                "X-CSRF-TOKEN":
+                                                    document
+                                                        .querySelector(
+                                                            'meta[name="csrf-token"]'
+                                                        )
+                                                        .content
+
+                                            },
 
 
-                                    body:
-                                        JSON.stringify(
-                                            {
+                                            body: JSON.stringify({
 
                                                 department:
                                                     document
@@ -2544,38 +2736,12 @@ document.addEventListener(
                                                         )
                                                         .value,
 
-
-                                                default_basic_salary:
-                                                    document
-                                                        .getElementById(
-                                                            "default_basic_salary"
-                                                        )
-                                                        .value,
-
-
-                                                daily_rate:
-                                                    document
-                                                        .getElementById(
-                                                            "default_daily_rate"
-                                                        )
-                                                        .value,
-
-
-                                                overtime_rate:
-                                                    document
-                                                        .getElementById(
-                                                            "default_overtime_rate"
-                                                        )
-                                                        .value,
-
-
                                                 late_deduction_rate:
                                                     document
                                                         .getElementById(
                                                             "late_deduction_rate"
                                                         )
                                                         .value,
-
 
                                                 undertime_deduction_rate:
                                                     document
@@ -2584,14 +2750,12 @@ document.addEventListener(
                                                         )
                                                         .value,
 
-
                                                 payroll_period:
                                                     document
                                                         .getElementById(
                                                             "payroll_period"
                                                         )
                                                         .value,
-
 
                                                 sss:
                                                     document
@@ -2600,14 +2764,12 @@ document.addEventListener(
                                                         )
                                                         .value,
 
-
                                                 philhealth:
                                                     document
                                                         .getElementById(
                                                             "philhealth"
                                                         )
                                                         .value,
-
 
                                                 pagibig:
                                                     document
@@ -2616,169 +2778,159 @@ document.addEventListener(
                                                         )
                                                         .value,
 
-
                                                 hmo:
                                                     document
                                                         .getElementById(
                                                             "hmo"
                                                         )
-                                                        .value,
-
-
-                                                /*
-                                                |--------------------------------------------------------------------------
-                                                | FIXED: DEPARTMENT HONORARIUM
-                                                |--------------------------------------------------------------------------
-                                                */
-
-                                                honorarium:
-                                                    document
-                                                        .getElementById(
-                                                            "default_honorarium"
-                                                        )
-                                                        .value,
-
-
-                                                teaching_load_unit_required:
-                                                    document
-                                                        .getElementById(
-                                                            "teaching_load_unit_required"
-                                                        )
-                                                        .value,
-
-
-                                                teaching_load_price:
-                                                    document
-                                                        .getElementById(
-                                                            "teaching_load_price"
-                                                        )
                                                         .value
 
-                                            }
+                                            })
 
-                                        )
+                                        }
+                                    );
+
+
+                                const data =
+                                    await response.json();
+
+
+                                if (!response.ok) {
+
+                                    let errorMessage =
+                                        data.message ||
+                                        "Unable to save department configuration.";
+
+
+                                    if (data.errors) {
+
+                                        const validationErrors =
+                                            Object.values(
+                                                data.errors
+                                            ).flat();
+
+
+                                        if (
+                                            validationErrors.length > 0
+                                        ) {
+
+                                            errorMessage =
+                                                validationErrors.join(
+                                                    "\n"
+                                                );
+
+                                        }
+
+                                    }
+
+
+                                    throw new Error(
+                                        errorMessage
+                                    );
 
                                 }
 
-                            );
+
+                                if (data.success) {
+
+                                    alert(
+                                        "Department default configuration saved successfully."
+                                    );
 
 
-                        const data =
-                            await response.json();
+                                    location.reload();
+
+                                } else {
+
+                                    throw new Error(
+                                        data.message ||
+                                        "Unable to save department configuration."
+                                    );
+
+                                }
 
 
-                        if (!response.ok) {
+                            } catch (error) {
 
-                            throw new Error(
-                                data.message ||
-                                "Unable to save department configuration."
-                            );
-
-                        }
+                                console.error(
+                                    error
+                                );
 
 
-                        if (data.success) {
-
-                            alert(
-                                "Department default configuration saved successfully."
-                            );
-
-
-                            location.reload();
-
-                        } else {
-
-                            throw new Error(
-                                data.message ||
-                                "Unable to save department configuration."
-                            );
-
-                        }
+                                alert(
+                                    error.message ||
+                                    "Something went wrong while saving the department configuration."
+                                );
 
 
-                    } catch (error) {
+                                button.disabled =
+                                    false;
 
 
-                        console.error(error);
-
-
-                        alert(
-                            error.message ||
-                            "Something went wrong while saving the department configuration."
-                        );
-
-
-                        button.disabled =
-                            false;
-
-
-                        button.innerHTML =
-                            `
-                            <i class="bi bi-check-circle me-2"></i>
-                            Save Default Configuration
-                            `;
-
-                    }
-
-                }
-
-            );
-
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Employee Search
-        |--------------------------------------------------------------------------
-        */
-
-        document
-            .getElementById(
-                "employeeSearch"
-            )
-            .addEventListener(
-                "input",
-                function () {
-
-
-                    const search =
-                        this.value
-                            .toLowerCase()
-                            .trim();
-
-
-                    document
-                        .querySelectorAll(
-                            ".employee-row"
-                        )
-                        .forEach(
-                            function (row) {
-
-
-                                const text =
-                                    row.textContent
-                                        .toLowerCase();
-
-
-                                row.style.display =
-                                    text.includes(search)
-                                        ? ""
-                                        : "none";
+                                button.innerHTML =
+                                    `
+                                        <i class="bi bi-check-circle me-2"></i>
+                                        Save Default Configuration
+                                    `;
 
                             }
-                        );
 
-                }
+                        }
 
-            );
+                    );
 
 
-    }
+                /*
+                |--------------------------------------------------------------------------
+                | Employee Search
+                |--------------------------------------------------------------------------
+                */
 
-);
+                document
+                    .getElementById(
+                        "employeeSearch"
+                    )
+                    .addEventListener(
+                        "input",
+                        function() {
 
-</script>
 
+                            const search =
+                                this.value
+                                    .toLowerCase()
+                                    .trim();
+
+
+                            document
+                                .querySelectorAll(
+                                    ".employee-row"
+                                )
+                                .forEach(
+                                    function(row) {
+
+
+                                        const text =
+                                            row.textContent
+                                                .toLowerCase();
+
+
+                                        row.style.display =
+                                            text.includes(search)
+                                                ? ""
+                                                : "none";
+
+                                    }
+                                );
+
+                        }
+
+                    );
+
+            }
+
+        );
+
+    </script>
 
 </body>
 

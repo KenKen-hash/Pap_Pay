@@ -121,40 +121,46 @@ class EmployeeController extends Controller
         return response()->json($employee);
     }
 
-    public function update(Request $request, User $employee)
-    {
-        $validated = $request->validate([
-            'first_name' => 'nullable|string|max:255',
-            'middle_name' => 'nullable|string|max:255',
-            'last_name' => 'nullable|string|max:255',
-            'email' => 'nullable|email|unique:users,email,' . $employee->id,
-            'department' => 'nullable|string|max:255',
-            'position' => 'nullable|string|max:255',
-            'status' => 'nullable|string|max:50',
-            'contact_number' => 'nullable|string|max:255',
-            'gender' => 'nullable|string|max:50',
-            'birth_date' => 'nullable|date',
-            'address' => 'nullable|string',
-            'employment_type' => 'nullable|string|max:255',
-            'salary_grade' => 'nullable|string|max:255',
-            'emergency_contact_person' => 'nullable|string|max:255',
-            'emergency_contact_number' => 'nullable|string|max:255',
-            'bio' => 'nullable|string',
-        ]);
+   public function update(Request $request, User $employee)
+{
+    $validated = $request->validate([
+        'first_name' => 'nullable|string|max:255',
+        'middle_name' => 'nullable|string|max:255',
+        'last_name' => 'nullable|string|max:255',
+        'email' => 'nullable|email|unique:users,email,' . $employee->id,
+        'department' => 'nullable|string|max:255',
+        'position' => 'nullable|string|max:255',
+        'status' => 'nullable|string|max:50',
+        'contact_number' => 'nullable|string|max:255',
+        'gender' => 'nullable|string|max:50',
+        'birth_date' => 'nullable|date',
+        'address' => 'nullable|string',
+        'employment_type' => 'nullable|string|max:255',
+        'salary_grade' => 'nullable|string|max:255',
+        'emergency_contact_person' => 'nullable|string|max:255',
+        'emergency_contact_number' => 'nullable|string|max:255',
+        'bio' => 'nullable|string',
 
-        $validated['name'] = trim(
-            $validated['first_name'] . ' ' .
-                (!empty($validated['middle_name']) ? $validated['middle_name'] . ' ' : '') .
-                $validated['last_name']
-        );
+        // Government Benefits Numbers
+        'sss_number' => 'nullable|string|max:30',
+        'philhealth_number' => 'nullable|string|max:30',
+        'pagibig_number' => 'nullable|string|max:30',
+        'tin' => 'nullable|string|max:30',
+    ]);
 
-        $employee->update($validated);
+    $validated['name'] = trim(
+        $validated['first_name'] . ' ' .
+            (!empty($validated['middle_name']) ? $validated['middle_name'] . ' ' : '') .
+            $validated['last_name']
+    );
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Employee updated successfully.'
-        ]);
-    }
+    $employee->update($validated);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Employee updated successfully.'
+    ]);
+}
     public function destroy(User $employee)
     {
         $employee->update([

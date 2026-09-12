@@ -2071,30 +2071,44 @@
                 </a>
 
 
-                <a class="nav-link" href="{{ route('admin.leaves') }}">
+                <a class="nav-link {{ ($pendingLeaves ?? 0) > 0 ? 'has-notification' : '' }}"
+    href="{{ route('admin.leaves') }}">
 
-                    <span class="nav-icon">
-                        <i class="bi bi-calendar-x"></i>
-                    </span>
+    <span class="nav-icon">
+        <i class="bi bi-calendar-x"></i>
+    </span>
 
-                    <span class="nav-text">
-                        Leave Requests
-                    </span>
+    <span class="nav-text">
+        Leave Requests
+    </span>
 
-                </a>
+    @if (($pendingLeaves ?? 0) > 0)
+        <span class="sidebar-notification-badge">
+            {{ $pendingLeaves }}
+        </span>
+    @endif
+
+</a>
 
 
-                <a class="nav-link" href="{{ route('official_business') }}">
+<a class="nav-link {{ ($pendingOB ?? 0) > 0 ? 'has-notification' : '' }}"
+    href="{{ route('official_business') }}">
 
-                    <span class="nav-icon">
-                        <i class="bi bi-briefcase"></i>
-                    </span>
+    <span class="nav-icon">
+        <i class="bi bi-briefcase"></i>
+    </span>
 
-                    <span class="nav-text">
-                        Official Business (OB)
-                    </span>
+    <span class="nav-text">
+        Official Business (OB)
+    </span>
 
-                </a>
+    @if (($pendingOB ?? 0) > 0)
+        <span class="sidebar-notification-badge">
+            {{ $pendingOB }}
+        </span>
+    @endif
+
+</a>
 
 
                 <a class="nav-link" href="{{ route('holidays.index') }}">
@@ -2136,17 +2150,24 @@
                 </a>
 
 
-                <a class="nav-link" href="{{ route('admin.payslip-concerns.index') }}">
+                <a class="nav-link {{ ($unreadPayslipConcerns ?? 0) > 0 ? 'has-notification' : '' }}"
+    href="{{ route('admin.payslip-concerns.index') }}">
 
-                    <span class="nav-icon">
-                        <i class="bi bi-exclamation-circle"></i>
-                    </span>
+    <span class="nav-icon">
+        <i class="bi bi-exclamation-circle"></i>
+    </span>
 
-                    <span class="nav-text">
-                        Payslip Concerns
-                    </span>
+    <span class="nav-text">
+        Payslip Concerns
+    </span>
 
-                </a>
+    @if (($unreadPayslipConcerns ?? 0) > 0)
+        <span class="sidebar-notification-badge">
+            {{ $unreadPayslipConcerns }}
+        </span>
+    @endif
+
+</a>
 
 
                 <a class="nav-link" href="{{ route('reports') }}">
@@ -2241,13 +2262,46 @@
 
                     <!-- SEARCH -->
 
-                    <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
+                   <form
+    class="d-none d-md-flex ms-3 flex-grow-1 admin-search-form"
+    role="search"
+    autocomplete="off"
+    data-admin-search
+>
+    <div class="admin-search-wrapper">
 
-                        <input class="form-control search-input" type="search"
-                            placeholder="Search users, orders, reports" aria-label="Search">
+        <i class="bi bi-search admin-search-icon"></i>
 
-                    </form>
+        <input
+            id="adminSearchInput"
+            class="form-control search-input admin-search-input"
+            type="search"
+            placeholder="Search Pap Pay..."
+            aria-label="Search Pap Pay"
+            aria-autocomplete="list"
+            aria-controls="adminSearchResults"
+            aria-expanded="false"
+        >
 
+        <button
+            type="button"
+            class="admin-search-clear"
+            id="adminSearchClear"
+            aria-label="Clear search"
+            title="Clear search"
+        >
+            <i class="bi bi-x-lg"></i>
+        </button>
+
+        <div
+            class="admin-search-results"
+            id="adminSearchResults"
+            role="listbox"
+            aria-label="Search results"
+        ></div>
+
+    </div>
+</form>
 
                     <div class="navbar-actions ms-auto">
 
@@ -3186,6 +3240,93 @@
     <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
 
     <script src="../../../../khen/assets/js/main.js"></script>
+
+
+
+
+    <script>
+    window.papPayAdminSearchPages = [
+        {
+            title: 'Home',
+            description: 'Admin dashboard and system overview',
+            keywords: 'home dashboard admin overview',
+            icon: 'bi-speedometer2',
+            url: @json(route('admin-dashboard'))
+        },
+        {
+            title: 'Employees',
+            description: 'Manage employee accounts and records',
+            keywords: 'employee employees staff users accounts personnel',
+            icon: 'bi-people-fill',
+            url: @json(route('employees.index'))
+        },
+        {
+            title: 'Attendance',
+            description: 'Review employee attendance records',
+            keywords: 'attendance time in time out present absent late undertime overtime',
+            icon: 'bi-calendar-check-fill',
+            url: @json(route('attendance_list'))
+        },
+        {
+            title: 'Leave Requests',
+            description: 'Review and approve employee leave requests',
+            keywords: 'leave leaves vacation absence request requests approval approve',
+            icon: 'bi-calendar-x-fill',
+            url: @json(route('admin.leaves'))
+        },
+        {
+            title: 'Official Business',
+            description: 'Manage official business requests',
+            keywords: 'official business ob field work travel request requests',
+            icon: 'bi-briefcase-fill',
+            url: @json(route('official_business'))
+        },
+        {
+            title: 'Holidays',
+            description: 'Manage holidays and holiday settings',
+            keywords: 'holiday holidays calendar dates pay rate',
+            icon: 'bi-calendar-event-fill',
+            url: @json(route('holidays.index'))
+        },
+        {
+            title: 'Payroll',
+            description: 'Process and manage employee payroll',
+            keywords: 'payroll salary salaries wages earnings deductions sss philhealth pagibig hmo',
+            icon: 'bi-cash-stack',
+            url: @json(route('payroll'))
+        },
+        {
+            title: 'Payslips',
+            description: 'View and manage employee payslips',
+            keywords: 'payslip payslips salary slip payment compensation',
+            icon: 'bi-receipt-cutoff',
+            url: @json(route('payslip_list'))
+        },
+        {
+            title: 'Payslip Concerns',
+            description: 'Review employee payslip concerns',
+            keywords: 'payslip concern concerns issue issues complaint complaints payroll problem',
+            icon: 'bi-exclamation-circle-fill',
+            url: @json(route('admin.payslip-concerns.index'))
+        },
+        {
+            title: 'Reports',
+            description: 'Generate HR and payroll reports',
+            keywords: 'report reports analytics statistics summary attendance payroll employee',
+            icon: 'bi-bar-chart-fill',
+            url: @json(route('reports'))
+        },
+        {
+            title: 'Announcements',
+            description: 'Publish and manage system announcements',
+            keywords: 'announcement announcements notice notices news publish message',
+            icon: 'bi-megaphone-fill',
+            url: @json(route('announcements'))
+        }
+    ];
+</script>
+
+<script src="{{ asset('khen/assets/js/admin-search.js') }}"></script>
 
 
 </body>

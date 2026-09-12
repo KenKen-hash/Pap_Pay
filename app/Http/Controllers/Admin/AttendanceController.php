@@ -12,28 +12,38 @@ class AttendanceController extends Controller
 {
     /**
      * Display attendance records.
+     *
+     * If no date is selected, today's attendance is displayed.
      */
     public function index(Request $request)
     {
-        $query = Attendance::with('user');
+        $query = Attendance::with('user', 'holiday');
 
-        // Search by employee name or employee ID
+        /*
+        |--------------------------------------------------------------------------
+        | Search employee
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->filled('search')) {
 
-            $query->whereHas('user', function ($q) use ($request) {
+            $search = $request->search;
 
-                $q->where('name', 'like', '%' . $request->search . '%')
+            $query->whereHas('user', function ($q) use ($search) {
+
+                $q->where('name', 'like', '%' . $search . '%')
                     ->orWhere(
                         'employee_id',
                         'like',
-                        '%' . $request->search . '%'
+                        '%' . $search . '%'
                     );
             });
         }
 
         /*
-        If no date is selected,
-        automatically show today's attendance only.
+        |--------------------------------------------------------------------------
+        | Date filter
+        |--------------------------------------------------------------------------
         */
 
         if ($request->filled('date')) {
@@ -45,8 +55,15 @@ class AttendanceController extends Controller
             $query->whereDate('date', today());
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Attendance list
+        |--------------------------------------------------------------------------
+        */
+
         $attendances = $query
-            ->latest()
+            ->latest('date')
+            ->latest('time_in')
             ->paginate(20)
             ->withQueryString();
 
@@ -58,29 +75,78 @@ class AttendanceController extends Controller
 
 
     /**
-     * Record employee attendance.
+     * Record employee attendance from the kiosk.
      *
-     * Sequence:
+     * RULE:
      *
-     * 1. Morning Time In
-     * 2. Morning Time Out
-     * 3. Afternoon Time In
-     * 4. Afternoon Time Out
+     * 1st scan = Time In
+     * 2nd scan = Time Out
+     * 3rd scan = rejected
+     *
+     * Schedule:
+     *
+     * Monday-Friday:
+     * 8:00 AM - 5:30 PM
+     *
+     * Saturday:
+     * 8:00 AM - 12:00 PM
+     *
+     * Sunday:
+     * No regular attendance schedule.
      */
     public function record(Request $request)
     {
         $request->validate([
-            'employee_id' => 'required|exists:users,id'
+            'employee_id' => 'required|exists:users,id',
         ]);
 
         /*
-        Find or create today's attendance record.
+        |--------------------------------------------------------------------------
+        | Current date and time
+        |--------------------------------------------------------------------------
+        */
+
+        $now = now();
+
+        $today = $now->toDateString();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Find employee
+        |--------------------------------------------------------------------------
+        */
+
+        $user = \App\Models\User::findOrFail(
+            $request->employee_id
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Sunday protection
+        |--------------------------------------------------------------------------
+        |
+        | Sunday is not a regular working day.
+        |
+        */
+
+        if ($now->isSunday()) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Attendance is not scheduled on Sundays.',
+            ], 422);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Find or create today's attendance
+        |--------------------------------------------------------------------------
         */
 
         $attendance = Attendance::firstOrCreate(
             [
-                'user_id' => $request->employee_id,
-                'date' => today()
+                'user_id' => $user->id,
+                'date' => $today,
             ],
             [
                 'hours_worked' => 0,
@@ -91,429 +157,329 @@ class AttendanceController extends Controller
             ]
         );
 
-        $user = $attendance->user;
-
         /*
-        ============================================================
-        HOLIDAY CHECK
-        ============================================================
+        |--------------------------------------------------------------------------
+        | Holiday detection
+        |--------------------------------------------------------------------------
+        |
+        | Holiday::isHoliday() should determine whether the date is a
+        | holiday applicable to this employee's department.
+        |
         */
 
         $holiday = Holiday::isHoliday(
-            today(),
+            $today,
             $user->department
         );
 
         if ($holiday && !$attendance->holiday_id) {
+
             $attendance->holiday_id = $holiday->id;
         }
 
         /*
-        Current time.
+        |--------------------------------------------------------------------------
+        | FIRST SCAN = TIME IN
+        |--------------------------------------------------------------------------
         */
 
-        $now = now();
+        if (!$attendance->time_in) {
 
-        $type = '';
-
-
-        /*
-        ============================================================
-        1. MORNING TIME IN / AFTERNOON TIME IN
-        ============================================================
-        */
-
-        if (
-            !$attendance->morning_time_in &&
-            !$attendance->afternoon_time_in
-        ) {
+            $attendance->time_in = $now;
 
             /*
-            If the first scan is at 12:00 PM or later,
-            treat it as Afternoon Time In.
+            |--------------------------------------------------------------------------
+            | Calculate late
+            |--------------------------------------------------------------------------
+            |
+            | Official start:
+            | 8:00 AM
+            |
+            | Grace period:
+            | 15 minutes
+            |
+            | 8:00 - 8:15 = not late
+            |
+            | Once employee goes beyond the 15-minute allowance,
+            | the ENTIRE period from 8:00 AM is counted as late.
+            |
+            | Example:
+            |
+            | 8:10 AM = 0 late minutes
+            | 8:15 AM = 0 late minutes
+            | 8:16 AM = 16 late minutes
+            | 8:30 AM = 30 late minutes
+            | 9:00 AM = 60 late minutes
+            |
             */
 
-            if ($now->hour >= 12) {
+            $startTime = $this->getStartTime($now);
 
-                $attendance->afternoon_time_in = $now;
+            $graceTime = $startTime->copy()
+                ->addMinutes(15);
 
-                /*
-                Afternoon late:
-                After 1:00 PM = Late.
-                */
+            if ($now->greaterThan($graceTime)) {
 
-                $afternoonStart = $now->copy()
-                    ->setTime(13, 0, 0);
-
-                if ($now->greaterThan($afternoonStart)) {
-
-                    $attendance->late_minutes =
-                        $now->diffInMinutes($afternoonStart);
-
-                } else {
-
-                    $attendance->late_minutes = 0;
-                }
-
-                $attendance->status = 'Present';
-
-                $type = 'Afternoon Time In';
+                $attendance->late_minutes =
+                    $startTime->diffInMinutes($now);
 
             } else {
 
-                /*
-                Morning Time In.
-                */
-
-                $attendance->morning_time_in = $now;
-
-                /*
-                Morning late:
-                After 8:00 AM = Late.
-                */
-
-                $morningStart = $now->copy()
-                    ->setTime(8, 0, 0);
-
-                if ($now->greaterThan($morningStart)) {
-
-                    $attendance->late_minutes =
-                        $now->diffInMinutes($morningStart);
-
-                } else {
-
-                    $attendance->late_minutes = 0;
-                }
-
-                $attendance->status = 'Present';
-
-                $type = 'Morning Time In';
-            }
-        }
-
-
-        /*
-        ============================================================
-        2. MORNING TIME OUT
-        ============================================================
-        */
-
-        elseif (!$attendance->morning_time_out) {
-
-            $attendance->morning_time_out = $now;
-
-            /*
-            Calculate morning worked minutes.
-            */
-
-            if ($attendance->morning_time_in) {
-
-                $morningMinutes =
-                    $attendance->morning_time_in
-                        ->diffInMinutes(
-                            $attendance->morning_time_out
-                        );
-
-                /*
-                Morning undertime:
-                Leaving before 12:00 PM.
-                */
-
-                $morningEnd = $now->copy()
-                    ->setTime(12, 0, 0);
-
-                if ($now->lessThan($morningEnd)) {
-
-                    $attendance->undertime_minutes =
-                        $now->diffInMinutes($morningEnd);
-
-                } else {
-
-                    $attendance->undertime_minutes = 0;
-                }
-
-                /*
-                Current hours worked.
-                */
-
-                $attendance->hours_worked =
-                    round($morningMinutes / 60, 2);
+                $attendance->late_minutes = 0;
             }
 
             /*
-            Update status.
+            |--------------------------------------------------------------------------
+            | Update initial status
+            |--------------------------------------------------------------------------
             */
 
             $this->updateStatus($attendance);
 
-            $type = 'Morning Time Out';
+            $attendance->save();
+
+            return response()->json([
+
+                'success' => true,
+
+                'message' => 'Time In recorded successfully.',
+
+                'type' => 'Time In',
+
+                'time' => $now->format('h:i:s A'),
+
+                'employee' => $user->name,
+
+                'status' => $attendance->status,
+
+                'hours_worked' => number_format(
+                    $attendance->hours_worked ?? 0,
+                    2
+                ),
+
+                'late_minutes' =>
+                    $attendance->late_minutes ?? 0,
+
+                'undertime_minutes' =>
+                    $attendance->undertime_minutes ?? 0,
+
+                'overtime_minutes' =>
+                    $attendance->overtime_minutes ?? 0,
+
+                'late' =>
+                    $this->formatMinutes(
+                        $attendance->late_minutes ?? 0
+                    ),
+
+                'undertime' =>
+                    $this->formatMinutes(
+                        $attendance->undertime_minutes ?? 0
+                    ),
+
+                'overtime' =>
+                    $this->formatMinutes(
+                        $attendance->overtime_minutes ?? 0
+                    ),
+            ]);
         }
 
-
         /*
-        ============================================================
-        3. AFTERNOON TIME IN
-        ============================================================
+        |--------------------------------------------------------------------------
+        | SECOND SCAN = TIME OUT
+        |--------------------------------------------------------------------------
         */
 
-        elseif (!$attendance->afternoon_time_in) {
+        if (!$attendance->time_out) {
 
-            $attendance->afternoon_time_in = $now;
+            $attendance->time_out = $now;
 
             /*
-            Afternoon late:
-            After 1:00 PM = Late.
+            |--------------------------------------------------------------------------
+            | Calculate total worked minutes
+            |--------------------------------------------------------------------------
             */
 
-            $afternoonStart = $now->copy()
-                ->setTime(13, 0, 0);
-
-            $afternoonLateMinutes = 0;
-
-            if ($now->greaterThan($afternoonStart)) {
-
-                $afternoonLateMinutes =
-                    $now->diffInMinutes($afternoonStart);
-            }
+            $workedMinutes =
+                $attendance->time_in
+                    ->diffInMinutes(
+                        $attendance->time_out
+                    );
 
             /*
-            Add afternoon late to existing
-            morning late minutes.
-            */
-
-            $attendance->late_minutes =
-                ($attendance->late_minutes ?? 0)
-                + $afternoonLateMinutes;
-
-            /*
-            Update status.
-            */
-
-            $this->updateStatus($attendance);
-
-            $type = 'Afternoon Time In';
-        }
-
-
-        /*
-        ============================================================
-        4. AFTERNOON TIME OUT
-        ============================================================
-        */
-
-        elseif (!$attendance->afternoon_time_out) {
-
-            $attendance->afternoon_time_out = $now;
-
-            $totalMinutes = 0;
-
-
-            /*
-            --------------------------------------------------------
-            MORNING HOURS
-            --------------------------------------------------------
-            */
-
-            if (
-                $attendance->morning_time_in &&
-                $attendance->morning_time_out
-            ) {
-
-                $totalMinutes +=
-                    $attendance->morning_time_in
-                        ->diffInMinutes(
-                            $attendance->morning_time_out
-                        );
-            }
-
-
-            /*
-            --------------------------------------------------------
-            AFTERNOON HOURS
-            --------------------------------------------------------
-            */
-
-            if (
-                $attendance->afternoon_time_in &&
-                $attendance->afternoon_time_out
-            ) {
-
-                $totalMinutes +=
-                    $attendance->afternoon_time_in
-                        ->diffInMinutes(
-                            $attendance->afternoon_time_out
-                        );
-            }
-
-
-            /*
-            ========================================================
-            TOTAL HOURS WORKED
-            ========================================================
+            |--------------------------------------------------------------------------
+            | Store total worked hours
+            |--------------------------------------------------------------------------
             */
 
             $attendance->hours_worked =
-                round($totalMinutes / 60, 2);
-
+                round($workedMinutes / 60, 2);
 
             /*
-            ========================================================
-            AFTERNOON UNDERTIME
-            ========================================================
-
-            Normal afternoon schedule:
-            1:00 PM - 5:00 PM
-
-            Leaving before 5:00 PM = Undertime.
+            |--------------------------------------------------------------------------
+            | Calculate undertime
+            |--------------------------------------------------------------------------
+            |
+            | Weekdays:
+            | Expected end = 5:30 PM
+            |
+            | Saturday:
+            | Expected end = 12:00 PM
+            |
             */
 
-            $afternoonEnd = $now->copy()
-                ->setTime(17, 0, 0);
+            $endTime = $this->getEndTime($now);
 
-            $afternoonUndertimeMinutes = 0;
+            if ($now->lessThan($endTime)) {
 
-            if ($now->lessThan($afternoonEnd)) {
+                $attendance->undertime_minutes =
+                    $now->diffInMinutes($endTime);
 
-                $afternoonUndertimeMinutes =
-                    $now->diffInMinutes($afternoonEnd);
+            } else {
+
+                $attendance->undertime_minutes = 0;
             }
 
-
             /*
-            Add afternoon undertime to morning undertime.
+            |--------------------------------------------------------------------------
+            | Calculate overtime
+            |--------------------------------------------------------------------------
+            |
+            | Weekdays:
+            | after 5:30 PM
+            |
+            | Saturday:
+            | after 12:00 PM
+            |
             */
 
-            $attendance->undertime_minutes =
-                ($attendance->undertime_minutes ?? 0)
-                + $afternoonUndertimeMinutes;
-
-
-            /*
-            ========================================================
-            OVERTIME
-            ========================================================
-
-            Normal duty hours:
-
-            8:00 AM - 12:00 PM = 4 hours
-            1:00 PM - 5:00 PM  = 4 hours
-
-            Total = 8 hours.
-
-            Any actual worked time above 8 hours
-            becomes overtime.
-            */
-
-            $normalDutyMinutes = 8 * 60;
-
-            if ($totalMinutes > $normalDutyMinutes) {
+            if ($now->greaterThan($endTime)) {
 
                 $attendance->overtime_minutes =
-                    $totalMinutes - $normalDutyMinutes;
+                    $endTime->diffInMinutes($now);
 
             } else {
 
                 $attendance->overtime_minutes = 0;
             }
 
-
             /*
-            ========================================================
-            UPDATE STATUS
-            ========================================================
+            |--------------------------------------------------------------------------
+            | Holiday status
+            |--------------------------------------------------------------------------
             */
 
             $this->updateStatus($attendance);
 
-            $type = 'Afternoon Time Out';
-        }
-
-
-        /*
-        ============================================================
-        ATTENDANCE ALREADY COMPLETED
-        ============================================================
-        */
-
-        else {
+            $attendance->save();
 
             return response()->json([
-                'success' => false,
-                'message' => 'Attendance already completed today.'
+
+                'success' => true,
+
+                'message' => 'Time Out recorded successfully.',
+
+                'type' => 'Time Out',
+
+                'time' => $now->format('h:i:s A'),
+
+                'employee' => $user->name,
+
+                'status' => $attendance->status,
+
+                'hours_worked' => number_format(
+                    $attendance->hours_worked ?? 0,
+                    2
+                ),
+
+                'late_minutes' =>
+                    $attendance->late_minutes ?? 0,
+
+                'undertime_minutes' =>
+                    $attendance->undertime_minutes ?? 0,
+
+                'overtime_minutes' =>
+                    $attendance->overtime_minutes ?? 0,
+
+                'late' =>
+                    $this->formatMinutes(
+                        $attendance->late_minutes ?? 0
+                    ),
+
+                'undertime' =>
+                    $this->formatMinutes(
+                        $attendance->undertime_minutes ?? 0
+                    ),
+
+                'overtime' =>
+                    $this->formatMinutes(
+                        $attendance->overtime_minutes ?? 0
+                    ),
             ]);
         }
 
-
         /*
-        ============================================================
-        SAVE
-        ============================================================
-        */
-
-        $attendance->save();
-
-
-        /*
-        ============================================================
-        RESPONSE
-        ============================================================
+        |--------------------------------------------------------------------------
+        | THIRD SCAN
+        |--------------------------------------------------------------------------
         */
 
         return response()->json([
 
-            'success' => true,
+            'success' => false,
 
             'message' =>
-                $type . ' recorded successfully.',
+                'Attendance already completed for today.',
 
-            'type' => $type,
+            'type' => 'Completed',
 
             'time' =>
                 $now->format('h:i:s A'),
 
             'employee' =>
-                $attendance->user->name,
+                $user->name,
 
             'status' =>
                 $attendance->status,
+        ], 422);
+    }
 
-            'hours_worked' =>
-                number_format(
-                    $attendance->hours_worked ?? 0,
-                    2
-                ),
 
-            'late_minutes' =>
-                $attendance->late_minutes ?? 0,
+    /**
+     * Get the employee's official starting time.
+     *
+     * Monday-Friday = 8:00 AM
+     * Saturday = 8:00 AM
+     */
+    private function getStartTime(Carbon $date)
+    {
+        return $date->copy()
+            ->setTime(8, 0, 0);
+    }
 
-            'undertime_minutes' =>
-                $attendance->undertime_minutes ?? 0,
 
-            'overtime_minutes' =>
-                $attendance->overtime_minutes ?? 0,
+    /**
+     * Get the employee's official ending time.
+     *
+     * Monday-Friday = 5:30 PM
+     * Saturday = 12:00 PM
+     */
+    private function getEndTime(Carbon $date)
+    {
+        if ($date->isSaturday()) {
 
-            'late' =>
-                $this->formatMinutes(
-                    $attendance->late_minutes ?? 0
-                ),
+            return $date->copy()
+                ->setTime(12, 0, 0);
+        }
 
-            'undertime' =>
-                $this->formatMinutes(
-                    $attendance->undertime_minutes ?? 0
-                ),
-
-            'overtime' =>
-                $this->formatMinutes(
-                    $attendance->overtime_minutes ?? 0
-                ),
-        ]);
+        return $date->copy()
+            ->setTime(17, 30, 0);
     }
 
 
     /**
      * Determine attendance status.
      *
-     * Examples:
+     * Possible statuses:
      *
      * Present
      * Late
@@ -524,64 +490,83 @@ class AttendanceController extends Controller
      * Undertime & Overtime
      * Late, Undertime & Overtime
      * Worked Holiday
+     * Worked Holiday & Late
+     * Worked Holiday & Undertime
+     * Worked Holiday & Overtime
+     * Worked Holiday & Late & Undertime
+     * Worked Holiday & Late & Overtime
+     * Worked Holiday & Undertime & Overtime
+     * Worked Holiday & Late & Undertime & Overtime
      */
     private function updateStatus(Attendance $attendance)
     {
         $statuses = [];
 
         /*
-        Late
+        |--------------------------------------------------------------------------
+        | Holiday
+        |--------------------------------------------------------------------------
+        */
+
+        if ($attendance->holiday_id) {
+
+            $statuses[] = 'Worked Holiday';
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Late
+        |--------------------------------------------------------------------------
         */
 
         if (($attendance->late_minutes ?? 0) > 0) {
+
             $statuses[] = 'Late';
         }
 
         /*
-        Undertime
+        |--------------------------------------------------------------------------
+        | Undertime
+        |--------------------------------------------------------------------------
         */
 
         if (($attendance->undertime_minutes ?? 0) > 0) {
+
             $statuses[] = 'Undertime';
         }
 
         /*
-        Overtime
+        |--------------------------------------------------------------------------
+        | Overtime
+        |--------------------------------------------------------------------------
         */
 
         if (($attendance->overtime_minutes ?? 0) > 0) {
+
             $statuses[] = 'Overtime';
         }
 
         /*
-        No attendance issue.
+        |--------------------------------------------------------------------------
+        | No issue
+        |--------------------------------------------------------------------------
         */
 
         if (empty($statuses)) {
 
-            if ($attendance->holiday_id) {
-
-                $attendance->status = 'Worked Holiday';
-
-            } else {
-
-                $attendance->status = 'Present';
-            }
+            $attendance->status = 'Present';
 
             return;
         }
 
         /*
-        Combine statuses.
-
-        Example:
-        Late & Undertime
-        Late & Overtime
-        Undertime & Overtime
-        Late, Undertime & Overtime
+        |--------------------------------------------------------------------------
+        | Combine statuses
+        |--------------------------------------------------------------------------
         */
 
-        $attendance->status = implode(' & ', $statuses);
+        $attendance->status =
+            implode(' & ', $statuses);
     }
 
 
@@ -600,14 +585,22 @@ class AttendanceController extends Controller
         $minutes = (int) $minutes;
 
         if ($minutes <= 0) {
+
             return '0m';
         }
 
-        $hours = intdiv($minutes, 60);
+        $hours = intdiv(
+            $minutes,
+            60
+        );
 
-        $remainingMinutes = $minutes % 60;
+        $remainingMinutes =
+            $minutes % 60;
 
-        if ($hours > 0 && $remainingMinutes > 0) {
+        if (
+            $hours > 0 &&
+            $remainingMinutes > 0
+        ) {
 
             return $hours . 'h ' .
                 $remainingMinutes . 'm';
@@ -616,9 +609,8 @@ class AttendanceController extends Controller
 
             return $hours . 'h';
 
-        } else {
-
-            return $remainingMinutes . 'm';
         }
+
+        return $remainingMinutes . 'm';
     }
 }

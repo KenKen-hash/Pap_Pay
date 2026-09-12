@@ -246,6 +246,18 @@ Route::middleware(['auth', 'role:admin'])
         Route::post('/users/admin/setup', [UserWizardController::class, 'adminSetup'])
             ->name('users.admin.setup');
 
+        Route::get(
+            '/users/create/department-head',
+            [UserWizardController::class, 'departmentHeadForm']
+        )
+            ->name('users.department-head');
+
+        Route::post(
+            '/users/department-head/setup',
+            [UserWizardController::class, 'departmentHeadSetup']
+        )
+            ->name('users.department-head.setup');
+
 
 
         Route::get(
@@ -456,56 +468,54 @@ Route::middleware(['auth', 'role:admin'])
 
 
         // =========================================================
-// PART-TIME SUBJECT ASSIGNMENT
-// =========================================================
+        // PART-TIME SUBJECT ASSIGNMENT
+        // =========================================================
 
-Route::get(
-    '/subject-assignment',
-    [PartTimeSubjectController::class, 'index']
-)->name('subject_assignment');
+        Route::get(
+            '/subject-assignment',
+            [PartTimeSubjectController::class, 'index']
+        )->name('subject_assignment');
 
-Route::post(
-    '/subject-assignment',
-    [PartTimeSubjectController::class, 'store']
-)->name('subject_assignment.store');
+        Route::post(
+            '/subject-assignment',
+            [PartTimeSubjectController::class, 'store']
+        )->name('subject_assignment.store');
 
-Route::get(
-    '/subject-assignment/{partTimeSubject}/edit',
-    [PartTimeSubjectController::class, 'edit']
-)->name('subject_assignment.edit');
+        Route::get(
+            '/subject-assignment/{partTimeSubject}/edit',
+            [PartTimeSubjectController::class, 'edit']
+        )->name('subject_assignment.edit');
 
-Route::put(
-    '/subject-assignment/{partTimeSubject}',
-    [PartTimeSubjectController::class, 'update']
-)->name('subject_assignment.update');
+        Route::put(
+            '/subject-assignment/{partTimeSubject}',
+            [PartTimeSubjectController::class, 'update']
+        )->name('subject_assignment.update');
 
-Route::delete(
-    '/subject-assignment/{partTimeSubject}',
-    [PartTimeSubjectController::class, 'destroy']
-)->name('subject_assignment.destroy');
-
-
-Route::get(
-    '/part-time-kiosk',
-    [PartTimeKioskController::class, 'index']
-)->name('part_time_kiosk');
-
-Route::get(
-    '/part-time-attendance-kiosk',
-    [PartTimeAttendanceKioskController::class, 'index']
-)->name('part_time_attendance_kiosk');
-
-Route::get(
-    '/part-time-attendance/faces',
-    [PartTimeAttendanceKioskController::class, 'faces']
-)->name('part_time_attendance_kiosk.faces');
-
-Route::post(
-    '/part-time-attendance/record',
-    [PartTimeAttendanceKioskController::class, 'record']
-)->name('part_time_attendance_kiosk.record');
+        Route::delete(
+            '/subject-assignment/{partTimeSubject}',
+            [PartTimeSubjectController::class, 'destroy']
+        )->name('subject_assignment.destroy');
 
 
+        Route::get(
+            '/part-time-kiosk',
+            [PartTimeKioskController::class, 'index']
+        )->name('part_time_kiosk');
+
+        Route::get(
+            '/part-time-attendance-kiosk',
+            [PartTimeAttendanceKioskController::class, 'index']
+        )->name('part_time_attendance_kiosk');
+
+        Route::get(
+            '/part-time-attendance/faces',
+            [PartTimeAttendanceKioskController::class, 'faces']
+        )->name('part_time_attendance_kiosk.faces');
+
+        Route::post(
+            '/part-time-attendance/record',
+            [PartTimeAttendanceKioskController::class, 'record']
+        )->name('part_time_attendance_kiosk.record');
     });
 
 

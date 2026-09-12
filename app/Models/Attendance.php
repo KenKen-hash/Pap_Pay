@@ -15,11 +15,24 @@ class Attendance extends Model
 
         'date',
 
-        'morning_time_in',
-        'morning_time_out',
+        /*
+        |--------------------------------------------------------------------------
+        | Two-Scan Attendance
+        |--------------------------------------------------------------------------
+        |
+        | First kiosk scan  = Time In
+        | Second kiosk scan = Time Out
+        |
+        */
 
-        'afternoon_time_in',
-        'afternoon_time_out',
+        'time_in',
+        'time_out',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Attendance Calculations
+        |--------------------------------------------------------------------------
+        */
 
         'hours_worked',
 
@@ -27,43 +40,101 @@ class Attendance extends Model
         'undertime_minutes',
         'overtime_minutes',
 
+        /*
+        |--------------------------------------------------------------------------
+        | Attendance Status
+        |--------------------------------------------------------------------------
+        */
+
         'status',
 
         'remarks',
     ];
 
+
     protected $casts = [
+
+        /*
+        |--------------------------------------------------------------------------
+        | Date
+        |--------------------------------------------------------------------------
+        */
 
         'date' => 'date',
 
-        'morning_time_in' => 'datetime',
-        'morning_time_out' => 'datetime',
 
-        'afternoon_time_in' => 'datetime',
-        'afternoon_time_out' => 'datetime',
+        /*
+        |--------------------------------------------------------------------------
+        | Two-Scan Times
+        |--------------------------------------------------------------------------
+        */
+
+        'time_in' => 'datetime',
+        'time_out' => 'datetime',
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Worked Hours
+        |--------------------------------------------------------------------------
+        */
 
         'hours_worked' => 'decimal:2',
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Attendance Calculations
+        |--------------------------------------------------------------------------
+        */
+
         'late_minutes' => 'integer',
+
         'undertime_minutes' => 'integer',
+
         'overtime_minutes' => 'integer',
     ];
 
-    protected $with = ['user', 'holiday'];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Automatically Load Relationships
+    |--------------------------------------------------------------------------
+    |
+    | This allows attendance records to automatically include:
+    |
+    | $attendance->user
+    | $attendance->holiday
+    |
+    */
+
+    protected $with = [
+        'user',
+        'holiday',
+    ];
+
 
     /**
      * Attendance belongs to one employee.
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(
+            User::class,
+            'user_id'
+        );
     }
+
 
     /**
      * Attendance may belong to one holiday.
      */
     public function holiday(): BelongsTo
     {
-        return $this->belongsTo(Holiday::class);
+        return $this->belongsTo(
+            Holiday::class,
+            'holiday_id'
+        );
     }
 }
+
