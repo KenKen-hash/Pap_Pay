@@ -12,6 +12,8 @@
 
     <title>Payslip | Pap Pay</title>
 
+
+    <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
     <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../../khen/assets/css/style.css">
@@ -406,135 +408,121 @@
     <!-- ============================================================
          MAIN
          ============================================================ -->
+<div class="admin-main">
 
-    <div class="admin-main">
+        
+         <nav class="navbar admin-navbar navbar-expand bg-white">
 
+                <div class="container-fluid px-3 px-lg-4">
 
-        <!-- ========================================================
-             NAVBAR
-             ======================================================== -->
+                    <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
+                        aria-expanded="true" aria-label="Toggle sidebar">
 
-        <nav class="navbar admin-navbar navbar-expand bg-white">
-
-            <div class="container-fluid px-3 px-lg-4">
-
-                <button class="sidebar-toggle"
-                        type="button"
-                        data-sidebar-toggle
-                        aria-controls="adminSidebar"
-                        aria-expanded="true"
-                        aria-label="Toggle sidebar">
-
-                    <span></span>
-                    <span></span>
-                    <span></span>
-
-                </button>
-
-
-                <form class="d-none d-md-flex ms-3 flex-grow-1"
-                      role="search">
-
-                    <input class="form-control search-input"
-                           type="search"
-                           placeholder="Search users, orders, reports"
-                           aria-label="Search">
-
-                </form>
-
-
-                <div class="navbar-actions ms-auto">
-
-
-                    <!-- THEME -->
-
-                    <button class="icon-button theme-toggle"
-                            type="button"
-                            data-theme-toggle
-                            aria-label="Switch color theme"
-                            title="Switch color theme">
-
-                        <i class="bi bi-moon-stars"
-                           data-theme-icon
-                           aria-hidden="true"></i>
+                        <span></span>
+                        <span></span>
+                        <span></span>
 
                     </button>
+             <form
+    class="d-none d-md-flex ms-3 flex-grow-1 admin-search-form"
+    role="search"
+    autocomplete="off"
+    data-admin-search
+>
+    <div class="admin-search-wrapper">
+
+        <i class="bi bi-search admin-search-icon"></i>
+
+        <input
+            id="adminSearchInput"
+            class="form-control search-input admin-search-input"
+            type="search"
+            placeholder="Search Pap Pay..."
+            aria-label="Search Pap Pay"
+            aria-autocomplete="list"
+            aria-controls="adminSearchResults"
+            aria-expanded="false"
+        >
+
+        <button
+            type="button"
+            class="admin-search-clear"
+            id="adminSearchClear"
+            aria-label="Clear search"
+            title="Clear search"
+        >
+            <i class="bi bi-x-lg"></i>
+        </button>
+
+        <div
+            class="admin-search-results"
+            id="adminSearchResults"
+            role="listbox"
+            aria-label="Search results"
+        ></div>
+
+    </div>
+</form>
+
+                    <div class="navbar-actions ms-auto">
+
 
 
                     <!-- NOTIFICATIONS -->
 
-                    <div class="dropdown">
+                      <div class="dropdown">
 
-                        <button class="icon-button"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                aria-label="Notifications">
+                            <button class="icon-button" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false" aria-label="Notifications">
 
-                            @if (($unreadNotifications ?? 0) > 0)
+                                @if (($unreadNotifications ?? 0) > 0)
+                                    <span class="notification-dot"></span>
+                                @endif
 
-                                <span class="notification-dot"></span>
+                                <i class="bi bi-bell" aria-hidden="true"></i>
+                            </button>
 
-                            @endif
+                            <div class="dropdown-menu dropdown-menu-end notification-menu">
 
-                            <i class="bi bi-bell"
-                               aria-hidden="true"></i>
-
-                        </button>
-
-
-                        <div class="dropdown-menu dropdown-menu-end notification-menu">
-
-                            <div class="dropdown-header fw-bold text-body">
-                                Notifications
-                            </div>
-
-
-                            @forelse($notifications ?? [] as $notification)
-
-                                <a class="dropdown-item {{ !$notification->is_read ? 'notification-unread' : '' }}"
-                                   href="{{ route('admin.notifications.read', $notification->id) }}">
-
-                                    <span class="notification-title">
-                                        {{ $notification->title }}
-                                    </span>
-
-                                    <span class="notification-message">
-                                        {{ $notification->message }}
-                                    </span>
-
-                                    <span class="notification-time">
-                                        {{ $notification->created_at->diffForHumans() }}
-                                    </span>
-
-                                </a>
-
-                            @empty
-
-                                <div class="dropdown-item text-muted text-center py-3">
-
-                                    <i class="bi bi-bell-slash"></i>
-
-                                    <br>
-
-                                    No notifications
-
+                                <div class="dropdown-header fw-bold text-body">
+                                    Notifications
                                 </div>
 
-                            @endforelse
+                                @forelse($notifications ?? [] as $notification)
+                                    <a class="dropdown-item {{ !$notification->is_read ? 'notification-unread' : '' }}"
+                                        href="{{ route('admin.notifications.read', $notification->id) }}">
 
+                                        <span class="notification-title">
+                                            {{ $notification->title }}
+                                        </span>
 
-                            <div class="dropdown-divider"></div>
+                                        <span class="notification-message">
+                                            {{ $notification->message }}
+                                        </span>
 
+                                        <span class="notification-time">
+                                            {{ $notification->created_at->diffForHumans() }}
+                                        </span>
 
-                            <a href="{{ route('admin.notifications') }}"
-                               class="dropdown-item text-center">
+                                    </a>
 
-                                View all notifications
+                                @empty
 
-                            </a>
+                                    <div class="dropdown-item text-muted text-center py-3">
+                                        <i class="bi bi-bell-slash"></i>
+                                        <br>
+                                        No notifications
+                                    </div>
+                                @endforelse
 
-                        </div>
+                                <div class="dropdown-divider"></div>
+
+                                <a href="{{ route('admin.notifications') }}" class="dropdown-item text-center">
+                                    View all notifications
+                                </a>
+
+                            </div>
+            
 
                     </div>
 
@@ -1235,9 +1223,100 @@
 
 </div>
 
+    <script>
+    window.papPayAdminSearchPages = [
+        {
+            title: 'Home',
+            description: 'Admin dashboard and system overview',
+            keywords: 'home dashboard admin overview',
+            icon: 'bi-speedometer2',
+            url: @json(route('admin-dashboard'))
+        },
+        {
+            title: 'Employees',
+            description: 'Manage employee accounts and records',
+            keywords: 'employee employees staff users accounts personnel',
+            icon: 'bi-people-fill',
+            url: @json(route('employees.index'))
+        },
+        {
+            title: 'Attendance',
+            description: 'Review employee attendance records',
+            keywords: 'attendance time in time out present absent late undertime overtime',
+            icon: 'bi-calendar-check-fill',
+            url: @json(route('attendance_list'))
+        },
+        {
+            title: 'Leave Requests',
+            description: 'Review and approve employee leave requests',
+            keywords: 'leave leaves vacation absence request requests approval approve',
+            icon: 'bi-calendar-x-fill',
+            url: @json(route('admin.leaves'))
+        },
+        {
+            title: 'Official Business',
+            description: 'Manage official business requests',
+            keywords: 'official business ob field work travel request requests',
+            icon: 'bi-briefcase-fill',
+            url: @json(route('official_business'))
+        },
+        {
+            title: 'Holidays',
+            description: 'Manage holidays and holiday settings',
+            keywords: 'holiday holidays calendar dates pay rate',
+            icon: 'bi-calendar-event-fill',
+            url: @json(route('holidays.index'))
+        },
+        {
+            title: 'Payroll',
+            description: 'Process and manage employee payroll',
+            keywords: 'payroll salary salaries wages earnings deductions sss philhealth pagibig hmo',
+            icon: 'bi-cash-stack',
+            url: @json(route('payroll'))
+        },
+        {
+            title: 'Payslips',
+            description: 'View and manage employee payslips',
+            keywords: 'payslip payslips salary slip payment compensation',
+            icon: 'bi-receipt-cutoff',
+            url: @json(route('payslip_list'))
+        },
+        {
+            title: 'Payslip Concerns',
+            description: 'Review employee payslip concerns',
+            keywords: 'payslip concern concerns issue issues complaint complaints payroll problem',
+            icon: 'bi-exclamation-circle-fill',
+            url: @json(route('admin.payslip-concerns.index'))
+        },
+        {
+            title: 'Reports',
+            description: 'Generate HR and payroll reports',
+            keywords: 'report reports analytics statistics summary attendance payroll employee',
+            icon: 'bi-bar-chart-fill',
+            url: @json(route('reports'))
+        },
+        {
+            title: 'Announcements',
+            description: 'Publish and manage system announcements',
+            keywords: 'announcement announcements notice notices news publish message',
+            icon: 'bi-megaphone-fill',
+            url: @json(route('announcements'))
+        }
+    ];
+</script>
+
 
 <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
 <script src="../../../../khen/assets/js/main.js"></script>
+=======
+<script src="{{ asset('khen/assets/js/payslip-search.js') }}"></script>
+    <script>
+        const employeeContainer =
+            document.getElementById('employeeContainer');
+
+        const departmentCheckboxes =
+            document.querySelectorAll('.department-checkbox');
+
 
 
 <script>

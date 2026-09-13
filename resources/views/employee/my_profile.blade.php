@@ -9,8 +9,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="adminHMD professional admin dashboard template">
-    <title>Profile | adminHMD</title>
+    <title>Profile | PAP Pay</title>
 
+
+     <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('khen/assets/css/bootstrap.min.css') }}">
 
@@ -1012,20 +1014,6 @@
                     <!-- NAVBAR ACTIONS -->
 
                     <div class="navbar-actions ms-auto">
-
-                        <!-- THEME -->
-
-                        <button class="icon-button theme-toggle"
-                            type="button"
-                            data-theme-toggle
-                            aria-label="Switch color theme"
-                            title="Switch color theme">
-
-                            <i class="bi bi-moon-stars"
-                                data-theme-icon
-                                aria-hidden="true"></i>
-
-                        </button>
 
 
                         <!-- NOTIFICATIONS -->

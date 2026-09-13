@@ -13,6 +13,8 @@
 
     <title>Official Business | Pap Pay</title>
 
+
+    <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
     <link rel="stylesheet"
         href="../../../../khen/assets/css/bootstrap.min.css">
 
@@ -1226,34 +1228,54 @@
                     </button>
 
 
-                    <form class="d-none d-md-flex ms-3 flex-grow-1"
-                        role="search">
+                   <!-- SEARCH -->
 
-                        <input class="form-control search-input"
-                            type="search"
-                            placeholder="Search users, orders, reports"
-                            aria-label="Search">
+                   <form
+    class="d-none d-md-flex ms-3 flex-grow-1 admin-search-form"
+    role="search"
+    autocomplete="off"
+    data-admin-search
+>
+    <div class="admin-search-wrapper">
 
-                    </form>
+        <i class="bi bi-search admin-search-icon"></i>
 
+        <input
+            id="adminSearchInput"
+            class="form-control search-input admin-search-input"
+            type="search"
+            placeholder="Search Pap Pay..."
+            aria-label="Search Pap Pay"
+            aria-autocomplete="list"
+            aria-controls="adminSearchResults"
+            aria-expanded="false"
+        >
+
+        <button
+            type="button"
+            class="admin-search-clear"
+            id="adminSearchClear"
+            aria-label="Clear search"
+            title="Clear search"
+        >
+            <i class="bi bi-x-lg"></i>
+        </button>
+
+        <div
+            class="admin-search-results"
+            id="adminSearchResults"
+            role="listbox"
+            aria-label="Search results"
+        ></div>
+
+    </div>
+</form>
 
                     <div class="navbar-actions ms-auto">
 
 
-                        <!-- THEME -->
 
-                        <button class="icon-button theme-toggle"
-                            type="button"
-                            data-theme-toggle
-                            aria-label="Switch color theme"
-                            title="Switch color theme">
-
-                            <i class="bi bi-moon-stars"
-                                data-theme-icon
-                                aria-hidden="true"></i>
-
-                        </button>
-
+                        
 
                         <!-- NOTIFICATIONS -->
 
@@ -2608,6 +2630,90 @@
     <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
 
     <script src="../../../../khen/assets/js/main.js"></script>
+
+     <script>
+    window.papPayAdminSearchPages = [
+        {
+            title: 'Home',
+            description: 'Admin dashboard and system overview',
+            keywords: 'home dashboard admin overview',
+            icon: 'bi-speedometer2',
+            url: @json(route('admin-dashboard'))
+        },
+        {
+            title: 'Employees',
+            description: 'Manage employee accounts and records',
+            keywords: 'employee employees staff users accounts personnel',
+            icon: 'bi-people-fill',
+            url: @json(route('employees.index'))
+        },
+        {
+            title: 'Attendance',
+            description: 'Review employee attendance records',
+            keywords: 'attendance time in time out present absent late undertime overtime',
+            icon: 'bi-calendar-check-fill',
+            url: @json(route('attendance_list'))
+        },
+        {
+            title: 'Leave Requests',
+            description: 'Review and approve employee leave requests',
+            keywords: 'leave leaves vacation absence request requests approval approve',
+            icon: 'bi-calendar-x-fill',
+            url: @json(route('admin.leaves'))
+        },
+        {
+            title: 'Official Business',
+            description: 'Manage official business requests',
+            keywords: 'official business ob field work travel request requests',
+            icon: 'bi-briefcase-fill',
+            url: @json(route('official_business'))
+        },
+        {
+            title: 'Holidays',
+            description: 'Manage holidays and holiday settings',
+            keywords: 'holiday holidays calendar dates pay rate',
+            icon: 'bi-calendar-event-fill',
+            url: @json(route('holidays.index'))
+        },
+        {
+            title: 'Payroll',
+            description: 'Process and manage employee payroll',
+            keywords: 'payroll salary salaries wages earnings deductions sss philhealth pagibig hmo',
+            icon: 'bi-cash-stack',
+            url: @json(route('payroll'))
+        },
+        {
+            title: 'Payslips',
+            description: 'View and manage employee payslips',
+            keywords: 'payslip payslips salary slip payment compensation',
+            icon: 'bi-receipt-cutoff',
+            url: @json(route('payslip_list'))
+        },
+        {
+            title: 'Payslip Concerns',
+            description: 'Review employee payslip concerns',
+            keywords: 'payslip concern concerns issue issues complaint complaints payroll problem',
+            icon: 'bi-exclamation-circle-fill',
+            url: @json(route('admin.payslip-concerns.index'))
+        },
+        {
+            title: 'Reports',
+            description: 'Generate HR and payroll reports',
+            keywords: 'report reports analytics statistics summary attendance payroll employee',
+            icon: 'bi-bar-chart-fill',
+            url: @json(route('reports'))
+        },
+        {
+            title: 'Announcements',
+            description: 'Publish and manage system announcements',
+            keywords: 'announcement announcements notice notices news publish message',
+            icon: 'bi-megaphone-fill',
+            url: @json(route('announcements'))
+        }
+    ];
+</script>
+
+<script src="{{ asset('khen/assets/js/ob-search.js') }}"></script>
 
 </body>
 

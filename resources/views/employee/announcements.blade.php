@@ -15,9 +15,10 @@
     <meta name="description"
         content="adminHMD professional admin dashboard template">
 
-    <title>Announcements | adminHMD</title>
+    <title>Announcements | PAP Pay</title>
 
 
+     <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
     <!-- Bootstrap -->
     <link rel="stylesheet"
         href="../../../../khen/assets/css/bootstrap.min.css">
@@ -1430,22 +1431,6 @@
                 <!-- NAVBAR ACTIONS -->
 
                 <div class="navbar-actions ms-auto">
-
-
-                    <!-- THEME -->
-
-                    <button class="icon-button theme-toggle"
-                        type="button"
-                        data-theme-toggle
-                        aria-label="Switch color theme"
-                        title="Switch color theme">
-
-                        <i class="bi bi-moon-stars"
-                            data-theme-icon
-                            aria-hidden="true">
-                        </i>
-
-                    </button>
 
 
                     <!-- NOTIFICATIONS -->

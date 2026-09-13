@@ -11,6 +11,10 @@
 
     <title>Employee Payslip | PAP PAY</title>
 
+
+    <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
     <style>
 
         /* =========================================================

@@ -12,6 +12,9 @@
 
     <title>Dashboard | Pap Pay</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
 
@@ -2022,7 +2025,7 @@
 
                 <a class="brand-mark" href="{{ route('admin-dashboard') }}" aria-label="Admin Dashboard">
 
-                    <img src="../../../khen/assets/images/logo.jpg" alt="Pap Pay Logo" class="brand-logo">
+                    <img src="../../../khen/assets/images/Logo.jpg" alt="Pap Pay Logo" class="brand-logo">
 
                 </a>
 
@@ -2306,15 +2309,6 @@
                     <div class="navbar-actions ms-auto">
 
 
-                        <!-- THEME -->
-
-                        <button class="icon-button theme-toggle" type="button" data-theme-toggle
-                            aria-label="Switch color theme" title="Switch color theme">
-
-                            <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true">
-                            </i>
-
-                        </button>
 
 
                         <!-- NOTIFICATIONS -->
@@ -2621,7 +2615,7 @@
 
                                     <p>
 
-                                        Pap Pay is a centralized HR and
+                                        Pap Pay is a centralized
                                         payroll management system designed
                                         to simplify employee management,
                                         attendance monitoring, leave

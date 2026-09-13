@@ -11,6 +11,7 @@
 
     <title>Employee Management | Pap Pay</title>
 
+    <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
     <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../../khen/assets/css/style.css">
@@ -1078,17 +1079,7 @@
                 <div class="navbar-actions ms-auto">
 
 
-                    <button class="icon-button theme-toggle"
-                            type="button"
-                            data-theme-toggle
-                            aria-label="Switch color theme"
-                            title="Switch color theme">
-
-                        <i class="bi bi-moon-stars"
-                           data-theme-icon
-                           aria-hidden="true"></i>
-
-                    </button>
+                
 
 
                     <div class="dropdown">

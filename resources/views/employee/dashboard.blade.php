@@ -10,8 +10,9 @@
     <meta name="description"
         content="Employee Dashboard - PAP PAY Payroll Management System">
 
-    <title>Dashboard | Employee Portal</title>
+    <title>Dashboard | PAP Pay</title>
 
+    <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
     <link rel="stylesheet"
         href="../../../../khen/assets/css/bootstrap.min.css">
 
@@ -670,7 +671,7 @@
                 cover;
 
             filter:
-                brightness(0.55);
+                brightness(3.00);
         }
 
         .hero-overlay {
@@ -3092,22 +3093,6 @@
                     <div class="navbar-actions ms-auto">
 
 
-                        <!-- Theme -->
-
-                        <button class="icon-button theme-toggle"
-                            type="button"
-                            data-theme-toggle
-                            aria-label="Switch color theme"
-                            title="Switch color theme">
-
-                            <i class="bi bi-moon-stars"
-                                data-theme-icon
-                                aria-hidden="true">
-                            </i>
-
-                        </button>
-
-
                         <!-- Notifications -->
 
                         <div class="dropdown">
@@ -3295,7 +3280,7 @@
 
                     <div class="hero-banner">
 
-                        <img src="../../../../khen/assets/images/image.png"
+                        <img src="../../../../khen/assets/images/dark.png"
                             alt="School Campus">
 
                         <div class="hero-overlay">

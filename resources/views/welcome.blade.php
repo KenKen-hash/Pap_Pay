@@ -6,6 +6,8 @@
 
     <title>Pap Pay | School Payroll Management System</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
