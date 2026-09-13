@@ -6,40 +6,79 @@ use Illuminate\Database\Eloquent\Model;
 
 class OfficialBusiness extends Model
 {
-   protected $fillable = [
+    /*
+    |--------------------------------------------------------------------------
+    | Mass Assignable Fields
+    |--------------------------------------------------------------------------
+    */
 
-    'user_id',
+    protected $fillable = [
 
-    'purpose',
+        // Employee
+        'user_id',
 
-    'destination',
+        // General Information
+        'purpose',
+        'ob_date',
+        'ob_date_to',
 
-    'ob_date',
+        // Estimated Cost
+        'transportation_cost',
+        'meals_cost',
+        'lodging_cost',
+        'others_cost',
+        'registration_fee',
 
-    'morning_time_out',
-    'morning_time_in',
+        // Attachments
+        'proof_images',
 
-    'afternoon_time_out',
-    'afternoon_time_in',
+        // Approval
+        'status',
+        'approved_by',
+        'approved_at',
+        'rejection_reason',
 
-    'status'
+    ];
 
-];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute Casting
+    |--------------------------------------------------------------------------
+    */
 
     protected $casts = [
 
+        // Uploaded attachments are stored as JSON
         'proof_images' => 'array',
 
+        // OB dates
         'ob_date' => 'date',
+        'ob_date_to' => 'date',
 
+        // Approval date
         'approved_at' => 'datetime',
 
     ];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Employee Relationship
+    |--------------------------------------------------------------------------
+    */
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Approver Relationship
+    |--------------------------------------------------------------------------
+    */
 
     public function approver()
     {

@@ -294,6 +294,21 @@
 
 
         /* =========================================================
+           OB HISTORY BUTTON
+           ========================================================= */
+
+        .ob-history-button {
+            min-height: 42px;
+
+            border-radius: 9px;
+
+            font-size: .9rem;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
            TABLE
            ========================================================= */
 
@@ -307,7 +322,7 @@
 
 
         .ob-table {
-            min-width: 850px;
+            min-width: 700px;
 
             margin-bottom: 0;
         }
@@ -365,6 +380,31 @@
             color: var(--pp-text-muted);
 
             font-size: .78rem;
+        }
+
+
+        /* =========================================================
+           PURPOSE DISPLAY
+           ========================================================= */
+
+        .ob-purpose-display {
+            width: 100%;
+
+            min-height: 100px;
+
+            height: auto;
+
+            padding: 12px 13px;
+
+            text-align: left !important;
+
+            white-space: pre-wrap;
+
+            overflow-wrap: anywhere;
+
+            word-break: break-word;
+
+            display: block;
         }
 
 
@@ -542,6 +582,45 @@
         }
 
 
+        /* =========================================================
+           ESTIMATED COST DISPLAY
+           ========================================================= */
+
+        .ob-cost-display {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            min-height: 42px;
+
+            padding: 10px 13px;
+        }
+
+
+        .ob-cost-display .cost-value {
+            color: #334155;
+
+            font-weight: 600;
+
+            margin-left: auto;
+
+            text-align: right;
+        }
+
+
+        .ob-total-cost {
+            color: var(--pp-primary) !important;
+
+            font-size: 1rem;
+
+            font-weight: 800 !important;
+        }
+
+
         .ob-proof-image {
             display: block;
 
@@ -566,6 +645,85 @@
 
             box-shadow:
                 0 6px 18px rgba(15, 23, 42, .10);
+        }
+
+
+        /* =========================================================
+           HISTORY MODAL
+           ========================================================= */
+
+        .ob-history-modal .modal-dialog {
+            max-width: 1100px;
+        }
+
+
+        .ob-history-table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+
+            -webkit-overflow-scrolling: touch;
+        }
+
+
+        .ob-history-table {
+            min-width: 900px;
+
+            margin-bottom: 0;
+        }
+
+
+        .ob-history-table thead th {
+            background: #f8fafc;
+
+            color: #64748b;
+
+            border-bottom: 1px solid var(--pp-border);
+
+            font-size: .75rem;
+
+            font-weight: 700;
+
+            letter-spacing: .02em;
+
+            text-transform: uppercase;
+
+            white-space: nowrap;
+
+            padding: 12px 13px;
+        }
+
+
+        .ob-history-table tbody td {
+            color: #334155;
+
+            font-size: .86rem;
+
+            padding: 12px 13px;
+
+            border-bottom: 1px solid #eef2f6;
+
+            vertical-align: middle;
+        }
+
+
+        .ob-history-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+
+        .ob-history-purpose {
+            min-width: 220px;
+
+            max-width: 350px;
+
+            text-align: left !important;
+
+            white-space: pre-wrap;
+
+            overflow-wrap: anywhere;
+
+            word-break: break-word;
         }
 
 
@@ -671,6 +829,11 @@
                 width: 100%;
             }
 
+
+            .ob-history-modal .modal-dialog {
+                margin: .5rem;
+            }
+
         }
 
 
@@ -761,6 +924,11 @@
             .ob-modal .modal-footer form .btn,
             .ob-modal .modal-footer > .btn {
                 width: 100%;
+            }
+
+
+            .ob-history-modal .modal-dialog {
+                margin: .35rem;
             }
 
         }
@@ -1378,7 +1546,7 @@
                                 <div class="row g-2">
 
 
-                                    <div class="col-lg-5 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
 
                                         <input type="text"
                                             name="search"
@@ -1389,7 +1557,7 @@
                                     </div>
 
 
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-2 col-md-6">
 
                                         <select name="status"
                                             class="form-select">
@@ -1450,6 +1618,24 @@
 
                                     </div>
 
+
+                                    <!-- OB HISTORY -->
+
+                                    <div class="col-lg-2 col-md-6">
+
+                                        <button type="button"
+                                            class="btn btn-outline-primary w-100 ob-history-button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#obHistoryModal">
+
+                                            <i class="bi bi-clock-history me-1"></i>
+
+                                            OB History
+
+                                        </button>
+
+                                    </div>
+
                                 </div>
 
                             </form>
@@ -1474,11 +1660,7 @@
                                             </th>
 
                                             <th>
-                                                Destination
-                                            </th>
-
-                                            <th>
-                                                Time
+                                                Purpose
                                             </th>
 
                                             <th>
@@ -1521,33 +1703,31 @@
 
                                                     {{ $ob->ob_date->format('M d, Y') }}
 
-                                                </td>
+                                                    @if($ob->ob_date_to && $ob->ob_date_to->format('Y-m-d') !== $ob->ob_date->format('Y-m-d'))
 
+                                                        <br>
 
-                                                <td>
-
-                                                    {{ $ob->destination }}
-
-                                                </td>
-
-
-                                                <td>
-
-                                                    @if($ob->departure_time && $ob->expected_return_time)
-
-                                                        {{ \Carbon\Carbon::parse($ob->departure_time)->format('h:i A') }}
-
-                                                        -
-
-                                                        {{ \Carbon\Carbon::parse($ob->expected_return_time)->format('h:i A') }}
-
-                                                    @else
-
-                                                        <span class="text-muted">
-                                                            Not specified
-                                                        </span>
+                                                        <small>
+                                                            to {{ $ob->ob_date_to->format('M d, Y') }}
+                                                        </small>
 
                                                     @endif
+
+                                                </td>
+
+
+                                                <td style="max-width: 350px;">
+
+                                                    <div style="
+                                                        text-align: left;
+                                                        white-space: pre-wrap;
+                                                        overflow-wrap: anywhere;
+                                                        word-break: break-word;
+                                                    ">
+
+                                                        {{ $ob->purpose }}
+
+                                                    </div>
 
                                                 </td>
 
@@ -1597,7 +1777,7 @@
 
                                             <tr>
 
-                                                <td colspan="6"
+                                                <td colspan="5"
                                                     class="text-center py-5">
 
                                                     <h5 class="mb-0">
@@ -1633,6 +1813,302 @@
                 </div>
 
             </main>
+
+
+            <!-- =====================================================
+                 OB HISTORY MODAL
+                 ===================================================== -->
+
+            <div class="modal fade ob-modal ob-history-modal"
+                id="obHistoryModal"
+                tabindex="-1"
+                aria-labelledby="obHistoryModalLabel"
+                aria-hidden="true">
+
+                <div class="modal-dialog modal-xl modal-dialog-scrollable">
+
+                    <div class="modal-content">
+
+
+                        <!-- HISTORY HEADER -->
+
+                        <div class="modal-header">
+
+                            <div>
+
+                                <h5 class="modal-title"
+                                    id="obHistoryModalLabel">
+
+                                    <i class="bi bi-clock-history me-2"></i>
+
+                                    Official Business Filing History
+
+                                </h5>
+
+                                <small class="text-muted">
+
+                                    Complete record of all employee Official Business filings
+
+                                </small>
+
+                            </div>
+
+
+                            <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close">
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- HISTORY BODY -->
+
+                        <div class="modal-body">
+
+                            @php
+                                $obHistory = \App\Models\OfficialBusiness::with('user')
+                                    ->latest()
+                                    ->get();
+                            @endphp
+
+
+                            <div class="ob-history-table-wrapper">
+
+                                <table class="table table-hover align-middle ob-history-table">
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>
+                                                #
+                                            </th>
+
+                                            <th>
+                                                Employee
+                                            </th>
+
+                                            <th>
+                                                Employee ID
+                                            </th>
+
+                                            <th>
+                                                Date From
+                                            </th>
+
+                                            <th>
+                                                Date To
+                                            </th>
+
+                                            <th>
+                                                Purpose
+                                            </th>
+
+                                            <th>
+                                                Total Cost
+                                            </th>
+
+                                            <th>
+                                                Status
+                                            </th>
+
+                                            <th>
+                                                Filed On
+                                            </th>
+
+                                            <th>
+                                                Action
+                                            </th>
+
+                                        </tr>
+
+                                    </thead>
+
+
+                                    <tbody>
+
+                                        @forelse($obHistory as $history)
+
+                                            <tr>
+
+                                                <td>
+
+                                                    {{ $loop->iteration }}
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    <strong>
+                                                        {{ $history->user->name ?? 'Unknown Employee' }}
+                                                    </strong>
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    {{ $history->user->employee_id ?? 'N/A' }}
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    {{ $history->ob_date
+                                                        ? \Carbon\Carbon::parse($history->ob_date)->format('M d, Y')
+                                                        : 'Not specified' }}
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    {{ $history->ob_date_to
+                                                        ? \Carbon\Carbon::parse($history->ob_date_to)->format('M d, Y')
+                                                        : ($history->ob_date
+                                                            ? \Carbon\Carbon::parse($history->ob_date)->format('M d, Y')
+                                                            : 'Not specified') }}
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    <div class="ob-history-purpose">
+
+                                                        {{ $history->purpose }}
+
+                                                    </div>
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    ₱{{ number_format(
+                                                        (float) ($history->transportation_cost ?? 0)
+                                                        + (float) ($history->meals_cost ?? 0)
+                                                        + (float) ($history->lodging_cost ?? 0)
+                                                        + (float) ($history->others_cost ?? 0)
+                                                        + (float) ($history->registration_fee ?? 0),
+                                                        2
+                                                    ) }}
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    @if($history->status === 'Pending')
+
+                                                        <span class="ob-status-badge ob-status-pending">
+                                                            Pending
+                                                        </span>
+
+                                                    @elseif($history->status === 'Approved')
+
+                                                        <span class="ob-status-badge ob-status-approved">
+                                                            Approved
+                                                        </span>
+
+                                                    @else
+
+                                                        <span class="ob-status-badge ob-status-rejected">
+                                                            Rejected
+                                                        </span>
+
+                                                    @endif
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    {{ $history->created_at
+                                                        ? $history->created_at->format('M d, Y h:i A')
+                                                        : 'N/A' }}
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-outline-primary ob-view-button"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#obModal{{ $history->id }}">
+
+                                                        <i class="bi bi-eye"></i>
+
+                                                        View
+
+                                                    </button>
+
+                                                </td>
+
+                                            </tr>
+
+                                        @empty
+
+                                            <tr>
+
+                                                <td colspan="10"
+                                                    class="text-center py-5">
+
+                                                    <i class="bi bi-clock-history fs-1 text-muted"></i>
+
+                                                    <h5 class="mt-3 mb-1">
+
+                                                        No OB Filing History
+
+                                                    </h5>
+
+                                                    <p class="text-muted mb-0">
+
+                                                        No Official Business records have been filed yet.
+
+                                                    </p>
+
+                                                </td>
+
+                                            </tr>
+
+                                        @endforelse
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- HISTORY FOOTER -->
+
+                        <div class="modal-footer">
+
+                            <button type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+
+                                Close
+
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
 
 
             <!-- =====================================================
@@ -1775,8 +2251,7 @@
                                             Purpose
                                         </label>
 
-                                        <div class="form-control bg-light"
-                                            style="min-height: 80px; height: auto; white-space: pre-wrap;">
+                                        <div class="form-control bg-light ob-purpose-display">
 
                                             {{ $ob->purpose }}
 
@@ -1785,29 +2260,12 @@
                                     </div>
 
 
-                                    <!-- DESTINATION -->
+                                    <!-- DATE FROM -->
 
                                     <div class="col-md-6">
 
                                         <label class="form-label">
-                                            Destination
-                                        </label>
-
-                                        <div class="form-control bg-light">
-
-                                            {{ $ob->destination }}
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- DATE -->
-
-                                    <div class="col-md-6">
-
-                                        <label class="form-label">
-                                            Date
+                                            Date From
                                         </label>
 
                                         <div class="form-control bg-light">
@@ -1821,100 +2279,178 @@
                                     </div>
 
 
-                                    <!-- MORNING TIME IN -->
+                                    <!-- DATE TO -->
 
                                     <div class="col-md-6">
 
                                         <label class="form-label">
-                                            Morning Time In
+                                            Date To
                                         </label>
 
                                         <div class="form-control bg-light">
 
-                                            @if($ob->morning_time_in)
-
-                                                {{ \Carbon\Carbon::parse($ob->morning_time_in)->format('h:i A') }}
-
-                                            @else
-
-                                                Not specified
-
-                                            @endif
+                                            {{ $ob->ob_date_to
+                                                ? \Carbon\Carbon::parse($ob->ob_date_to)->format('F d, Y')
+                                                : ($ob->ob_date
+                                                    ? \Carbon\Carbon::parse($ob->ob_date)->format('F d, Y')
+                                                    : 'Not specified') }}
 
                                         </div>
 
                                     </div>
 
 
-                                    <!-- MORNING TIME OUT -->
+                                    <!-- TRANSPORTATION COST -->
 
                                     <div class="col-md-6">
 
                                         <label class="form-label">
-                                            Morning Time Out
+                                            Transportation Cost
                                         </label>
 
-                                        <div class="form-control bg-light">
+                                        <div class="form-control bg-light ob-cost-display">
 
-                                            @if($ob->morning_time_out)
+                                            <span>
+                                                Transportation
+                                            </span>
 
-                                                {{ \Carbon\Carbon::parse($ob->morning_time_out)->format('h:i A') }}
+                                            <span class="cost-value">
 
-                                            @else
+                                                ₱{{ number_format((float) ($ob->transportation_cost ?? 0), 2) }}
 
-                                                Not specified
-
-                                            @endif
+                                            </span>
 
                                         </div>
 
                                     </div>
 
 
-                                    <!-- AFTERNOON TIME IN -->
+                                    <!-- MEALS COST -->
 
                                     <div class="col-md-6">
 
                                         <label class="form-label">
-                                            Afternoon Time In
+                                            Meals Cost
                                         </label>
 
-                                        <div class="form-control bg-light">
+                                        <div class="form-control bg-light ob-cost-display">
 
-                                            @if($ob->afternoon_time_in)
+                                            <span>
+                                                Meals
+                                            </span>
 
-                                                {{ \Carbon\Carbon::parse($ob->afternoon_time_in)->format('h:i A') }}
+                                            <span class="cost-value">
 
-                                            @else
+                                                ₱{{ number_format((float) ($ob->meals_cost ?? 0), 2) }}
 
-                                                Not specified
-
-                                            @endif
+                                            </span>
 
                                         </div>
 
                                     </div>
 
 
-                                    <!-- AFTERNOON TIME OUT -->
+                                    <!-- LODGING COST -->
 
                                     <div class="col-md-6">
 
                                         <label class="form-label">
-                                            Afternoon Time Out
+                                            Lodging Cost
                                         </label>
 
-                                        <div class="form-control bg-light">
+                                        <div class="form-control bg-light ob-cost-display">
 
-                                            @if($ob->afternoon_time_out)
+                                            <span>
+                                                Lodging
+                                            </span>
 
-                                                {{ \Carbon\Carbon::parse($ob->afternoon_time_out)->format('h:i A') }}
+                                            <span class="cost-value">
 
-                                            @else
+                                                ₱{{ number_format((float) ($ob->lodging_cost ?? 0), 2) }}
 
-                                                Not specified
+                                            </span>
 
-                                            @endif
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- OTHERS COST -->
+
+                                    <div class="col-md-6">
+
+                                        <label class="form-label">
+                                            Others Cost
+                                        </label>
+
+                                        <div class="form-control bg-light ob-cost-display">
+
+                                            <span>
+                                                Others
+                                            </span>
+
+                                            <span class="cost-value">
+
+                                                ₱{{ number_format((float) ($ob->others_cost ?? 0), 2) }}
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- REGISTRATION FEE -->
+
+                                    <div class="col-md-6">
+
+                                        <label class="form-label">
+                                            Registration Fee
+                                        </label>
+
+                                        <div class="form-control bg-light ob-cost-display">
+
+                                            <span>
+                                                Registration
+                                            </span>
+
+                                            <span class="cost-value">
+
+                                                ₱{{ number_format((float) ($ob->registration_fee ?? 0), 2) }}
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- TOTAL ESTIMATED COST -->
+
+                                    <div class="col-md-6">
+
+                                        <label class="form-label">
+                                            Total Estimated Cost
+                                        </label>
+
+                                        <div class="form-control bg-light ob-cost-display">
+
+                                            <span>
+                                                Total
+                                            </span>
+
+                                            <span class="cost-value ob-total-cost">
+
+                                                ₱{{ number_format(
+                                                    (float) ($ob->transportation_cost ?? 0)
+                                                    + (float) ($ob->meals_cost ?? 0)
+                                                    + (float) ($ob->lodging_cost ?? 0)
+                                                    + (float) ($ob->others_cost ?? 0)
+                                                    + (float) ($ob->registration_fee ?? 0),
+                                                    2
+                                                ) }}
+
+                                            </span>
 
                                         </div>
 

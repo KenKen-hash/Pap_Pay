@@ -662,6 +662,197 @@
         }
 
 
+
+        /* ========================================================
+        PAPER-STYLE OFFICIAL BUSINESS FORM
+        Matches the General Information and Estimated Cost
+        sections of the reference OBT form.
+        ======================================================== */
+
+        .ob-paper-section {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .ob-paper-title {
+            border: 1px solid #212529;
+            border-bottom: 0;
+            background: #f8f9fa;
+            color: #212529;
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            padding: 0.65rem 0.85rem;
+        }
+
+        .ob-paper-title span {
+            font-weight: 500;
+            font-style: italic;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .ob-paper-table {
+            width: 100%;
+            min-width: 900px;
+            border-color: #343a40;
+            table-layout: fixed;
+        }
+
+        .ob-paper-table th,
+        .ob-paper-table td {
+            border-color: #343a40 !important;
+            vertical-align: middle;
+            padding: 0.65rem;
+            background: #fff;
+        }
+
+        .ob-paper-table th {
+            color: #212529;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .ob-paper-label {
+            width: 17%;
+        }
+
+        .ob-paper-side-label {
+            width: 13%;
+        }
+
+        .ob-department-cell {
+            width: 25%;
+        }
+
+        .ob-numbered-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .ob-numbered-row {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            min-width: 0;
+        }
+
+        .ob-numbered-row > span {
+            width: 1.2rem;
+            flex: 0 0 1.2rem;
+            font-weight: 600;
+            font-size: 0.82rem;
+        }
+
+        .ob-numbered-row .form-control {
+            min-width: 0;
+            border-color: #adb5bd;
+            font-size: 0.85rem;
+        }
+
+        .ob-numbered-row .form-control[readonly] {
+            background-color: #f1f3f5;
+            color: #212529;
+            font-weight: 600;
+        }
+
+        .ob-date-range {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .ob-date-part .form-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .ob-paper-textarea {
+            min-height: 105px;
+            border-color: #adb5bd;
+        }
+
+        .ob-cost-table {
+            table-layout: fixed;
+        }
+
+        .ob-cost-table th {
+            width: 13%;
+            font-size: 0.76rem;
+        }
+
+        .ob-cost-table td {
+            width: 20.33%;
+        }
+
+        .ob-cost-table .input-group-text {
+            background: #f8f9fa;
+            border-color: #adb5bd;
+            font-size: 0.78rem;
+        }
+
+        .ob-cost-input {
+            min-width: 0;
+            border-color: #adb5bd;
+        }
+
+        .ob-existing-fields {
+            border: 1px solid #dee2e6;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            background: #fbfcfd;
+        }
+
+        .ob-existing-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #495057;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 767.98px) {
+
+            .ob-paper-table {
+                min-width: 850px;
+            }
+
+            .ob-date-range {
+                grid-template-columns: 1fr;
+            }
+
+            .ob-paper-title {
+                font-size: 0.76rem;
+            }
+
+            .ob-paper-table th,
+            .ob-paper-table td {
+                padding: 0.5rem;
+            }
+
+        }
+
+        @media (max-width: 575.98px) {
+
+            .ob-paper-section {
+                margin-left: -0.15rem;
+                margin-right: -0.15rem;
+                width: calc(100% + 0.3rem);
+            }
+
+            .ob-paper-table {
+                min-width: 800px;
+            }
+
+            .ob-existing-fields {
+                padding: 0.85rem;
+            }
+
+        }
+
         /* ========================================================
         PRINT
         ======================================================== */
@@ -1434,189 +1625,170 @@
                                 @csrf
 
 
-                                <div class="row g-3">
+                                <!-- =================================================
+                                    GENERAL INFORMATION
+                                    ================================================= -->
 
+                                <div class="ob-existing-fields mt-4">
 
-                                    <!-- PURPOSE -->
-
-                                    <div class="col-12">
-
-                                        <label class="form-label">
-
-                                            Purpose
-
-                                        </label>
-
-
-                                        <textarea name="purpose"
-                                            class="form-control"
-                                            rows="3"
-                                            required>{{ old('purpose') }}</textarea>
-
+                                    <div class="ob-existing-title">
+                                        GENERAL INFORMATION
                                     </div>
 
-
-                                    <!-- DESTINATION -->
-
-                                    <div class="col-12 col-md-6">
-
-                                        <label class="form-label">
-
-                                            Destination
-
-                                        </label>
-
-
-                                        <input type="text"
-                                            name="destination"
-                                            class="form-control"
-                                            value="{{ old('destination') }}"
-                                            required>
-
-                                    </div>
-
-
-                                    <!-- DATE -->
-
-                                    <div class="col-12 col-md-6">
-
-                                        <label class="form-label">
-
-                                            Date
-
-                                        </label>
-
-
-                                        <input type="date"
-                                            name="ob_date"
-                                            class="form-control"
-                                            min="{{ now()->toDateString() }}"
-                                            required>
-
-                                    </div>
-
-
-                                    <!-- MORNING TIME IN -->
-
-                                    <div class="col-12 col-md-6">
-
-                                        <label class="form-label">
-
-                                            Morning Time In
-
-                                        </label>
-
-
-                                        <input type="time"
-                                            name="morning_time_in"
-                                            class="form-control time-field">
-
-                                    </div>
-
-
-                                    <!-- MORNING TIME OUT -->
-
-                                    <div class="col-12 col-md-6">
-
-                                        <label class="form-label">
-
-                                            Morning Time Out
-
-                                        </label>
-
-
-                                        <input type="time"
-                                            name="morning_time_out"
-                                            class="form-control time-field">
-
-                                    </div>
-
-
-                                    <!-- AFTERNOON TIME IN -->
-
-                                    <div class="col-12 col-md-6">
-
-                                        <label class="form-label">
-
-                                            Afternoon Time In
-
-                                        </label>
-
-
-                                        <input type="time"
-                                            name="afternoon_time_in"
-                                            class="form-control time-field">
-
-                                    </div>
-
-
-                                    <!-- AFTERNOON TIME OUT -->
-
-                                    <div class="col-12 col-md-6">
-
-                                        <label class="form-label">
-
-                                            Afternoon Time Out
-
-                                        </label>
-
-
-                                        <input type="time"
-                                            name="afternoon_time_out"
-                                            class="form-control time-field">
-
-                                    </div>
-
-
-                                    <!-- ATTACHMENT -->
-
-                                    <div class="col-12 col-md-6">
-
-                                        <label class="form-label">
-
-                                            Attachment
-
-                                        </label>
-
-
-                                        <input type="file"
-                                            name="proof_images[]"
-                                            class="form-control"
-                                            multiple
-                                            accept=".jpg,.jpeg,.png">
-
-                                    </div>
-
-
-                                    <!-- ACTIONS -->
-
-                                    <div class="col-12">
-
-                                        <div class="ob-form-actions d-flex flex-column flex-sm-row gap-2 justify-content-end">
-
-
-                                            <button type="reset"
-                                                class="btn btn-outline-secondary">
-
-                                                Reset
-
-                                            </button>
-
-
-                                            <button type="submit"
-                                                class="btn btn-primary">
-
-                                                <i class="bi bi-send-fill me-1"></i>
-
-                                                Submit Request
-
-                                            </button>
-
+                                    <div class="row g-3">
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Employee's Name</label>
+                                            <input type="text" class="form-control" value="{{ $employee->name ?? '' }}" readonly>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Department</label>
+                                            <input type="text" class="form-control" value="{{ $employee->department ?? '' }}" readonly>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Date From</label>
+                                            <input type="date" name="ob_date" class="form-control" value="{{ old('ob_date') }}" min="{{ now()->toDateString() }}" required>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Date To</label>
+                                            <input type="date" name="ob_date_to" class="form-control" value="{{ old('ob_date_to') }}" min="{{ now()->toDateString() }}">
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label">Purpose</label>
+                                            <textarea name="purpose" class="form-control" rows="4" placeholder="Enter the purpose of the Official Business request..." required>{{ old('purpose') }}</textarea>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label">Attachment</label>
+                                            <input type="file" name="proof_images[]" class="form-control" multiple accept=".jpg,.jpeg,.png">
+                                            <small class="text-muted d-block mt-1">You may attach JPG, JPEG, or PNG proof images.</small>
                                         </div>
 
                                     </div>
 
                                 </div>
+
+
+                                <!-- =================================================
+                                    ESTIMATED COST
+                                    ================================================= -->
+
+                                <div class="ob-existing-fields mt-4">
+
+                                    <div class="ob-existing-title">
+                                        ESTIMATED COST <span>(applicable only)</span>
+                                    </div>
+
+                                    <div class="row g-3">
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Transportation/Gasoline</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Php</span>
+                                                <input type="number" name="transportation_cost" class="form-control ob-cost-input" value="{{ old('transportation_cost') }}" min="0" step="0.01" placeholder="0.00">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Meals</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Php</span>
+                                                <input type="number" name="meals_cost" class="form-control ob-cost-input" value="{{ old('meals_cost') }}" min="0" step="0.01" placeholder="0.00">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Lodging</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Php</span>
+                                                <input type="number" name="lodging_cost" class="form-control ob-cost-input" value="{{ old('lodging_cost') }}" min="0" step="0.01" placeholder="0.00">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Others</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Php</span>
+                                                <input type="number" name="others_cost" class="form-control ob-cost-input" value="{{ old('others_cost') }}" min="0" step="0.01" placeholder="0.00">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Registration Fee</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Php</span>
+                                                <input type="number" name="registration_fee" class="form-control ob-cost-input" value="{{ old('registration_fee') }}" min="0" step="0.01" placeholder="0.00">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Total Estimated Cost</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Php</span>
+                                                <input type="text" id="totalEstimatedCost" class="form-control fw-bold" value="0.00" readonly>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- =================================================
+                                    ATTENDANCE NOTE
+                                    ================================================= -->
+
+                                <div class="ob-existing-fields mt-4">
+
+                                    <div class="d-flex align-items-start gap-3">
+
+                                        <div class="text-primary fs-4">
+                                            <i class="bi bi-info-circle-fill"></i>
+                                        </div>
+
+                                        <div>
+                                            <div class="ob-existing-title mb-1">
+                                                OFFICIAL BUSINESS ATTENDANCE
+                                            </div>
+
+                                            <p class="text-muted mb-0">
+                                                Once this Official Business request is approved, all dates covered by this request will automatically be recorded as whole-day attendance with the status <strong>Official Business (OB)</strong>. No separate time-in, time-out, or destination entry is required.
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ACTIONS -->
+
+                                <div class="ob-form-actions d-flex flex-column flex-sm-row gap-2 justify-content-end mt-4">
+
+
+                                    <button type="reset"
+                                        class="btn btn-outline-secondary">
+
+                                        Reset
+
+                                    </button>
+
+
+                                    <button type="submit"
+                                        class="btn btn-primary">
+
+                                        <i class="bi bi-send-fill me-1"></i>
+
+                                        Submit Request
+
+                                    </button>
+
+                                </div>
+
 
                             </form>
 
@@ -2652,6 +2824,50 @@
         ========================================================= -->
 
     <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script>
+        /*
+         * Calculate the Estimated Cost section automatically.
+         * These cost fields are additional form inputs; the existing
+         * Official Business submission fields remain unchanged.
+         */
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const costInputs = document.querySelectorAll('.ob-cost-input');
+            const totalInput = document.getElementById('totalEstimatedCost');
+
+            function updateEstimatedCost() {
+
+                let total = 0;
+
+                costInputs.forEach(function (input) {
+
+                    const value = parseFloat(input.value);
+
+                    if (!Number.isNaN(value)) {
+                        total += value;
+                    }
+
+                });
+
+                if (totalInput) {
+                    totalInput.value = total.toLocaleString('en-PH', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                }
+            }
+
+            costInputs.forEach(function (input) {
+                input.addEventListener('input', updateEstimatedCost);
+                input.addEventListener('change', updateEstimatedCost);
+            });
+
+            updateEstimatedCost();
+        });
+    </script>
 
 
     <!-- =========================================================

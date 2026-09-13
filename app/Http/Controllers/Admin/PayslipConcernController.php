@@ -7,9 +7,13 @@ use App\Models\PayslipConcern;
 use App\Models\Payslip;
 use App\Models\Notification;
 use App\Models\Attendance;
+use App\Models\AdditionalEarning;
+use App\Models\DepartmentSalaryConfig;
+use App\Models\Holiday;
+use App\Models\TeachingLoad;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Helpers\NotificationHelper;
 
 class PayslipConcernController extends Controller
 {
@@ -31,6 +35,7 @@ class PayslipConcernController extends Controller
         );
     }
 
+
     /**
      * Show a specific payslip concern.
      */
@@ -47,6 +52,7 @@ class PayslipConcernController extends Controller
         );
     }
 
+
     /**
      * Update the concern status and admin response.
      */
@@ -60,7 +66,9 @@ class PayslipConcernController extends Controller
                 'nullable|string|max:5000',
         ]);
 
+
         $concern = PayslipConcern::findOrFail($id);
+
 
         $concern->update([
             'status' =>
@@ -69,6 +77,7 @@ class PayslipConcernController extends Controller
             'admin_response' =>
                 $request->admin_response,
         ]);
+
 
         /*
         |--------------------------------------------------------------------------
@@ -95,11 +104,13 @@ class PayslipConcernController extends Controller
                 route('payslip'),
         ]);
 
+
         return back()->with(
             'success',
             'Payslip concern updated successfully.'
         );
     }
+
 
     /**
      * Show the manual correction form.
@@ -111,17 +122,19 @@ class PayslipConcernController extends Controller
             'payslip'
         ])->findOrFail($id);
 
+
         return view(
             'admin.payslip_concern_correction',
             compact('concern')
         );
     }
 
+
     /**
      * Manually correct a payslip.
      *
-     * This updates the existing payslip instead of creating
-     * another payslip for the same employee and payroll period.
+     * This updates the existing payslip.
+     * It does NOT create another payslip.
      */
     public function updateCorrection(Request $request, $id)
     {
@@ -161,12 +174,23 @@ class PayslipConcernController extends Controller
                 'required|string|max:5000',
         ]);
 
+
         $concern = PayslipConcern::with([
             'user',
             'payslip'
         ])->findOrFail($id);
 
+
         $payslip = $concern->payslip;
+
+
+        if (!$payslip) {
+            return back()->with(
+                'error',
+                'The payslip associated with this concern could not be found.'
+            );
+        }
+
 
         DB::transaction(function () use (
             $request,
@@ -176,31 +200,142 @@ class PayslipConcernController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | Earnings
+            | Basic Pay
+            |--------------------------------------------------------------------------
+            |
+            | The daily rate is a rate, not the total basic pay.
+            | Therefore, multiply it by the employee's actual present days.
+            |
+            */
+
+            $presentDays =
+                max(
+                    0,
+                    (int)($payslip->present_days ?? 0)
+                );
+
+
+            $dailyRate =
+                max(
+                    0,
+                    (float)$request->daily_rate
+                );
+
+
+            $basicPay =
+                $dailyRate * $presentDays;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Existing Holiday Pay
+            |--------------------------------------------------------------------------
+            */
+
+            $holidayPay =
+                max(
+                    0,
+                    (float)($payslip->holiday_pay ?? 0)
+                );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Manual Overtime
+            |--------------------------------------------------------------------------
+            */
+
+            $overtime =
+                max(
+                    0,
+                    (float)$request->ot
+                );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Honorarium / Additional Earnings
+            |--------------------------------------------------------------------------
+            */
+
+            $honorarium =
+                max(
+                    0,
+                    (float)$request->honorarium
+                );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Teaching Load
+            |--------------------------------------------------------------------------
+            */
+
+            $teachingLoad =
+                max(
+                    0,
+                    (float)$request->teaching_load
+                );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Gross Salary
             |--------------------------------------------------------------------------
             */
 
             $grossSalary =
-                $request->daily_rate
-                + $request->ot
-                + $request->honorarium
-                + $request->teaching_load
-                + ($payslip->holiday_pay ?? 0);
+                $basicPay
+                + $holidayPay
+                + $overtime
+                + $honorarium
+                + $teachingLoad;
 
 
             /*
             |--------------------------------------------------------------------------
             | Benefits
             |--------------------------------------------------------------------------
+            |
+            | The payroll system divides benefits by 2 for normal payroll
+            | periods and by 4 for weekly payroll.
+            |
+            | Laborers are always weekly in the main PayrollController.
+            |
             */
+
+            $employee =
+                $concern->user;
+
+
+            $payrollPeriod =
+                $employee && $employee->salaryConfig
+                    ? $employee->salaryConfig->payroll_period
+                    : null;
+
+
+            $isWeeklyPayroll =
+                $employee &&
+                (
+                    $employee->department === 'Laborers'
+                    ||
+                    $payrollPeriod === 'Weekly'
+                );
+
+
+            $benefitDivisor =
+                $isWeeklyPayroll
+                    ? 4
+                    : 2;
+
 
             $benefits =
                 (
-                    $request->sss
-                    + $request->philhealth
-                    + $request->pagibig
-                    + $request->hmo
-                ) / 2;
+                    (float)$request->sss
+                    + (float)$request->philhealth
+                    + (float)$request->pagibig
+                    + (float)$request->hmo
+                ) / $benefitDivisor;
 
 
             /*
@@ -209,10 +344,24 @@ class PayslipConcernController extends Controller
             |--------------------------------------------------------------------------
             */
 
+            $lateDeduction =
+                max(
+                    0,
+                    (float)$request->late_deduction
+                );
+
+
+            $undertimeDeduction =
+                max(
+                    0,
+                    (float)$request->undertime_deduction
+                );
+
+
             $totalDeductions =
                 $benefits
-                + $request->late_deduction
-                + $request->undertime_deduction;
+                + $lateDeduction
+                + $undertimeDeduction;
 
 
             /*
@@ -222,8 +371,10 @@ class PayslipConcernController extends Controller
             */
 
             $netSalary =
-                $grossSalary -
-                $totalDeductions;
+                max(
+                    0,
+                    $grossSalary - $totalDeductions
+                );
 
 
             /*
@@ -232,37 +383,37 @@ class PayslipConcernController extends Controller
             |--------------------------------------------------------------------------
             */
 
-            $payslip->update([
+            $updateData = [
 
                 'daily_rate' =>
-                    $request->daily_rate,
+                    $dailyRate,
+
+                'holiday_pay' =>
+                    $holidayPay,
 
                 'ot' =>
-                    $request->ot,
+                    $overtime,
 
                 'honorarium' =>
-                    $request->honorarium,
-
-                'teaching_load' =>
-                    $request->teaching_load,
+                    $honorarium,
 
                 'sss' =>
-                    $request->sss,
+                    max(0, (float)$request->sss),
 
                 'philhealth' =>
-                    $request->philhealth,
+                    max(0, (float)$request->philhealth),
 
                 'pagibig' =>
-                    $request->pagibig,
+                    max(0, (float)$request->pagibig),
 
                 'hmo' =>
-                    $request->hmo,
+                    max(0, (float)$request->hmo),
 
                 'late_deduction' =>
-                    $request->late_deduction,
+                    $lateDeduction,
 
                 'undertime_deduction' =>
-                    $request->undertime_deduction,
+                    $undertimeDeduction,
 
                 'gross_salary' =>
                     $grossSalary,
@@ -278,7 +429,53 @@ class PayslipConcernController extends Controller
 
                 'version' =>
                     ($payslip->version ?? 1) + 1,
-            ]);
+            ];
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Teaching Load Column
+            |--------------------------------------------------------------------------
+            |
+            | The actual PayrollController saves the teaching load amount
+            | into teaching_load_pay.
+            |
+            */
+
+            if (
+                array_key_exists(
+                    'teaching_load_pay',
+                    $payslip->getAttributes()
+                )
+            ) {
+                $updateData['teaching_load_pay'] =
+                    $teachingLoad;
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Backward Compatibility
+            |--------------------------------------------------------------------------
+            |
+            | If the existing database still has teaching_load instead,
+            | update that column as well.
+            |
+            */
+
+            if (
+                array_key_exists(
+                    'teaching_load',
+                    $payslip->getAttributes()
+                )
+            ) {
+                $updateData['teaching_load'] =
+                    $teachingLoad;
+            }
+
+
+            $payslip->update(
+                $updateData
+            );
 
 
             /*
@@ -322,11 +519,10 @@ class PayslipConcernController extends Controller
                     'payslip_corrected',
 
                 'url' =>
-                    route(
-                        'payslip'
-                    ),
+                    route('payslip'),
             ]);
         });
+
 
         return redirect()
             ->route(
@@ -339,17 +535,11 @@ class PayslipConcernController extends Controller
             );
     }
 
+
     /**
-     * Recalculate an existing payslip using:
+     * Recalculate an existing payslip using the SAME payroll
+     * calculation rules used by the main PayrollController.
      *
-     * - Attendance
-     * - Employee salary configuration
-     * - Manual overtime configuration
-     * - Holiday work
-     * - Late deductions
-     * - Undertime deductions
-     *
-     * IMPORTANT:
      * This updates the existing payslip.
      * It does NOT create another payslip.
      */
@@ -360,15 +550,19 @@ class PayslipConcernController extends Controller
             'payslip'
         ])->findOrFail($id);
 
+
         /*
         |--------------------------------------------------------------------------
         | Get Payslip and Employee
         |--------------------------------------------------------------------------
         */
 
-        $payslip = $concern->payslip;
+        $payslip =
+            $concern->payslip;
 
-        $employee = $concern->user;
+        $employee =
+            $concern->user;
+
 
         /*
         |--------------------------------------------------------------------------
@@ -377,11 +571,28 @@ class PayslipConcernController extends Controller
         */
 
         if (!$payslip) {
+
             return back()->with(
                 'error',
                 'The payslip associated with this concern could not be found.'
             );
         }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Make Sure Employee Exists
+        |--------------------------------------------------------------------------
+        */
+
+        if (!$employee) {
+
+            return back()->with(
+                'error',
+                'The employee associated with this concern could not be found.'
+            );
+        }
+
 
         /*
         |--------------------------------------------------------------------------
@@ -389,202 +600,676 @@ class PayslipConcernController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $config = $employee->salaryConfig;
+        $config =
+            $employee->salaryConfig;
+
 
         if (!$config) {
+
             return back()->with(
                 'error',
                 'This employee does not have a salary configuration.'
             );
         }
 
+
         /*
         |--------------------------------------------------------------------------
-        | Attendance
+        | Payroll Period
         |--------------------------------------------------------------------------
         */
 
-        $attendance = Attendance::where(
-            'user_id',
-            $employee->id
-        )
-            ->whereBetween('date', [
-                $payslip->period_start,
-                $payslip->period_end
-            ])
-            ->get();
+        $periodStart =
+            $payslip->period_start;
+
+        $periodEnd =
+            $payslip->period_end;
 
 
         /*
         |--------------------------------------------------------------------------
-        | Present Days
+        | ATTENDANCE
+        |--------------------------------------------------------------------------
+        |
+        | This follows the Attendance query from the main PayrollController.
+        |
+        */
+
+        $attendance =
+            Attendance::where(
+                'user_id',
+                $employee->id
+            )
+                ->whereBetween(
+                    'date',
+                    [
+                        $periodStart,
+                        $periodEnd
+                    ]
+                )
+                ->orderBy('date')
+                ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | WORKED ATTENDANCE
+        |--------------------------------------------------------------------------
+        |
+        | The main payroll system determines attendance using time_in.
+        |
+        */
+
+        $workedAttendance =
+            $attendance->filter(
+                function ($record) {
+
+                    return !empty(
+                        $record->time_in
+                    );
+                }
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | PRESENT DAYS
         |--------------------------------------------------------------------------
         */
 
-        $presentDays = $attendance
-            ->where('status', 'Present')
-            ->count();
+        $presentDays =
+            $workedAttendance->count();
 
 
         /*
         |--------------------------------------------------------------------------
-        | Worked Holidays
+        | SALARY
         |--------------------------------------------------------------------------
         */
 
-        $workedHolidayDays = $attendance
-            ->whereIn('status', [
-                'Work on Holiday',
-                'Worked Holiday'
-            ])
-            ->count();
+        $basicSalary =
+            max(
+                0,
+                (float)(
+                    $config->basic_salary ?? 0
+                )
+            );
+
+
+        $dailyRate =
+            $basicSalary > 0
+                ? $basicSalary / 26
+                : 0;
+
+
+        $overtimeRate =
+            $dailyRate > 0
+                ? $dailyRate / 8
+                : 0;
 
 
         /*
         |--------------------------------------------------------------------------
-        | Late Minutes
+        | HOLIDAYS
         |--------------------------------------------------------------------------
         */
 
-        $lateMinutes =
-            $attendance->sum('late_minutes');
+        $holidays =
+            Holiday::where(
+                'is_active',
+                1
+            )
+                ->whereBetween(
+                    'date',
+                    [
+                        $periodStart,
+                        $periodEnd
+                    ]
+                )
+                ->where(
+                    function ($query) use ($employee) {
+
+                        $query
+                            ->whereNull(
+                                'department'
+                            )
+                            ->orWhere(
+                                'department',
+                                $employee->department
+                            );
+                    }
+                )
+                ->get();
 
 
         /*
         |--------------------------------------------------------------------------
-        | Undertime Minutes
+        | HOLIDAY PAY
         |--------------------------------------------------------------------------
         */
 
-        $undertimeMinutes =
-            $attendance->sum('undertime_minutes');
+        $holidayPay = 0;
+
+        $holidayDatesWorked = [];
+
+        foreach ($holidays as $holiday) {
+
+            $holidayDate =
+                $holiday->date
+                    ? \Carbon\Carbon::parse(
+                        $holiday->date
+                    )->format('Y-m-d')
+                    : null;
+
+
+            if (!$holidayDate) {
+                continue;
+            }
+
+
+            $workedThatHoliday =
+                $workedAttendance->contains(
+                    function ($record) use (
+                        $holidayDate
+                    ) {
+
+                        return \Carbon\Carbon::parse(
+                            $record->date
+                        )->format('Y-m-d')
+                        ===
+                        $holidayDate;
+                    }
+                );
+
+
+            if ($workedThatHoliday) {
+
+                $payRate =
+                    (float)(
+                        $holiday->pay_rate ?? 100
+                    );
+
+
+                $holidayPay +=
+                    $dailyRate
+                    * (
+                        $payRate / 100
+                    );
+
+
+                $holidayDatesWorked[] =
+                    $holidayDate;
+            } else {
+
+                $holidayPay +=
+                    $dailyRate;
+            }
+        }
+
+
+        $totalHolidays =
+            $holidays->count();
+
+
+        $workedHolidayDays =
+            count(
+                $holidayDatesWorked
+            );
 
 
         /*
         |--------------------------------------------------------------------------
-        | Basic Pay
+        | NORMAL WORKED DAYS
+        |--------------------------------------------------------------------------
+        */
+
+        $normalWorkedDays =
+            max(
+                0,
+                $presentDays
+                - $workedHolidayDays
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | BASIC PAY
         |--------------------------------------------------------------------------
         */
 
         $basicPay =
-            ($config->daily_rate ?? 0)
-            * $presentDays;
+            $dailyRate
+            * $normalWorkedDays;
 
 
         /*
         |--------------------------------------------------------------------------
-        | Holiday Pay
+        | ATTENDANCE MINUTES
         |--------------------------------------------------------------------------
         */
 
-        $holidayPay =
-            ($config->daily_rate ?? 0)
-            * 2
-            * $workedHolidayDays;
+        $lateMinutes =
+            max(
+                0,
+                (int)$attendance->sum(
+                    'late_minutes'
+                )
+            );
+
+
+        $undertimeMinutes =
+            max(
+                0,
+                (int)$attendance->sum(
+                    'undertime_minutes'
+                )
+            );
+
+
+        $overtimeMinutes =
+            max(
+                0,
+                (int)$attendance->sum(
+                    'overtime_minutes'
+                )
+            );
+
+
+        $overtimeHours =
+            $overtimeMinutes / 60;
 
 
         /*
         |--------------------------------------------------------------------------
-        | Manual Overtime
+        | OVERTIME PAY
         |--------------------------------------------------------------------------
-        |
-        | Your current system uses the OT amount entered by the admin.
-        |
-        | We are NOT calculating overtime from attendance yet.
-        |
         */
 
-        $overtime =
-            $config->ot_rate ?? 0;
+        $overtimePay =
+            $overtimeHours
+            * $overtimeRate;
 
 
         /*
         |--------------------------------------------------------------------------
-        | Honorarium
+        | ADDITIONAL EARNINGS
         |--------------------------------------------------------------------------
+        */
+
+        $additionalEarnings =
+            AdditionalEarning::where(
+                'user_id',
+                $employee->id
+            )
+                ->orderBy('id')
+                ->get();
+
+
+        $additionalEarningsTotal =
+            max(
+                0,
+                (float)$additionalEarnings->sum(
+                    'amount'
+                )
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | HONORARIUM
+        |--------------------------------------------------------------------------
+        |
+        | The main PayrollController has this variable.
+        |
+        | However, its current gross salary calculation does NOT add
+        | the configured honorarium separately.
+        |
+        | The generated Payslip's "honorarium" field is populated with
+        | additional_earnings_total for compatibility.
+        |
+        | Therefore, to reproduce the actual generated payslip,
+        | we use the additional earnings total here.
+        |
         */
 
         $honorarium =
-            $config->honorarium ?? 0;
+            $additionalEarningsTotal;
 
 
         /*
         |--------------------------------------------------------------------------
-        | Teaching Load
+        | DEPARTMENT TEACHING LOAD CONFIGURATION
         |--------------------------------------------------------------------------
         */
+
+        $departmentConfig =
+            DepartmentSalaryConfig::where(
+                'department',
+                $employee->department
+            )->first();
+
+
+        $teachingLoadRequiredUnit =
+            $departmentConfig
+                && $departmentConfig->teaching_load_required_unit !== null
+                ? (float)$departmentConfig->teaching_load_required_unit
+                : (float)(
+                    $config->teaching_load_required_unit ?? 0
+                );
+
+
+        $teachingLoadPrice =
+            $departmentConfig
+                && $departmentConfig->teaching_load_price !== null
+                ? (float)$departmentConfig->teaching_load_price
+                : (float)(
+                    $config->teaching_load_price ?? 0
+                );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | LEGACY TEACHING LOAD
+        |--------------------------------------------------------------------------
+        */
+
+        $additionalTeachingUnits =
+            max(
+                0,
+                (int)(
+                    $config->teaching_load_units_taken ?? 0
+                )
+            );
+
+
+        $legacyTeachingLoad = 0;
+
+
+        if (
+            $additionalTeachingUnits > 0
+            &&
+            $teachingLoadRequiredUnit > 0
+            &&
+            $teachingLoadPrice > 0
+        ) {
+
+            $legacyTeachingLoad =
+                (
+                    $additionalTeachingUnits
+                    /
+                    $teachingLoadRequiredUnit
+                )
+                * $teachingLoadPrice;
+
+
+            $legacyTeachingLoad /=
+                2;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | TEACHING LOAD RECORDS
+        |--------------------------------------------------------------------------
+        */
+
+        $teachingLoads =
+            TeachingLoad::where(
+                'user_id',
+                $employee->id
+            )
+                ->orderBy('id')
+                ->get();
+
+
+        $teachingLoadRateTotal =
+            max(
+                0,
+                (float)$teachingLoads->sum(
+                    'rate'
+                )
+            );
+
+
+        $additionalTeachingLoadPay =
+            $teachingLoadRateTotal > 0
+                ? $teachingLoadRateTotal / 2
+                : 0;
+
 
         $teachingLoad =
-            $config->teaching_load ?? 0;
+            $additionalTeachingLoadPay;
 
 
         /*
         |--------------------------------------------------------------------------
-        | Gross Salary
+        | BENEFITS
         |--------------------------------------------------------------------------
         */
 
-        $grossSalary =
-            $basicPay
-            + $holidayPay
-            + $overtime
-            + $honorarium
-            + $teachingLoad;
+        $sss =
+            max(
+                0,
+                (float)(
+                    $config->sss ?? 0
+                )
+            );
+
+
+        $philhealth =
+            max(
+                0,
+                (float)(
+                    $config->philhealth ?? 0
+                )
+            );
+
+
+        $pagibig =
+            max(
+                0,
+                (float)(
+                    $config->pagibig ?? 0
+                )
+            );
 
 
         /*
         |--------------------------------------------------------------------------
-        | Benefits
+        | HMO
+        |--------------------------------------------------------------------------
+        |
+        | HMO only applies to Regular employees in the main payroll logic.
+        |
+        */
+
+        $hmo =
+            ($employee->employment_type ?? null)
+                === 'Regular'
+                ? max(
+                    0,
+                    (float)(
+                        $config->hmo ?? 0
+                    )
+                )
+                : 0;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAYROLL PERIOD / BENEFIT DIVISOR
         |--------------------------------------------------------------------------
         */
+
+        $payrollPeriod =
+            $config->payroll_period ?? null;
+
+
+        $isWeeklyPayroll =
+            $employee->department === 'Laborers'
+            ||
+            $payrollPeriod === 'Weekly';
+
+
+        $benefitDivisor =
+            $isWeeklyPayroll
+                ? 4
+                : 2;
+
 
         $benefits =
             (
-                ($config->sss ?? 0)
-                + ($config->philhealth ?? 0)
-                + ($config->pagibig ?? 0)
-                + ($config->hmo ?? 0)
-            ) / 2;
+                $sss
+                + $philhealth
+                + $pagibig
+                + $hmo
+            )
+            /
+            $benefitDivisor;
 
 
         /*
         |--------------------------------------------------------------------------
-        | Late Deduction
+        | DEDUCTION RATES
+        |--------------------------------------------------------------------------
+        */
+
+        $lateDeductionRate =
+            max(
+                0,
+                (float)(
+                    $config->late_deduction_rate ?? 0
+                )
+            );
+
+
+        $undertimeDeductionRate =
+            max(
+                0,
+                (float)(
+                    $config->undertime_deduction_rate ?? 0
+                )
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | DEDUCTIONS
         |--------------------------------------------------------------------------
         */
 
         $lateDeduction =
             $lateMinutes
-            * ($config->late_deduction_rate ?? 0);
+            * $lateDeductionRate;
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Undertime Deduction
-        |--------------------------------------------------------------------------
-        */
 
         $undertimeDeduction =
             $undertimeMinutes
-            * ($config->undertime_deduction_rate ?? 0);
+            * $undertimeDeductionRate;
 
 
         /*
         |--------------------------------------------------------------------------
-        | Net Salary
+        | GROSS SALARY
+        |--------------------------------------------------------------------------
+        |
+        | This matches the original PayrollController:
+        |
+        | basic pay
+        | + holiday pay
+        | + overtime pay
+        | + additional earnings
+        | + teaching load
+        |
+        */
+
+        $grossSalary =
+            $basicPay
+            + $holidayPay
+            + $overtimePay
+            + $additionalEarningsTotal
+            + $teachingLoad;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | NET SALARY
         |--------------------------------------------------------------------------
         */
 
         $netSalary =
-            $grossSalary
-            - $benefits
-            - $lateDeduction
-            - $undertimeDeduction;
+            max(
+                0,
+                $grossSalary
+                - $benefits
+                - $lateDeduction
+                - $undertimeDeduction
+            );
 
 
         /*
         |--------------------------------------------------------------------------
-        | Update Payslip + Concern
+        | TEACHING LOAD BREAKDOWN
+        |--------------------------------------------------------------------------
+        */
+
+        $collegeLoad =
+            $teachingLoads
+                ->where(
+                    'department',
+                    'College'
+                )
+                ->sum('rate') / 2;
+
+
+        $shsLoad =
+            $teachingLoads
+                ->where(
+                    'department',
+                    'Senior High School'
+                )
+                ->sum('rate') / 2;
+
+
+        $jhsLoad =
+            $teachingLoads
+                ->where(
+                    'department',
+                    'Junior High School'
+                )
+                ->sum('rate') / 2;
+
+
+        $elementaryLoad =
+            $teachingLoads
+                ->where(
+                    'department',
+                    'Elementary'
+                )
+                ->sum('rate') / 2;
+
+
+        $kindergartenLoad =
+            $teachingLoads
+                ->where(
+                    'department',
+                    'Kindergarten'
+                )
+                ->sum('rate') / 2;
+
+
+        $nurseryLoad =
+            $teachingLoads
+                ->where(
+                    'department',
+                    'Nursery'
+                )
+                ->sum('rate') / 2;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE EXISTING PAYSLIP
         |--------------------------------------------------------------------------
         */
 
@@ -596,11 +1281,17 @@ class PayslipConcernController extends Controller
             $workedHolidayDays,
             $lateMinutes,
             $undertimeMinutes,
-            $config,
+            $overtimeMinutes,
+            $overtimeHours,
+            $dailyRate,
             $holidayPay,
-            $overtime,
+            $overtimePay,
             $honorarium,
             $teachingLoad,
+            $sss,
+            $philhealth,
+            $pagibig,
+            $hmo,
             $lateDeduction,
             $undertimeDeduction,
             $grossSalary,
@@ -608,13 +1299,7 @@ class PayslipConcernController extends Controller
             $netSalary
         ) {
 
-            /*
-            |--------------------------------------------------------------------------
-            | Update Existing Payslip
-            |--------------------------------------------------------------------------
-            */
-
-            $payslip->update([
+            $updateData = [
 
                 'present_days' =>
                     $presentDays,
@@ -628,35 +1313,35 @@ class PayslipConcernController extends Controller
                 'undertime_minutes' =>
                     $undertimeMinutes,
 
+                'overtime_minutes' =>
+                    $overtimeMinutes,
+
+                'overtime_hours' =>
+                    $overtimeHours,
+
                 'daily_rate' =>
-                    $config->daily_rate ?? 0,
+                    $dailyRate,
 
                 'holiday_pay' =>
                     $holidayPay,
 
-                /*
-                 * Manual OT
-                 */
                 'ot' =>
-                    $overtime,
+                    $overtimePay,
 
                 'honorarium' =>
                     $honorarium,
 
-                'teaching_load' =>
-                    $teachingLoad,
-
                 'sss' =>
-                    $config->sss ?? 0,
+                    $sss,
 
                 'philhealth' =>
-                    $config->philhealth ?? 0,
+                    $philhealth,
 
                 'pagibig' =>
-                    $config->pagibig ?? 0,
+                    $pagibig,
 
                 'hmo' =>
-                    $config->hmo ?? 0,
+                    $hmo,
 
                 'late_deduction' =>
                     $lateDeduction,
@@ -673,19 +1358,57 @@ class PayslipConcernController extends Controller
                 'net_salary' =>
                     $netSalary,
 
-                /*
-                 * Make corrected payslip available
-                 * to the employee.
-                 */
                 'status' =>
                     'Sent',
 
-                /*
-                 * Increment correction version.
-                 */
                 'version' =>
                     ($payslip->version ?? 1) + 1,
-            ]);
+            ];
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Teaching Load Pay
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                array_key_exists(
+                    'teaching_load_pay',
+                    $payslip->getAttributes()
+                )
+            ) {
+
+                $updateData[
+                    'teaching_load_pay'
+                ] =
+                    $teachingLoad;
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Backward Compatibility
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                array_key_exists(
+                    'teaching_load',
+                    $payslip->getAttributes()
+                )
+            ) {
+
+                $updateData[
+                    'teaching_load'
+                ] =
+                    $teachingLoad;
+            }
+
+
+            $payslip->update(
+                $updateData
+            );
 
 
             /*
@@ -733,12 +1456,6 @@ class PayslipConcernController extends Controller
             ]);
         });
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Return
-        |--------------------------------------------------------------------------
-        */
 
         return back()->with(
             'success',
