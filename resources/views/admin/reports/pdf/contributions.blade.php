@@ -52,7 +52,7 @@ th{
 
 <div class="header">
 
-<h2>PAP PAY</h2>
+<h2>Professional Academy of the Philippines</h2>
 
 <h3>Government Contributions Report</h3>
 

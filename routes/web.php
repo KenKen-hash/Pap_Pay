@@ -33,7 +33,9 @@ use App\Http\Controllers\Admin\PayslipConcernController as AdminPayslipConcernCo
 use App\Http\Controllers\Admin\PartTimeSubjectController;
 use App\Http\Controllers\Admin\PartTimeAttendanceKioskController;
 use App\Http\Controllers\Admin\PartTimeKioskController;
-
+use \App\Http\Controllers\Admin\Settings;
+use App\Http\Controllers\Admin\AuditLogController;
+use App\Http\Controllers\LoginHistoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -52,6 +54,9 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+
+    Route::get('/login-history', [LoginHistoryController::class, 'index'])
+        ->name('login.history');
 });
 
 /*
@@ -78,6 +83,9 @@ Route::middleware(['auth', 'role:employee'])
 
         Route::get('/payslip', [PayslipController::class, 'index'])
             ->name('payslip');
+
+        Route::get('/payslip/view/{id}', [PayslipController::class, 'view'])
+            ->name('payslip.view');
 
         Route::get('/payslip/download/{id}', [PayslipController::class, 'download'])
             ->name('payslip.download');
@@ -179,9 +187,17 @@ Route::middleware(['auth', 'role:admin'])
         Route::view('/official_business', 'admin.official_business')
             ->name('official_business');
 
-
-        Route::view('/settings', 'admin.settings')
+        Route::get('/settings', [Settings::class, 'index'])
             ->name('settings');
+
+        Route::patch('/settings/information', [Settings::class, 'updateInformation'])
+            ->name('settings.information.update');
+
+        Route::patch('/settings/profile', [Settings::class, 'updateProfile'])
+            ->name('settings.profile.update');
+
+        Route::patch('/settings/password', [Settings::class, 'updatePassword'])
+            ->name('settings.password.update');
 
         Route::get(
             '/official_business',
@@ -516,6 +532,9 @@ Route::middleware(['auth', 'role:admin'])
             '/part-time-attendance/record',
             [PartTimeAttendanceKioskController::class, 'record']
         )->name('part_time_attendance_kiosk.record');
+
+        Route::get('/audit-log', [AuditLogController::class, 'index'])
+            ->name('admin.audit-log.index');
     });
 
 

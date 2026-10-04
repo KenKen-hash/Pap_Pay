@@ -1,4 +1,6 @@
+
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -8,6 +10,7 @@
     <title>Attendance Report</title>
 
     <style>
+
         body {
             font-family: DejaVu Sans, sans-serif;
             font-size: 12px;
@@ -83,6 +86,7 @@
             font-size: 10px;
             color: #777;
         }
+
     </style>
 
 </head>
@@ -91,14 +95,12 @@
 
     <div class="header">
 
-        <h2>YOUR SCHOOL NAME</h2>
+        <h2>Professional Academy of the Philippines</h2>
 
         <h4>Attendance Report</h4>
 
         <p>
-
-            Generated on {{ now()->format('F d, Y h:i A') }}
-
+            Generated on {{ now()->format('F d, Y h\:i A') }}
         </p>
 
     </div>
@@ -149,13 +151,9 @@
 
                 <th>Date</th>
 
-                <th>Morning In</th>
+                <th>Time In</th>
 
-                <th>Morning Out</th>
-
-                <th>Afternoon In</th>
-
-                <th>Afternoon Out</th>
+                <th>Time Out</th>
 
                 <th>Hours</th>
 
@@ -168,69 +166,43 @@
         <tbody>
 
             @foreach ($attendance as $record)
+
                 <tr>
 
                     <td>
-
                         {{ $record->user->employee_id }}
-
                     </td>
 
                     <td>
-
                         {{ $record->user->name }}
-
                     </td>
 
                     <td>
-
                         {{ $record->user->department }}
-
                     </td>
 
                     <td>
-
                         {{ optional($record->date)->format('M d, Y') }}
-
                     </td>
 
                     <td>
-
-                        {{ optional($record->morning_time_in)->format('h:i A') }}
-
+                        {{ optional($record->time_in)->format('h\:i A') }}
                     </td>
 
                     <td>
-
-                        {{ optional($record->morning_time_out)->format('h:i A') }}
-
-                    </td>
-
-                    <td>
-
-                        {{ optional($record->afternoon_time_in)->format('h:i A') }}
-
-                    </td>
-
-                    <td>
-
-                        {{ optional($record->afternoon_time_out)->format('h:i A') }}
-
+                        {{ optional($record->time_out)->format('h\:i A') }}
                     </td>
 
                     <td class="text-center">
-
                         {{ number_format($record->hours_worked, 2) }}
-
                     </td>
 
                     <td class="text-center">
-
                         {{ $record->status }}
-
                     </td>
 
                 </tr>
+
             @endforeach
 
         </tbody>
@@ -239,16 +211,12 @@
 
             <tr>
 
-                <td colspan="8" class="text-right">
-
+                <td colspan="6" class="text-right">
                     TOTAL HOURS WORKED
-
                 </td>
 
                 <td>
-
                     {{ number_format($totalHours, 2) }}
-
                 </td>
 
                 <td></td>
@@ -299,7 +267,7 @@
 
             <td>
 
-                __________________________
+                ______________________________________
 
                 <br>
 
@@ -309,7 +277,7 @@
 
             <td>
 
-                __________________________
+                ______________________________________
 
                 <br>
 
@@ -330,3 +298,4 @@
 </body>
 
 </html>
+

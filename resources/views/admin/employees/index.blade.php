@@ -1079,9 +1079,6 @@
                 <div class="navbar-actions ms-auto">
 
 
-                
-
-
                     <div class="dropdown">
 
                         <button class="icon-button"
@@ -2554,6 +2551,63 @@
 
                     </div>
 
+
+                    <!-- ACCOUNT SECURITY -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+
+                            <i class="bi bi-shield-lock me-2 text-primary"></i>
+
+                            Account Security
+
+                        </div>
+
+
+                        <div class="row g-3">
+
+                            <div class="col-md-8">
+
+                                <label class="form-label">
+                                    New Password
+                                </label>
+
+                                <div class="input-group">
+
+                                    <input type="password"
+                                           class="form-control"
+                                           id="edit_password"
+                                           name="password"
+                                           minlength="8"
+                                           autocomplete="new-password"
+                                           placeholder="Leave blank to keep current password">
+
+                                    <button type="button"
+                                            class="btn btn-outline-secondary"
+                                            id="toggleEditPassword"
+                                            title="Show password">
+
+                                        <i class="bi bi-eye"
+                                           id="editPasswordIcon"></i>
+
+                                    </button>
+
+                                </div>
+
+                                <div class="small text-muted mt-2">
+
+                                    Leave this field blank if you do not want to change the employee's password.
+                                    Minimum 8 characters.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
 
@@ -3428,6 +3482,22 @@ document.addEventListener("DOMContentLoaded", function () {
                         employee.bio ?? "";
 
 
+                    document.getElementById("edit_password").value =
+                        "";
+
+
+                    document.getElementById("edit_password").type =
+                        "password";
+
+
+                    document.getElementById("editPasswordIcon").className =
+                        "bi bi-eye";
+
+
+                    document.getElementById("toggleEditPassword").title =
+                        "Show password";
+
+
                     const modalElement =
                         document.getElementById("editEmployeeModal");
 
@@ -3449,6 +3519,48 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
         });
+
+
+    /* =========================================================
+       SHOW / HIDE EDIT PASSWORD
+    ========================================================= */
+
+    const toggleEditPassword =
+        document.getElementById("toggleEditPassword");
+
+
+    if (toggleEditPassword) {
+
+        toggleEditPassword.addEventListener("click", function () {
+
+            const passwordInput =
+                document.getElementById("edit_password");
+
+            const passwordIcon =
+                document.getElementById("editPasswordIcon");
+
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+
+                passwordIcon.className = "bi bi-eye-slash";
+
+                this.title = "Hide password";
+
+            } else {
+
+                passwordInput.type = "password";
+
+                passwordIcon.className = "bi bi-eye";
+
+                this.title = "Show password";
+
+            }
+
+        });
+
+    }
 
 
     /* =========================================================

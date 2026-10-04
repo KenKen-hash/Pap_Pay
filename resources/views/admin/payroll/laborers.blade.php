@@ -1,9 +1,12 @@
+
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Laborers Salary Configuration | PAP PAY</title>
@@ -18,6 +21,7 @@
         rel="stylesheet">
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -35,8 +39,12 @@
             inset: 0;
 
             background:
-                radial-gradient(circle at top left, #6ee7b755, transparent 35%),
-                radial-gradient(circle at bottom right, #34d39955, transparent 35%),
+                radial-gradient(circle at top left,
+                    #6ee7b755,
+                    transparent 35%),
+                radial-gradient(circle at bottom right,
+                    #34d39955,
+                    transparent 35%),
                 #e9faf4;
 
             z-index: -1;
@@ -49,7 +57,7 @@
         }
 
         .glass {
-            background: rgba(255, 255, 255, .72);
+            background: rgba(255, 255, 255, .78);
             backdrop-filter: blur(20px);
             border-radius: 25px;
             padding: 35px;
@@ -86,15 +94,28 @@
             gap: 12px;
         }
 
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+        }
+
         .form-control,
         .form-select {
             height: 50px;
             border-radius: 12px;
+            border: 1px solid #d1d5db;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 .2rem rgba(16, 185, 129, .12);
         }
 
         .input-group-text {
             background: #d1fae5;
-            font-weight: bold;
+            font-weight: 700;
+            border-radius: 12px 0 0 12px;
         }
 
         .save-btn {
@@ -108,6 +129,7 @@
 
         .save-btn:hover {
             background: #059669;
+            color: white;
         }
 
         .table {
@@ -122,6 +144,7 @@
         .table th {
             padding: 18px;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .table td {
@@ -147,6 +170,7 @@
 
         .configure-btn:hover {
             background: #059669;
+            color: white;
         }
 
         .badge-regular {
@@ -160,6 +184,141 @@
         .badge-parttime {
             background: #3b82f6;
         }
+
+        .small-note {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .summary-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #047857;
+        }
+
+        .modal-header {
+            background: #059669;
+        }
+
+        .modal-content {
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .card {
+            border-radius: 15px;
+        }
+
+        .card-header {
+            background: #f0fdf4;
+            border-bottom: 1px solid #d1fae5;
+        }
+
+        .auto-calculated {
+            background: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        .additional-entry {
+            background: #f8fffb;
+            border: 1px solid #d1fae5;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .additional-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .add-entry-btn {
+            border: 1px dashed #10b981;
+            color: #059669;
+            background: #ecfdf5;
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-weight: 600;
+        }
+
+        .add-entry-btn:hover {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .remove-entry-btn {
+            border-radius: 10px;
+        }
+
+        @media (max-width: 991px) {
+
+            .wrapper {
+                padding: 20px;
+            }
+
+            .glass {
+                padding: 20px;
+            }
+
+            .page-title {
+                font-size: 27px;
+            }
+
+        }
+
+        @media (max-width: 767px) {
+
+            .wrapper {
+                padding: 10px;
+            }
+
+            .glass {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .page-title {
+                font-size: 23px;
+            }
+
+            .page-subtitle {
+                font-size: 13px;
+            }
+
+            .section {
+                padding: 18px;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header-actions a {
+                width: 100%;
+            }
+
+            .modal-dialog {
+                margin: 8px;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            .card-body {
+                padding: 15px;
+            }
+
+            .add-entry-btn {
+                width: 100%;
+            }
+
+            .additional-entry {
+                padding: 15px;
+            }
+
+        }
+
     </style>
 
 </head>
@@ -172,11 +331,11 @@
 
         <div class="glass">
 
-            <!-- ==================================== -->
+            <!-- ========================================================= -->
             <!-- PAGE HEADER -->
-            <!-- ==================================== -->
+            <!-- ========================================================= -->
 
-            <div class="d-flex justify-content-between align-items-start mb-4">
+            <div class="d-flex justify-content-between align-items-start mb-4 header-actions">
 
                 <div>
 
@@ -190,9 +349,8 @@
 
                     <p class="page-subtitle">
 
-                        Configure the default payroll settings for all Laborers employees.
-
-                        Employees may also have their own salary configuration.
+                        Configure the default payroll settings for all Laborer employees.
+                        Individual employees can also have their own salary configuration.
 
                     </p>
 
@@ -209,9 +367,9 @@
             </div>
 
 
-            <!-- ==================================== -->
+            <!-- ========================================================= -->
             <!-- DEFAULT CONFIGURATION -->
-            <!-- ==================================== -->
+            <!-- ========================================================= -->
 
             <div class="section">
 
@@ -223,131 +381,44 @@
 
                 </div>
 
-                <form>
+                <form id="departmentConfigForm">
 
-                    <input type="hidden" id="department" value="Laborers">
+                    <input type="hidden" id="department" value="{{ $department }}">
 
-                    <!-- Basic Salary / Payroll Period -->
+
+                    <!-- PAYROLL PERIOD -->
 
                     <div class="row">
 
                         <div class="col-md-6 mb-4">
 
                             <label class="form-label">
-
-                                Default Basic Salary
-
-                            </label>
-
-                            <div class="input-group">
-
-                                <span class="input-group-text">
-                                    ₱
-                                </span>
-
-                                <input
-                                    type="number"
-                                    id="default_basic_salary"
-                                    class="form-control"
-                                    placeholder="22000"
-                                    value="{{ old('default_basic_salary', optional($departmentConfig)->default_basic_salary) }}"
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-md-6 mb-4">
-
-                            <label class="form-label">
-
-                                Payroll Release
-
+                                Payroll Period
                             </label>
 
                             <select id="payroll_period" class="form-select">
 
-                                <option
-                                    value="Monthly"
-                                    {{ optional($departmentConfig)->payroll_period == 'Monthly' ? 'selected' : '' }}
-                                >
-                                    Monthly
-                                </option>
-
-                                <option
-                                    value="Every 15 Days"
-                                    {{ optional($departmentConfig)->payroll_period == 'Every 15 Days' ? 'selected' : '' }}
-                                >
+                                <option value="Every 15 Days"
+                                    {{ optional($departmentConfig)->payroll_period == 'Every 15 Days' ? 'selected' : '' }}>
                                     Every 15 Days
                                 </option>
 
-                                <option
-                                    value="Weekly"
-                                    {{ optional($departmentConfig)->payroll_period == 'Weekly' ? 'selected' : '' }}
-                                >
+                                <option value="Monthly"
+                                    {{ optional($departmentConfig)->payroll_period == 'Monthly' ? 'selected' : '' }}>
+                                    Monthly
+                                </option>
+
+                                <option value="Weekly"
+                                    {{ optional($departmentConfig)->payroll_period == 'Weekly' ? 'selected' : '' }}>
                                     Weekly
                                 </option>
 
                             </select>
 
-                        </div>
+                            <div class="small-note mt-2">
 
-                    </div>
-
-
-                    <!-- Daily / Overtime Rate -->
-
-                    <div class="row">
-
-                        <div class="col-md-6 mb-4">
-
-                            <label class="form-label">
-
-                                Daily Rate
-
-                            </label>
-
-                            <div class="input-group">
-
-                                <span class="input-group-text">
-                                    ₱
-                                </span>
-
-                                <input
-                                    type="number"
-                                    id="default_daily_rate"
-                                    class="form-control"
-                                    placeholder="0.00"
-                                    value="{{ old('default_daily_rate', optional($departmentConfig)->daily_rate) }}"
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-md-6 mb-4">
-
-                            <label class="form-label">
-
-                                Overtime Rate
-
-                            </label>
-
-                            <div class="input-group">
-
-                                <span class="input-group-text">
-                                    ₱
-                                </span>
-
-                                <input
-                                    type="number"
-                                    id="default_overtime_rate"
-                                    class="form-control"
-                                    placeholder="0.00"
-                                    value="{{ old('default_overtime_rate', optional($departmentConfig)->overtime_rate) }}"
-                                >
+                                Your current payroll calculation is designed around
+                                a 15-day cycle.
 
                             </div>
 
@@ -356,7 +427,7 @@
                     </div>
 
 
-                    <!-- Late / Undertime -->
+                    <!-- LATE / UNDERTIME -->
 
                     <div class="row">
 
@@ -364,7 +435,11 @@
 
                             <label class="form-label">
 
-                                Late Deduction Rate (Per Minute)
+                                Late Deduction Rate
+
+                                <span class="text-muted">
+                                    (Per Minute)
+                                </span>
 
                             </label>
 
@@ -374,13 +449,12 @@
                                     ₱
                                 </span>
 
-                                <input
-                                    type="number"
+                                <input type="text"
+                                    inputmode="decimal"
                                     id="late_deduction_rate"
                                     class="form-control"
-                                    placeholder="2.00"
-                                    value="{{ old('late_deduction_rate', optional($departmentConfig)->late_deduction_rate) }}"
-                                >
+                                    placeholder="2"
+                                    value="{{ old('late_deduction_rate', optional($departmentConfig)->late_deduction_rate ?? 0) }}">
 
                             </div>
 
@@ -391,7 +465,11 @@
 
                             <label class="form-label">
 
-                                Undertime Deduction Rate (Per Minute)
+                                Undertime Deduction Rate
+
+                                <span class="text-muted">
+                                    (Per Minute)
+                                </span>
 
                             </label>
 
@@ -401,13 +479,12 @@
                                     ₱
                                 </span>
 
-                                <input
-                                    type="number"
+                                <input type="text"
+                                    inputmode="decimal"
                                     id="undertime_deduction_rate"
                                     class="form-control"
-                                    placeholder="2.00"
-                                    value="{{ old('undertime_deduction_rate', optional($departmentConfig)->undertime_deduction_rate) }}"
-                                >
+                                    placeholder="2"
+                                    value="{{ old('undertime_deduction_rate', optional($departmentConfig)->undertime_deduction_rate ?? 0) }}">
 
                             </div>
 
@@ -416,30 +493,26 @@
                     </div>
 
 
-                    <hr>
+                    <hr class="my-4">
 
 
-                    <!-- ==================================== -->
                     <!-- BENEFITS -->
-                    <!-- ==================================== -->
 
                     <h5 class="mb-4">
 
-                        Benefits
+                        <i class="bi bi-shield-check text-success me-2"></i>
+
+                        Monthly Benefits / Contributions
 
                     </h5>
 
 
                     <div class="row">
 
-                        <!-- SSS -->
-
-                        <div class="col-lg-3 mb-3">
+                        <div class="col-lg-3 col-md-6 mb-3">
 
                             <label class="form-label">
-
                                 SSS
-
                             </label>
 
                             <div class="input-group">
@@ -448,27 +521,21 @@
                                     ₱
                                 </span>
 
-                                <input
-                                    type="number"
+                                <input type="text"
+                                    inputmode="decimal"
                                     id="sss"
                                     class="form-control"
-                                    placeholder="0"
-                                    value="{{ old('sss', optional($departmentConfig)->sss) }}"
-                                >
+                                    value="{{ old('sss', optional($departmentConfig)->sss ?? 0) }}">
 
                             </div>
 
                         </div>
 
 
-                        <!-- PhilHealth -->
-
-                        <div class="col-lg-3 mb-3">
+                        <div class="col-lg-3 col-md-6 mb-3">
 
                             <label class="form-label">
-
                                 PhilHealth
-
                             </label>
 
                             <div class="input-group">
@@ -477,27 +544,21 @@
                                     ₱
                                 </span>
 
-                                <input
-                                    type="number"
+                                <input type="text"
+                                    inputmode="decimal"
                                     id="philhealth"
                                     class="form-control"
-                                    placeholder="0"
-                                    value="{{ old('philhealth', optional($departmentConfig)->philhealth) }}"
-                                >
+                                    value="{{ old('philhealth', optional($departmentConfig)->philhealth ?? 0) }}">
 
                             </div>
 
                         </div>
 
 
-                        <!-- Pag-IBIG -->
-
-                        <div class="col-lg-3 mb-3">
+                        <div class="col-lg-3 col-md-6 mb-3">
 
                             <label class="form-label">
-
                                 Pag-IBIG
-
                             </label>
 
                             <div class="input-group">
@@ -506,27 +567,21 @@
                                     ₱
                                 </span>
 
-                                <input
-                                    type="number"
+                                <input type="text"
+                                    inputmode="decimal"
                                     id="pagibig"
                                     class="form-control"
-                                    placeholder="0"
-                                    value="{{ old('pagibig', optional($departmentConfig)->pagibig) }}"
-                                >
+                                    value="{{ old('pagibig', optional($departmentConfig)->pagibig ?? 0) }}">
 
                             </div>
 
                         </div>
 
 
-                        <!-- HMO -->
-
-                        <div class="col-lg-3 mb-3">
+                        <div class="col-lg-3 col-md-6 mb-3">
 
                             <label class="form-label">
-
-                                HMO (Regular Only)
-
+                                HMO
                             </label>
 
                             <div class="input-group">
@@ -535,13 +590,11 @@
                                     ₱
                                 </span>
 
-                                <input
-                                    type="number"
+                                <input type="text"
+                                    inputmode="decimal"
                                     id="hmo"
                                     class="form-control"
-                                    placeholder="0"
-                                    value="{{ old('hmo', optional($departmentConfig)->hmo) }}"
-                                >
+                                    value="{{ old('hmo', optional($departmentConfig)->hmo ?? 0) }}">
 
                             </div>
 
@@ -550,15 +603,15 @@
                     </div>
 
 
-                    <!-- Save Default -->
+                    <!-- SAVE -->
 
                     <div class="text-end mt-4">
 
-                        <button
-                            type="button"
+                        <button type="button"
                             id="saveDepartmentConfig"
-                            class="save-btn"
-                        >
+                            class="save-btn">
+
+                            <i class="bi bi-check-circle me-2"></i>
 
                             Save Default Configuration
 
@@ -571,53 +624,58 @@
             </div>
 
 
-            <!-- ==================================== -->
+            <!-- ========================================================= -->
             <!-- EMPLOYEE LIST -->
-            <!-- ==================================== -->
+            <!-- ========================================================= -->
 
             <div class="section">
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
 
                     <h3 class="section-title mb-0">
 
                         <i class="bi bi-people-fill"></i>
 
-                        Laborers Employees
+                        Laborer Employees
 
                     </h3>
 
 
-                    <input
-                        type="text"
+                    <input type="text"
+                        id="employeeSearch"
                         class="form-control"
                         placeholder="Search employee..."
-                        style="width:300px;"
-                    >
+                        style="max-width:300px;">
 
                 </div>
 
 
                 <div class="table-responsive">
 
-                    <table class="table table-hover">
+                    <table class="table table-hover align-middle">
 
                         <thead>
 
                             <tr>
 
-                                <th>Employee</th>
+                                <th>
+                                    Employee
+                                </th>
 
-                                <th>Employment Type</th>
+                                <th>
+                                    Employment Type
+                                </th>
 
-                                <th>Basic Salary</th>
+                                <th>
+                                    Basic Salary
+                                </th>
 
-                                <th>Status</th>
+                                <th>
+                                    Status
+                                </th>
 
-                                <th width="150">
-
+                                <th>
                                     Action
-
                                 </th>
 
                             </tr>
@@ -625,24 +683,93 @@
                         </thead>
 
 
-                        <tbody>
+                        <tbody id="employeeTableBody">
 
-                            @foreach ($employees as $employee)
+                            @forelse ($employees as $employee)
 
-                                <tr>
+                                @php
 
-                                    <!-- Employee -->
+                                    $salaryConfig = $employee->salaryConfig;
+
+                                    $defaultBasic =
+                                        optional($departmentConfig)->default_basic_salary ?? 0;
+
+                                    $basicSalary =
+                                        $salaryConfig?->basic_salary ?? $defaultBasic;
+
+
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Existing Additional Earnings
+                                    |--------------------------------------------------------------------------
+                                    */
+
+                                    $existingAdditionalEarnings =
+                                        ($additionalEarnings ?? collect())->get(
+                                            $employee->id,
+                                            collect()
+                                        );
+
+
+                                    $additionalEarningsJson =
+                                        $existingAdditionalEarnings
+                                            ->map(function ($earning) {
+
+                                                return [
+                                                    'id' => $earning->id ?? null,
+                                                    'amount' => $earning->amount,
+                                                    'remarks' => $earning->remarks,
+                                                ];
+
+                                            })
+                                            ->values()
+                                            ->all();
+
+
+                                    /*
+                                     |--------------------------------------------------------------------------
+                                     | Existing Additional Deductions
+                                     |--------------------------------------------------------------------------
+                                    */
+
+                                    $existingAdditionalDeductions =
+                                        ($additionalDeductions ?? collect())->get(
+                                            $employee->id,
+                                            collect()
+                                        );
+
+
+                                    $additionalDeductionsJson =
+                                        $existingAdditionalDeductions
+                                            ->map(function ($deduction) {
+
+                                                return [
+                                                    'id' => $deduction->id ?? null,
+                                                    'amount' => $deduction->amount,
+                                                    'remarks' => $deduction->remarks,
+                                                ];
+
+                                            })
+                                            ->values()
+                                            ->all();
+
+                                @endphp
+
+
+                                <tr class="employee-row">
+
+
+                                    <!-- EMPLOYEE -->
 
                                     <td>
 
                                         <div class="d-flex align-items-center">
 
-                                            <img
-                                                class="employee-photo"
+                                            <img class="employee-photo"
                                                 src="{{ $employee->photo
                                                     ? asset('storage/' . $employee->photo)
                                                     : asset('khen/assets/images/avatar/avatar.jpg') }}"
-                                            >
+                                                alt="Employee">
 
                                             <div>
 
@@ -656,7 +783,7 @@
 
                                                 <br>
 
-                                                <small>
+                                                <small class="text-muted">
 
                                                     {{ $employee->employee_id }}
 
@@ -669,32 +796,26 @@
                                     </td>
 
 
-                                    <!-- Employment Type -->
+                                    <!-- EMPLOYMENT -->
 
                                     <td>
 
-                                        @if ($employee->employment_type == 'Regular')
+                                        @if ($employee->employment_type === 'Regular')
 
                                             <span class="badge badge-regular">
-
                                                 Regular
-
                                             </span>
 
-                                        @elseif ($employee->employment_type == 'Contractual')
+                                        @elseif ($employee->employment_type === 'Contractual')
 
                                             <span class="badge badge-contractual">
-
                                                 Contractual
-
                                             </span>
 
                                         @else
 
                                             <span class="badge badge-parttime">
-
                                                 Part-Time
-
                                             </span>
 
                                         @endif
@@ -702,36 +823,29 @@
                                     </td>
 
 
-                                    <!-- Basic Salary -->
+                                    <!-- BASIC SALARY -->
 
                                     <td>
 
-                                        ₱ {{ number_format(
-                                            optional($employee->salaryConfig)->basic_salary ?? 0,
-                                            2
-                                        ) }}
+                                        ₱{{ number_format($basicSalary, 2) }}
 
                                     </td>
 
 
-                                    <!-- Status -->
+                                    <!-- STATUS -->
 
                                     <td>
 
-                                        @if ($employee->salaryConfig)
+                                        @if ($salaryConfig)
 
                                             <span class="badge bg-success">
-
-                                                Configured
-
+                                                Individual Configured
                                             </span>
 
                                         @else
 
                                             <span class="badge bg-secondary">
-
-                                                Using Default
-
+                                                Using Department Default
                                             </span>
 
                                         @endif
@@ -739,52 +853,52 @@
                                     </td>
 
 
-                                    <!-- Action -->
+                                    <!-- ACTION -->
 
                                     <td>
 
-                                        <button
+                                        <button type="button"
                                             class="btn configure-btn configureEmployee"
+
                                             data-id="{{ $employee->id }}"
+
                                             data-name="{{ $employee->first_name }} {{ $employee->last_name }}"
+
                                             data-employment="{{ $employee->employment_type }}"
 
-                                            data-salary="{{ optional($employee->salaryConfig)->basic_salary
-                                                ?? optional($departmentConfig)->default_basic_salary }}"
+                                            data-photo="{{ $employee->photo
+                                                ? asset('storage/' . $employee->photo)
+                                                : asset('khen/assets/images/avatar/avatar.jpg') }}"
 
-                                            data-daily="{{ optional($employee->salaryConfig)->daily_rate
-                                                ?? optional($departmentConfig)->daily_rate }}"
+                                            data-salary="{{ $salaryConfig?->basic_salary ?? $defaultBasic }}"
 
-                                            data-overtime="{{ optional($employee->salaryConfig)->overtime_rate
-                                                ?? optional($departmentConfig)->overtime_rate }}"
+                                            data-daily="{{ $salaryConfig?->daily_rate ?? (optional($departmentConfig)->daily_rate ?? 0) }}"
 
-                                            data-late="{{ optional($employee->salaryConfig)->late_deduction_rate
-                                                ?? optional($departmentConfig)->late_deduction_rate }}"
+                                            data-overtime="{{ $salaryConfig?->overtime_rate ?? (optional($departmentConfig)->overtime_rate ?? 0) }}"
 
-                                            data-undertime="{{ optional($employee->salaryConfig)->undertime_deduction_rate
-                                                ?? optional($departmentConfig)->undertime_deduction_rate }}"
+                                            data-late="{{ $salaryConfig?->late_deduction_rate ?? (optional($departmentConfig)->late_deduction_rate ?? 0) }}"
 
-                                            data-payroll="{{ optional($employee->salaryConfig)->payroll_period
-                                                ?? optional($departmentConfig)->payroll_period }}"
+                                            data-undertime="{{ $salaryConfig?->undertime_deduction_rate ?? (optional($departmentConfig)->undertime_deduction_rate ?? 0) }}"
 
-                                            data-sss="{{ optional($employee->salaryConfig)->sss
-                                                ?? optional($departmentConfig)->sss }}"
+                                            data-payroll="{{ $salaryConfig?->payroll_period ?? (optional($departmentConfig)->payroll_period ?? 'Every 15 Days') }}"
 
-                                            data-philhealth="{{ optional($employee->salaryConfig)->philhealth
-                                                ?? optional($departmentConfig)->philhealth }}"
+                                            data-sss="{{ $salaryConfig?->sss ?? (optional($departmentConfig)->sss ?? 0) }}"
 
-                                            data-pagibig="{{ optional($employee->salaryConfig)->pagibig
-                                                ?? optional($departmentConfig)->pagibig }}"
+                                            data-philhealth="{{ $salaryConfig?->philhealth ?? (optional($departmentConfig)->philhealth ?? 0) }}"
 
-                                            data-hmo="{{ $employee->employment_type == 'Regular'
-                                                ? optional($employee->salaryConfig)->hmo
-                                                    ?? optional($departmentConfig)->hmo
+                                            data-pagibig="{{ $salaryConfig?->pagibig ?? (optional($departmentConfig)->pagibig ?? 0) }}"
+
+                                            data-hmo="{{ $employee->employment_type === 'Regular'
+                                                ? ($salaryConfig?->hmo ?? (optional($departmentConfig)->hmo ?? 0))
                                                 : 0 }}"
 
-                                            data-ot="{{ optional($employee->salaryConfig)->ot_rate ?? 0 }}"
+                                            data-honorarium="{{ $salaryConfig?->honorarium ?? (optional($departmentConfig)->honorarium ?? 0) }}"
 
-                                            data-honorarium="{{ optional($employee->salaryConfig)->honorarium ?? 0 }}"
-                                        >
+                                            data-additional-earnings='@json($additionalEarningsJson, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)'
+
+                                            data-additional-deductions='@json($additionalDeductionsJson, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)'>
+
+                                            <i class="bi bi-pencil-square me-1"></i>
 
                                             Configure
 
@@ -794,7 +908,23 @@
 
                                 </tr>
 
-                            @endforeach
+
+                            @empty
+
+                                <tr>
+
+                                    <td colspan="5"
+                                        class="text-center py-5 text-muted">
+
+                                        <i class="bi bi-people fs-1 d-block mb-2"></i>
+
+                                        No Laborer employees found.
+
+                                    </td>
+
+                                </tr>
+
+                            @endforelse
 
                         </tbody>
 
@@ -809,55 +939,49 @@
     </div>
 
 
-    <!-- ================================================= -->
+    <!-- =============================================================== -->
     <!-- EMPLOYEE SALARY CONFIGURATION MODAL -->
-    <!-- ================================================= -->
+    <!-- =============================================================== -->
 
-    <div
-        class="modal fade"
+    <div class="modal fade"
         id="employeeSalaryModal"
         tabindex="-1"
-        aria-hidden="true"
-    >
+        aria-hidden="true">
 
-        <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
 
             <div class="modal-content border-0 shadow-lg">
 
 
-                <!-- Modal Header -->
+                <!-- HEADER -->
 
-                <div class="modal-header bg-success text-white">
+                <div class="modal-header text-white">
 
                     <h4 class="modal-title">
 
-                        <i class="bi bi-sliders me-2"></i>
+                        <i class="bi bi-person-badge me-2"></i>
 
                         Employee Salary Configuration
 
                     </h4>
 
-
-                    <button
-                        type="button"
+                    <button type="button"
                         class="btn-close btn-close-white"
-                        data-bs-dismiss="modal"
-                    >
+                        data-bs-dismiss="modal">
                     </button>
 
                 </div>
 
 
-                <!-- Modal Body -->
-
                 <div class="modal-body">
+
 
                     <input type="hidden" id="employee_id">
 
 
-                    <!-- ==================================== -->
+                    <!-- ================================================= -->
                     <!-- EMPLOYEE INFORMATION -->
-                    <!-- ==================================== -->
+                    <!-- ================================================= -->
 
                     <div class="card border-0 shadow-sm mb-4">
 
@@ -865,26 +989,28 @@
 
                             <div class="row align-items-center">
 
-                                <div class="col-md-2 text-center">
+                                <div class="col-md-2 text-center mb-3 mb-md-0">
 
-                                    <img
-                                        id="modalPhoto"
+                                    <img id="modalPhoto"
                                         src="{{ asset('khen/assets/images/avatar/avatar.jpg') }}"
                                         class="rounded-circle"
-                                        style="width:90px;height:90px;object-fit:cover;"
-                                    >
+                                        style="
+                                            width:90px;
+                                            height:90px;
+                                            object-fit:cover;
+                                        ">
 
                                 </div>
 
 
                                 <div class="col-md-10">
 
-                                    <h3 id="modalName"></h3>
+                                    <h3 id="modalName"
+                                        class="mb-2">
+                                    </h3>
 
-                                    <span
-                                        class="badge bg-success"
-                                        id="modalEmployment"
-                                    >
+                                    <span class="badge bg-success"
+                                        id="modalEmployment">
                                     </span>
 
                                 </div>
@@ -896,9 +1022,9 @@
                     </div>
 
 
-                    <!-- ==================================== -->
-                    <!-- BASIC SALARY -->
-                    <!-- ==================================== -->
+                    <!-- ================================================= -->
+                    <!-- BASIC SALARY & AUTOMATIC RATES -->
+                    <!-- ================================================= -->
 
                     <div class="card shadow-sm mb-4">
 
@@ -906,7 +1032,9 @@
 
                             <strong>
 
-                                Basic Salary
+                                <i class="bi bi-wallet2 me-2"></i>
+
+                                Basic Salary & Rates
 
                             </strong>
 
@@ -915,17 +1043,15 @@
 
                         <div class="card-body">
 
-
-                            <!-- Basic Salary -->
-
                             <div class="row">
 
-                                <div class="col-md-6 mb-4">
+
+                                <!-- BASIC SALARY -->
+
+                                <div class="col-md-4 mb-3">
 
                                     <label class="form-label">
-
                                         Basic Salary
-
                                     </label>
 
                                     <div class="input-group">
@@ -934,29 +1060,30 @@
                                             ₱
                                         </span>
 
-                                        <input
-                                            type="number"
+                                        <input type="number"
+                                            step="0.01"
+                                            min="0"
                                             id="basic_salary"
-                                            class="form-control"
-                                        >
+                                            class="form-control">
+
+                                    </div>
+
+                                    <div class="small-note mt-2">
+
+                                        Daily rate is automatically calculated
+                                        from Basic Salary ÷ 26.
 
                                     </div>
 
                                 </div>
 
-                            </div>
 
+                                <!-- DAILY RATE -->
 
-                            <!-- Daily / Overtime -->
-
-                            <div class="row">
-
-                                <div class="col-md-6">
+                                <div class="col-md-4 mb-3">
 
                                     <label class="form-label">
-
                                         Daily Rate
-
                                     </label>
 
                                     <div class="input-group">
@@ -965,23 +1092,34 @@
                                             ₱
                                         </span>
 
-                                        <input
-                                            type="number"
+                                        <input type="text"
                                             id="daily_rate"
-                                            class="form-control"
-                                        >
+                                            class="form-control auto-calculated"
+                                            readonly>
+
+                                    </div>
+
+                                    <div class="small-note mt-2">
+
+                                        Basic Salary ÷ 26
 
                                     </div>
 
                                 </div>
 
 
-                                <div class="col-md-6">
+                                <!-- OVERTIME -->
+
+                                <div class="col-md-4 mb-3">
 
                                     <label class="form-label">
 
                                         Overtime Rate
 
+                                        <span class="text-muted">
+                                            (Per Hour)
+                                        </span>
+
                                     </label>
 
                                     <div class="input-group">
@@ -990,28 +1128,33 @@
                                             ₱
                                         </span>
 
-                                        <input
-                                            type="number"
+                                        <input type="text"
                                             id="overtime_rate"
-                                            class="form-control"
-                                        >
+                                            class="form-control auto-calculated"
+                                            readonly>
+
+                                    </div>
+
+                                    <div class="small-note mt-2">
+
+                                        Daily Rate ÷ 8
 
                                     </div>
 
                                 </div>
 
-                            </div>
 
-
-                            <!-- Late / Undertime -->
-
-                            <div class="row mt-3">
+                                <!-- LATE -->
 
                                 <div class="col-md-6 mb-3">
 
                                     <label class="form-label">
 
-                                        Late Deduction Rate (Per Minute)
+                                        Late Deduction
+
+                                        <span class="text-muted">
+                                            (Per Minute)
+                                        </span>
 
                                     </label>
 
@@ -1021,23 +1164,28 @@
                                             ₱
                                         </span>
 
-                                        <input
-                                            type="number"
+                                        <input type="number"
+                                            step="0.01"
+                                            min="0"
                                             id="employee_late_deduction_rate"
-                                            class="form-control"
-                                            placeholder="2.00"
-                                        >
+                                            class="form-control">
 
                                     </div>
 
                                 </div>
 
 
+                                <!-- UNDERTIME -->
+
                                 <div class="col-md-6 mb-3">
 
                                     <label class="form-label">
 
-                                        Undertime Deduction Rate (Per Minute)
+                                        Undertime Deduction
+
+                                        <span class="text-muted">
+                                            (Per Minute)
+                                        </span>
 
                                     </label>
 
@@ -1047,12 +1195,11 @@
                                             ₱
                                         </span>
 
-                                        <input
-                                            type="number"
+                                        <input type="number"
+                                            step="0.01"
+                                            min="0"
                                             id="employee_undertime_deduction_rate"
-                                            class="form-control"
-                                            placeholder="2.00"
-                                        >
+                                            class="form-control">
 
                                     </div>
 
@@ -1065,15 +1212,17 @@
                     </div>
 
 
-                    <!-- ==================================== -->
-                    <!-- PAYROLL & BENEFITS -->
-                    <!-- ==================================== -->
+                    <!-- ================================================= -->
+                    <!-- PAYROLL / BENEFITS -->
+                    <!-- ================================================= -->
 
                     <div class="card shadow-sm mb-4">
 
                         <div class="card-header">
 
                             <strong>
+
+                                <i class="bi bi-shield-check me-2"></i>
 
                                 Payroll & Benefits
 
@@ -1087,98 +1236,75 @@
                             <div class="row">
 
 
-                                <!-- Payroll Period -->
-
                                 <div class="col-md-4 mb-3">
 
                                     <label class="form-label">
-
                                         Payroll Period
-
                                     </label>
 
-                                    <input
-                                        id="employee_payroll_period"
+                                    <input id="employee_payroll_period"
                                         class="form-control"
-                                        readonly
-                                    >
+                                        readonly>
 
                                 </div>
 
 
-                                <!-- SSS -->
-
                                 <div class="col-md-2 mb-3">
 
                                     <label class="form-label">
-
                                         SSS
-
                                     </label>
 
-                                    <input
-                                        type="number"
+                                    <input type="number"
+                                        step="0.01"
+                                        min="0"
                                         id="employee_sss"
-                                        class="form-control"
-                                    >
+                                        class="form-control">
 
                                 </div>
 
 
-                                <!-- PhilHealth -->
-
                                 <div class="col-md-2 mb-3">
 
                                     <label class="form-label">
-
                                         PhilHealth
-
                                     </label>
 
-                                    <input
-                                        type="number"
+                                    <input type="number"
+                                        step="0.01"
+                                        min="0"
                                         id="employee_philhealth"
-                                        class="form-control"
-                                    >
+                                        class="form-control">
 
                                 </div>
 
 
-                                <!-- Pag-IBIG -->
-
                                 <div class="col-md-2 mb-3">
 
                                     <label class="form-label">
-
                                         Pag-IBIG
-
                                     </label>
 
-                                    <input
-                                        type="number"
+                                    <input type="number"
+                                        step="0.01"
+                                        min="0"
                                         id="employee_pagibig"
-                                        class="form-control"
-                                    >
+                                        class="form-control">
 
                                 </div>
 
 
-                                <!-- HMO -->
-
                                 <div class="col-md-2 mb-3">
 
                                     <label class="form-label">
-
                                         HMO
-
                                     </label>
 
-                                    <input
-                                        type="number"
+                                    <input type="number"
+                                        step="0.01"
+                                        min="0"
                                         id="employee_hmo"
-                                        class="form-control"
-                                        readonly
-                                    >
+                                        class="form-control">
 
                                 </div>
 
@@ -1189,82 +1315,96 @@
                     </div>
 
 
-                    <!-- ==================================== -->
+                    <!-- ================================================= -->
                     <!-- ADDITIONAL EARNINGS -->
-                    <!-- ==================================== -->
+                    <!-- ================================================= -->
 
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm mb-4">
 
                         <div class="card-header">
 
-                            <strong>
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 
-                                Additional Earnings
+                                <strong>
 
-                            </strong>
+                                    <i class="bi bi-plus-circle me-2"></i>
+
+                                    Additional Earnings
+
+                                </strong>
+
+
+                                <button type="button"
+                                    class="btn add-entry-btn"
+                                    id="addAdditionalEarning">
+
+                                    <i class="bi bi-plus-circle me-1"></i>
+
+                                    Add Additional Earning
+
+                                </button>
+
+                            </div>
 
                         </div>
 
 
                         <div class="card-body">
 
-                            <div class="row">
+                            <div id="additionalEarningsContainer"></div>
 
 
-                                <!-- OT -->
+                            <div id="noAdditionalEarnings"
+                                class="text-muted text-center py-3">
 
-                                <div class="col-md-6 mb-3">
+                                <i class="bi bi-info-circle me-1"></i>
 
-                                    <label class="form-label">
+                                No additional earnings added.
 
-                                        OT
+                            </div>
 
-                                    </label>
+                        </div>
 
-                                    <div class="input-group">
-
-                                        <span class="input-group-text">
-                                            ₱
-                                        </span>
-
-                                        <input
-                                            type="number"
-                                            id="ot_rate"
-                                            class="form-control"
-                                            value="0"
-                                        >
-
-                                    </div>
-
-                                </div>
+                    </div>
 
 
-                                <!-- Honorarium -->
+                    <!-- ================================================= -->
+                    <!-- ADDITIONAL DEDUCTIONS -->
+                    <!-- ================================================= -->
 
-                                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm mb-4">
 
-                                    <label class="form-label">
+                        <div class="card-header">
 
-                                        Honorarium / Stipend
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 
-                                    </label>
+                                <strong>
+                                    <i class="bi bi-dash-circle me-2 text-danger"></i>
+                                    Additional Deductions
+                                </strong>
 
-                                    <div class="input-group">
+                                <button type="button"
+                                    class="btn add-entry-btn"
+                                    id="addAdditionalDeduction">
 
-                                        <span class="input-group-text">
-                                            ₱
-                                        </span>
+                                    <i class="bi bi-plus-circle me-1"></i>
+                                    Add Additional Deduction
 
-                                        <input
-                                            type="number"
-                                            id="honorarium"
-                                            class="form-control"
-                                            value="0"
-                                        >
+                                </button>
 
-                                    </div>
+                            </div>
 
-                                </div>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div id="additionalDeductionsContainer"></div>
+
+                            <div id="noAdditionalDeductions"
+                                class="text-muted text-center py-3">
+
+                                <i class="bi bi-info-circle me-1"></i>
+                                No additional deductions added.
 
                             </div>
 
@@ -1275,26 +1415,22 @@
                 </div>
 
 
-                <!-- Modal Footer -->
+                <!-- FOOTER -->
 
                 <div class="modal-footer">
 
-                    <button
-                        type="button"
+                    <button type="button"
                         class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                    >
+                        data-bs-dismiss="modal">
 
                         Cancel
 
                     </button>
 
 
-                    <button
-                        type="button"
+                    <button type="button"
                         class="btn btn-success"
-                        id="saveEmployeeSalary"
-                    >
+                        id="saveEmployeeSalary">
 
                         <i class="bi bi-check-circle me-2"></i>
 
@@ -1311,406 +1447,1297 @@
     </div>
 
 
-    <!-- ================================================= -->
-    <!-- BOOTSTRAP -->
-    <!-- ================================================= -->
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
-    <!-- ================================================= -->
-    <!-- JAVASCRIPT -->
-    <!-- ================================================= -->
-
     <script>
 
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
 
-            // ============================================
-            // CREATE EMPLOYEE MODAL
-            // ============================================
 
-            const employeeModal = new bootstrap.Modal(
-                document.getElementById("employeeSalaryModal")
-            );
+                /*
+                |--------------------------------------------------------------------------
+                | Bootstrap Modal
+                |--------------------------------------------------------------------------
+                */
 
+                const modalElement =
+                    document.getElementById(
+                        "employeeSalaryModal"
+                    );
 
-            // ============================================
-            // CONFIGURE EMPLOYEE
-            // ============================================
 
-            document.querySelectorAll(".configureEmployee").forEach(function (button) {
+                const employeeModal =
+                    new bootstrap.Modal(
+                        modalElement
+                    );
 
-                button.addEventListener("click", function () {
 
-                    document.getElementById("employee_id").value =
-                        this.dataset.id;
+                /*
+                |--------------------------------------------------------------------------
+                | Automatic Daily Rate / Overtime Rate
+                |--------------------------------------------------------------------------
+                */
 
+                function updateAutomaticRates() {
 
-                    document.getElementById("modalName").textContent =
-                        this.dataset.name;
-
-
-                    document.getElementById("modalEmployment").textContent =
-                        this.dataset.employment;
-
-
-                    // Basic Salary
-
-                    document.getElementById("basic_salary").value =
-                        this.dataset.salary ?? "";
-
-
-                    // Daily Rate
-
-                    document.getElementById("daily_rate").value =
-                        this.dataset.daily ?? "";
-
-
-                    // Overtime Rate
-
-                    document.getElementById("overtime_rate").value =
-                        this.dataset.overtime ?? "";
-
-
-                    // Late Deduction
-
-                    document.getElementById("employee_late_deduction_rate").value =
-                        this.dataset.late ?? 2;
-
-
-                    // Undertime Deduction
-
-                    document.getElementById("employee_undertime_deduction_rate").value =
-                        this.dataset.undertime ?? 2;
-
-
-                    // Payroll Period
-
-                    document.getElementById("employee_payroll_period").value =
-                        this.dataset.payroll ?? "";
-
-
-                    // Benefits
-
-                    document.getElementById("employee_sss").value =
-                        this.dataset.sss ?? 0;
-
-
-                    document.getElementById("employee_philhealth").value =
-                        this.dataset.philhealth ?? 0;
-
-
-                    document.getElementById("employee_pagibig").value =
-                        this.dataset.pagibig ?? 0;
-
-
-                    document.getElementById("employee_hmo").value =
-                        this.dataset.hmo ?? 0;
-
-
-                    // Additional Earnings
-
-                    document.getElementById("ot_rate").value =
-                        this.dataset.ot ?? 0;
-
-
-                    document.getElementById("honorarium").value =
-                        this.dataset.honorarium ?? 0;
-
-
-                    // Show modal
-
-                    employeeModal.show();
-
-                });
-
-            });
-
-        });
-
-
-        // ============================================
-        // SAVE EMPLOYEE SALARY CONFIGURATION
-        // ============================================
-
-        document.getElementById("saveEmployeeSalary")
-            .addEventListener("click", function () {
-
-                fetch("{{ route('payroll.save') }}", {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type": "application/json",
-
-                        "X-CSRF-TOKEN":
-                            document.querySelector(
-                                'meta[name="csrf-token"]'
-                            ).content,
-
-                        "Accept": "application/json"
-
-                    },
-
-
-                    body: JSON.stringify({
-
-                        user_id:
-                            document.getElementById(
-                                "employee_id"
-                            ).value,
-
-
-                        basic_salary:
+                    const basicSalary =
+                        parseFloat(
                             document.getElementById(
                                 "basic_salary"
-                            ).value,
-
-
-                        payroll_period:
-                            document.getElementById(
-                                "employee_payroll_period"
-                            ).value,
-
-
-                        daily_rate:
-                            document.getElementById(
-                                "daily_rate"
-                            ).value,
-
-
-                        overtime_rate:
-                            document.getElementById(
-                                "overtime_rate"
-                            ).value,
-
-
-                        late_deduction_rate:
-                            document.getElementById(
-                                "employee_late_deduction_rate"
-                            ).value,
-
-
-                        undertime_deduction_rate:
-                            document.getElementById(
-                                "employee_undertime_deduction_rate"
-                            ).value,
-
-
-                        sss:
-                            document.getElementById(
-                                "employee_sss"
-                            ).value,
-
-
-                        philhealth:
-                            document.getElementById(
-                                "employee_philhealth"
-                            ).value,
-
-
-                        pagibig:
-                            document.getElementById(
-                                "employee_pagibig"
-                            ).value,
-
-
-                        hmo:
-                            document.getElementById(
-                                "employee_hmo"
-                            ).value,
-
-
-                        ot_rate:
-                            document.getElementById(
-                                "ot_rate"
-                            ).value,
-
-
-                        honorarium:
-                            document.getElementById(
-                                "honorarium"
                             ).value
-
-                    })
-
-                })
+                        ) || 0;
 
 
-                .then(response => response.json())
+                    const dailyRate =
+                        basicSalary / 26;
 
 
-                .then(data => {
+                    const overtimeRate =
+                        dailyRate / 8;
 
-                    if (data.success) {
 
-                        alert(
-                            "Salary configuration saved successfully!"
-                        );
+                    document.getElementById(
+                        "daily_rate"
+                    ).value =
+                        dailyRate.toFixed(2);
 
-                        location.reload();
 
-                    } else {
+                    document.getElementById(
+                        "overtime_rate"
+                    ).value =
+                        overtimeRate.toFixed(2);
 
-                        alert(
-                            data.message ||
-                            "Unable to save salary configuration."
-                        );
+                }
+
+
+                document
+                    .getElementById(
+                        "basic_salary"
+                    )
+                    .addEventListener(
+                        "input",
+                        updateAutomaticRates
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | HTML Escape Helper
+                |--------------------------------------------------------------------------
+                */
+
+                function escapeHtml(value) {
+
+                    if (
+                        value === null ||
+                        value === undefined
+                    ) {
+
+                        return "";
 
                     }
 
-                })
+
+                    return String(value)
+                        .replace(
+                            /&/g,
+                            "&amp;"
+                        )
+                        .replace(
+                            /</g,
+                            "&lt;"
+                        )
+                        .replace(
+                            />/g,
+                            "&gt;"
+                        )
+                        .replace(
+                            /"/g,
+                            "&quot;"
+                        )
+                        .replace(
+                            /'/g,
+                            "&#039;"
+                        );
+
+                }
 
 
-                .catch(error => {
+                /*
+                |--------------------------------------------------------------------------
+                | Additional Earnings
+                |--------------------------------------------------------------------------
+                */
 
-                    console.error(error);
-
-                    alert(
-                        "Something went wrong."
+                const additionalEarningsContainer =
+                    document.getElementById(
+                        "additionalEarningsContainer"
                     );
 
-                });
 
-            });
-
-
-        // ============================================
-        // SAVE DEPARTMENT DEFAULT CONFIGURATION
-        // ============================================
-
-        document.getElementById("saveDepartmentConfig")
-            .addEventListener("click", function () {
-
-                fetch("{{ route('payroll.default.save') }}", {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type": "application/json",
-
-                        "Accept": "application/json",
-
-                        "X-CSRF-TOKEN":
-                            document.querySelector(
-                                'meta[name="csrf-token"]'
-                            ).content
-
-                    },
+                const noAdditionalEarnings =
+                    document.getElementById(
+                        "noAdditionalEarnings"
+                    );
 
 
-                    body: JSON.stringify({
+                function updateAdditionalEarningsMessage() {
 
-                        department:
-                            document.getElementById(
-                                "department"
-                            ).value,
+                    noAdditionalEarnings.style.display =
+                        additionalEarningsContainer.children.length === 0
+                            ? ""
+                            : "none";
 
-
-                        default_basic_salary:
-                            document.getElementById(
-                                "default_basic_salary"
-                            ).value,
+                }
 
 
-                        daily_rate:
-                            document.getElementById(
-                                "default_daily_rate"
-                            ).value,
+                function createAdditionalEarning(
+                    amount = "",
+                    remarks = ""
+                ) {
 
-
-                        overtime_rate:
-                            document.getElementById(
-                                "default_overtime_rate"
-                            ).value,
-
-
-                        late_deduction_rate:
-                            document.getElementById(
-                                "late_deduction_rate"
-                            ).value,
-
-
-                        undertime_deduction_rate:
-                            document.getElementById(
-                                "undertime_deduction_rate"
-                            ).value,
-
-
-                        payroll_period:
-                            document.getElementById(
-                                "payroll_period"
-                            ).value,
-
-
-                        sss:
-                            document.getElementById(
-                                "sss"
-                            ).value,
-
-
-                        philhealth:
-                            document.getElementById(
-                                "philhealth"
-                            ).value,
-
-
-                        pagibig:
-                            document.getElementById(
-                                "pagibig"
-                            ).value,
-
-
-                        hmo:
-                            document.getElementById(
-                                "hmo"
-                            ).value
-
-                    })
-
-                })
-
-
-                .then(response => response.json())
-
-
-                .then(data => {
-
-                    if (data.success) {
-
-                        alert(
-                            "Department default configuration saved successfully!"
+                    const entry =
+                        document.createElement(
+                            "div"
                         );
 
-                    } else {
 
-                        alert(
-                            data.message ||
-                            "Unable to save department configuration."
+                    entry.className =
+                        "additional-entry";
+
+
+                    entry.innerHTML =
+                        `
+
+                        <div class="row align-items-end">
+
+                            <div class="col-md-5 mb-3 mb-md-0">
+
+                                <label class="form-label">
+                                    Amount
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        ₱
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        inputmode="decimal"
+                                        class="form-control additional-earning-amount"
+                                        placeholder="0.00"
+                                        value="${escapeHtml(amount)}"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-5 mb-3 mb-md-0">
+
+                                <label class="form-label">
+                                    Remarks
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control additional-earning-remarks"
+                                    placeholder="Enter remarks"
+                                    value="${escapeHtml(remarks)}"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-2 mb-3 mb-md-0">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-danger w-100 remove-entry-btn remove-additional-earning"
+                                >
+
+                                    <i class="bi bi-trash me-1"></i>
+
+                                    Remove
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        `;
+
+
+                    additionalEarningsContainer.appendChild(
+                        entry
+                    );
+
+
+                    entry
+                        .querySelector(
+                            ".remove-additional-earning"
+                        )
+                        .addEventListener(
+                            "click",
+                            function() {
+
+                                entry.remove();
+
+                                updateAdditionalEarningsMessage();
+
+                            }
                         );
+
+
+                    updateAdditionalEarningsMessage();
+
+                }
+
+
+                document
+                    .getElementById(
+                        "addAdditionalEarning"
+                    )
+                    .addEventListener(
+                        "click",
+                        function() {
+
+                            createAdditionalEarning();
+
+                        }
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Additional Deductions
+                |--------------------------------------------------------------------------
+                */
+
+                const additionalDeductionsContainer =
+                    document.getElementById(
+                        "additionalDeductionsContainer"
+                    );
+
+
+                const noAdditionalDeductions =
+                    document.getElementById(
+                        "noAdditionalDeductions"
+                    );
+
+
+                function updateAdditionalDeductionsMessage() {
+
+                    noAdditionalDeductions.style.display =
+                        additionalDeductionsContainer.children.length === 0
+                            ? ""
+                            : "none";
+
+                }
+
+
+                function createAdditionalDeduction(
+                    amount = "",
+                    remarks = ""
+                ) {
+
+                    const entry =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    entry.className =
+                        "additional-entry";
+
+
+                    entry.innerHTML =
+                        `
+
+                        <div class="row align-items-end">
+
+                            <div class="col-md-5 mb-3 mb-md-0">
+
+                                <label class="form-label">
+                                    Amount
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        ₱
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        inputmode="decimal"
+                                        class="form-control additional-deduction-amount"
+                                        placeholder="0.00"
+                                        value="${escapeHtml(amount)}"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-5 mb-3 mb-md-0">
+
+                                <label class="form-label">
+                                    Remarks
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control additional-deduction-remarks"
+                                    placeholder="Enter remarks"
+                                    value="${escapeHtml(remarks)}"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-2 mb-3 mb-md-0">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-danger w-100 remove-entry-btn remove-additional-deduction"
+                                >
+
+                                    <i class="bi bi-trash me-1"></i>
+                                    Remove
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        `;
+
+
+                    additionalDeductionsContainer.appendChild(
+                        entry
+                    );
+
+
+                    entry
+                        .querySelector(
+                            ".remove-additional-deduction"
+                        )
+                        .addEventListener(
+                            "click",
+                            function() {
+
+                                entry.remove();
+
+                                updateAdditionalDeductionsMessage();
+
+                            }
+                        );
+
+
+                    updateAdditionalDeductionsMessage();
+
+                }
+
+
+                document
+                    .getElementById(
+                        "addAdditionalDeduction"
+                    )
+                    .addEventListener(
+                        "click",
+                        function() {
+
+                            createAdditionalDeduction();
+
+                        }
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Load Existing Additional Earnings
+                |--------------------------------------------------------------------------
+                */
+
+                function loadAdditionalEarnings(
+                    earnings
+                ) {
+
+                    additionalEarningsContainer.innerHTML =
+                        "";
+
+
+                    if (
+                        !Array.isArray(earnings) ||
+                        earnings.length === 0
+                    ) {
+
+                        updateAdditionalEarningsMessage();
+
+                        return;
 
                     }
 
-                })
 
+                    earnings.forEach(
+                        function(earning) {
 
-                .catch(error => {
+                            createAdditionalEarning(
+                                earning.amount ?? "",
+                                earning.remarks ?? ""
+                            );
 
-                    console.error(error);
-
-                    alert(
-                        "Unable to save configuration."
+                        }
                     );
 
-                });
 
-            });
+                    updateAdditionalEarningsMessage();
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Load Existing Additional Deductions
+                |--------------------------------------------------------------------------
+                */
+
+                function loadAdditionalDeductions(
+                    deductions
+                ) {
+
+                    additionalDeductionsContainer.innerHTML =
+                        "";
+
+
+                    if (
+                        !Array.isArray(deductions) ||
+                        deductions.length === 0
+                    ) {
+
+                        updateAdditionalDeductionsMessage();
+
+                        return;
+
+                    }
+
+
+                    deductions.forEach(
+                        function(deduction) {
+
+                            createAdditionalDeduction(
+                                deduction.amount ?? "",
+                                deduction.remarks ?? ""
+                            );
+
+                        }
+                    );
+
+
+                    updateAdditionalDeductionsMessage();
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Configure Employee Buttons
+                |--------------------------------------------------------------------------
+                */
+
+                document
+                    .querySelectorAll(
+                        ".configureEmployee"
+                    )
+                    .forEach(
+                        function(button) {
+
+                            button.addEventListener(
+                                "click",
+                                function() {
+
+
+                                    document.getElementById(
+                                        "employee_id"
+                                    ).value =
+                                        this.dataset.id;
+
+
+                                    document.getElementById(
+                                        "modalName"
+                                    ).textContent =
+                                        this.dataset.name;
+
+
+                                    document.getElementById(
+                                        "modalEmployment"
+                                    ).textContent =
+                                        this.dataset.employment;
+
+
+                                    document.getElementById(
+                                        "modalPhoto"
+                                    ).src =
+                                        this.dataset.photo;
+
+
+                                    document.getElementById(
+                                        "basic_salary"
+                                    ).value =
+                                        this.dataset.salary || 0;
+
+
+                                    updateAutomaticRates();
+
+
+                                    document.getElementById(
+                                        "employee_late_deduction_rate"
+                                    ).value =
+                                        this.dataset.late || 0;
+
+
+                                    document.getElementById(
+                                        "employee_undertime_deduction_rate"
+                                    ).value =
+                                        this.dataset.undertime || 0;
+
+
+                                    document.getElementById(
+                                        "employee_payroll_period"
+                                    ).value =
+                                        this.dataset.payroll ||
+                                        "Every 15 Days";
+
+
+                                    document.getElementById(
+                                        "employee_sss"
+                                    ).value =
+                                        this.dataset.sss || 0;
+
+
+                                    document.getElementById(
+                                        "employee_philhealth"
+                                    ).value =
+                                        this.dataset.philhealth || 0;
+
+
+                                    document.getElementById(
+                                        "employee_pagibig"
+                                    ).value =
+                                        this.dataset.pagibig || 0;
+
+
+                                    document.getElementById(
+                                        "employee_hmo"
+                                    ).value =
+                                        this.dataset.hmo || 0;
+
+
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Load Existing Additional Earnings
+                                    |--------------------------------------------------------------------------
+                                    */
+
+                                    let additionalEarnings = [];
+
+
+                                    try {
+
+                                        additionalEarnings =
+                                            JSON.parse(
+                                                this.dataset.additionalEarnings || "[]"
+                                            );
+
+                                    } catch (error) {
+
+                                        console.error(
+                                            "Unable to load additional earnings:",
+                                            error,
+                                            this.dataset.additionalEarnings
+                                        );
+
+                                        additionalEarnings = [];
+
+                                    }
+
+
+                                    loadAdditionalEarnings(
+                                        additionalEarnings
+                                    );
+
+
+                                    /*
+                                     |--------------------------------------------------------------------------
+                                     | Load Existing Additional Deductions
+                                     |--------------------------------------------------------------------------
+                                     */
+
+                                    let additionalDeductions = [];
+
+
+                                    try {
+
+                                        additionalDeductions =
+                                            JSON.parse(
+                                                this.dataset.additionalDeductions || "[]"
+                                            );
+
+                                    } catch (error) {
+
+                                        console.error(
+                                            "Unable to load additional deductions:",
+                                            error,
+                                            this.dataset.additionalDeductions
+                                        );
+
+                                        additionalDeductions = [];
+
+                                    }
+
+
+                                    loadAdditionalDeductions(
+                                        additionalDeductions
+                                    );
+
+
+                                    employeeModal.show();
+
+                                }
+
+                            );
+
+                        }
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Save Employee Configuration
+                |--------------------------------------------------------------------------
+                */
+
+                document
+                    .getElementById(
+                        "saveEmployeeSalary"
+                    )
+                    .addEventListener(
+                        "click",
+                        async function() {
+
+
+                            const button =
+                                this;
+
+
+                            button.disabled =
+                                true;
+
+
+                            button.innerHTML =
+                                `
+                                    <span
+                                        class="spinner-border spinner-border-sm me-2"
+                                    ></span>
+                                    Saving...
+                                `;
+
+
+                            try {
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Collect Additional Earnings
+                                |--------------------------------------------------------------------------
+                                */
+
+                                const additionalEarnings = [];
+
+
+                                document
+                                    .querySelectorAll(
+                                        "#additionalEarningsContainer .additional-entry"
+                                    )
+                                    .forEach(
+                                        function(entry) {
+
+                                            const amount =
+                                                entry
+                                                    .querySelector(
+                                                        ".additional-earning-amount"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            const remarks =
+                                                entry
+                                                    .querySelector(
+                                                        ".additional-earning-remarks"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            if (
+                                                amount !== "" ||
+                                                remarks !== ""
+                                            ) {
+
+                                                additionalEarnings.push({
+
+                                                    amount: amount,
+
+                                                    remarks: remarks
+
+                                                });
+
+                                            }
+
+                                        }
+                                    );
+
+
+                                /*
+                                 |--------------------------------------------------------------------------
+                                 | Collect Additional Deductions
+                                 |--------------------------------------------------------------------------
+                                 */
+
+                                const additionalDeductions = [];
+
+
+                                document
+                                    .querySelectorAll(
+                                        "#additionalDeductionsContainer .additional-entry"
+                                    )
+                                    .forEach(
+                                        function(entry) {
+
+                                            const amount =
+                                                entry
+                                                    .querySelector(
+                                                        ".additional-deduction-amount"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            const remarks =
+                                                entry
+                                                    .querySelector(
+                                                        ".additional-deduction-remarks"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            if (
+                                                amount !== "" ||
+                                                remarks !== ""
+                                            ) {
+
+                                                additionalDeductions.push({
+
+                                                    amount: amount,
+
+                                                    remarks: remarks
+
+                                                });
+
+                                            }
+
+                                        }
+                                    );
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Save Employee Configuration
+                                |--------------------------------------------------------------------------
+                                */
+
+                                const response =
+                                    await fetch(
+                                        "{{ route('payroll.save') }}",
+                                        {
+
+                                            method: "POST",
+
+                                            headers: {
+
+                                                "Content-Type":
+                                                    "application/json",
+
+                                                "X-CSRF-TOKEN":
+                                                    document
+                                                        .querySelector(
+                                                            'meta[name="csrf-token"]'
+                                                        )
+                                                        .content,
+
+                                                "Accept":
+                                                    "application/json"
+
+                                            },
+
+                                            body: JSON.stringify({
+
+                                                user_id:
+                                                    document
+                                                        .getElementById(
+                                                            "employee_id"
+                                                        )
+                                                        .value,
+
+                                                basic_salary:
+                                                    document
+                                                        .getElementById(
+                                                            "basic_salary"
+                                                        )
+                                                        .value,
+
+                                                daily_rate:
+                                                    document
+                                                        .getElementById(
+                                                            "daily_rate"
+                                                        )
+                                                        .value,
+
+                                                overtime_rate:
+                                                    document
+                                                        .getElementById(
+                                                            "overtime_rate"
+                                                        )
+                                                        .value,
+
+                                                late_deduction_rate:
+                                                    document
+                                                        .getElementById(
+                                                            "employee_late_deduction_rate"
+                                                        )
+                                                        .value,
+
+                                                undertime_deduction_rate:
+                                                    document
+                                                        .getElementById(
+                                                            "employee_undertime_deduction_rate"
+                                                        )
+                                                        .value,
+
+                                                payroll_period:
+                                                    document
+                                                        .getElementById(
+                                                            "employee_payroll_period"
+                                                        )
+                                                        .value,
+
+                                                sss:
+                                                    document
+                                                        .getElementById(
+                                                            "employee_sss"
+                                                        )
+                                                        .value,
+
+                                                philhealth:
+                                                    document
+                                                        .getElementById(
+                                                            "employee_philhealth"
+                                                        )
+                                                        .value,
+
+                                                pagibig:
+                                                    document
+                                                        .getElementById(
+                                                            "employee_pagibig"
+                                                        )
+                                                        .value,
+
+                                                hmo:
+                                                    document
+                                                        .getElementById(
+                                                            "employee_hmo"
+                                                        )
+                                                        .value,
+
+                                                additional_earnings:
+                                                    additionalEarnings,
+
+                                                additional_deductions:
+                                                    additionalDeductions
+
+                                            })
+
+                                        }
+                                    );
+
+
+                                const data =
+                                    await response.json();
+
+
+                                if (!response.ok) {
+
+                                    let errorMessage =
+                                        data.message ||
+                                        "Unable to save employee configuration.";
+
+
+                                    if (data.errors) {
+
+                                        const validationErrors =
+                                            Object.values(
+                                                data.errors
+                                            ).flat();
+
+
+                                        if (
+                                            validationErrors.length > 0
+                                        ) {
+
+                                            errorMessage =
+                                                validationErrors.join(
+                                                    "\n"
+                                                );
+
+                                        }
+
+                                    }
+
+
+                                    throw new Error(
+                                        errorMessage
+                                    );
+
+                                }
+
+
+                                if (data.success) {
+
+                                    alert(
+                                        "Employee salary configuration saved successfully."
+                                    );
+
+
+                                    location.reload();
+
+                                } else {
+
+                                    throw new Error(
+                                        data.message ||
+                                        "Unable to save configuration."
+                                    );
+
+                                }
+
+
+                            } catch (error) {
+
+                                console.error(
+                                    error
+                                );
+
+
+                                alert(
+                                    error.message ||
+                                    "Something went wrong while saving the configuration."
+                                );
+
+
+                                button.disabled =
+                                    false;
+
+
+                                button.innerHTML =
+                                    `
+                                        <i class="bi bi-check-circle me-2"></i>
+                                        Save Configuration
+                                    `;
+
+                            }
+
+                        }
+
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Save Department Default Configuration
+                |--------------------------------------------------------------------------
+                */
+
+                document
+                    .getElementById(
+                        "saveDepartmentConfig"
+                    )
+                    .addEventListener(
+                        "click",
+                        async function() {
+
+
+                            const button =
+                                this;
+
+
+                            button.disabled =
+                                true;
+
+
+                            button.innerHTML =
+                                `
+                                    <span
+                                        class="spinner-border spinner-border-sm me-2"
+                                    ></span>
+                                    Saving...
+                                `;
+
+
+                            try {
+
+
+                                const response =
+                                    await fetch(
+                                        "{{ route('payroll.default.save') }}",
+                                        {
+
+                                            method: "POST",
+
+                                            headers: {
+
+                                                "Content-Type":
+                                                    "application/json",
+
+                                                "Accept":
+                                                    "application/json",
+
+                                                "X-CSRF-TOKEN":
+                                                    document
+                                                        .querySelector(
+                                                            'meta[name="csrf-token"]'
+                                                        )
+                                                        .content
+
+                                            },
+
+
+                                            body: JSON.stringify({
+
+                                                department:
+                                                    document
+                                                        .getElementById(
+                                                            "department"
+                                                        )
+                                                        .value,
+
+                                                late_deduction_rate:
+                                                    document
+                                                        .getElementById(
+                                                            "late_deduction_rate"
+                                                        )
+                                                        .value,
+
+                                                undertime_deduction_rate:
+                                                    document
+                                                        .getElementById(
+                                                            "undertime_deduction_rate"
+                                                        )
+                                                        .value,
+
+                                                payroll_period:
+                                                    document
+                                                        .getElementById(
+                                                            "payroll_period"
+                                                        )
+                                                        .value,
+
+                                                sss:
+                                                    document
+                                                        .getElementById(
+                                                            "sss"
+                                                        )
+                                                        .value,
+
+                                                philhealth:
+                                                    document
+                                                        .getElementById(
+                                                            "philhealth"
+                                                        )
+                                                        .value,
+
+                                                pagibig:
+                                                    document
+                                                        .getElementById(
+                                                            "pagibig"
+                                                        )
+                                                        .value,
+
+                                                hmo:
+                                                    document
+                                                        .getElementById(
+                                                            "hmo"
+                                                        )
+                                                        .value
+
+                                            })
+
+                                        }
+                                    );
+
+
+                                const data =
+                                    await response.json();
+
+
+                                if (!response.ok) {
+
+                                    let errorMessage =
+                                        data.message ||
+                                        "Unable to save department configuration.";
+
+
+                                    if (data.errors) {
+
+                                        const validationErrors =
+                                            Object.values(
+                                                data.errors
+                                            ).flat();
+
+
+                                        if (
+                                            validationErrors.length > 0
+                                        ) {
+
+                                            errorMessage =
+                                                validationErrors.join(
+                                                    "\n"
+                                                );
+
+                                        }
+
+                                    }
+
+
+                                    throw new Error(
+                                        errorMessage
+                                    );
+
+                                }
+
+
+                                if (data.success) {
+
+                                    alert(
+                                        "Department default configuration saved successfully."
+                                    );
+
+
+                                    location.reload();
+
+                                } else {
+
+                                    throw new Error(
+                                        data.message ||
+                                        "Unable to save department configuration."
+                                    );
+
+                                }
+
+
+                            } catch (error) {
+
+                                console.error(
+                                    error
+                                );
+
+
+                                alert(
+                                    error.message ||
+                                    "Something went wrong while saving the department configuration."
+                                );
+
+
+                                button.disabled =
+                                    false;
+
+
+                                button.innerHTML =
+                                    `
+                                        <i class="bi bi-check-circle me-2"></i>
+                                        Save Default Configuration
+                                    `;
+
+                            }
+
+                        }
+
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Employee Search
+                |--------------------------------------------------------------------------
+                */
+
+                document
+                    .getElementById(
+                        "employeeSearch"
+                    )
+                    .addEventListener(
+                        "input",
+                        function() {
+
+
+                            const search =
+                                this.value
+                                    .toLowerCase()
+                                    .trim();
+
+
+                            document
+                                .querySelectorAll(
+                                    ".employee-row"
+                                )
+                                .forEach(
+                                    function(row) {
+
+
+                                        const text =
+                                            row.textContent
+                                                .toLowerCase();
+
+
+                                        row.style.display =
+                                            text.includes(search)
+                                                ? ""
+                                                : "none";
+
+                                    }
+                                );
+
+                        }
+
+                    );
+
+            }
+
+        );
 
     </script>
 
 </body>
 
 </html>
+

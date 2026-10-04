@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Admin;
+use App\Services\AuditLogService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -105,7 +106,7 @@ class UserWizardController extends Controller
 
         $plainPassword = Str::password(10);
 
-        User::create([
+        $employee = User::create([
             'first_name' => $validated['first_name'],
             'middle_name' => $validated['middle_name'] ?? null,
             'last_name' => $validated['last_name'],
@@ -144,6 +145,12 @@ class UserWizardController extends Controller
             'role' => 'employee',
             'force_password_change' => true,
         ]);
+
+        AuditLogService::log(
+            'Created',
+            'Created employee ' . $name .
+            ' (' . $employeeId . ').'
+        );
 
         return back()->with([
             'success' => true,
@@ -239,6 +246,13 @@ class UserWizardController extends Controller
                 'force_password_change' => true,
             ]);
         });
+
+        AuditLogService::log(
+            'Created',
+            'Created admin account for ' . $name .
+            ' (' . $adminId . ') as ' .
+            $validated['category'] . '.'
+        );
 
         return redirect()
             ->route('users.admin')
@@ -364,6 +378,13 @@ class UserWizardController extends Controller
 
             $admin->save();
         });
+
+        AuditLogService::log(
+            'Created',
+            'Created Department Head account for ' . $name .
+            ' (' . $adminId . ') for the ' .
+            $validated['department'] . ' department.'
+        );
 
         return redirect()
             ->route('users.department-head')

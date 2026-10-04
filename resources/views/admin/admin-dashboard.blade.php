@@ -2407,26 +2407,50 @@
                             </button>
 
 
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
+                          <ul class="dropdown-menu dropdown-menu-end">
 
-                                    <form method="POST" action="{{ route('logout') }}">
+    <li>
+        <a
+            href="{{ route('admin.audit-log.index') }}"
+            class="dropdown-item"
+        >
+            <i class="bi bi-clock-history me-2"></i>
+            Activity Log
+        </a>
+    </li>
 
-                                        @csrf
+    <li>
+        <a
+            href="{{ route('login.history') }}"
+            class="dropdown-item"
+        >
+            <i class="bi bi-shield-lock me-2"></i>
+            Login History
+        </a>
+    </li>
 
-                                        <button type="submit" class="dropdown-item">
+    <li>
+        <hr class="dropdown-divider">
+    </li>
 
-                                            Sign out
+    <li>
 
-                                        </button>
+        <form method="POST" action="{{ route('logout') }}">
 
-                                    </form>
+            @csrf
 
-                                </li>
+            <button type="submit" class="dropdown-item">
 
+                <i class="bi bi-box-arrow-right me-2"></i>
+                Sign out
 
-                            </ul>
+            </button>
 
+        </form>
+
+    </li>
+
+</ul>
 
                         </div>
 

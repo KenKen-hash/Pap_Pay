@@ -8,6 +8,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Services\AuditLogService;
+use App\Models\Notification;
 
 class OfficialBusinessController extends Controller
 {
@@ -70,6 +73,7 @@ class OfficialBusinessController extends Controller
 
         ]);
     }
+
     public function approve($id)
     {
         $ob = OfficialBusiness::findOrFail($id);
@@ -104,23 +108,64 @@ class OfficialBusinessController extends Controller
 
         /*
     |--------------------------------------------------------------------------
-    | Copy Official Business Times to Attendance
+    | Mark Attendance as Official Business
     |--------------------------------------------------------------------------
+    |
+    | The current attendance structure uses:
+    | time_in, time_out, hours_worked, late_minutes,
+    | undertime_minutes, overtime_minutes, status, remarks, etc.
+    |
+    | The old morning/afternoon time fields are no longer used.
+    |
     */
-
-        $attendance->morning_time_out = $ob->morning_time_out;
-        $attendance->morning_time_in  = $ob->morning_time_in;
-
-        $attendance->afternoon_time_out = $ob->afternoon_time_out;
-        $attendance->afternoon_time_in  = $ob->afternoon_time_in;
 
         $attendance->status = 'Present';
         $attendance->remarks = 'Official Business';
 
         $attendance->save();
 
+        /*
+    |--------------------------------------------------------------------------
+    | Audit Log - Approved Official Business
+    |--------------------------------------------------------------------------
+    */
+
+        AuditLogService::log(
+            'Official Business Approved',
+            'Admin ' .
+                Auth::user()->name .
+                ' approved Official Business request OB-' .
+                str_pad($ob->id, 5, '0', STR_PAD_LEFT) .
+                ' for employee ' .
+                $ob->user->name .
+                '.'
+        );
+
+        /*
+|--------------------------------------------------------------------------
+| Employee Notification
+|--------------------------------------------------------------------------
+*/
+
+        Notification::create([
+
+            'user_id' => $ob->user_id,
+
+            'title' => 'Official Business Approved',
+
+            'message' => 'Your Official Business request OB-' .
+                str_pad($ob->id, 5, '0', STR_PAD_LEFT) .
+                ' has been approved.',
+
+            'type' => 'ob_approved',
+
+            'url' => '/employee/file-ob',
+
+        ]);
+
         return back()->with('success', 'Official Business approved successfully.');
     }
+
     public function reject($id)
     {
         $ob = OfficialBusiness::findOrFail($id);
@@ -128,6 +173,45 @@ class OfficialBusinessController extends Controller
         $ob->status = 'Rejected';
 
         $ob->save();
+
+        /*
+    |--------------------------------------------------------------------------
+    | Audit Log - Rejected Official Business
+    |--------------------------------------------------------------------------
+    */
+
+        AuditLogService::log(
+            'Official Business Rejected',
+            'Admin ' .
+                Auth::user()->name .
+                ' rejected Official Business request OB-' .
+                str_pad($ob->id, 5, '0', STR_PAD_LEFT) .
+                ' for employee ' .
+                $ob->user->name .
+                '.'
+        );
+
+        /*
+|--------------------------------------------------------------------------
+| Employee Notification
+|--------------------------------------------------------------------------
+*/
+
+        Notification::create([
+
+            'user_id' => $ob->user_id,
+
+            'title' => 'Official Business Rejected',
+
+            'message' => 'Your Official Business request OB-' .
+                str_pad($ob->id, 5, '0', STR_PAD_LEFT) .
+                ' has been rejected.',
+
+            'type' => 'ob_rejected',
+
+            'url' => '/employee/file-ob',
+
+        ]);
 
         return back()->with('success', 'Official Business rejected.');
     }

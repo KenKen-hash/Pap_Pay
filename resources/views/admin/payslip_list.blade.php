@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,13 +13,18 @@
 
     <title>Payslip | Pap Pay</title>
 
-
     <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
     <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../../khen/assets/css/style.css">
 
     <style>
+
+        /*
+        ============================================================
+        DEPARTMENT CARDS
+        ============================================================
+        */
 
         .department-card {
             cursor: pointer;
@@ -31,35 +37,6 @@
             box-shadow: 0 0 15px rgba(25, 135, 84, .15);
         }
 
-        /*
-        ============================================================
-        PAYROLL PREVIEW TABLE
-        ============================================================
-        */
-
-        .payroll-preview-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            overflow-y: hidden;
-            border-radius: 8px;
-        }
-
-        .payroll-preview-table {
-            min-width: 2050px;
-            margin-bottom: 0;
-        }
-
-        .payroll-preview-table th {
-            white-space: nowrap;
-            vertical-align: middle;
-            font-size: 12px;
-        }
-
-        .payroll-preview-table td {
-            vertical-align: middle;
-            white-space: nowrap;
-            font-size: 13px;
-        }
 
         /*
         ============================================================
@@ -77,6 +54,7 @@
             font-weight: 600;
         }
 
+
         /*
         ============================================================
         MONEY
@@ -93,6 +71,7 @@
             font-weight: 700;
         }
 
+
         /*
         ============================================================
         MINUTES
@@ -105,13 +84,67 @@
             text-align: center;
         }
 
+
         /*
         ============================================================
-        PREVIEW SUMMARY
+        PREVIEW BATCH
         ============================================================
         */
 
-        .preview-summary-card {
+        .preview-batch-card {
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            transition: .2s;
+        }
+
+        .preview-batch-card:hover {
+            box-shadow: 0 5px 18px rgba(0, 0, 0, .06);
+        }
+
+        .preview-batch-status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 6px;
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffe69c;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /*
+        ============================================================
+        PREVIEW EMPLOYEE TABLE
+        ============================================================
+        */
+
+        .preview-employee-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            border-radius: 8px;
+        }
+
+        .preview-employee-table {
+            min-width: 1000px;
+            margin-bottom: 0;
+        }
+
+        .preview-employee-table th,
+        .preview-employee-table td {
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+
+        /*
+        ============================================================
+        PREVIEW DETAIL CARDS
+        ============================================================
+        */
+
+        .preview-detail-card {
             border: 1px solid #e9ecef;
             border-radius: 10px;
             padding: 15px;
@@ -119,29 +152,56 @@
             height: 100%;
         }
 
-        .preview-summary-label {
+        .preview-detail-label {
             font-size: 12px;
             color: #6c757d;
             margin-bottom: 4px;
         }
 
-        .preview-summary-value {
-            font-size: 20px;
+        .preview-detail-value {
+            font-size: 18px;
             font-weight: 700;
         }
 
+
         /*
         ============================================================
-        EMPLOYEE CONTAINER
+        PREVIEW ACTION BUTTONS
         ============================================================
         */
 
-        .employee-config-section {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 10px;
+        .preview-action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
+
+
+        /*
+        ============================================================
+        MODALS
+        ============================================================
+        */
+
+        .employee-preview-modal .modal-dialog {
+            max-width: 1200px;
+        }
+
+        .employee-preview-modal .modal-body {
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .employee-detail-modal .modal-dialog {
+            max-width: 1100px;
+        }
+
+        .employee-detail-modal .modal-body {
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
 
         /*
         ============================================================
@@ -160,6 +220,7 @@
             font-weight: 600;
         }
 
+
         /*
         ============================================================
         MOBILE
@@ -168,12 +229,13 @@
 
         @media (max-width: 768px) {
 
-            .payroll-preview-table {
-                min-width: 2050px;
+            .preview-employee-table {
+                min-width: 1000px;
             }
 
-            .preview-summary-value {
-                font-size: 18px;
+            .employee-preview-modal .modal-body,
+            .employee-detail-modal .modal-body {
+                max-height: 70vh;
             }
 
         }
@@ -408,121 +470,169 @@
     <!-- ============================================================
          MAIN
          ============================================================ -->
-<div class="admin-main">
 
-        
-         <nav class="navbar admin-navbar navbar-expand bg-white">
+    <div class="admin-main">
 
-                <div class="container-fluid px-3 px-lg-4">
 
-                    <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
-                        aria-expanded="true" aria-label="Toggle sidebar">
+        <!-- ========================================================
+             NAVBAR
+             ======================================================== -->
 
-                        <span></span>
-                        <span></span>
-                        <span></span>
+        <nav class="navbar admin-navbar navbar-expand bg-white">
 
-                    </button>
-             <form
-    class="d-none d-md-flex ms-3 flex-grow-1 admin-search-form"
-    role="search"
-    autocomplete="off"
-    data-admin-search
->
-    <div class="admin-search-wrapper">
+            <div class="container-fluid px-3 px-lg-4">
 
-        <i class="bi bi-search admin-search-icon"></i>
+                <button
+                    class="sidebar-toggle"
+                    type="button"
+                    data-sidebar-toggle
+                    aria-controls="adminSidebar"
+                    aria-expanded="true"
+                    aria-label="Toggle sidebar"
+                >
 
-        <input
-            id="adminSearchInput"
-            class="form-control search-input admin-search-input"
-            type="search"
-            placeholder="Search Pap Pay..."
-            aria-label="Search Pap Pay"
-            aria-autocomplete="list"
-            aria-controls="adminSearchResults"
-            aria-expanded="false"
-        >
+                    <span></span>
+                    <span></span>
+                    <span></span>
 
-        <button
-            type="button"
-            class="admin-search-clear"
-            id="adminSearchClear"
-            aria-label="Clear search"
-            title="Clear search"
-        >
-            <i class="bi bi-x-lg"></i>
-        </button>
+                </button>
 
-        <div
-            class="admin-search-results"
-            id="adminSearchResults"
-            role="listbox"
-            aria-label="Search results"
-        ></div>
 
-    </div>
-</form>
+                <!-- SEARCH -->
 
-                    <div class="navbar-actions ms-auto">
+                <form
+                    class="d-none d-md-flex ms-3 flex-grow-1 admin-search-form"
+                    role="search"
+                    autocomplete="off"
+                    data-admin-search
+                >
 
+                    <div class="admin-search-wrapper">
+
+                        <i class="bi bi-search admin-search-icon"></i>
+
+                        <input
+                            id="adminSearchInput"
+                            class="form-control search-input admin-search-input"
+                            type="search"
+                            placeholder="Search Pap Pay..."
+                            aria-label="Search Pap Pay"
+                            aria-autocomplete="list"
+                            aria-controls="adminSearchResults"
+                            aria-expanded="false"
+                        >
+
+                        <button
+                            type="button"
+                            class="admin-search-clear"
+                            id="adminSearchClear"
+                            aria-label="Clear search"
+                            title="Clear search"
+                        >
+
+                            <i class="bi bi-x-lg"></i>
+
+                        </button>
+
+                        <div
+                            class="admin-search-results"
+                            id="adminSearchResults"
+                            role="listbox"
+                            aria-label="Search results"
+                        ></div>
+
+                    </div>
+
+                </form>
+
+
+                <!-- NAVBAR ACTIONS -->
+
+                <div class="navbar-actions ms-auto">
 
 
                     <!-- NOTIFICATIONS -->
 
-                      <div class="dropdown">
+                    <div class="dropdown">
 
-                            <button class="icon-button" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false" aria-label="Notifications">
+                        <button
+                            class="icon-button"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            aria-label="Notifications"
+                        >
 
-                                @if (($unreadNotifications ?? 0) > 0)
-                                    <span class="notification-dot"></span>
-                                @endif
+                            @if (($unreadNotifications ?? 0) > 0)
 
-                                <i class="bi bi-bell" aria-hidden="true"></i>
-                            </button>
+                                <span class="notification-dot"></span>
 
-                            <div class="dropdown-menu dropdown-menu-end notification-menu">
+                            @endif
 
-                                <div class="dropdown-header fw-bold text-body">
-                                    Notifications
-                                </div>
+                            <i
+                                class="bi bi-bell"
+                                aria-hidden="true"
+                            ></i>
 
-                                @forelse($notifications ?? [] as $notification)
-                                    <a class="dropdown-item {{ !$notification->is_read ? 'notification-unread' : '' }}"
-                                        href="{{ route('admin.notifications.read', $notification->id) }}">
+                        </button>
 
-                                        <span class="notification-title">
-                                            {{ $notification->title }}
-                                        </span>
 
-                                        <span class="notification-message">
-                                            {{ $notification->message }}
-                                        </span>
+                        <div class="dropdown-menu dropdown-menu-end notification-menu">
 
-                                        <span class="notification-time">
-                                            {{ $notification->created_at->diffForHumans() }}
-                                        </span>
+                            <div class="dropdown-header fw-bold text-body">
+                                Notifications
+                            </div>
 
-                                    </a>
 
-                                @empty
+                            @forelse($notifications ?? [] as $notification)
 
-                                    <div class="dropdown-item text-muted text-center py-3">
-                                        <i class="bi bi-bell-slash"></i>
-                                        <br>
-                                        No notifications
-                                    </div>
-                                @endforelse
+                                <a
+                                    class="dropdown-item {{ !$notification->is_read ? 'notification-unread' : '' }}"
+                                    href="{{ route('admin.notifications.read', $notification->id) }}"
+                                >
 
-                                <div class="dropdown-divider"></div>
+                                    <span class="notification-title">
+                                        {{ $notification->title }}
+                                    </span>
 
-                                <a href="{{ route('admin.notifications') }}" class="dropdown-item text-center">
-                                    View all notifications
+                                    <span class="notification-message">
+                                        {{ $notification->message }}
+                                    </span>
+
+                                    <span class="notification-time">
+                                        {{ $notification->created_at->diffForHumans() }}
+                                    </span>
+
                                 </a>
 
-                            </div>
-            
+                            @empty
+
+                                <div class="dropdown-item text-muted text-center py-3">
+
+                                    <i class="bi bi-bell-slash"></i>
+
+                                    <br>
+
+                                    No notifications
+
+                                </div>
+
+                            @endforelse
+
+
+                            <div class="dropdown-divider"></div>
+
+
+                            <a
+                                href="{{ route('admin.notifications') }}"
+                                class="dropdown-item text-center"
+                            >
+
+                                View all notifications
+
+                            </a>
+
+                        </div>
 
                     </div>
 
@@ -531,19 +641,25 @@
 
                     <div class="dropdown">
 
-                        <button class="profile-button dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                        <button
+                            class="profile-button dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
 
-                            <img class="avatar-img avatar-sm"
-                                 src="{{ Auth::user()->photo
+                            <img
+                                class="avatar-img avatar-sm"
+                                src="{{ Auth::user()->photo
                                     ? asset('storage/' . Auth::user()->photo)
                                     : asset('khen/assets/images/avatar/avatar.jpg') }}"
-                                 alt="{{ Auth::user()->name }}">
+                                alt="{{ Auth::user()->name }}"
+                            >
 
                             <span class="profile-name d-none d-sm-inline">
+
                                 {{ Auth::user()->name }}
+
                             </span>
 
                         </button>
@@ -553,13 +669,17 @@
 
                             <li>
 
-                                <form method="POST"
-                                      action="{{ route('logout') }}">
+                                <form
+                                    method="POST"
+                                    action="{{ route('logout') }}"
+                                >
 
                                     @csrf
 
-                                    <button type="submit"
-                                            class="dropdown-item">
+                                    <button
+                                        type="submit"
+                                        class="dropdown-item"
+                                    >
 
                                         Sign out
 
@@ -640,26 +760,36 @@
 
                             <div class="col-md-6">
 
-                                <label class="form-label fw-semibold">
+                                <label
+                                    class="form-label fw-semibold"
+                                    for="period_start"
+                                >
                                     Payroll Start Date
                                 </label>
 
-                                <input type="date"
-                                       id="period_start"
-                                       class="form-control">
+                                <input
+                                    type="date"
+                                    id="period_start"
+                                    class="form-control"
+                                >
 
                             </div>
 
 
                             <div class="col-md-6">
 
-                                <label class="form-label fw-semibold">
+                                <label
+                                    class="form-label fw-semibold"
+                                    for="period_end"
+                                >
                                     Payroll End Date
                                 </label>
 
-                                <input type="date"
-                                       id="period_end"
-                                       class="form-control">
+                                <input
+                                    type="date"
+                                    id="period_end"
+                                    class="form-control"
+                                >
 
                             </div>
 
@@ -709,7 +839,6 @@
                                                     id="{{ $department }}"
                                                 >
 
-
                                                 <label
                                                     class="form-check-label fw-semibold"
                                                     for="{{ $department }}"
@@ -742,8 +871,10 @@
                         </h5>
 
 
-                        <div id="employeeContainer"
-                             class="border rounded p-4 bg-light">
+                        <div
+                            id="employeeContainer"
+                            class="border rounded p-4 bg-light"
+                        >
 
                             <div class="text-center text-muted">
 
@@ -758,13 +889,14 @@
                         </div>
 
 
-                        <!-- BUTTONS -->
+                        <!-- BUTTON -->
 
                         <div class="text-end mt-4">
 
                             <button
                                 class="btn btn-success btn-lg"
                                 id="previewPayroll"
+                                type="button"
                             >
 
                                 <i class="bi bi-search me-2"></i>
@@ -777,6 +909,7 @@
                             <button
                                 class="btn btn-primary btn-lg ms-2 d-none"
                                 id="generatePayslips"
+                                type="button"
                             >
 
                                 <i class="bi bi-file-earmark-text me-2"></i>
@@ -787,231 +920,101 @@
 
                         </div>
 
+                    </div>
 
-                        <!-- =================================================
-                             PAYROLL PREVIEW
-                             ================================================= -->
+                </div>
 
-                        <div
-                            id="payrollPreviewSection"
-                            class="card shadow mt-4 d-none"
-                        >
 
-                            <div class="card-header bg-success text-white">
+                <!-- =================================================
+                     PAYSLIP PREVIEW BATCH
+                     ================================================= -->
 
-                                <h5 class="mb-0">
-                                    Payroll Preview
+                <div
+                    id="payslipPreviewBatches"
+                    class="card shadow-sm border-0 mb-4 d-none"
+                >
+
+                    <div class="card-header bg-white border-0 py-3">
+
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                            <div>
+
+                                <h5 class="fw-bold mb-1">
+
+                                    <i class="bi bi-search text-warning me-2"></i>
+
+                                    Payslip Preview
+
                                 </h5>
 
+                                <small class="text-muted">
+
+                                    Payroll batches prepared for review before payslip generation.
+
+                                </small>
+
                             </div>
 
 
-                            <div class="card-body">
+                            <span
+                                id="previewBatchStatus"
+                                class="preview-batch-status"
+                            >
 
+                                Preview
 
-                                <!-- SUMMARY -->
+                            </span>
 
-                                <div class="row g-3 mb-4">
+                        </div>
 
+                    </div>
 
-                                    <div class="col-xl-3 col-md-6">
 
-                                        <div class="preview-summary-card">
+                    <div class="card-body">
 
-                                            <div class="preview-summary-label">
-                                                Employees
-                                            </div>
+                        <div class="table-responsive">
 
-                                            <div
-                                                class="preview-summary-value"
-                                                id="summaryEmployees"
-                                            >
-                                                0
-                                            </div>
+                            <table class="table table-hover align-middle mb-0">
 
-                                        </div>
+                                <thead class="table-light">
 
-                                    </div>
+                                    <tr>
 
+                                        <th>
+                                            #
+                                        </th>
 
-                                    <div class="col-xl-3 col-md-6">
+                                        <th>
+                                            Payroll Period
+                                        </th>
 
-                                        <div class="preview-summary-card">
+                                        <th>
+                                            Employees
+                                        </th>
 
-                                            <div class="preview-summary-label">
-                                                Total Late Minutes
-                                            </div>
+                                        <th>
+                                            Previewed On
+                                        </th>
 
-                                            <div
-                                                class="preview-summary-value text-danger"
-                                                id="summaryLate"
-                                            >
-                                                0 min
-                                            </div>
+                                        <th>
+                                            Status
+                                        </th>
 
-                                        </div>
+                                        <th class="text-center">
+                                            Actions
+                                        </th>
 
-                                    </div>
+                                    </tr>
 
+                                </thead>
 
-                                    <div class="col-xl-3 col-md-6">
 
-                                        <div class="preview-summary-card">
+                                <tbody id="previewBatchBody">
 
-                                            <div class="preview-summary-label">
-                                                Total Undertime Minutes
-                                            </div>
+                                </tbody>
 
-                                            <div
-                                                class="preview-summary-value text-warning"
-                                                id="summaryUndertime"
-                                            >
-                                                0 min
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="col-xl-3 col-md-6">
-
-                                        <div class="preview-summary-card">
-
-                                            <div class="preview-summary-label">
-                                                Total Overtime Minutes
-                                            </div>
-
-                                            <div
-                                                class="preview-summary-value text-success"
-                                                id="summaryOvertime"
-                                            >
-                                                0 min
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- TABLE -->
-
-                                <div class="payroll-preview-wrapper">
-
-                                    <table class="table table-bordered table-hover payroll-preview-table">
-
-                                        <thead class="table-success">
-
-                                            <tr>
-
-                                                <th>
-                                                    Employee
-                                                </th>
-
-                                                <th>
-                                                    Department
-                                                </th>
-
-                                                <th>
-                                                    Payroll Period
-                                                </th>
-
-                                                <th>
-                                                    Basic Salary
-                                                </th>
-
-                                                <th>
-                                                    Daily Rate
-                                                </th>
-
-                                                <th>
-                                                    Attendance
-                                                </th>
-
-                                                <th>
-                                                    Holidays
-                                                </th>
-
-                                                <th>
-                                                    Worked Holidays
-                                                </th>
-
-                                                <th>
-                                                    Holiday Pay
-                                                </th>
-
-                                                <th>
-                                                    Additional Earnings
-                                                </th>
-
-                                                <th>
-                                                    Teaching Load Pay
-                                                </th>
-
-                                                <th>
-                                                    OT Rate / Hour
-                                                </th>
-
-                                                <th>
-                                                    Late Deduction / Min
-                                                </th>
-
-                                                <th>
-                                                    Undertime Deduction / Min
-                                                </th>
-
-                                                <th>
-                                                    Late Minutes
-                                                </th>
-
-                                                <th>
-                                                    Undertime Minutes
-                                                </th>
-
-                                                <th>
-                                                    Overtime Minutes
-                                                </th>
-
-                                                <th>
-                                                    Overtime Pay
-                                                </th>
-
-                                                <th>
-                                                    Late Deduction
-                                                </th>
-
-                                                <th>
-                                                    Undertime Deduction
-                                                </th>
-
-                                                <th>
-                                                    Gross Salary
-                                                </th>
-
-                                                <th>
-                                                    Benefits
-                                                </th>
-
-                                                <th>
-                                                    Net Salary
-                                                </th>
-
-                                            </tr>
-
-                                        </thead>
-
-
-                                        <tbody id="payrollPreviewBody">
-
-                                        </tbody>
-
-                                    </table>
-
-                                </div>
-
-                            </div>
+                            </table>
 
                         </div>
 
@@ -1049,6 +1052,7 @@
 
                             <button
                                 class="btn btn-outline-success btn-sm"
+                                type="button"
                                 onclick="location.reload()"
                             >
 
@@ -1205,12 +1209,15 @@
 
                 </div>
 
+
             </div>
 
         </main>
 
 
-        <!-- FOOTER -->
+        <!-- ========================================================
+             FOOTER
+             ======================================================== -->
 
         <footer class="admin-footer">
 
@@ -1223,121 +1230,1026 @@
 
 </div>
 
-    <script>
-    window.papPayAdminSearchPages = [
-        {
-            title: 'Home',
-            description: 'Admin dashboard and system overview',
-            keywords: 'home dashboard admin overview',
-            icon: 'bi-speedometer2',
-            url: @json(route('admin-dashboard'))
-        },
-        {
-            title: 'Employees',
-            description: 'Manage employee accounts and records',
-            keywords: 'employee employees staff users accounts personnel',
-            icon: 'bi-people-fill',
-            url: @json(route('employees.index'))
-        },
-        {
-            title: 'Attendance',
-            description: 'Review employee attendance records',
-            keywords: 'attendance time in time out present absent late undertime overtime',
-            icon: 'bi-calendar-check-fill',
-            url: @json(route('attendance_list'))
-        },
-        {
-            title: 'Leave Requests',
-            description: 'Review and approve employee leave requests',
-            keywords: 'leave leaves vacation absence request requests approval approve',
-            icon: 'bi-calendar-x-fill',
-            url: @json(route('admin.leaves'))
-        },
-        {
-            title: 'Official Business',
-            description: 'Manage official business requests',
-            keywords: 'official business ob field work travel request requests',
-            icon: 'bi-briefcase-fill',
-            url: @json(route('official_business'))
-        },
-        {
-            title: 'Holidays',
-            description: 'Manage holidays and holiday settings',
-            keywords: 'holiday holidays calendar dates pay rate',
-            icon: 'bi-calendar-event-fill',
-            url: @json(route('holidays.index'))
-        },
-        {
-            title: 'Payroll',
-            description: 'Process and manage employee payroll',
-            keywords: 'payroll salary salaries wages earnings deductions sss philhealth pagibig hmo',
-            icon: 'bi-cash-stack',
-            url: @json(route('payroll'))
-        },
-        {
-            title: 'Payslips',
-            description: 'View and manage employee payslips',
-            keywords: 'payslip payslips salary slip payment compensation',
-            icon: 'bi-receipt-cutoff',
-            url: @json(route('payslip_list'))
-        },
-        {
-            title: 'Payslip Concerns',
-            description: 'Review employee payslip concerns',
-            keywords: 'payslip concern concerns issue issues complaint complaints payroll problem',
-            icon: 'bi-exclamation-circle-fill',
-            url: @json(route('admin.payslip-concerns.index'))
-        },
-        {
-            title: 'Reports',
-            description: 'Generate HR and payroll reports',
-            keywords: 'report reports analytics statistics summary attendance payroll employee',
-            icon: 'bi-bar-chart-fill',
-            url: @json(route('reports'))
-        },
-        {
-            title: 'Announcements',
-            description: 'Publish and manage system announcements',
-            keywords: 'announcement announcements notice notices news publish message',
-            icon: 'bi-megaphone-fill',
-            url: @json(route('announcements'))
-        }
-    ];
+
+<!-- ============================================================
+     PREVIEW EMPLOYEES MODAL
+     ============================================================ -->
+
+<div
+    class="modal fade employee-preview-modal"
+    id="previewEmployeesModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h5 class="modal-title fw-bold">
+
+                        <i class="bi bi-receipt-cutoff text-warning me-2"></i>
+
+                        Payslip Preview
+
+                    </h5>
+
+                    <small
+                        id="previewModalPeriod"
+                        class="text-muted"
+                    ></small>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+
+                <!-- SUMMARY -->
+
+                <div class="row g-3 mb-4">
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Employees
+                            </div>
+
+                            <div
+                                class="preview-detail-value"
+                                id="modalEmployeeCount"
+                            >
+                                0
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Late Minutes
+                            </div>
+
+                            <div
+                                class="preview-detail-value text-danger"
+                                id="modalLateMinutes"
+                            >
+                                0 min
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Undertime Minutes
+                            </div>
+
+                            <div
+                                class="preview-detail-value text-warning"
+                                id="modalUndertimeMinutes"
+                            >
+                                0 min
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-xl-3 col-md-6">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Overtime Minutes
+                            </div>
+
+                            <div
+                                class="preview-detail-value text-success"
+                                id="modalOvertimeMinutes"
+                            >
+                                0 min
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPLOYEES -->
+
+                <div class="preview-employee-table-wrapper">
+
+                    <table class="table table-hover align-middle preview-employee-table">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th>
+                                    Employee
+                                </th>
+
+                                <th>
+                                    Department
+                                </th>
+
+                                <th>
+                                    Payroll Period
+                                </th>
+
+                                <th>
+                                    Gross Salary
+                                </th>
+
+                                <th>
+                                    Benefits
+                                </th>
+
+                                <th>
+                                    Net Salary
+                                </th>
+
+                                <th class="text-center">
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="previewEmployeeModalBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+
+                    Close
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="modalGenerateAllPayslips"
+                >
+
+                    <i class="bi bi-file-earmark-text me-2"></i>
+
+                    Generate Payslips
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     EMPLOYEE PAYROLL DETAIL MODAL
+     ============================================================ -->
+
+<div
+    class="modal fade employee-detail-modal"
+    id="employeeDetailModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h5
+                        class="modal-title fw-bold"
+                        id="employeeDetailName"
+                    >
+                        Employee Payroll
+                    </h5>
+
+                    <small
+                        class="text-muted"
+                        id="employeeDetailDepartment"
+                    ></small>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="row g-3">
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Basic Salary
+                            </div>
+
+                            <div
+                                class="preview-detail-value"
+                                id="detailBasicSalary"
+                            >
+                                ₱ 0.00
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Daily Rate
+                            </div>
+
+                            <div
+                                class="preview-detail-value"
+                                id="detailDailyRate"
+                            >
+                                ₱ 0.00
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Payroll Period
+                            </div>
+
+                            <div
+                                class="preview-detail-value"
+                                id="detailPayrollPeriod"
+                            >
+                                -
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Attendance
+                            </div>
+
+                            <div
+                                class="preview-detail-value"
+                                id="detailAttendance"
+                            >
+                                0
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Holidays Worked
+                            </div>
+
+                            <div
+                                class="preview-detail-value"
+                                id="detailWorkedHolidays"
+                            >
+                                0
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Holiday Pay
+                            </div>
+
+                            <div
+                                class="preview-detail-value"
+                                id="detailHolidayPay"
+                            >
+                                ₱ 0.00
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Additional Earnings
+                            </div>
+
+                            <div
+                                class="preview-detail-value"
+                                id="detailAdditionalEarnings"
+                            >
+                                ₱ 0.00
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Teaching Load Pay
+                            </div>
+
+                            <div
+                                class="preview-detail-value"
+                                id="detailTeachingLoad"
+                            >
+                                ₱ 0.00
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Overtime Pay
+                            </div>
+
+                            <div
+                                class="preview-detail-value text-success"
+                                id="detailOvertimePay"
+                            >
+                                ₱ 0.00
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Late Deduction
+                            </div>
+
+                            <div
+                                class="preview-detail-value text-danger"
+                                id="detailLateDeduction"
+                            >
+                                ₱ 0.00
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Undertime Deduction
+                            </div>
+
+                            <div
+                                class="preview-detail-value text-warning"
+                                id="detailUndertimeDeduction"
+                            >
+                                ₱ 0.00
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Benefits
+                            </div>
+
+                            <div
+                                class="preview-detail-value"
+                                id="detailBenefits"
+                            >
+                                ₱ 0.00
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-12">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Gross Salary
+                            </div>
+
+                            <div
+                                class="preview-detail-value"
+                                id="detailGrossSalary"
+                            >
+                                ₱ 0.00
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-12">
+
+                        <div class="preview-detail-card">
+
+                            <div class="preview-detail-label">
+                                Net Salary
+                            </div>
+
+                            <div
+                                class="preview-detail-value text-success"
+                                id="detailNetSalary"
+                            >
+                                ₱ 0.00
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Close
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="detailGeneratePayslip"
+                >
+
+                    <i class="bi bi-file-earmark-text me-2"></i>
+
+                    Generate Payslip
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     ADMIN SEARCH PAGES
+     ============================================================ -->
+
+<script>
+
+window.papPayAdminSearchPages = [
+
+    {
+        title: 'Home',
+        description: 'Admin dashboard and system overview',
+        keywords: 'home dashboard admin overview',
+        icon: 'bi-speedometer2',
+        url: @json(route('admin-dashboard'))
+    },
+
+    {
+        title: 'Employees',
+        description: 'Manage employee accounts and records',
+        keywords: 'employee employees staff users accounts personnel',
+        icon: 'bi-people-fill',
+        url: @json(route('employees.index'))
+    },
+
+    {
+        title: 'Attendance',
+        description: 'Review employee attendance records',
+        keywords: 'attendance time in time out present absent late undertime overtime',
+        icon: 'bi-calendar-check-fill',
+        url: @json(route('attendance_list'))
+    },
+
+    {
+        title: 'Leave Requests',
+        description: 'Review and approve employee leave requests',
+        keywords: 'leave leaves vacation absence request requests approval approve',
+        icon: 'bi-calendar-x-fill',
+        url: @json(route('admin.leaves'))
+    },
+
+    {
+        title: 'Official Business',
+        description: 'Manage official business requests',
+        keywords: 'official business ob field work travel request requests',
+        icon: 'bi-briefcase-fill',
+        url: @json(route('official_business'))
+    },
+
+    {
+        title: 'Holidays',
+        description: 'Manage holidays and holiday settings',
+        keywords: 'holiday holidays calendar dates pay rate',
+        icon: 'bi-calendar-event-fill',
+        url: @json(route('holidays.index'))
+    },
+
+    {
+        title: 'Payroll',
+        description: 'Process and manage employee payroll',
+        keywords: 'payroll salary salaries wages earnings deductions sss philhealth pagibig hmo',
+        icon: 'bi-cash-stack',
+        url: @json(route('payroll'))
+    },
+
+    {
+        title: 'Payslips',
+        description: 'View and manage employee payslips',
+        keywords: 'payslip payslips salary slip payment compensation',
+        icon: 'bi-receipt-cutoff',
+        url: @json(route('payslip_list'))
+    },
+
+    {
+        title: 'Payslip Concerns',
+        description: 'Review employee payslip concerns',
+        keywords: 'payslip concern concerns issue issues complaint complaints payroll problem',
+        icon: 'bi-exclamation-circle-fill',
+        url: @json(route('admin.payslip-concerns.index'))
+    },
+
+    {
+        title: 'Reports',
+        description: 'Generate HR and payroll reports',
+        keywords: 'report reports analytics statistics summary attendance payroll employee',
+        icon: 'bi-bar-chart-fill',
+        url: @json(route('reports'))
+    },
+
+    {
+        title: 'Announcements',
+        description: 'Publish and manage system announcements',
+        keywords: 'announcement announcements notice notices news publish message',
+        icon: 'bi-megaphone-fill',
+        url: @json(route('announcements'))
+    }
+
+];
+
 </script>
 
 
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+
 <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
+
 <script src="../../../../khen/assets/js/main.js"></script>
-=======
+
 <script src="{{ asset('khen/assets/js/payslip-search.js') }}"></script>
-    <script>
-        const employeeContainer =
-            document.getElementById('employeeContainer');
-
-        const departmentCheckboxes =
-            document.querySelectorAll('.department-checkbox');
-
 
 
 <script>
 
+document.addEventListener('DOMContentLoaded', function () {
+
+
     /*
-    ================================================================
+    ============================================================
     ELEMENTS
-    ================================================================
+    ============================================================
     */
 
     const employeeContainer =
         document.getElementById('employeeContainer');
 
+
     const departmentCheckboxes =
         document.querySelectorAll('.department-checkbox');
 
 
+    const previewPayrollButton =
+        document.getElementById('previewPayroll');
+
+
+    const generatePayslipsButton =
+        document.getElementById('generatePayslips');
+
+
+    const previewBatchSection =
+        document.getElementById('payslipPreviewBatches');
+
+
+    const previewBatchBody =
+        document.getElementById('previewBatchBody');
+
+
+    const previewEmployeesModalElement =
+        document.getElementById('previewEmployeesModal');
+
+
+    const employeeDetailModalElement =
+        document.getElementById('employeeDetailModal');
+
+
+    const previewEmployeesModal =
+        new bootstrap.Modal(
+            previewEmployeesModalElement
+        );
+
+
+    const employeeDetailModal =
+        new bootstrap.Modal(
+            employeeDetailModalElement
+        );
+
+
     /*
-    ================================================================
+    ============================================================
+    PREVIEW STATE
+    ============================================================
+    */
+
+    let previewEmployees = [];
+
+    let currentPreviewEmployee = null;
+
+
+    /*
+    ============================================================
+    LOADED EMPLOYEES
+    ============================================================
+    */
+
+    /*
+     * This array now contains ALL employees returned by the
+     * selected departments.
+     *
+     * There is no longer any employee-selection checkbox.
+     */
+
+    let loadedEmployees = [];
+
+
+    /*
+    ============================================================
+    PREVIEW LOCAL STORAGE
+    ============================================================
+    */
+
+    const PREVIEW_BATCH_STORAGE_KEY =
+        'pap_pay_active_payslip_preview_batch';
+
+
+    /*
+    ------------------------------------------------------------
+    GET SAVED PREVIEW BATCH
+    ------------------------------------------------------------
+    */
+
+    function getStoredPreviewBatch() {
+
+        try {
+
+            const stored =
+                localStorage.getItem(
+                    PREVIEW_BATCH_STORAGE_KEY
+                );
+
+
+            if (!stored) {
+
+                return null;
+
+            }
+
+
+            const batch =
+                JSON.parse(stored);
+
+
+            if (
+                !batch ||
+                !Array.isArray(batch.employees) ||
+                batch.employees.length === 0
+            ) {
+
+                return null;
+
+            }
+
+
+            return batch;
+
+        } catch (error) {
+
+            console.error(
+                'Unable to restore saved payslip preview batch:',
+                error
+            );
+
+
+            return null;
+
+        }
+
+    }
+
+
+    /*
+    ------------------------------------------------------------
+    SAVE PREVIEW BATCH
+    ------------------------------------------------------------
+    */
+
+    function savePreviewBatch() {
+
+        if (!previewEmployees.length) {
+
+            clearPreviewBatch();
+
+            return;
+
+        }
+
+
+        const start =
+            document
+                .getElementById('period_start')
+                ?.value ?? '';
+
+
+        const end =
+            document
+                .getElementById('period_end')
+                ?.value ?? '';
+
+
+        const existingBatch =
+            getStoredPreviewBatch();
+
+
+        const previewedAt =
+            existingBatch?.previewed_at ??
+            new Date().toISOString();
+
+
+        try {
+
+            localStorage.setItem(
+
+                PREVIEW_BATCH_STORAGE_KEY,
+
+                JSON.stringify({
+
+                    period_start:
+                        start,
+
+                    period_end:
+                        end,
+
+                    employees:
+                        previewEmployees,
+
+                    previewed_at:
+                        previewedAt
+
+                })
+
+            );
+
+        } catch (error) {
+
+            console.error(
+                'Unable to save payslip preview batch:',
+                error
+            );
+
+        }
+
+    }
+
+
+    /*
+    ------------------------------------------------------------
+    CLEAR PREVIEW BATCH
+    ------------------------------------------------------------
+    */
+
+    function clearPreviewBatch() {
+
+        localStorage.removeItem(
+            PREVIEW_BATCH_STORAGE_KEY
+        );
+
+    }
+
+
+    /*
+    ------------------------------------------------------------
+    RESTORE PREVIEW BATCH
+    ------------------------------------------------------------
+    */
+
+    function restorePreviewBatch() {
+
+        const batch =
+            getStoredPreviewBatch();
+
+
+        if (!batch) {
+
+            return;
+
+        }
+
+
+        const startInput =
+            document.getElementById(
+                'period_start'
+            );
+
+
+        const endInput =
+            document.getElementById(
+                'period_end'
+            );
+
+
+        if (
+            startInput &&
+            batch.period_start
+        ) {
+
+            startInput.value =
+                batch.period_start;
+
+        }
+
+
+        if (
+            endInput &&
+            batch.period_end
+        ) {
+
+            endInput.value =
+                batch.period_end;
+
+        }
+
+
+        previewEmployees =
+            batch.employees;
+
+
+        renderPreviewBatch(
+
+            batch.period_start,
+
+            batch.period_end,
+
+            batch.previewed_at
+
+        );
+
+
+        previewBatchSection
+            .classList
+            .remove('d-none');
+
+
+        generatePayslipsButton
+            .classList
+            .add('d-none');
+
+    }
+
+
+    /*
+    ============================================================
     LOAD EMPLOYEES
-    ================================================================
+    ============================================================
     */
 
     departmentCheckboxes.forEach(box => {
@@ -1356,7 +2268,9 @@
 
 
         document
-            .querySelectorAll('.department-checkbox:checked')
+            .querySelectorAll(
+                '.department-checkbox:checked'
+            )
             .forEach(box => {
 
                 selectedDepartments.push(
@@ -1366,7 +2280,16 @@
             });
 
 
+        /*
+        --------------------------------------------------------
+        NO DEPARTMENT SELECTED
+        --------------------------------------------------------
+        */
+
         if (selectedDepartments.length === 0) {
+
+            loadedEmployees = [];
+
 
             employeeContainer.innerHTML = `
 
@@ -1375,20 +2298,15 @@
                     <i class="bi bi-people fs-1"></i>
 
                     <p class="mt-3 mb-0">
-                        Select one or more departments to load employees.
+
+                        Select one or more departments
+                        to load employees.
+
                     </p>
 
                 </div>
 
             `;
-
-            document
-                .getElementById('payrollPreviewSection')
-                .classList.add('d-none');
-
-            document
-                .getElementById('generatePayslips')
-                .classList.add('d-none');
 
             return;
 
@@ -1411,6 +2329,12 @@
         );
 
 
+        /*
+        --------------------------------------------------------
+        LOAD ALL EMPLOYEES FROM SELECTED DEPARTMENTS
+        --------------------------------------------------------
+        */
+
         fetch(
             "{{ route('payslip.employees') }}?" +
             params.toString()
@@ -1432,23 +2356,46 @@
 
         .then(employees => {
 
+            /*
+            IMPORTANT:
+
+            Every employee returned by the selected departments
+            is automatically included.
+
+            No employee checkbox is created anymore.
+            */
+
+            loadedEmployees =
+                Array.isArray(employees)
+                    ? employees
+                    : [];
+
+
             let html = `
 
-                <div class="form-check mb-3">
+                <div class="d-flex align-items-center gap-3 mb-3">
 
-                    <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="selectAll"
-                        checked
+                    <div
+                        class="rounded-circle bg-success-subtle text-success d-flex align-items-center justify-content-center"
+                        style="width: 42px; height: 42px;"
                     >
 
-                    <label
-                        class="form-check-label fw-bold"
-                        for="selectAll"
-                    >
-                        Select All
-                    </label>
+                        <i class="bi bi-people-fill"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div class="fw-bold">
+                            ${loadedEmployees.length} employee(s) loaded
+                        </div>
+
+                        <small class="text-muted">
+                            All employees from the selected department(s)
+                            will automatically be included in the payroll preview.
+                        </small>
+
+                    </div>
 
                 </div>
 
@@ -1457,7 +2404,7 @@
             `;
 
 
-            if (!employees.length) {
+            if (!loadedEmployees.length) {
 
                 html += `
 
@@ -1466,93 +2413,97 @@
                         <i class="bi bi-person-x fs-2"></i>
 
                         <p class="mt-2 mb-0">
+
                             No employees found.
+
                         </p>
 
                     </div>
 
                 `;
 
-            }
-
-
-            employees.forEach(employee => {
-
-                const fullName =
-                    `${employee.first_name ?? ''} ${employee.last_name ?? ''}`.trim();
-
+            } else {
 
                 html += `
 
-                    <div class="form-check mb-2">
+                    <div class="row g-2">
 
-                        <input
-                            class="form-check-input employee-checkbox"
-                            type="checkbox"
-                            checked
-                            value="${employee.id}"
-                        >
+                `;
 
-                        <label class="form-check-label">
 
-                            <strong>
-                                ${fullName}
-                            </strong>
+                loadedEmployees.forEach(employee => {
 
-                            <br>
+                    const fullName =
+                        `${employee.first_name ?? ''} ${employee.last_name ?? ''}`.trim();
 
-                            <small class="text-muted">
 
-                                ${employee.employee_id ?? ''}
+                    html += `
 
-                                •
+                        <div class="col-lg-6 col-xl-4">
 
-                                ${employee.department ?? ''}
+                            <div class="border rounded bg-white p-3 h-100">
 
-                            </small>
+                                <div class="d-flex align-items-center">
 
-                        </label>
+                                    <div
+                                        class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3"
+                                        style="width: 40px; height: 40px;"
+                                    >
+
+                                        <i class="bi bi-person text-secondary"></i>
+
+                                    </div>
+
+                                    <div class="overflow-hidden">
+
+                                        <strong class="d-block text-truncate">
+                                            ${fullName}
+                                        </strong>
+
+                                        <small class="text-muted">
+
+                                            ${employee.employee_id ?? ''}
+
+                                            •
+
+                                            ${employee.department ?? ''}
+
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                });
+
+
+                html += `
 
                     </div>
 
                 `;
 
-            });
+            }
 
 
             employeeContainer.innerHTML =
                 html;
-
-
-            const selectAll =
-                document.getElementById('selectAll');
-
-
-            if (selectAll) {
-
-                selectAll.addEventListener(
-                    'change',
-                    function() {
-
-                        document
-                            .querySelectorAll('.employee-checkbox')
-                            .forEach(box => {
-
-                                box.checked =
-                                    this.checked;
-
-                            });
-
-                    }
-                );
-
-            }
 
         })
 
         .catch(error => {
 
             console.error(error);
+
+
+            loadedEmployees = [];
+
 
             employeeContainer.innerHTML = `
 
@@ -1572,9 +2523,9 @@
 
 
     /*
-    ================================================================
-    MONEY FORMATTER
-    ================================================================
+    ============================================================
+    FORMATTERS
+    ============================================================
     */
 
     function money(value) {
@@ -1595,12 +2546,6 @@
     }
 
 
-    /*
-    ================================================================
-    NUMBER FORMATTER
-    ================================================================
-    */
-
     function number(value) {
 
         return Number(value ?? 0)
@@ -1615,1075 +2560,1689 @@
     }
 
 
+    function formatDate(date) {
+
+        if (!date) {
+
+            return '';
+
+        }
+
+
+        return new Date(
+            date + 'T00:00:00'
+        ).toLocaleDateString(
+            undefined,
+            {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            }
+        );
+
+    }
+
+
     /*
-    ================================================================
-    PAYROLL PREVIEW
-    ================================================================
-
-    IMPORTANT:
-
-    The browser DOES NOT calculate payroll anymore.
-
-    All payroll values come directly from:
-
-        PayrollController::calculatePayroll()
-
-    This prevents the preview from using old variables or formulas.
-    ================================================================
+    ------------------------------------------------------------
+    FORMAT SAVED PREVIEW DATE
+    ------------------------------------------------------------
     */
 
-    document
-        .getElementById('previewPayroll')
-        .addEventListener(
-            'click',
-            function() {
+    function formatPreviewDate(date) {
+
+        if (!date) {
+
+            return new Date().toLocaleString(
+                undefined,
+                {
+                    dateStyle: 'medium',
+                    timeStyle: 'short'
+                }
+            );
+
+        }
 
 
-                const start =
-                    document
-                        .getElementById('period_start')
-                        .value;
+        const parsedDate =
+            new Date(date);
 
 
-                const end =
-                    document
-                        .getElementById('period_end')
-                        .value;
+        if (Number.isNaN(
+            parsedDate.getTime()
+        )) {
+
+            return new Date().toLocaleString(
+                undefined,
+                {
+                    dateStyle: 'medium',
+                    timeStyle: 'short'
+                }
+            );
+
+        }
 
 
-                const employees = [];
+        return parsedDate.toLocaleString(
+            undefined,
+            {
+                dateStyle: 'medium',
+                timeStyle: 'short'
+            }
+        );
+
+    }
 
 
+    /*
+    ============================================================
+    GET SELECTED EMPLOYEES
+    ============================================================
+    */
+
+    /*
+     * The old employee-checkbox process has been removed.
+     *
+     * Every employee loaded from the selected departments
+     * is automatically included.
+     */
+
+    function getSelectedEmployeeIds() {
+
+        return loadedEmployees.map(
+            employee => employee.id
+        );
+
+    }
+
+
+    /*
+    ============================================================
+    PREVIEW PAYROLL
+    ============================================================
+    */
+
+    previewPayrollButton.addEventListener(
+        'click',
+        function () {
+
+            const start =
                 document
-                    .querySelectorAll(
-                        '.employee-checkbox:checked'
+                    .getElementById(
+                        'period_start'
                     )
-                    .forEach(box => {
-
-                        employees.push(
-                            box.value
-                        );
-
-                    });
+                    .value;
 
 
-                if (!start || !end) {
+            const end =
+                document
+                    .getElementById(
+                        'period_end'
+                    )
+                    .value;
 
-                    alert(
-                        'Please select the payroll start date and end date.'
-                    );
 
-                    return;
+            /*
+            ----------------------------------------------------
+            ALL LOADED EMPLOYEES ARE INCLUDED AUTOMATICALLY
+            ----------------------------------------------------
+            */
+
+            const employees =
+                getSelectedEmployeeIds();
+
+
+            if (!start || !end) {
+
+                alert(
+                    'Please select the payroll start date and end date.'
+                );
+
+                return;
+
+            }
+
+
+            if (
+                new Date(start) >
+                new Date(end)
+            ) {
+
+                alert(
+                    'Payroll start date cannot be later than the payroll end date.'
+                );
+
+                return;
+
+            }
+
+
+            if (employees.length === 0) {
+
+                alert(
+                    'Please select at least one department with employees before previewing the payroll.'
+                );
+
+                return;
+
+            }
+
+
+            const button = this;
+
+
+            button.disabled = true;
+
+
+            button.innerHTML = `
+
+                <span class="spinner-border spinner-border-sm me-2"></span>
+
+                Calculating...
+
+            `;
+
+
+            fetch(
+                "{{ route('payslip.preview') }}",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "X-CSRF-TOKEN":
+                            document
+                                .querySelector(
+                                    'meta[name="csrf-token"]'
+                                )
+                                .content,
+
+                        "Accept":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        period_start:
+                            start,
+
+                        period_end:
+                            end,
+
+                        employees:
+                            employees
+
+                    })
 
                 }
+            )
 
+            .then(response => {
 
-                if (new Date(start) > new Date(end)) {
+                if (!response.ok) {
 
-                    alert(
-                        'Payroll start date cannot be later than the payroll end date.'
-                    );
+                    return response
+                        .json()
+                        .then(error => {
 
-                    return;
-
-                }
-
-
-                if (employees.length === 0) {
-
-                    alert(
-                        'Please select at least one employee.'
-                    );
-
-                    return;
-
-                }
-
-
-                const button = this;
-
-
-                button.disabled = true;
-
-
-                button.innerHTML = `
-
-                    <span class="spinner-border spinner-border-sm me-2"></span>
-
-                    Calculating...
-
-                `;
-
-
-                fetch(
-                    "{{ route('payslip.preview') }}",
-                    {
-
-                        method: "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json",
-
-                            "X-CSRF-TOKEN":
-                                document
-                                    .querySelector(
-                                        'meta[name="csrf-token"]'
-                                    )
-                                    .content,
-
-                            "Accept":
-                                "application/json"
-
-                        },
-
-                        body: JSON.stringify({
-
-                            period_start:
-                                start,
-
-                            period_end:
-                                end,
-
-                            employees:
-                                employees
-
-                        })
-
-                    }
-                )
-
-                .then(response => {
-
-                    if (!response.ok) {
-
-                        return response
-                            .json()
-                            .then(error => {
-
-                                throw error;
-
-                            });
-
-                    }
-
-                    return response.json();
-
-                })
-
-                .then(data => {
-
-                    if (!data.success) {
-
-                        throw new Error(
-                            data.message ??
-                            'Unable to calculate payroll.'
-                        );
-
-                    }
-
-
-                    const tbody =
-                        document.getElementById(
-                            'payrollPreviewBody'
-                        );
-
-
-                    tbody.innerHTML = '';
-
-
-                    let totalLate = 0;
-
-                    let totalUndertime = 0;
-
-                    let totalOvertime = 0;
-
-
-                    /*
-                    ====================================================
-                    NO EMPLOYEES RETURNED
-                    ====================================================
-                    */
-
-                    if (
-                        !Array.isArray(data.preview) ||
-                        data.preview.length === 0
-                    ) {
-
-                        tbody.innerHTML = `
-
-                            <tr>
-
-                                <td
-                                    colspan="23"
-                                    class="text-center text-muted py-4"
-                                >
-
-                                    <i class="bi bi-person-x fs-3"></i>
-
-                                    <div class="mt-2">
-                                        No payroll records were returned.
-                                    </div>
-
-                                    <small>
-                                        Check the selected employees,
-                                        salary configuration, and payroll dates.
-                                    </small>
-
-                                </td>
-
-                            </tr>
-
-                        `;
-
-                    }
-
-
-                    /*
-                    ====================================================
-                    DISPLAY SERVER CALCULATIONS
-                    ====================================================
-                    */
-
-                    data.preview.forEach(employee => {
-
-
-                        /*
-                        ------------------------------------------------
-                        ACTUAL SALARY CONFIGURATION
-                        ------------------------------------------------
-                        */
-
-                        const basicSalary =
-                            Number(
-                                employee.basic_salary ?? 0
-                            );
-
-
-                        const dailyRate =
-                            Number(
-                                employee.daily_rate ?? 0
-                            );
-
-
-                        const overtimeRate =
-                            Number(
-                                employee.overtime_rate ?? 0
-                            );
-
-
-                        const lateRate =
-                            Number(
-                                employee.late_deduction_rate ?? 0
-                            );
-
-
-                        const undertimeRate =
-                            Number(
-                                employee.undertime_deduction_rate ?? 0
-                            );
-
-
-                        /*
-                        ------------------------------------------------
-                        ACTUAL ATTENDANCE
-                        ------------------------------------------------
-                        */
-
-                        const attendance =
-                            Number(
-                                employee.present_days ??
-                                employee.total_attendance ??
-                                0
-                            );
-
-
-                        const holidays =
-                            Number(
-                                employee.total_holidays ?? 0
-                            );
-
-
-                        const workedHolidays =
-                            Number(
-                                employee.worked_holidays ?? 0
-                            );
-
-
-                        const lateMinutes =
-                            Number(
-                                employee.late_minutes ?? 0
-                            );
-
-
-                        const undertimeMinutes =
-                            Number(
-                                employee.undertime_minutes ?? 0
-                            );
-
-
-                        const overtimeMinutes =
-                            Number(
-                                employee.overtime_minutes ?? 0
-                            );
-
-
-                        /*
-                        ------------------------------------------------
-                        ACTUAL PAYROLL RESULTS
-                        ------------------------------------------------
-                        */
-
-                        const holidayPay =
-                            Number(
-                                employee.holiday_pay ?? 0
-                            );
-
-
-                        const additionalEarnings =
-                            Number(
-                                employee.additional_earnings_total ?? 0
-                            );
-
-
-                        const teachingLoadPay =
-                            Number(
-                                employee.additional_teaching_load_pay ??
-                                employee.teaching_load ??
-                                0
-                            );
-
-
-                        const overtimePay =
-                            Number(
-                                employee.overtime_pay ?? 0
-                            );
-
-
-                        const lateDeduction =
-                            Number(
-                                employee.late_deduction ?? 0
-                            );
-
-
-                        const undertimeDeduction =
-                            Number(
-                                employee.undertime_deduction ?? 0
-                            );
-
-
-                        const grossSalary =
-                            Number(
-                                employee.gross_salary ?? 0
-                            );
-
-
-                        const benefits =
-                            Number(
-                                employee.benefits ?? 0
-                            );
-
-
-                        const netSalary =
-                            Number(
-                                employee.net_salary ?? 0
-                            );
-
-
-                        /*
-                        ------------------------------------------------
-                        PAYROLL PERIOD
-                        ------------------------------------------------
-                        */
-
-                        const payrollPeriod =
-                            employee.payroll_period ??
-                            (
-                                employee.is_weekly_payroll
-                                    ? 'Weekly'
-                                    : 'Every 15 Days'
-                            );
-
-
-                        /*
-                        ------------------------------------------------
-                        SUMMARY
-                        ------------------------------------------------
-                        */
-
-                        totalLate +=
-                            lateMinutes;
-
-
-                        totalUndertime +=
-                            undertimeMinutes;
-
-
-                        totalOvertime +=
-                            overtimeMinutes;
-
-
-                        /*
-                        ------------------------------------------------
-                        TABLE ROW
-                        ------------------------------------------------
-                        */
-
-                        tbody.innerHTML += `
-
-                            <tr>
-
-                                <!-- EMPLOYEE -->
-
-                                <td>
-
-                                    <strong>
-                                        ${employee.name ?? ''}
-                                    </strong>
-
-                                </td>
-
-
-                                <!-- DEPARTMENT -->
-
-                                <td>
-                                    ${employee.department ?? ''}
-                                </td>
-
-
-                                <!-- PAYROLL PERIOD -->
-
-                                <td>
-
-                                    <span class="payroll-period-badge">
-
-                                        ${payrollPeriod}
-
-                                    </span>
-
-                                </td>
-
-
-                                <!-- BASIC SALARY -->
-
-                                <td>
-                                    ${money(basicSalary)}
-                                </td>
-
-
-                                <!-- DAILY RATE -->
-
-                                <td>
-                                    ${money(dailyRate)}
-                                </td>
-
-
-                                <!-- ATTENDANCE -->
-
-                                <td class="text-center fw-bold">
-
-                                    ${number(attendance)} day(s)
-
-                                </td>
-
-
-                                <!-- HOLIDAYS -->
-
-                                <td class="text-center">
-
-                                    ${number(holidays)}
-
-                                </td>
-
-
-                                <!-- WORKED HOLIDAYS -->
-
-                                <td class="text-center">
-
-                                    ${number(workedHolidays)}
-
-                                </td>
-
-
-                                <!-- HOLIDAY PAY -->
-
-                                <td class="money-positive">
-
-                                    ${money(holidayPay)}
-
-                                </td>
-
-
-                                <!-- ADDITIONAL EARNINGS -->
-
-                                <td class="money-positive">
-
-                                    ${money(additionalEarnings)}
-
-                                </td>
-
-
-                                <!-- TEACHING LOAD PAY -->
-
-                                <td class="money-positive">
-
-                                    ${money(teachingLoadPay)}
-
-                                </td>
-
-
-                                <!-- OVERTIME RATE -->
-
-                                <td>
-
-                                    <span class="config-badge">
-
-                                        ${money(overtimeRate)}
-                                        / hour
-
-                                    </span>
-
-                                </td>
-
-
-                                <!-- LATE RATE -->
-
-                                <td>
-
-                                    <span class="config-badge">
-
-                                        ${money(lateRate)}
-                                        / min
-
-                                    </span>
-
-                                </td>
-
-
-                                <!-- UNDERTIME RATE -->
-
-                                <td>
-
-                                    <span class="config-badge">
-
-                                        ${money(undertimeRate)}
-                                        / min
-
-                                    </span>
-
-                                </td>
-
-
-                                <!-- LATE MINUTES -->
-
-                                <td class="text-center">
-
-                                    <span class="badge bg-danger minutes-badge">
-
-                                        ${number(lateMinutes)}
-                                        min
-
-                                    </span>
-
-                                </td>
-
-
-                                <!-- UNDERTIME MINUTES -->
-
-                                <td class="text-center">
-
-                                    <span class="badge bg-warning text-dark minutes-badge">
-
-                                        ${number(undertimeMinutes)}
-                                        min
-
-                                    </span>
-
-                                </td>
-
-
-                                <!-- OVERTIME MINUTES -->
-
-                                <td class="text-center">
-
-                                    <span class="badge bg-success minutes-badge">
-
-                                        ${number(overtimeMinutes)}
-                                        min
-
-                                    </span>
-
-                                </td>
-
-
-                                <!-- OVERTIME PAY -->
-
-                                <td class="money-positive">
-
-                                    ${money(overtimePay)}
-
-                                </td>
-
-
-                                <!-- LATE DEDUCTION -->
-
-                                <td class="money-negative">
-
-                                    - ${money(lateDeduction)}
-
-                                </td>
-
-
-                                <!-- UNDERTIME DEDUCTION -->
-
-                                <td class="money-negative">
-
-                                    - ${money(undertimeDeduction)}
-
-                                </td>
-
-
-                                <!-- GROSS -->
-
-                                <td class="fw-bold">
-
-                                    ${money(grossSalary)}
-
-                                </td>
-
-
-                                <!-- BENEFITS -->
-
-                                <td>
-
-                                    ${money(benefits)}
-
-                                </td>
-
-
-                                <!-- NET -->
-
-                                <td class="fw-bold text-success">
-
-                                    ${money(netSalary)}
-
-                                </td>
-
-                            </tr>
-
-                        `;
-
-                    });
-
-
-                    /*
-                    ====================================================
-                    UPDATE SUMMARY
-                    ====================================================
-                    */
-
-                    document.getElementById(
-                        'summaryEmployees'
-                    ).textContent =
-                        data.preview.length;
-
-
-                    document.getElementById(
-                        'summaryLate'
-                    ).textContent =
-                        `${number(totalLate)} min`;
-
-
-                    document.getElementById(
-                        'summaryUndertime'
-                    ).textContent =
-                        `${number(totalUndertime)} min`;
-
-
-                    document.getElementById(
-                        'summaryOvertime'
-                    ).textContent =
-                        `${number(totalOvertime)} min`;
-
-
-                    /*
-                    ====================================================
-                    SHOW PREVIEW
-                    ====================================================
-                    */
-
-                    document
-                        .getElementById(
-                            'payrollPreviewSection'
-                        )
-                        .classList.remove(
-                            'd-none'
-                        );
-
-
-                    /*
-                    ====================================================
-                    SHOW GENERATE BUTTON
-                    ====================================================
-                    */
-
-                    document
-                        .getElementById(
-                            'generatePayslips'
-                        )
-                        .classList.remove(
-                            'd-none'
-                        );
-
-                })
-
-                .catch(error => {
-
-                    console.error(error);
-
-
-                    let message =
-                        'An error occurred while calculating payroll.';
-
-
-                    if (error?.message) {
-
-                        message =
-                            error.message;
-
-                    }
-
-
-                    if (
-                        error?.errors &&
-                        typeof error.errors === 'object'
-                    ) {
-
-                        const validationMessages = [];
-
-
-                        Object.values(
-                            error.errors
-                        ).forEach(messages => {
-
-                            if (Array.isArray(messages)) {
-
-                                messages.forEach(message => {
-
-                                    validationMessages.push(
-                                        message
-                                    );
-
-                                });
-
-                            }
+                            throw error;
 
                         });
 
+                }
 
-                        if (validationMessages.length) {
+                return response.json();
 
-                            message =
-                                validationMessages.join('\n');
+            })
 
-                        }
+            .then(data => {
 
-                    }
+                if (!data.success) {
 
+                    throw new Error(
+                        data.message ??
+                        'Unable to calculate payroll.'
+                    );
 
-                    alert(message);
-
-                })
-
-                .finally(() => {
-
-                    button.disabled = false;
+                }
 
 
-                    button.innerHTML = `
+                /*
+                ----------------------------------------------------
+                STORE SERVER CALCULATIONS
+                ----------------------------------------------------
+                */
 
-                        <i class="bi bi-search me-2"></i>
-
-                        Preview Payroll
-
-                    `;
-
-                });
-
-            });
-
-
-    /*
-    ================================================================
-    GENERATE PAYSLIPS
-    ================================================================
-
-    The browser only sends:
-
-        period_start
-        period_end
-        employee IDs
-
-    The PayrollController performs the complete calculation again.
-
-    Therefore Preview and Generate use the SAME payroll formula.
-    ================================================================
-    */
-
-    document
-        .getElementById('generatePayslips')
-        .addEventListener(
-            'click',
-            function() {
+                previewEmployees =
+                    Array.isArray(data.preview)
+                        ? data.preview
+                        : [];
 
 
-                const employees = [];
+                if (!previewEmployees.length) {
+
+                    throw new Error(
+                        'No payroll records were returned for the selected employees.'
+                    );
+
+                }
 
 
-                document
-                    .querySelectorAll(
-                        '.employee-checkbox:checked'
-                    )
-                    .forEach(box => {
+                /*
+                ----------------------------------------------------
+                SAVE PREVIEW BATCH
+                ----------------------------------------------------
+                */
 
-                        employees.push(
-                            box.value
-                        );
+                savePreviewBatch();
 
+
+                /*
+                ----------------------------------------------------
+                CREATE PREVIEW BATCH
+                ----------------------------------------------------
+                */
+
+                renderPreviewBatch(
+                    start,
+                    end
+                );
+
+
+                /*
+                ----------------------------------------------------
+                SHOW PREVIEW BATCH
+                ----------------------------------------------------
+                */
+
+                previewBatchSection
+                    .classList
+                    .remove('d-none');
+
+
+                /*
+                ----------------------------------------------------
+                HIDE OLD GENERATE BUTTON
+                ----------------------------------------------------
+                */
+
+                generatePayslipsButton
+                    .classList
+                    .add('d-none');
+
+
+                /*
+                ----------------------------------------------------
+                SCROLL TO PREVIEW
+                ----------------------------------------------------
+                */
+
+                previewBatchSection
+                    .scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
                     });
 
+            })
 
-                const start =
-                    document
-                        .getElementById('period_start')
-                        .value;
+            .catch(error => {
 
-
-                const end =
-                    document
-                        .getElementById('period_end')
-                        .value;
+                console.error(error);
 
 
-                if (!start || !end) {
-
-                    alert(
-                        'Please select the payroll period.'
-                    );
-
-                    return;
-
-                }
+                let message =
+                    'An error occurred while calculating payroll.';
 
 
-                if (new Date(start) > new Date(end)) {
+                if (error?.message) {
 
-                    alert(
-                        'Payroll start date cannot be later than the payroll end date.'
-                    );
-
-                    return;
-
-                }
-
-
-                if (employees.length === 0) {
-
-                    alert(
-                        'Please select at least one employee.'
-                    );
-
-                    return;
+                    message =
+                        error.message;
 
                 }
 
 
                 if (
-                    !confirm(
-                        'Generate payslips for the selected employees using the payroll calculation for this period?'
-                    )
+                    error?.errors &&
+                    typeof error.errors === 'object'
                 ) {
+
+                    const validationMessages = [];
+
+
+                    Object.values(
+                        error.errors
+                    ).forEach(messages => {
+
+                        if (Array.isArray(messages)) {
+
+                            messages.forEach(message => {
+
+                                validationMessages.push(
+                                    message
+                                );
+
+                            });
+
+                        }
+
+                    });
+
+
+                    if (validationMessages.length) {
+
+                        message =
+                            validationMessages.join('\n');
+
+                    }
+
+                }
+
+
+                alert(message);
+
+            })
+
+            .finally(() => {
+
+                button.disabled = false;
+
+
+                button.innerHTML = `
+
+                    <i class="bi bi-search me-2"></i>
+
+                    Preview Payroll
+
+                `;
+
+            });
+
+        }
+    );
+
+
+    /*
+    ============================================================
+    RENDER PREVIEW BATCH
+    ============================================================
+    */
+
+    function renderPreviewBatch(
+        start,
+        end,
+        savedPreviewDate = null
+    ) {
+
+        const previewDate =
+            formatPreviewDate(
+                savedPreviewDate
+            );
+
+
+        previewBatchBody.innerHTML = `
+
+            <tr>
+
+                <td>
+                    1
+                </td>
+
+
+                <td>
+
+                    ${formatDate(start)}
+
+                    -
+
+                    ${formatDate(end)}
+
+                </td>
+
+
+                <td>
+
+                    <strong>
+                        ${previewEmployees.length}
+                    </strong>
+
+                    Employees
+
+                </td>
+
+
+                <td>
+                    ${previewDate}
+                </td>
+
+
+                <td>
+
+                    <span class="preview-batch-status">
+
+                        Preview
+
+                    </span>
+
+                </td>
+
+
+                <td class="text-center">
+
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-primary"
+                        id="viewPreviewBatch"
+                    >
+
+                        <i class="bi bi-eye me-1"></i>
+
+                        View
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-primary"
+                        id="generatePreviewBatch"
+                    >
+
+                        <i class="bi bi-file-earmark-text me-1"></i>
+
+                        Generate Payslips
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        document
+            .getElementById(
+                'viewPreviewBatch'
+            )
+            .addEventListener(
+                'click',
+                function () {
+
+                    openPreviewEmployeesModal();
+
+                }
+            );
+
+
+        document
+            .getElementById(
+                'generatePreviewBatch'
+            )
+            .addEventListener(
+                'click',
+                function () {
+
+                    generateAllPreviewEmployees();
+
+                }
+            );
+
+    }
+
+
+    /*
+    ============================================================
+    OPEN PREVIEW EMPLOYEES MODAL
+    ============================================================
+    */
+
+    function openPreviewEmployeesModal() {
+
+        const start =
+            document
+                .getElementById(
+                    'period_start'
+                )
+                .value;
+
+
+        const end =
+            document
+                .getElementById(
+                    'period_end'
+                )
+                .value;
+
+
+        document
+            .getElementById(
+                'previewModalPeriod'
+            )
+            .textContent =
+                `${formatDate(start)} - ${formatDate(end)}`;
+
+
+        renderPreviewEmployees();
+
+
+        previewEmployeesModal.show();
+
+    }
+
+
+    /*
+    ============================================================
+    RENDER PREVIEW EMPLOYEES
+    ============================================================
+    */
+
+    function renderPreviewEmployees() {
+
+        const tbody =
+            document.getElementById(
+                'previewEmployeeModalBody'
+            );
+
+
+        tbody.innerHTML = '';
+
+
+        if (!previewEmployees.length) {
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="7"
+                        class="text-center text-muted py-4"
+                    >
+
+                        <i class="bi bi-person-x fs-3"></i>
+
+                        <div class="mt-2">
+
+                            No employees remaining
+                            in this preview batch.
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            updatePreviewModalSummary();
+
+            return;
+
+        }
+
+
+        previewEmployees.forEach(
+            (employee, index) => {
+
+                const payrollPeriod =
+                    employee.payroll_period ??
+                    (
+                        employee.is_weekly_payroll
+                            ? 'Weekly'
+                            : 'Every 15 Days'
+                    );
+
+
+                const row =
+                    document.createElement(
+                        'tr'
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+
+                        <strong>
+                            ${employee.name ?? ''}
+                        </strong>
+
+                        <br>
+
+                        <small class="text-muted">
+
+                            ${employee.employee_id ?? ''}
+
+                        </small>
+
+                    </td>
+
+
+                    <td>
+
+                        ${employee.department ?? ''}
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="payroll-period-badge">
+
+                            ${payrollPeriod}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${money(
+                            employee.gross_salary
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${money(
+                            employee.benefits
+                        )}
+
+                    </td>
+
+
+                    <td class="fw-bold text-success">
+
+                        ${money(
+                            employee.net_salary
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="preview-action-buttons">
+
+
+                            <!-- VIEW -->
+
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-outline-primary view-employee-preview"
+                                data-index="${index}"
+                            >
+
+                                <i class="bi bi-eye"></i>
+
+                                View
+
+                            </button>
+
+
+                            <!-- GENERATE -->
+
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-primary generate-single-preview"
+                                data-index="${index}"
+                            >
+
+                                <i class="bi bi-file-earmark-text"></i>
+
+                                Generate Payslip
+
+                            </button>
+
+
+                            <!-- EXCLUDE -->
+
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-outline-danger exclude-preview"
+                                data-index="${index}"
+                            >
+
+                                <i class="bi bi-person-dash"></i>
+
+                                Exclude
+
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+
+                tbody.appendChild(row);
+
+            }
+        );
+
+
+        /*
+        --------------------------------------------------------
+        VIEW EMPLOYEE
+        --------------------------------------------------------
+        */
+
+        document
+            .querySelectorAll(
+                '.view-employee-preview'
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    'click',
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        openEmployeeDetail(
+                            previewEmployees[index]
+                        );
+
+                    }
+                );
+
+            });
+
+
+        /*
+        --------------------------------------------------------
+        GENERATE SINGLE EMPLOYEE
+        --------------------------------------------------------
+        */
+
+        document
+            .querySelectorAll(
+                '.generate-single-preview'
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    'click',
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        generateSingleEmployee(
+                            previewEmployees[index]
+                        );
+
+                    }
+                );
+
+            });
+
+
+        /*
+        --------------------------------------------------------
+        EXCLUDE EMPLOYEE
+        --------------------------------------------------------
+        */
+
+        document
+            .querySelectorAll(
+                '.exclude-preview'
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    'click',
+                    function () {
+
+                        const index =
+                            Number(
+                                this.dataset.index
+                            );
+
+
+                        excludeEmployee(index);
+
+                    }
+                );
+
+            });
+
+
+        updatePreviewModalSummary();
+
+    }
+
+
+    /*
+    ============================================================
+    UPDATE PREVIEW SUMMARY
+    ============================================================
+    */
+
+    function updatePreviewModalSummary() {
+
+        let totalLate = 0;
+
+        let totalUndertime = 0;
+
+        let totalOvertime = 0;
+
+
+        previewEmployees.forEach(
+            employee => {
+
+                totalLate +=
+                    Number(
+                        employee.late_minutes ?? 0
+                    );
+
+
+                totalUndertime +=
+                    Number(
+                        employee.undertime_minutes ?? 0
+                    );
+
+
+                totalOvertime +=
+                    Number(
+                        employee.overtime_minutes ?? 0
+                    );
+
+            }
+        );
+
+
+        document
+            .getElementById(
+                'modalEmployeeCount'
+            )
+            .textContent =
+                previewEmployees.length;
+
+
+        document
+            .getElementById(
+                'modalLateMinutes'
+            )
+            .textContent =
+                `${number(totalLate)} min`;
+
+
+        document
+            .getElementById(
+                'modalUndertimeMinutes'
+            )
+            .textContent =
+                `${number(totalUndertime)} min`;
+
+
+        document
+            .getElementById(
+                'modalOvertimeMinutes'
+            )
+            .textContent =
+                `${number(totalOvertime)} min`;
+
+
+        /*
+        --------------------------------------------------------
+        UPDATE BATCH EMPLOYEE COUNT
+        --------------------------------------------------------
+        */
+
+        const batchRow =
+            previewBatchBody.querySelector(
+                'tr'
+            );
+
+
+        if (batchRow) {
+
+            const employeeCell =
+                batchRow.children[2];
+
+
+            employeeCell.innerHTML = `
+
+                <strong>
+                    ${previewEmployees.length}
+                </strong>
+
+                Employees
+
+            `;
+
+        }
+
+    }
+
+
+    /*
+    ============================================================
+    EMPLOYEE DETAIL VIEW
+    ============================================================
+    */
+
+    function openEmployeeDetail(employee) {
+
+        currentPreviewEmployee =
+            employee;
+
+
+        document
+            .getElementById(
+                'employeeDetailName'
+            )
+            .textContent =
+                employee.name ??
+                'Employee Payroll';
+
+
+        document
+            .getElementById(
+                'employeeDetailDepartment'
+            )
+            .textContent =
+                employee.department ??
+                '';
+
+
+        document
+            .getElementById(
+                'detailBasicSalary'
+            )
+            .textContent =
+                money(
+                    employee.basic_salary
+                );
+
+
+        document
+            .getElementById(
+                'detailDailyRate'
+            )
+            .textContent =
+                money(
+                    employee.daily_rate
+                );
+
+
+        document
+            .getElementById(
+                'detailPayrollPeriod'
+            )
+            .textContent =
+                employee.payroll_period ??
+                (
+                    employee.is_weekly_payroll
+                        ? 'Weekly'
+                        : 'Every 15 Days'
+                );
+
+
+        document
+            .getElementById(
+                'detailAttendance'
+            )
+            .textContent =
+                `${number(
+                    employee.present_days ??
+                    employee.total_attendance ??
+                    0
+                )} day(s)`;
+
+
+        document
+            .getElementById(
+                'detailWorkedHolidays'
+            )
+            .textContent =
+                number(
+                    employee.worked_holidays
+                );
+
+
+        document
+            .getElementById(
+                'detailHolidayPay'
+            )
+            .textContent =
+                money(
+                    employee.holiday_pay
+                );
+
+
+        document
+            .getElementById(
+                'detailAdditionalEarnings'
+            )
+            .textContent =
+                money(
+                    employee.additional_earnings_total
+                );
+
+
+        document
+            .getElementById(
+                'detailTeachingLoad'
+            )
+            .textContent =
+                money(
+                    employee.additional_teaching_load_pay ??
+                    employee.teaching_load
+                );
+
+
+        document
+            .getElementById(
+                'detailOvertimePay'
+            )
+            .textContent =
+                money(
+                    employee.overtime_pay
+                );
+
+
+        document
+            .getElementById(
+                'detailLateDeduction'
+            )
+            .textContent =
+                money(
+                    employee.late_deduction
+                );
+
+
+        document
+            .getElementById(
+                'detailUndertimeDeduction'
+            )
+            .textContent =
+                money(
+                    employee.undertime_deduction
+                );
+
+
+        document
+            .getElementById(
+                'detailBenefits'
+            )
+            .textContent =
+                money(
+                    employee.benefits
+                );
+
+
+        document
+            .getElementById(
+                'detailGrossSalary'
+            )
+            .textContent =
+                money(
+                    employee.gross_salary
+                );
+
+
+        document
+            .getElementById(
+                'detailNetSalary'
+            )
+            .textContent =
+                money(
+                    employee.net_salary
+                );
+
+
+        employeeDetailModal.show();
+
+    }
+
+
+    /*
+    ============================================================
+    DETAIL MODAL - GENERATE EMPLOYEE
+    ============================================================
+    */
+
+    document
+        .getElementById(
+            'detailGeneratePayslip'
+        )
+        .addEventListener(
+            'click',
+            function () {
+
+                if (!currentPreviewEmployee) {
 
                     return;
 
                 }
 
 
-                const button = this;
+                generateSingleEmployee(
+                    currentPreviewEmployee
+                );
+
+            }
+        );
 
 
-                button.disabled = true;
+    /*
+    ============================================================
+    GENERATE SINGLE EMPLOYEE
+    ============================================================
+    */
+
+    function generateSingleEmployee(employee) {
+
+        if (!employee) {
+
+            return;
+
+        }
 
 
-                button.innerHTML = `
-
-                    <span class="spinner-border spinner-border-sm me-2"></span>
-
-                    Generating...
-
-                `;
-
-
-                fetch(
-                    "{{ route('payslip.generate') }}",
-                    {
-
-                        method: "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json",
-
-                            "Accept":
-                                "application/json",
-
-                            "X-CSRF-TOKEN":
-                                document
-                                    .querySelector(
-                                        'meta[name="csrf-token"]'
-                                    )
-                                    .content
-
-                        },
-
-                        body: JSON.stringify({
-
-                            period_start:
-                                start,
-
-                            period_end:
-                                end,
-
-                            employees:
-                                employees
-
-                        })
-
-                    }
+        const start =
+            document
+                .getElementById(
+                    'period_start'
                 )
-
-                .then(response => {
-
-                    if (!response.ok) {
-
-                        return response
-                            .json()
-                            .then(error => {
-
-                                throw error;
-
-                            });
-
-                    }
-
-                    return response.json();
-
-                })
-
-                .then(data => {
-
-                    if (!data.success) {
-
-                        throw new Error(
-                            data.message ??
-                            'Unable to generate payslips.'
-                        );
-
-                    }
+                .value;
 
 
-                    alert(
-
-                        `${data.generated} payslip(s) generated successfully.\n\n` +
-
-                        `${data.skipped} employee(s) were skipped because a payslip already exists for the selected payroll period.`
-
-                    );
-
-
-                    location.reload();
-
-                })
-
-                .catch(error => {
-
-                    console.error(error);
+        const end =
+            document
+                .getElementById(
+                    'period_end'
+                )
+                .value;
 
 
-                    let message =
-                        'An error occurred while generating payslips.';
+        if (!confirm(
+            `Generate payslip for ${employee.name}?`
+        )) {
+
+            return;
+
+        }
 
 
-                    if (error?.message) {
-
-                        message =
-                            error.message;
-
-                    }
+        const employeeId =
+            employee.id;
 
 
-                    if (
-                        error?.errors &&
-                        typeof error.errors === 'object'
-                    ) {
+        fetch(
+            "{{ route('payslip.generate') }}",
+            {
 
-                        const validationMessages = [];
+                method: "POST",
 
+                headers: {
 
-                        Object.values(
-                            error.errors
-                        ).forEach(messages => {
+                    "Content-Type":
+                        "application/json",
 
-                            if (Array.isArray(messages)) {
+                    "Accept":
+                        "application/json",
 
-                                messages.forEach(message => {
+                    "X-CSRF-TOKEN":
+                        document
+                            .querySelector(
+                                'meta[name="csrf-token"]'
+                            )
+                            .content
 
-                                    validationMessages.push(
-                                        message
-                                    );
+                },
 
-                                });
+                body: JSON.stringify({
 
-                            }
+                    period_start:
+                        start,
 
-                        });
+                    period_end:
+                        end,
 
-
-                        if (validationMessages.length) {
-
-                            message =
-                                validationMessages.join('\n');
-
-                        }
-
-                    }
-
-
-                    alert(message);
+                    employees:
+                        [employeeId]
 
                 })
 
-                .finally(() => {
+            }
+        )
 
-                    button.disabled = false;
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response
+                    .json()
+                    .then(error => {
+
+                        throw error;
+
+                    });
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(data => {
+
+            if (!data.success) {
+
+                throw new Error(
+                    data.message ??
+                    'Unable to generate payslip.'
+                );
+
+            }
 
 
-                    button.innerHTML = `
+            alert(
+                `${data.generated} payslip(s) generated successfully.`
+            );
 
-                        <i class="bi bi-file-earmark-text me-2"></i>
 
-                        Generate Payslips
+            /*
+            --------------------------------------------------------
+            REMOVE GENERATED EMPLOYEE FROM PREVIEW
+            --------------------------------------------------------
+            */
 
-                    `;
+            previewEmployees =
+                previewEmployees.filter(
+                    item =>
+                        Number(item.id) !==
+                        Number(employeeId)
+                );
 
-                });
 
-            });
+            /*
+            --------------------------------------------------------
+            SAVE REMAINING PREVIEW BATCH
+            --------------------------------------------------------
+            */
+
+            if (previewEmployees.length) {
+
+                savePreviewBatch();
+
+            } else {
+
+                clearPreviewBatch();
+
+            }
+
+
+            employeeDetailModal.hide();
+
+
+            renderPreviewEmployees();
+
+
+            /*
+            --------------------------------------------------------
+            IF NO EMPLOYEES REMAIN
+            --------------------------------------------------------
+            */
+
+            if (!previewEmployees.length) {
+
+                previewEmployeesModal.hide();
+
+                previewBatchSection
+                    .classList
+                    .add('d-none');
+
+            }
+
+
+            /*
+            --------------------------------------------------------
+            REFRESH GENERATED HISTORY
+            --------------------------------------------------------
+            */
+
+            setTimeout(
+                () => location.reload(),
+                500
+            );
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+
+            alert(
+                error?.message ??
+                'Unable to generate payslip.'
+            );
+
+        });
+
+    }
+
+
+    /*
+    ============================================================
+    EXCLUDE EMPLOYEE
+    ============================================================
+    */
+
+    function excludeEmployee(index) {
+
+        const employee =
+            previewEmployees[index];
+
+
+        if (!employee) {
+
+            return;
+
+        }
+
+
+        if (!confirm(
+            `Exclude ${employee.name} from this payslip generation?`
+        )) {
+
+            return;
+
+        }
+
+
+        /*
+        IMPORTANT:
+
+        Excluding does NOT delete anything from the database.
+
+        It only removes the employee from the current
+        browser-side preview batch.
+        */
+
+        previewEmployees.splice(
+            index,
+            1
+        );
+
+
+        /*
+        --------------------------------------------------------
+        SAVE REMAINING PREVIEW BATCH
+        --------------------------------------------------------
+        */
+
+        if (previewEmployees.length) {
+
+            savePreviewBatch();
+
+        } else {
+
+            clearPreviewBatch();
+
+        }
+
+
+        renderPreviewEmployees();
+
+
+        if (!previewEmployees.length) {
+
+            alert(
+                'All employees have been excluded from this preview batch.'
+            );
+
+
+            previewEmployeesModal.hide();
+
+
+            previewBatchSection
+                .classList
+                .add('d-none');
+
+        }
+
+    }
+
+
+    /*
+    ============================================================
+    GENERATE ALL REMAINING EMPLOYEES
+    ============================================================
+    */
+
+    document
+        .getElementById(
+            'modalGenerateAllPayslips'
+        )
+        .addEventListener(
+            'click',
+            function () {
+
+                generateAllPreviewEmployees();
+
+            }
+        );
+
+
+    function generateAllPreviewEmployees() {
+
+        const start =
+            document
+                .getElementById(
+                    'period_start'
+                )
+                .value;
+
+
+        const end =
+            document
+                .getElementById(
+                    'period_end'
+                )
+                .value;
+
+
+        const employees =
+            previewEmployees.map(
+                employee =>
+                    employee.id
+            );
+
+
+        if (!employees.length) {
+
+            alert(
+                'There are no employees remaining in this preview batch.'
+            );
+
+            return;
+
+        }
+
+
+        if (!confirm(
+            `Generate payslips for ${employees.length} employee(s)?`
+        )) {
+
+            return;
+
+        }
+
+
+        const button =
+            document.getElementById(
+                'modalGenerateAllPayslips'
+            );
+
+
+        button.disabled = true;
+
+
+        button.innerHTML = `
+
+            <span class="spinner-border spinner-border-sm me-2"></span>
+
+            Generating...
+
+        `;
+
+
+        fetch(
+            "{{ route('payslip.generate') }}",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json",
+
+                    "Accept":
+                        "application/json",
+
+                    "X-CSRF-TOKEN":
+                        document
+                            .querySelector(
+                                'meta[name="csrf-token"]'
+                            )
+                            .content
+
+                },
+
+                body: JSON.stringify({
+
+                    period_start:
+                        start,
+
+                    period_end:
+                        end,
+
+                    employees:
+                        employees
+
+                })
+
+            }
+        )
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response
+                    .json()
+                    .then(error => {
+
+                        throw error;
+
+                    });
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(data => {
+
+            if (!data.success) {
+
+                throw new Error(
+                    data.message ??
+                    'Unable to generate payslips.'
+                );
+
+            }
+
+
+            alert(
+
+                `${data.generated} payslip(s) generated successfully.\n\n` +
+
+                `${data.skipped} employee(s) were skipped because a payslip already exists for the selected payroll period.`
+
+            );
+
+
+            /*
+            --------------------------------------------------------
+            ALL REMAINING EMPLOYEES HAVE BEEN PROCESSED
+            --------------------------------------------------------
+            */
+
+            clearPreviewBatch();
+
+
+            location.reload();
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+
+            alert(
+                error?.message ??
+                'An error occurred while generating payslips.'
+            );
+
+        })
+
+        .finally(() => {
+
+            button.disabled = false;
+
+
+            button.innerHTML = `
+
+                <i class="bi bi-file-earmark-text me-2"></i>
+
+                Generate Payslips
+
+            `;
+
+        });
+
+    }
+
+
+    /*
+    ============================================================
+    RESTORE SAVED PREVIEW AFTER PAGE LOAD
+    ============================================================
+    */
+
+    restorePreviewBatch();
+
+});
 
 </script>
 
 </body>
 
 </html>
+

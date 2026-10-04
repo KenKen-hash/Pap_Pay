@@ -10,9 +10,10 @@
     <meta name="description"
         content="Employee Dashboard - PAP PAY Payroll Management System">
 
-    <title>Dashboard | PAP Pay</title>
+    <title>Home | PAP Pay</title>
 
     <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
+
     <link rel="stylesheet"
         href="../../../../khen/assets/css/bootstrap.min.css">
 
@@ -79,7 +80,6 @@
 
             color: var(--payroll-text);
 
-            /* SAME FONT FAMILY AS ATTENDANCE / ADMIN PAGES */
             font-family:
                 Inter,
                 -apple-system,
@@ -148,6 +148,7 @@
 
         /* =========================================================
            NAVBAR
+           MATCHED TO THE FIRST REFERENCE SCREENSHOT
         ========================================================= */
 
         .admin-navbar {
@@ -169,14 +170,61 @@
             z-index: 100;
         }
 
+        .admin-navbar > .container-fluid {
+
+            height: 100%;
+
+            padding-left: 12px !important;
+
+            padding-right: 12px !important;
+        }
+
 
         /* =========================================================
            SEARCH
+           SAME SEARCH BAR AS EMPLOYEE PAYSLIP PAGE
         ========================================================= */
 
-        .search-input {
+        .admin-search-form {
 
-            height: 44px;
+            min-width: 0;
+
+            margin-left: 18px !important;
+        }
+
+        .admin-search-wrapper {
+
+            position: relative;
+
+            width: 100%;
+
+            max-width: 100%;
+        }
+
+        .admin-search-icon {
+
+            position: absolute;
+
+            left: 15px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            z-index: 3;
+
+            color: #64748b;
+
+            font-size: 0.95rem;
+
+            pointer-events: none;
+        }
+
+        .admin-search-input {
+
+            height: 50px;
+
+            width: 100%;
 
             border:
                 1px solid #d6e0eb !important;
@@ -184,7 +232,7 @@
             background:
                 #f8fafc !important;
 
-            border-radius: 10px !important;
+            border-radius: 11px !important;
 
             color:
                 var(--payroll-heading);
@@ -193,9 +241,9 @@
 
             font-weight: 500;
 
-            padding-left: 16px;
+            padding-left: 42px;
 
-            padding-right: 16px;
+            padding-right: 42px;
 
             transition:
                 background 0.2s ease,
@@ -203,7 +251,7 @@
                 box-shadow 0.2s ease;
         }
 
-        .search-input::placeholder {
+        .admin-search-input::placeholder {
 
             color:
                 #64748b;
@@ -211,7 +259,7 @@
             opacity: 1;
         }
 
-        .search-input:focus {
+        .admin-search-input:focus {
 
             background:
                 #ffffff !important;
@@ -226,6 +274,101 @@
             outline: none;
         }
 
+        .admin-search-clear {
+
+            position: absolute;
+
+            top: 50%;
+
+            right: 10px;
+
+            transform: translateY(-50%);
+
+            width: 30px;
+
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: 0;
+
+            border-radius: 7px;
+
+            background: transparent;
+
+            color: #64748b;
+
+            cursor: pointer;
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            pointer-events: none;
+
+            transition:
+                background 0.15s ease,
+                color 0.15s ease,
+                opacity 0.15s ease,
+                visibility 0.15s ease;
+        }
+
+        .admin-search-clear:hover {
+
+            background:
+                #e2e8f0;
+
+            color:
+                #0f172a;
+        }
+
+        .admin-search-clear.is-visible {
+
+            opacity: 1;
+
+            visibility: visible;
+
+            pointer-events: auto;
+        }
+
+        .admin-search-results {
+
+            position: absolute;
+
+            top: calc(100% + 8px);
+
+            left: 0;
+
+            right: 0;
+
+            z-index: 1050;
+
+            display: none;
+
+            max-height: 420px;
+
+            overflow-y: auto;
+
+            background: #ffffff;
+
+            border:
+                1px solid var(--payroll-border);
+
+            border-radius: 12px;
+
+            box-shadow:
+                var(--shadow-lg);
+        }
+
+        .admin-search-results.show {
+
+            display: block;
+        }
+
 
         /* =========================================================
            NAVBAR ACTIONS
@@ -237,25 +380,32 @@
 
             align-items: center;
 
-            gap: 7px;
+            gap: 8px;
+
+            flex-shrink: 0;
         }
 
 
+        /* =========================================================
+           NOTIFICATION BUTTON
+           MATCH FIRST SCREENSHOT
+        ========================================================= */
+
         .icon-button {
 
-            width: 42px;
+            width: 48px;
 
-            height: 42px;
+            height: 48px;
 
-            flex: 0 0 42px;
+            flex: 0 0 48px;
 
             border:
                 1px solid transparent;
 
-            border-radius: 10px;
+            border-radius: 12px;
 
             background:
-                transparent;
+                #ffffff;
 
             color:
                 #475569;
@@ -270,22 +420,29 @@
 
             cursor: pointer;
 
+            box-shadow:
+                0 6px 20px rgba(15, 23, 42, 0.055);
+
             transition:
                 background 0.2s ease,
                 color 0.2s ease,
-                border-color 0.2s ease;
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
         }
 
         .icon-button:hover {
 
             background:
-                #f1f5f9;
+                #f8fafc;
 
             color:
                 var(--payroll-primary);
 
             border-color:
                 #e2e8f0;
+
+            box-shadow:
+                0 8px 24px rgba(15, 23, 42, 0.09);
         }
 
         .icon-button:focus-visible {
@@ -313,9 +470,9 @@
 
             position: absolute;
 
-            top: 6px;
+            top: 7px;
 
-            right: 6px;
+            right: 7px;
 
             width: 9px;
 
@@ -340,9 +497,11 @@
             width: 365px;
 
             max-width:
-                calc(100vw - 24px);
+                calc(100vw - 20px);
 
             padding: 0;
+
+            margin-top: 8px !important;
 
             border:
                 1px solid var(--payroll-border);
@@ -351,8 +510,13 @@
 
             overflow: hidden;
 
+            background:
+                #ffffff;
+
             box-shadow:
                 var(--shadow-lg);
+
+            z-index: 2000;
         }
 
         .notification-menu .dropdown-header {
@@ -391,7 +555,8 @@
                 1px solid #f1f5f9;
 
             transition:
-                background 0.15s ease;
+                background 0.15s ease,
+                color 0.15s ease;
         }
 
         .notification-menu .dropdown-item:last-child {
@@ -449,25 +614,30 @@
 
 
         /* =========================================================
-           PROFILE
+           PROFILE BUTTON
+           MATCH FIRST SCREENSHOT
         ========================================================= */
 
         .profile-button {
 
+            min-height: 48px;
+
+            max-width: 280px;
+
             border:
-                1px solid transparent;
+                1px solid transparent !important;
 
             background:
-                transparent;
+                #ffffff !important;
 
             border-radius:
-                10px;
+                12px !important;
 
             padding:
-                4px 8px;
+                4px 10px 4px 5px !important;
 
             display:
-                flex;
+                flex !important;
 
             align-items:
                 center;
@@ -476,20 +646,27 @@
                 9px;
 
             color:
-                var(--payroll-heading);
+                var(--payroll-heading) !important;
+
+            box-shadow:
+                0 6px 20px rgba(15, 23, 42, 0.055);
 
             transition:
                 background 0.2s ease,
-                border-color 0.2s ease;
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
         }
 
         .profile-button:hover {
 
             background:
-                #f8fafc;
+                #f8fafc !important;
 
             border-color:
-                var(--payroll-border);
+                #e2e8f0 !important;
+
+            box-shadow:
+                0 8px 24px rgba(15, 23, 42, 0.09);
         }
 
         .profile-button:focus-visible {
@@ -502,16 +679,220 @@
                 2px;
         }
 
+        .profile-button::after {
+
+            margin-left:
+                3px;
+
+            border-top:
+                0.34em solid #1e293b;
+
+            border-right:
+                0.34em solid transparent;
+
+            border-left:
+                0.34em solid transparent;
+        }
+
+        .profile-button .avatar-img {
+
+            flex:
+                0 0 auto;
+        }
+
         .profile-name {
 
+            display:
+                block;
+
+            max-width:
+                180px;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
+
+            white-space:
+                nowrap;
+
             font-size:
-                0.88rem;
+                0.9rem;
 
             font-weight:
-                650;
+                700;
 
             color:
                 var(--payroll-heading);
+        }
+
+
+        /* =========================================================
+           PROFILE DROPDOWN
+        ========================================================= */
+
+        .profile-button + .dropdown-menu {
+
+            min-width:
+                190px;
+
+            max-width:
+                calc(100vw - 20px);
+
+            margin-top:
+                8px !important;
+
+            padding:
+                7px;
+
+            border:
+                1px solid var(--payroll-border);
+
+            border-radius:
+                13px;
+
+            background:
+                #ffffff;
+
+            box-shadow:
+                var(--shadow-lg);
+
+            z-index:
+                2000;
+        }
+
+        .profile-button + .dropdown-menu .dropdown-item {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                3px;
+
+            min-height:
+                42px;
+
+            padding:
+                9px 11px;
+
+            border-radius:
+                8px;
+
+            color:
+                #334155;
+
+            font-size:
+                0.84rem;
+
+            font-weight:
+                600;
+
+            transition:
+                background 0.15s ease,
+                color 0.15s ease;
+        }
+
+        .profile-button + .dropdown-menu .dropdown-item:hover {
+
+            background:
+                #f1f5f9;
+
+            color:
+                var(--payroll-primary);
+        }
+
+        .profile-button + .dropdown-menu .dropdown-item:focus {
+
+            background:
+                #eff6ff;
+
+            color:
+                var(--payroll-primary);
+
+            outline:
+                none;
+        }
+
+        .profile-button + .dropdown-menu .dropdown-item i {
+
+            width:
+                20px;
+
+            text-align:
+                center;
+
+            font-size:
+                0.95rem;
+        }
+
+        .profile-button + .dropdown-menu .dropdown-divider {
+
+            margin:
+                6px 4px;
+
+            border-top-color:
+                #edf1f5;
+        }
+
+
+        /* =========================================================
+           SIDEBAR NOTIFICATION BADGES
+        ========================================================= */
+
+        .sidebar-nav .nav-link {
+
+            position: relative;
+        }
+
+        .sidebar-notification-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-width: 20px;
+
+            height: 20px;
+
+            padding: 0 6px;
+
+            margin-left: auto;
+
+            border-radius: 999px;
+
+            background: #ef4444;
+
+            color: #ffffff;
+
+            font-size: 0.68rem;
+
+            font-weight: 800;
+
+            line-height: 1;
+
+            box-shadow:
+                0 2px 7px rgba(239, 68, 68, 0.22);
+        }
+
+        .sidebar-nav .nav-link:hover .sidebar-notification-badge {
+
+            background: #dc2626;
+        }
+
+        .sidebar-nav .nav-link.active .sidebar-notification-badge {
+
+            background: #ffffff;
+
+            color: #2563eb;
+
+            box-shadow:
+                0 2px 7px rgba(15, 23, 42, 0.12);
         }
 
 
@@ -799,8 +1180,6 @@
 
         /* =========================================================
            DASHBOARD STATISTICS
-
-           MATCHES THE ATTENDANCE PAGE METRIC CARDS
         ========================================================= */
 
         .stats-section {
@@ -808,18 +1187,6 @@
             margin-bottom:
                 34px;
         }
-
-
-        /*
-         * EXACT ATTENDANCE-STYLE CARD
-         *
-         * Attendance reference:
-         * - min-height: 165px
-         * - padding: 25px 25px 22px
-         * - label: .92rem / 750
-         * - value: clamp(2rem, 3.2vw, 2.65rem) / 850
-         * - meta: .9rem / 500
-         */
 
         .stats-section .stat-card {
 
@@ -861,9 +1228,6 @@
                 box-shadow 0.2s ease;
         }
 
-
-        /* Colored left border */
-
         .stats-section .stat-card::before {
 
             content:
@@ -889,31 +1253,20 @@
         }
 
         .stats-section .stat-card.stat-present::before {
-
-            background:
-                #078a63;
+            background: #078a63;
         }
 
         .stats-section .stat-card.stat-leave::before {
-
-            background:
-                #b86a00;
+            background: #b86a00;
         }
 
         .stats-section .stat-card.stat-pending::before {
-
-            background:
-                #078a63;
+            background: #078a63;
         }
 
         .stats-section .stat-card.stat-ob::before {
-
-            background:
-                #3157d5;
+            background: #3157d5;
         }
-
-
-        /* Hover */
 
         .stats-section .stat-card:hover {
 
@@ -923,11 +1276,6 @@
             box-shadow:
                 0 14px 35px rgba(15, 23, 42, 0.12);
         }
-
-
-        /* =========================================================
-           STAT TOP ROW
-        ========================================================= */
 
         .stats-section .stat-top {
 
@@ -946,13 +1294,6 @@
             min-height:
                 45px;
         }
-
-
-        /* =========================================================
-           STAT LABEL
-
-           SAME AS ATTENDANCE
-        ========================================================= */
 
         .stats-section .stat-label {
 
@@ -980,11 +1321,6 @@
             padding-left:
                 2px;
         }
-
-
-        /* =========================================================
-           STAT ICON
-        ========================================================= */
 
         .stats-section .stat-icon {
 
@@ -1016,9 +1352,6 @@
                 1;
         }
 
-
-        /* Present */
-
         .stats-section .stat-icon.blue {
 
             background:
@@ -1027,9 +1360,6 @@
             color:
                 #078a63;
         }
-
-
-        /* Leave */
 
         .stats-section .stat-icon.orange {
 
@@ -1040,9 +1370,6 @@
                 #b86a00;
         }
 
-
-        /* Pending */
-
         .stats-section .stat-icon.green {
 
             background:
@@ -1052,9 +1379,6 @@
                 #078a63;
         }
 
-
-        /* OB */
-
         .stats-section .stat-icon.cyan {
 
             background:
@@ -1063,13 +1387,6 @@
             color:
                 #3157d5;
         }
-
-
-        /* =========================================================
-           STAT VALUE
-
-           SAME AS ATTENDANCE
-        ========================================================= */
 
         .stats-section .stat-value {
 
@@ -1090,15 +1407,7 @@
 
             margin:
                 18px 0 0;
-
         }
-
-
-        /* =========================================================
-           STAT META
-
-           SAME AS ATTENDANCE
-        ========================================================= */
 
         .stats-section .stat-subtitle {
 
@@ -1309,30 +1618,18 @@
         }
 
         .quick-action-icon.leave {
-
-            background:
-                #eef2ff;
-
-            color:
-                #4f46e5;
+            background: #eef2ff;
+            color: #4f46e5;
         }
 
         .quick-action-icon.payslip {
-
-            background:
-                #ecfdf5;
-
-            color:
-                #059669;
+            background: #ecfdf5;
+            color: #059669;
         }
 
         .quick-action-icon.attendance {
-
-            background:
-                #eff6ff;
-
-            color:
-                #2563eb;
+            background: #eff6ff;
+            color: #2563eb;
         }
 
         .quick-action h5 {
@@ -1377,9 +1674,7 @@
         ========================================================= */
 
         .secondary-actions {
-
-            margin-top:
-                13px;
+            margin-top: 13px;
         }
 
         .small-action {
@@ -1472,9 +1767,7 @@
         ========================================================= */
 
         .announcements-section {
-
-            margin-bottom:
-                32px;
+            margin-bottom: 32px;
         }
 
         .dashboard-panel {
@@ -1593,9 +1886,7 @@
         }
 
         .activity-list {
-
-            padding:
-                2px 22px 7px;
+            padding: 2px 22px 7px;
         }
 
         .activity-item {
@@ -1617,9 +1908,7 @@
         }
 
         .activity-item:last-child {
-
-            border-bottom:
-                0;
+            border-bottom: 0;
         }
 
         .activity-dot {
@@ -1641,9 +1930,7 @@
         }
 
         .activity-item p {
-
-            line-height:
-                1.55;
+            line-height: 1.55;
         }
 
         .activity-item .fw-semibold {
@@ -1728,9 +2015,7 @@
         @media (max-width: 1199.98px) {
 
             .dashboard-container {
-
-                max-width:
-                    100%;
+                max-width: 100%;
             }
 
             .stats-section .stat-card {
@@ -1743,15 +2028,11 @@
             }
 
             .stats-section .stat-value {
-
-                font-size:
-                    2.35rem;
+                font-size: 2.35rem;
             }
 
             .quick-action {
-
-                min-height:
-                    158px;
+                min-height: 158px;
             }
         }
 
@@ -1763,67 +2044,57 @@
         @media (max-width: 991.98px) {
 
             .admin-navbar {
+                height: 68px;
+            }
 
-                height:
-                    68px;
+            .admin-navbar > .container-fluid {
+
+                padding-left:
+                    10px !important;
+
+                padding-right:
+                    10px !important;
+            }
+
+            .admin-search-form {
+                margin-left: 16px !important;
             }
 
             .dashboard-content {
-
-                min-height:
-                    auto;
+                min-height: auto;
             }
 
             .dashboard-header {
-
-                margin-bottom:
-                    21px;
+                margin-bottom: 21px;
             }
 
             .dashboard-header h1 {
-
-                font-size:
-                    1.75rem;
+                font-size: 1.75rem;
             }
 
             .dashboard-header p {
-
-                font-size:
-                    0.87rem;
+                font-size: 0.87rem;
             }
 
             .hero-banner {
-
-                min-height:
-                    250px;
+                min-height: 250px;
             }
 
             .hero-banner img {
-
-                height:
-                    250px;
+                height: 250px;
             }
 
             .hero-overlay {
-
-                padding:
-                    30px;
+                padding: 30px;
             }
 
             .hero-overlay h2 {
-
-                font-size:
-                    1.65rem;
+                font-size: 1.65rem;
             }
 
             .hero-overlay p {
-
-                font-size:
-                    0.86rem;
+                font-size: 0.86rem;
             }
-
-
-            /* Attendance-style cards */
 
             .stats-section .stat-card {
 
@@ -1835,9 +2106,7 @@
             }
 
             .stats-section .stat-top {
-
-                min-height:
-                    42px;
+                min-height: 42px;
             }
 
             .stats-section .stat-icon {
@@ -1853,9 +2122,7 @@
             }
 
             .stats-section .stat-label {
-
-                font-size:
-                    0.84rem;
+                font-size: 0.84rem;
             }
 
             .stats-section .stat-value {
@@ -1894,9 +2161,20 @@
         @media (max-width: 767.98px) {
 
             .admin-navbar {
+                height: 64px;
+            }
 
-                height:
-                    64px;
+            .admin-navbar > .container-fluid {
+
+                padding-left:
+                    8px !important;
+
+                padding-right:
+                    8px !important;
+            }
+
+            .admin-search-form {
+                margin-left: 12px !important;
             }
 
             .dashboard-content .container-fluid {
@@ -1910,9 +2188,6 @@
                 padding-right:
                     14px !important;
             }
-
-
-            /* Header */
 
             .dashboard-header {
 
@@ -1962,9 +2237,6 @@
                     0.76rem;
             }
 
-
-            /* Hero */
-
             .hero-banner {
 
                 min-height:
@@ -1978,9 +2250,7 @@
             }
 
             .hero-banner img {
-
-                height:
-                    275px;
+                height: 275px;
             }
 
             .hero-overlay {
@@ -2033,17 +2303,8 @@
                     1.6;
             }
 
-
-            /* =====================================================
-               MOBILE STATISTICS
-
-               SAME PROPORTIONS AS ATTENDANCE
-            ===================================================== */
-
             .stats-section {
-
-                margin-bottom:
-                    27px;
+                margin-bottom: 27px;
             }
 
             .stats-section .stat-card {
@@ -2062,9 +2323,7 @@
             }
 
             .stats-section .stat-top {
-
-                min-height:
-                    38px;
+                min-height: 38px;
             }
 
             .stats-section .stat-icon {
@@ -2118,19 +2377,12 @@
                     1.4;
             }
 
-
-            /* Section headings */
-
             .section-header {
-
-                margin-bottom:
-                    13px;
+                margin-bottom: 13px;
             }
 
             .section-header h3 {
-
-                font-size:
-                    1rem;
+                font-size: 1rem;
             }
 
             .section-header p {
@@ -2142,13 +2394,8 @@
                     1.5;
             }
 
-
-            /* Quick actions */
-
             .quick-actions-section {
-
-                margin-bottom:
-                    27px;
+                margin-bottom: 27px;
             }
 
             .quick-action {
@@ -2193,9 +2440,6 @@
                     1.55;
             }
 
-
-            /* Small actions */
-
             .small-action {
 
                 min-height:
@@ -2229,13 +2473,8 @@
                     1.4;
             }
 
-
-            /* Announcements */
-
             .dashboard-panel {
-
-                border-radius:
-                    13px;
+                border-radius: 13px;
             }
 
             .panel-header {
@@ -2248,9 +2487,7 @@
             }
 
             .panel-header h2 {
-
-                font-size:
-                    0.97rem;
+                font-size: 0.97rem;
             }
 
             .panel-header p {
@@ -2290,9 +2527,7 @@
             }
 
             .activity-item .fw-semibold {
-
-                font-size:
-                    0.79rem;
+                font-size: 0.79rem;
             }
 
             .activity-item .small {
@@ -2305,7 +2540,7 @@
             }
 
 
-            /* Notification */
+            /* Notification dropdown */
 
             .notification-menu {
 
@@ -2326,25 +2561,66 @@
 
                 max-width:
                     none;
+
+                margin-top:
+                    0 !important;
+
+                max-height:
+                    min(70vh, 550px);
+
+                overflow-y:
+                    auto;
             }
 
 
-            /* Profile */
+            /* Profile button */
 
             .profile-button {
 
+                min-height:
+                    44px;
+
+                width:
+                    44px;
+
+                max-width:
+                    44px;
+
                 padding:
-                    3px;
+                    3px !important;
+
+                justify-content:
+                    center;
+
+                gap:
+                    0;
+            }
+
+            .profile-button::after {
+                display: none;
             }
 
             .profile-name {
-
-                display:
-                    none !important;
+                display: none !important;
             }
 
+            .profile-button + .dropdown-menu {
 
-            /* Footer */
+                position:
+                    absolute;
+
+                right:
+                    0;
+
+                left:
+                    auto;
+
+                min-width:
+                    180px;
+
+                margin-top:
+                    6px !important;
+            }
 
             .admin-footer .container-fluid {
 
@@ -2363,6 +2639,24 @@
                 padding-bottom:
                     16px;
             }
+
+
+            /* Sidebar notification badges */
+
+            .sidebar-notification-badge {
+
+                min-width:
+                    19px;
+
+                height:
+                    19px;
+
+                padding:
+                    0 5px;
+
+                font-size:
+                    0.63rem;
+            }
         }
 
 
@@ -2373,21 +2667,31 @@
         @media (max-width: 575.98px) {
 
             .navbar-actions {
-
-                gap:
-                    1px;
+                gap: 4px;
             }
 
             .icon-button {
 
                 width:
-                    37px;
+                    40px;
 
                 height:
-                    37px;
+                    40px;
 
                 flex-basis:
-                    37px;
+                    40px;
+            }
+
+            .profile-button {
+
+                width:
+                    40px;
+
+                max-width:
+                    40px;
+
+                min-height:
+                    40px;
             }
 
             .dashboard-content .container-fluid {
@@ -2399,46 +2703,28 @@
                     11px !important;
             }
 
-
-            /* Header */
-
             .dashboard-header h1 {
-
-                font-size:
-                    1.4rem;
+                font-size: 1.4rem;
             }
 
             .dashboard-header p {
-
-                font-size:
-                    0.76rem;
+                font-size: 0.76rem;
             }
 
-
-            /* Hero */
-
             .hero-banner {
-
-                min-height:
-                    290px;
+                min-height: 290px;
             }
 
             .hero-banner img {
-
-                height:
-                    290px;
+                height: 290px;
             }
 
             .hero-overlay {
-
-                padding:
-                    19px;
+                padding: 19px;
             }
 
             .hero-overlay h2 {
-
-                font-size:
-                    1.1rem;
+                font-size: 1.1rem;
             }
 
             .hero-overlay p {
@@ -2449,11 +2735,6 @@
                 line-height:
                     1.55;
             }
-
-
-            /* =====================================================
-               SMALL PHONE STAT CARDS
-            ===================================================== */
 
             .stats-section .stat-card {
 
@@ -2468,9 +2749,7 @@
             }
 
             .stats-section .stat-top {
-
-                min-height:
-                    34px;
+                min-height: 34px;
             }
 
             .stats-section .stat-icon {
@@ -2521,9 +2800,6 @@
                     1.35;
             }
 
-
-            /* Quick actions */
-
             .quick-action {
 
                 min-height:
@@ -2549,9 +2825,7 @@
             }
 
             .quick-action h5 {
-
-                font-size:
-                    0.81rem;
+                font-size: 0.81rem;
             }
 
             .quick-action p {
@@ -2563,40 +2837,24 @@
                     1.5;
             }
 
-
-            /* Small actions */
-
             .small-action {
-
-                min-height:
-                    67px;
+                min-height: 67px;
             }
 
             .small-action h6 {
-
-                font-size:
-                    0.69rem;
+                font-size: 0.69rem;
             }
 
-
-            /* Announcements */
-
             .panel-header {
-
-                gap:
-                    9px;
+                gap: 9px;
             }
 
             .panel-header h2 {
-
-                font-size:
-                    0.9rem;
+                font-size: 0.9rem;
             }
 
             .panel-header p {
-
-                font-size:
-                    0.67rem;
+                font-size: 0.67rem;
             }
 
             .panel-header .btn {
@@ -2606,6 +2864,15 @@
 
                 padding:
                     6px 9px;
+            }
+
+            .notification-menu {
+
+                left:
+                    8px !important;
+
+                right:
+                    8px !important;
             }
         }
 
@@ -2617,9 +2884,7 @@
         @media (max-width: 380px) {
 
             body {
-
-                font-size:
-                    14px;
+                font-size: 14px;
             }
 
             .dashboard-content .container-fluid {
@@ -2632,42 +2897,27 @@
             }
 
             .dashboard-header h1 {
-
-                font-size:
-                    1.3rem;
+                font-size: 1.3rem;
             }
 
             .dashboard-header p {
-
-                font-size:
-                    0.72rem;
+                font-size: 0.72rem;
             }
 
-
-            /* Hero */
-
             .hero-banner {
-
-                min-height:
-                    305px;
+                min-height: 305px;
             }
 
             .hero-banner img {
-
-                height:
-                    305px;
+                height: 305px;
             }
 
             .hero-overlay {
-
-                padding:
-                    17px;
+                padding: 17px;
             }
 
             .hero-overlay h2 {
-
-                font-size:
-                    1.02rem;
+                font-size: 1.02rem;
             }
 
             .hero-overlay p {
@@ -2679,9 +2929,6 @@
                     1.5;
             }
 
-
-            /* Stats */
-
             .stats-section .stat-card {
 
                 min-height:
@@ -2692,9 +2939,7 @@
             }
 
             .stats-section .stat-top {
-
-                min-height:
-                    31px;
+                min-height: 31px;
             }
 
             .stats-section .stat-icon {
@@ -2739,9 +2984,6 @@
                     0.58rem;
             }
 
-
-            /* Quick actions */
-
             .quick-action {
 
                 min-height:
@@ -2764,9 +3006,7 @@
             }
 
             .quick-action h5 {
-
-                font-size:
-                    0.76rem;
+                font-size: 0.76rem;
             }
 
             .quick-action p {
@@ -2777,9 +3017,6 @@
                 line-height:
                     1.45;
             }
-
-
-            /* Small action */
 
             .small-action {
 
@@ -2806,9 +3043,7 @@
             }
 
             .small-action h6 {
-
-                font-size:
-                    0.65rem;
+                font-size: 0.65rem;
             }
         }
 
@@ -2849,6 +3084,83 @@
 
 <body>
 
+    @php
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAGE-SPECIFIC NOTIFICATION COUNTS
+        |--------------------------------------------------------------------------
+        |
+        | The existing $notifications collection is used.
+        | Each notification is assigned to a sidebar page by comparing
+        | its URL with that page's route.
+        |
+        */
+
+        $employeeNotifications = collect($notifications ?? []);
+
+        $dashboardUrl = route('dashboard');
+        $attendanceUrl = route('attendance');
+        $fileLeaveUrl = route('file_leave');
+        $fileObUrl = route('file_ob');
+        $payslipUrl = route('payslip');
+        $announcementsUrl = route('employee.announcements');
+        $profileUrl = route('my_profile');
+
+        $normalizeNotificationUrl = function ($url) {
+
+            if (!$url) {
+                return '';
+            }
+
+            return rtrim(
+                parse_url($url, PHP_URL_PATH) ?? $url,
+                '/'
+            );
+        };
+
+        $countPageNotifications = function ($routeUrl) use (
+            $employeeNotifications,
+            $normalizeNotificationUrl
+        ) {
+
+            $routePath = $normalizeNotificationUrl($routeUrl);
+
+            return $employeeNotifications->filter(function ($notification) use (
+                $routePath,
+                $normalizeNotificationUrl
+            ) {
+
+                $notificationPath = $normalizeNotificationUrl(
+                    $notification->url ?? ''
+                );
+
+                return $notificationPath === $routePath;
+
+            })->count();
+        };
+
+        $attendanceNotifications =
+            $countPageNotifications($attendanceUrl);
+
+        $fileLeaveNotifications =
+            $countPageNotifications($fileLeaveUrl);
+
+        $fileObNotifications =
+            $countPageNotifications($fileObUrl);
+
+        $payslipNotifications =
+            $countPageNotifications($payslipUrl);
+
+        $announcementNotifications =
+            $countPageNotifications($announcementsUrl);
+
+        $profileNotifications =
+            $countPageNotifications($profileUrl);
+
+    @endphp
+
+
     <div class="admin-shell">
 
 
@@ -2871,17 +3183,17 @@
 
             <div class="sidebar-header">
 
-            <a class="brand-mark"
-               href="{{ route('dashboard') }}"
-               aria-label="Admin Dashboard">
+                <a class="brand-mark"
+                   href="{{ route('dashboard') }}"
+                   aria-label="Admin Dashboard">
 
-                <img src="../../../khen/assets/images/logo.jpg"
-                     alt="Pap Pay Logo"
-                     class="brand-logo">
+                    <img src="../../../khen/assets/images/logo.jpg"
+                         alt="Pap Pay Logo"
+                         class="brand-logo">
 
-            </a>
+                </a>
 
-        </div>
+            </div>
 
 
             <!-- Sidebar Navigation -->
@@ -2899,7 +3211,7 @@
                     </span>
 
                     <span class="nav-text">
-                        Dashboard
+                        Home
                     </span>
 
                 </a>
@@ -2918,6 +3230,17 @@
                         Attendance
                     </span>
 
+                    @if ($attendanceNotifications > 0)
+
+                        <span class="sidebar-notification-badge"
+                            aria-label="{{ $attendanceNotifications }} attendance notification{{ $attendanceNotifications > 1 ? 's' : '' }}">
+
+                            {{ $attendanceNotifications }}
+
+                        </span>
+
+                    @endif
+
                 </a>
 
 
@@ -2933,6 +3256,17 @@
                     <span class="nav-text">
                         File Leave
                     </span>
+
+                    @if ($fileLeaveNotifications > 0)
+
+                        <span class="sidebar-notification-badge"
+                            aria-label="{{ $fileLeaveNotifications }} leave notification{{ $fileLeaveNotifications > 1 ? 's' : '' }}">
+
+                            {{ $fileLeaveNotifications }}
+
+                        </span>
+
+                    @endif
 
                 </a>
 
@@ -2950,6 +3284,17 @@
                         File OB
                     </span>
 
+                    @if ($fileObNotifications > 0)
+
+                        <span class="sidebar-notification-badge"
+                            aria-label="{{ $fileObNotifications }} official business notification{{ $fileObNotifications > 1 ? 's' : '' }}">
+
+                            {{ $fileObNotifications }}
+
+                        </span>
+
+                    @endif
+
                 </a>
 
 
@@ -2965,6 +3310,17 @@
                     <span class="nav-text">
                         Payslip
                     </span>
+
+                    @if ($payslipNotifications > 0)
+
+                        <span class="sidebar-notification-badge"
+                            aria-label="{{ $payslipNotifications }} payslip notification{{ $payslipNotifications > 1 ? 's' : '' }}">
+
+                            {{ $payslipNotifications }}
+
+                        </span>
+
+                    @endif
 
                 </a>
 
@@ -2982,6 +3338,17 @@
                         Announcements
                     </span>
 
+                    @if ($announcementNotifications > 0)
+
+                        <span class="sidebar-notification-badge"
+                            aria-label="{{ $announcementNotifications }} announcement notification{{ $announcementNotifications > 1 ? 's' : '' }}">
+
+                            {{ $announcementNotifications }}
+
+                        </span>
+
+                    @endif
+
                 </a>
 
 
@@ -2997,6 +3364,17 @@
                     <span class="nav-text">
                         My Profile
                     </span>
+
+                    @if ($profileNotifications > 0)
+
+                        <span class="sidebar-notification-badge"
+                            aria-label="{{ $profileNotifications }} profile notification{{ $profileNotifications > 1 ? 's' : '' }}">
+
+                            {{ $profileNotifications }}
+
+                        </span>
+
+                    @endif
 
                 </a>
 
@@ -3052,7 +3430,7 @@
 
             <nav class="navbar admin-navbar navbar-expand bg-white">
 
-                <div class="container-fluid px-3 px-lg-4">
+                <div class="container-fluid">
 
 
                     <!-- Sidebar Toggle -->
@@ -3073,17 +3451,46 @@
 
                     <!-- Search -->
 
-                    <form class="d-none d-md-flex ms-3 flex-grow-1"
-                        action="{{ route('search') }}"
-                        method="GET">
+                    <form
+                        class="d-none d-md-flex flex-grow-1 admin-search-form"
+                        role="search"
+                        autocomplete="off"
+                        data-admin-search
+                    >
 
-                        <input
-                            class="form-control search-input"
-                            type="search"
-                            name="search"
-                            placeholder="Search attendance, leave, payroll..."
-                            aria-label="Search employee portal"
-                            required>
+                        <div class="admin-search-wrapper">
+
+                            <i class="bi bi-search admin-search-icon"></i>
+
+                            <input
+                                id="adminSearchInput"
+                                class="form-control search-input admin-search-input"
+                                type="search"
+                                placeholder="Search Pap Pay..."
+                                aria-label="Search Pap Pay"
+                                aria-autocomplete="list"
+                                aria-controls="adminSearchResults"
+                                aria-expanded="false"
+                            >
+
+                            <button
+                                type="button"
+                                class="admin-search-clear"
+                                id="adminSearchClear"
+                                aria-label="Clear search"
+                                title="Clear search"
+                            >
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+
+                            <div
+                                class="admin-search-results"
+                                id="adminSearchResults"
+                                role="listbox"
+                                aria-label="Search results"
+                            ></div>
+
+                        </div>
 
                     </form>
 
@@ -3097,13 +3504,16 @@
 
                         <div class="dropdown">
 
-                            <button class="icon-button"
+                            <button
+                                class="icon-button"
                                 type="button"
                                 data-bs-toggle="dropdown"
+                                data-bs-display="static"
                                 aria-expanded="false"
-                                aria-label="Notifications">
+                                aria-label="Notifications"
+                            >
 
-                                @if (isset($notifications) && $notifications->count())
+                                @if ($employeeNotifications->count())
 
                                     <span class="notification-dot"></span>
 
@@ -3123,10 +3533,12 @@
                                 </div>
 
 
-                                @forelse ($notifications ?? [] as $notification)
+                                @forelse ($employeeNotifications as $notification)
 
-                                    <a class="dropdown-item"
-                                        href="{{ url($notification->url) }}">
+                                    <a
+                                        class="dropdown-item"
+                                        href="{{ url($notification->url) }}"
+                                    >
 
                                         <span class="notification-title">
                                             {{ $notification->title }}
@@ -3159,16 +3571,21 @@
 
                         <div class="dropdown">
 
-                            <button class="profile-button dropdown-toggle"
+                            <button
+                                class="profile-button dropdown-toggle"
                                 type="button"
                                 data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                                data-bs-display="static"
+                                aria-expanded="false"
+                            >
 
-                                <img class="avatar-img avatar-sm"
+                                <img
+                                    class="avatar-img avatar-sm"
                                     src="{{ $employee->photo
                                         ? asset('storage/' . $employee->photo)
                                         : asset('images/default-avatar.png') }}"
-                                    alt="{{ $employee->name ?? 'Employee' }}">
+                                    alt="{{ $employee->name ?? 'Employee' }}"
+                                >
 
                                 <span class="profile-name d-none d-sm-inline">
                                     {{ $employee->name ?? 'Employee' }}
@@ -3181,10 +3598,12 @@
 
                                 <li>
 
-                                    <a class="dropdown-item"
-                                        href="{{ route('my_profile') }}">
+                                    <a
+                                        class="dropdown-item"
+                                        href="{{ route('my_profile') }}"
+                                    >
 
-                                        <i class="bi bi-person me-2"></i>
+                                        <i class="bi bi-person"></i>
 
                                         My Profile
 
@@ -3192,6 +3611,20 @@
 
                                 </li>
 
+                                <li>
+
+                                    <a
+                                        class="dropdown-item"
+                                        href="{{ route('login.history') }}"
+                                    >
+
+                                        <i class="bi bi-shield-lock"></i>
+
+                                        Login History
+
+                                    </a>
+
+                                </li>
 
                                 <li>
 
@@ -3199,18 +3632,21 @@
 
                                 </li>
 
-
                                 <li>
 
-                                    <form method="POST"
-                                        action="{{ route('logout') }}">
+                                    <form
+                                        method="POST"
+                                        action="{{ route('logout') }}"
+                                    >
 
                                         @csrf
 
-                                        <button type="submit"
-                                            class="dropdown-item">
+                                        <button
+                                            type="submit"
+                                            class="dropdown-item"
+                                        >
 
-                                            <i class="bi bi-box-arrow-right me-2"></i>
+                                            <i class="bi bi-box-arrow-right"></i>
 
                                             Sign out
 
@@ -3249,7 +3685,7 @@
                         <div>
 
                             <h1>
-                                Dashboard
+                                Home
                             </h1>
 
                             <p>
@@ -3280,8 +3716,10 @@
 
                     <div class="hero-banner">
 
-                        <img src="../../../../khen/assets/images/dark.png"
-                            alt="School Campus">
+                        <img
+                            src="../../../../khen/assets/images/dark.png"
+                            alt="School Campus"
+                        >
 
                         <div class="hero-overlay">
 
@@ -3314,13 +3752,13 @@
                          STATISTICS
                     ================================================== -->
 
-                    <section class="row g-3 stats-section"
-                        aria-label="Employee statistics">
+                    <section
+                        class="row g-3 stats-section"
+                        aria-label="Employee statistics"
+                    >
 
 
-                        <!-- =================================================
-                             DAYS PRESENT
-                        ================================================== -->
+                        <!-- DAYS PRESENT -->
 
                         <div class="col-6 col-lg-3">
 
@@ -3355,9 +3793,7 @@
                         </div>
 
 
-                        <!-- =================================================
-                             LEAVE BALANCE
-                        ================================================== -->
+                        <!-- LEAVE BALANCE -->
 
                         <div class="col-6 col-lg-3">
 
@@ -3392,9 +3828,7 @@
                         </div>
 
 
-                        <!-- =================================================
-                             PENDING REQUESTS
-                        ================================================== -->
+                        <!-- PENDING REQUESTS -->
 
                         <div class="col-6 col-lg-3">
 
@@ -3429,9 +3863,7 @@
                         </div>
 
 
-                        <!-- =================================================
-                             OB RECORDS
-                        ================================================== -->
+                        <!-- OB RECORDS -->
 
                         <div class="col-6 col-lg-3">
 
@@ -3492,8 +3924,6 @@
                         </div>
 
 
-                        <!-- Primary Actions -->
-
                         <div class="row g-3">
 
 
@@ -3501,8 +3931,10 @@
 
                             <div class="col-12 col-md-4">
 
-                                <a href="{{ route('file_leave') }}"
-                                    class="quick-action">
+                                <a
+                                    href="{{ route('file_leave') }}"
+                                    class="quick-action"
+                                >
 
                                     <div class="quick-action-icon leave">
 
@@ -3527,8 +3959,10 @@
 
                             <div class="col-12 col-md-4">
 
-                                <a href="{{ route('payslip') }}"
-                                    class="quick-action">
+                                <a
+                                    href="{{ route('payslip') }}"
+                                    class="quick-action"
+                                >
 
                                     <div class="quick-action-icon payslip">
 
@@ -3553,8 +3987,10 @@
 
                             <div class="col-12 col-md-4">
 
-                                <a href="{{ route('attendance') }}"
-                                    class="quick-action">
+                                <a
+                                    href="{{ route('attendance') }}"
+                                    class="quick-action"
+                                >
 
                                     <div class="quick-action-icon attendance">
 
@@ -3577,8 +4013,6 @@
                         </div>
 
 
-                        <!-- Secondary Actions -->
-
                         <div class="row g-3 secondary-actions">
 
 
@@ -3586,8 +4020,10 @@
 
                             <div class="col-6 col-md-3">
 
-                                <a href="{{ route('file_ob') }}"
-                                    class="quick-action small-action">
+                                <a
+                                    href="{{ route('file_ob') }}"
+                                    class="quick-action small-action"
+                                >
 
                                     <span class="small-action-icon">
 
@@ -3608,8 +4044,10 @@
 
                             <div class="col-6 col-md-3">
 
-                                <a href="{{ route('my_profile') }}"
-                                    class="quick-action small-action">
+                                <a
+                                    href="{{ route('my_profile') }}"
+                                    class="quick-action small-action"
+                                >
 
                                     <span class="small-action-icon">
 
@@ -3630,8 +4068,10 @@
 
                             <div class="col-6 col-md-3">
 
-                                <a href="{{ route('employee.announcements') }}"
-                                    class="quick-action small-action">
+                                <a
+                                    href="{{ route('employee.announcements') }}"
+                                    class="quick-action small-action"
+                                >
 
                                     <span class="small-action-icon">
 
@@ -3652,8 +4092,10 @@
 
                             <div class="col-6 col-md-3">
 
-                                <a href="{{ route('attendance') }}"
-                                    class="quick-action small-action">
+                                <a
+                                    href="{{ route('attendance') }}"
+                                    class="quick-action small-action"
+                                >
 
                                     <span class="small-action-icon">
 
@@ -3683,8 +4125,6 @@
                         <div class="dashboard-panel">
 
 
-                            <!-- Panel Header -->
-
                             <div class="panel-header">
 
                                 <div>
@@ -3704,8 +4144,10 @@
                                 </div>
 
 
-                                <a class="btn btn-light btn-sm"
-                                    href="{{ route('employee.announcements') }}">
+                                <a
+                                    class="btn btn-light btn-sm"
+                                    href="{{ route('employee.announcements') }}"
+                                >
 
                                     View All
 
@@ -3713,8 +4155,6 @@
 
                             </div>
 
-
-                            <!-- Announcement List -->
 
                             <div class="activity-list">
 
@@ -3815,6 +4255,77 @@
     <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
 
     <script src="../../../../khen/assets/js/main.js"></script>
+
+
+    <!-- =========================================================
+         PAP PAY SEARCH
+    ========================================================= -->
+
+    <script>
+
+        window.papPayAdminSearchPages = [
+
+            {
+                title: 'Dashboard',
+                description: 'Employee dashboard and system overview',
+                keywords: 'dashboard home employee overview',
+                icon: 'bi-grid-1x2',
+                url: @json(route('dashboard'))
+            },
+
+            {
+                title: 'Attendance',
+                description: 'View your attendance records',
+                keywords: 'attendance time in time out present absent late undertime overtime',
+                icon: 'bi-calendar-check-fill',
+                url: @json(route('attendance'))
+            },
+
+            {
+                title: 'File Leave',
+                description: 'Submit and review leave requests',
+                keywords: 'leave leaves vacation absence request requests file',
+                icon: 'bi-calendar-plus-fill',
+                url: @json(route('file_leave'))
+            },
+
+            {
+                title: 'Official Business',
+                description: 'Submit and review official business requests',
+                keywords: 'official business ob field work travel request requests',
+                icon: 'bi-briefcase-fill',
+                url: @json(route('file_ob'))
+            },
+
+            {
+                title: 'Payslip',
+                description: 'View and download your payslips',
+                keywords: 'payslip payslips salary payroll payment compensation',
+                icon: 'bi-receipt-cutoff',
+                url: @json(route('payslip'))
+            },
+
+            {
+                title: 'Announcements',
+                description: 'View announcements from administration and HR',
+                keywords: 'announcement announcements notice notices news message',
+                icon: 'bi-megaphone-fill',
+                url: @json(route('employee.announcements'))
+            },
+
+            {
+                title: 'My Profile',
+                description: 'View and manage your employee profile',
+                keywords: 'profile employee personal information account details',
+                icon: 'bi-person-fill',
+                url: @json(route('my_profile'))
+            }
+
+        ];
+
+    </script>
+
+    <script src="{{ asset('khen/assets/js/payslips-search.js') }}"></script>
 
 </body>
 

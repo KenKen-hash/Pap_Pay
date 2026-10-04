@@ -1,743 +1,767 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <title>Leave Reports</title>
+<meta name="csrf-token"
+      content="{{ csrf_token() }}">
 
-    <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
-    <link rel="stylesheet" href="../../../../khen/assets/css/style.css">
+<title>Leave Reports | PAP PAY</title>
 
-    <style>
+<link rel="icon"
+      type="image/x-icon"
+      href="../../../../khen/assets/images/favicon.png">
 
-        body{
-            background:#f5f7fb;
-        }
+<link rel="stylesheet"
+      href="../../../../khen/assets/css/bootstrap.min.css">
 
-        .report-header{
-            background:#fff;
-            border-radius:15px;
-            padding:30px;
-            margin-bottom:25px;
-            box-shadow:0 3px 15px rgba(0,0,0,.05);
-        }
+<link rel="stylesheet"
+      href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
 
-        .summary-card{
-            border:none;
-            border-radius:15px;
-            transition:.3s;
-            box-shadow:0 5px 18px rgba(0,0,0,.06);
-        }
+<link rel="stylesheet"
+      href="../../../../khen/assets/css/style.css">
 
-        .summary-card:hover{
-            transform:translateY(-4px);
-        }
+<style>
 
-        .summary-icon{
-            width:60px;
-            height:60px;
-            border-radius:50%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            color:#fff;
-            font-size:28px;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .filter-card{
-            border:none;
-            border-radius:15px;
-            box-shadow:0 4px 18px rgba(0,0,0,.06);
-        }
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
 
-        .report-table{
-            border-radius:15px;
-            overflow:hidden;
-            box-shadow:0 4px 20px rgba(0,0,0,.06);
-        }
+body {
+    background: #f5f7fb;
+}
 
-        table thead{
-            background:#0d6efd;
-            color:#fff;
-        }
+.page-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 30px;
+}
 
-    </style>
+.page-card {
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.page-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.page-subtitle {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.filter-section {
+    padding: 20px;
+}
+
+.generated-section,
+.history-section {
+    padding: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.filter-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 7px;
+}
+
+.form-control,
+.form-select {
+    min-height: 43px;
+    border-radius: 8px;
+    border-color: #d1d5db;
+    font-size: 14px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 0.15rem rgba(37, 99, 235, 0.12);
+}
+
+.generate-btn {
+    min-height: 43px;
+    border-radius: 8px;
+    font-weight: 600;
+    width: 100%;
+}
+
+.section-title {
+    margin: 0 0 15px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.file-card {
+    height: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 18px;
+    background: #ffffff;
+}
+
+.file-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    margin-bottom: 12px;
+}
+
+.pdf-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.excel-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.file-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.file-description {
+    margin: 6px 0 15px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.file-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.file-actions .btn {
+    flex: 1 1 120px;
+}
+
+.history-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.history-card-header {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.history-card-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.history-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    margin: 0;
+}
+
+.history-table th {
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b7280;
+    background: #f9fafb;
+    white-space: nowrap;
+}
+
+.history-table td {
+    font-size: 13px;
+    color: #374151;
+    vertical-align: middle;
+}
+
+.history-empty {
+    padding: 25px 15px;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.modal-content {
+    border: 0;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.modal-header {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.date-filter {
+    padding: 15px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-record {
+    padding: 15px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.modal-record:last-child {
+    border-bottom: 0;
+}
+
+.modal-record-info {
+    min-width: 0;
+}
+
+.modal-record-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1f2937;
+    overflow-wrap: anywhere;
+}
+
+.modal-record-details {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.modal-record-action {
+    flex-shrink: 0;
+}
+
+.modal-records {
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+.alert-success,
+.alert-warning {
+    border-radius: 10px;
+}
+
+@media (max-width: 767.98px) {
+
+    .page-wrapper {
+        padding: 12px;
+        padding-bottom: 30px;
+    }
+
+    .page-header,
+    .filter-section,
+    .generated-section,
+    .history-section {
+        padding: 15px;
+    }
+
+    .page-title {
+        font-size: 19px;
+    }
+
+    .file-actions {
+        flex-direction: column;
+    }
+
+    .file-actions .btn {
+        width: 100%;
+    }
+
+    .modal-record {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .modal-record-action {
+        width: 100%;
+    }
+
+    .modal-record-action .btn {
+        width: 100%;
+    }
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-<div class="container-fluid py-4">
+<div class="page-wrapper">
 
-<div class="report-header">
+<div class="page-card">
 
-<div class="row align-items-center">
+    <div class="page-header">
 
-<div class="col-md-8">
+        <div>
 
-<h2 class="fw-bold">
+            <h1 class="page-title">
+                Leave Reports
+            </h1>
 
-<i class="bi bi-calendar-check text-primary"></i>
+            <p class="page-subtitle">
+                Generate and manage leave reports.
+            </p>
 
-Leave Reports
+        </div>
 
-</h2>
 
-<p class="text-muted mb-0">
+        <a href="{{ route('reports') }}"
+           class="btn btn-outline-secondary">
 
-Generate employee leave reports.
+            <i class="bi bi-arrow-left me-1"></i>
 
-</p>
-
-</div>
-
-<div class="col-md-4 text-end">
-
-<a href="{{ route('reports') }}" class="btn btn-outline-secondary">
-
-<i class="bi bi-arrow-left"></i>
-
-Back to Reports
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- FILTER -->
-
-<div class="card filter-card mb-4">
-
-<div class="card-body">
-
-<form method="GET" action="{{ route('reports.leave') }}">
-
-<div class="row g-3">
-
-<div class="col-md-3">
-
-<label class="form-label">
-
-Date From
-
-</label>
-
-<input
-type="date"
-name="start"
-class="form-control"
-value="{{ request('start') }}">
-
-</div>
-
-<div class="col-md-3">
-
-<label class="form-label">
-
-Date To
-
-</label>
-
-<input
-type="date"
-name="end"
-class="form-control"
-value="{{ request('end') }}">
-
-</div>
-
-<div class="col-md-3">
-
-<label class="form-label">
-
-Leave Type
-
-</label>
-
-<select
-name="leave_type"
-class="form-select">
-
-<option value="">
-
-All Types
-
-</option>
-
-@foreach($leaveTypes as $type)
-
-<option
-value="{{ $type }}"
-{{ request('leave_type')==$type ? 'selected':'' }}>
-
-{{ $type }}
-
-</option>
-
-@endforeach
-
-</select>
-
-</div>
-
-<div class="col-md-2">
-
-<label class="form-label">
-
-Status
-
-</label>
-
-<select
-name="status"
-class="form-select">
-
-<option value="">
-
-All Status
-
-</option>
-
-<option value="Pending"
-{{ request('status')=='Pending'?'selected':'' }}>
-
-Pending
-
-</option>
-
-<option value="Approved"
-{{ request('status')=='Approved'?'selected':'' }}>
-
-Approved
-
-</option>
-
-<option value="Rejected"
-{{ request('status')=='Rejected'?'selected':'' }}>
-
-Rejected
-
-</option>
-
-</select>
-
-</div>
-
-<div class="col-md-1 d-grid">
-
-<label>&nbsp;</label>
-
-<button class="btn btn-primary">
-
-<i class="bi bi-search"></i>
-
-</button>
-
-</div>
-
-</div>
-
-</form>
-
-</div>
-
-</div>
-
-@if(isset($generated))
-
-@if($totalLeaves)
-
-<div class="alert alert-success alert-dismissible fade show">
-
-<i class="bi bi-check-circle-fill me-2"></i>
-
-Leave report generated successfully.
-
-<button
-class="btn-close"
-data-bs-dismiss="alert">
-</button>
-
-</div>
-
-@else
-
-<div class="alert alert-warning alert-dismissible fade show">
-
-No leave records found.
-
-<button
-class="btn-close"
-data-bs-dismiss="alert">
-</button>
-
-</div>
-
-@endif
-
-@endif
-
-<div class="row mb-4">
-
-<div class="col-lg-3">
-
-<div class="card summary-card">
-
-<div class="card-body">
-
-<div class="d-flex justify-content-between">
-
-<div>
-
-<small>Total Leaves</small>
-
-<h3>{{ $totalLeaves }}</h3>
-
-</div>
-
-<div class="summary-icon bg-primary">
-
-<i class="bi bi-calendar-event"></i>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
-<div class="card summary-card">
-
-<div class="card-body">
-
-<div class="d-flex justify-content-between">
-
-<div>
-
-<small>Approved</small>
-
-<h3>{{ $approvedLeaves }}</h3>
-
-</div>
-
-<div class="summary-icon bg-success">
-
-<i class="bi bi-check-circle"></i>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
-<div class="card summary-card">
-
-<div class="card-body">
-
-<div class="d-flex justify-content-between">
-
-<div>
-
-<small>Pending</small>
-
-<h3>{{ $pendingLeaves }}</h3>
-
-</div>
-
-<div class="summary-icon bg-warning">
-
-<i class="bi bi-hourglass-split"></i>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
-<div class="card summary-card">
-
-<div class="card-body">
-
-<div class="d-flex justify-content-between">
-
-<div>
-
-<small>Rejected</small>
-
-<h3>{{ $rejectedLeaves }}</h3>
-
-</div>
-
-<div class="summary-icon bg-danger">
-
-<i class="bi bi-x-circle"></i>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-    <!-- EXPORT BUTTONS -->
-
-    <div class="d-flex justify-content-end mb-3">
-
-        <a href="{{ route('reports.leave.pdf', request()->query()) }}"
-           class="btn btn-danger me-2">
-
-            <i class="bi bi-file-earmark-pdf-fill"></i>
-
-            Download PDF
-
-        </a>
-
-        <a href="{{ route('reports.leave.excel', request()->query()) }}"
-           class="btn btn-success">
-
-            <i class="bi bi-file-earmark-excel-fill"></i>
-
-            Download Excel
+            Back to Reports
 
         </a>
 
     </div>
 
-    <!-- LEAVE TABLE -->
 
-    <div class="card report-table">
+    <div class="filter-section">
 
-        <div class="card-header bg-white">
+        <form method="GET"
+              action="{{ route('reports.leave') }}"
+              id="leaveReportForm">
 
-            <h5 class="mb-0">
+            <div class="row g-3">
 
-                Leave Report
+                <div class="col-12 col-md-6 col-lg-3">
 
-            </h5>
+                    <label for="start"
+                           class="filter-label">
 
-        </div>
+                        Date From
 
-        <div class="card-body p-0">
+                    </label>
 
-            <div class="table-responsive">
+                    <input type="date"
+                           name="start"
+                           id="start"
+                           class="form-control"
+                           value="{{ request('start') }}">
 
-                <table class="table table-hover table-bordered mb-0">
+                </div>
 
-                    <thead>
 
-                        <tr>
+                <div class="col-12 col-md-6 col-lg-3">
 
-                            <th>#</th>
+                    <label for="end"
+                           class="filter-label">
 
-                            <th>Employee ID</th>
+                        Date To
 
-                            <th>Employee Name</th>
+                    </label>
 
-                            <th>Department</th>
+                    <input type="date"
+                           name="end"
+                           id="end"
+                           class="form-control"
+                           value="{{ request('end') }}">
 
-                            <th>Leave Type</th>
+                </div>
 
-                            <th>Start Date</th>
 
-                            <th>End Date</th>
+                <div class="col-12 col-md-6 col-lg-3">
 
-                            <th>Total Days</th>
+                    <label for="leave_type"
+                           class="filter-label">
 
-                            <th>Status</th>
+                        Leave Type
 
-                        </tr>
+                    </label>
 
-                    </thead>
+                    <select name="leave_type"
+                            id="leave_type"
+                            class="form-select">
 
-                    <tbody>
+                        <option value="">
+                            All Types
+                        </option>
 
-                        @forelse($leaves as $leave)
+                        @foreach($leaveTypes as $type)
 
-                        <tr>
+                            <option value="{{ $type }}"
+                                {{ request('leave_type') == $type ? 'selected' : '' }}>
 
-                            <td>
+                                {{ $type }}
 
-                                {{ $loop->iteration }}
+                            </option>
 
-                            </td>
+                        @endforeach
 
-                            <td>
+                    </select>
 
-                                {{ $leave->user->employee_id }}
+                </div>
 
-                            </td>
 
-                            <td>
+                <div class="col-12 col-md-6 col-lg-3">
 
-                                {{ $leave->user->name }}
+                    <label for="status"
+                           class="filter-label">
 
-                            </td>
+                        Status
 
-                            <td>
+                    </label>
 
-                                {{ $leave->user->department }}
+                    <select name="status"
+                            id="status"
+                            class="form-select">
 
-                            </td>
+                        <option value="">
+                            All Status
+                        </option>
 
-                            <td>
+                        <option value="Pending"
+                            {{ request('status') == 'Pending' ? 'selected' : '' }}>
 
-                                {{ $leave->leave_type }}
+                            Pending
 
-                            </td>
+                        </option>
 
-                            <td>
+                        <option value="Approved"
+                            {{ request('status') == 'Approved' ? 'selected' : '' }}>
 
-                                {{ \Carbon\Carbon::parse($leave->start_date)->format('M d, Y') }}
+                            Approved
 
-                            </td>
+                        </option>
 
-                            <td>
+                        <option value="Rejected"
+                            {{ request('status') == 'Rejected' ? 'selected' : '' }}>
 
-                                {{ \Carbon\Carbon::parse($leave->end_date)->format('M d, Y') }}
+                            Rejected
 
-                            </td>
+                        </option>
 
-                            <td class="text-center">
+                    </select>
 
-                                {{ \Carbon\Carbon::parse($leave->start_date)->diffInDays(\Carbon\Carbon::parse($leave->end_date)) + 1 }}
+                </div>
 
-                            </td>
 
-                            <td>
+                <div class="col-12">
 
-                                @if($leave->status == 'Approved')
+                    <button type="submit"
+                            class="btn btn-primary generate-btn">
 
-                                    <span class="badge bg-success">
+                        <i class="bi bi-file-earmark-bar-graph me-1"></i>
 
-                                        Approved
+                        Generate Report
 
-                                    </span>
+                    </button>
 
-                                @elseif($leave->status == 'Pending')
+                </div>
 
-                                    <span class="badge bg-warning text-dark">
+            </div>
 
-                                        Pending
+        </form>
 
-                                    </span>
+    </div>
 
-                                @else
 
-                                    <span class="badge bg-danger">
+    @if(isset($generated) && $generated)
 
-                                        Rejected
+        <div class="generated-section"
+             id="generatedFilesSection">
 
-                                    </span>
+            @if($totalLeaves > 0)
 
-                                @endif
+                <div class="alert alert-success mb-4">
 
-                            </td>
+                    <i class="bi bi-check-circle-fill me-1"></i>
 
-                        </tr>
+                    Leave report generated successfully.
 
-                        @empty
+                    <strong>{{ $totalLeaves }}</strong>
 
-                        <tr>
+                    leave record(s) found.
 
-                            <td colspan="9" class="text-center py-5">
+                </div>
 
-                                <i class="bi bi-calendar-x display-4 text-muted"></i>
+            @else
 
-                                <br><br>
+                <div class="alert alert-warning mb-4">
 
-                                No leave records found.
+                    <i class="bi bi-exclamation-circle-fill me-1"></i>
 
-                            </td>
+                    No leave records found.
 
-                        </tr>
+                </div>
 
-                        @endforelse
+            @endif
 
-                    </tbody>
 
-                </table>
+            <h2 class="section-title">
+                Generated Reports
+            </h2>
+
+
+            <div class="row g-3">
+
+                <div class="col-12 col-md-6">
+
+                    <div class="file-card">
+
+                        <div class="file-icon pdf-icon">
+
+                            <i class="bi bi-file-earmark-pdf"></i>
+
+                        </div>
+
+
+                        <h3 class="file-title">
+                            PDF Report
+                        </h3>
+
+
+                        <p class="file-description">
+                            Download the generated leave PDF report.
+                        </p>
+
+
+                        <div class="file-actions">
+
+                            <a href="{{ route('reports.leave.pdf', array_merge(request()->query(), ['download' => 1])) }}"
+                               class="btn btn-danger w-100">
+
+                                <i class="bi bi-download me-1"></i>
+
+                                Download PDF
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-12 col-md-6">
+
+                    <div class="file-card">
+
+                        <div class="file-icon excel-icon">
+
+                            <i class="bi bi-file-earmark-excel"></i>
+
+                        </div>
+
+
+                        <h3 class="file-title">
+                            Excel Report
+                        </h3>
+
+
+                        <p class="file-description">
+                            Download the generated leave Excel report.
+                        </p>
+
+
+                        <div class="file-actions">
+
+                            <a href="{{ route('reports.leave.excel', array_merge(request()->query(), ['download' => 1])) }}"
+                               class="btn btn-success w-100">
+
+                                <i class="bi bi-download me-1"></i>
+
+                                Download Excel
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+    @endif
 
-        <!-- REPORT INFORMATION -->
 
-    <div class="card mt-4 shadow-sm">
+    <div class="history-section">
 
-        <div class="card-header bg-light">
+        <h2 class="section-title">
+            Generated Report History
+        </h2>
 
-            <h5 class="mb-0">
 
-                <i class="bi bi-info-circle"></i>
+        <div class="row g-3">
 
-                Report Information
+            <div class="col-12 col-lg-6">
 
-            </h5>
+                <div class="history-card">
 
-        </div>
+                    <div class="history-card-header">
 
-        <div class="card-body">
+                        <h3 class="history-card-title">
+                            PDF History
+                        </h3>
 
-            <div class="row">
 
-                <div class="col-md-6">
+                        <button type="button"
+                                class="btn btn-sm btn-outline-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#pdfHistoryModal">
 
-                    <table class="table table-borderless">
+                            View All
 
-                        <tr>
+                        </button>
 
-                            <th width="180">
+                    </div>
 
-                                Report Type
 
-                            </th>
+                    <div class="history-table-wrapper">
 
-                            <td>
+                        <table class="table history-table">
 
-                                Leave Report
+                            <thead>
 
-                            </td>
+                                <tr>
 
-                        </tr>
+                                    <th>
+                                        File
+                                    </th>
 
-                        <tr>
+                                    <th>
+                                        Date
+                                    </th>
 
-                            <th>
+                                    <th>
+                                        Action
+                                    </th>
 
-                                Generated Date
+                                </tr>
 
-                            </th>
+                            </thead>
 
-                            <td>
 
-                                {{ now()->format('F d, Y h:i A') }}
+                            <tbody id="pdfHistoryTableBody"></tbody>
 
-                            </td>
+                        </table>
 
-                        </tr>
-
-                        <tr>
-
-                            <th>
-
-                                Generated By
-
-                            </th>
-
-                            <td>
-
-                                {{ auth()->user()->name }}
-
-                            </td>
-
-                        </tr>
-
-                    </table>
+                    </div>
 
                 </div>
 
-                <div class="col-md-6">
+            </div>
 
-                    <table class="table table-borderless">
 
-                        <tr>
+            <div class="col-12 col-lg-6">
 
-                            <th width="180">
+                <div class="history-card">
 
-                                Date From
+                    <div class="history-card-header">
 
-                            </th>
+                        <h3 class="history-card-title">
+                            Excel History
+                        </h3>
 
-                            <td>
 
-                                {{ request('start') ?: 'All Records' }}
+                        <button type="button"
+                                class="btn btn-sm btn-outline-success"
+                                data-bs-toggle="modal"
+                                data-bs-target="#excelHistoryModal">
 
-                            </td>
+                            View All
 
-                        </tr>
+                        </button>
 
-                        <tr>
+                    </div>
 
-                            <th>
 
-                                Date To
+                    <div class="history-table-wrapper">
 
-                            </th>
+                        <table class="table history-table">
 
-                            <td>
+                            <thead>
 
-                                {{ request('end') ?: 'Present' }}
+                                <tr>
 
-                            </td>
+                                    <th>
+                                        File
+                                    </th>
 
-                        </tr>
+                                    <th>
+                                        Date
+                                    </th>
 
-                        <tr>
+                                    <th>
+                                        Action
+                                    </th>
 
-                            <th>
+                                </tr>
 
-                                Leave Type
+                            </thead>
 
-                            </th>
 
-                            <td>
+                            <tbody id="excelHistoryTableBody"></tbody>
 
-                                {{ request('leave_type') ?: 'All Types' }}
+                        </table>
 
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>
-
-                                Status
-
-                            </th>
-
-                            <td>
-
-                                {{ request('status') ?: 'All Status' }}
-
-                            </td>
-
-                        </tr>
-
-                    </table>
+                    </div>
 
                 </div>
 
@@ -747,55 +771,1135 @@ data-bs-dismiss="alert">
 
     </div>
 
-    <!-- SIGNATURES -->
+</div>
 
-    <div class="row mt-5">
+</div>
 
-        <div class="col-md-6 text-center">
 
-            <br><br>
+<div class="modal fade"
+     id="generationModal"
+     tabindex="-1"
+     aria-hidden="true">
 
-            _______________________________
+    <div class="modal-dialog modal-dialog-centered">
 
-            <br>
+        <div class="modal-content">
 
-            <strong>Prepared By</strong>
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    <i class="bi bi-check-circle text-success me-1"></i>
+
+                    Report Generated
+
+                </h5>
+
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                Your leave PDF and Excel reports have been generated successfully.
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-primary"
+                        data-bs-dismiss="modal">
+
+                    Done
+
+                </button>
+
+            </div>
 
         </div>
-
-        <div class="col-md-6 text-center">
-
-            <br><br>
-
-            _______________________________
-
-            <br>
-
-            <strong>Approved By</strong>
-
-        </div>
-
-    </div>
-
-    <!-- FOOTER -->
-
-    <div class="text-center text-muted mt-5 mb-3">
-
-        <small>
-
-            PAP PAY - Leave Report System
-
-            <br>
-
-            © {{ date('Y') }} All Rights Reserved.
-
-        </small>
 
     </div>
 
 </div>
+
+
+<div class="modal fade"
+     id="pdfHistoryModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    <i class="bi bi-file-earmark-pdf text-danger me-1"></i>
+
+                    PDF Report History
+
+                </h5>
+
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <div class="date-filter">
+
+                <div class="row g-2 align-items-end">
+
+                    <div class="col-12 col-md">
+
+                        <label for="pdfHistoryDateFilter"
+                               class="filter-label">
+
+                            Search by generated date
+
+                        </label>
+
+
+                        <input type="date"
+                               id="pdfHistoryDateFilter"
+                               class="form-control">
+
+                    </div>
+
+
+                    <div class="col-12 col-md-auto">
+
+                        <button type="button"
+                                class="btn btn-danger"
+                                id="pdfSearchButton">
+
+                            <i class="bi bi-search me-1"></i>
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="col-12 col-md-auto">
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                id="pdfClearButton">
+
+                            Clear
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-records"
+                 id="pdfModalRecords"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="modal fade"
+     id="excelHistoryModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    <i class="bi bi-file-earmark-excel text-success me-1"></i>
+
+                    Excel Report History
+
+                </h5>
+
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <div class="date-filter">
+
+                <div class="row g-2 align-items-end">
+
+                    <div class="col-12 col-md">
+
+                        <label for="excelHistoryDateFilter"
+                               class="filter-label">
+
+                            Search by generated date
+
+                        </label>
+
+
+                        <input type="date"
+                               id="excelHistoryDateFilter"
+                               class="form-control">
+
+                    </div>
+
+
+                    <div class="col-12 col-md-auto">
+
+                        <button type="button"
+                                class="btn btn-success"
+                                id="excelSearchButton">
+
+                            <i class="bi bi-search me-1"></i>
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="col-12 col-md-auto">
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                id="excelClearButton">
+
+                            Clear
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-records"
+                 id="excelModalRecords"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
 
 <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const REPORTS_PAGE_URL =
+        @json(route('reports'));
+
+
+    const LEAVE_REPORT_URL =
+        @json(route('reports.leave'));
+
+
+    const PDF_HISTORY_KEY =
+        'pap_pay_leave_pdf_history';
+
+
+    const EXCEL_HISTORY_KEY =
+        'pap_pay_leave_excel_history';
+
+
+    const pdfHistoryTableBody =
+        document.getElementById(
+            'pdfHistoryTableBody'
+        );
+
+
+    const excelHistoryTableBody =
+        document.getElementById(
+            'excelHistoryTableBody'
+        );
+
+
+    const pdfModalRecords =
+        document.getElementById(
+            'pdfModalRecords'
+        );
+
+
+    const excelModalRecords =
+        document.getElementById(
+            'excelModalRecords'
+        );
+
+
+    const pdfDateFilter =
+        document.getElementById(
+            'pdfHistoryDateFilter'
+        );
+
+
+    const excelDateFilter =
+        document.getElementById(
+            'excelHistoryDateFilter'
+        );
+
+
+    function getHistory(key) {
+
+        try {
+
+            const history =
+                JSON.parse(
+                    localStorage.getItem(key) || '[]'
+                );
+
+
+            return Array.isArray(history)
+                ? history
+                : [];
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
+
+
+    function saveHistory(
+        key,
+        history
+    ) {
+
+        localStorage.setItem(
+            key,
+            JSON.stringify(history)
+        );
+
+    }
+
+
+    function createRecordKey(
+        type,
+        selectedStart,
+        selectedEnd,
+        selectedLeaveType,
+        selectedStatus
+    ) {
+
+        return [
+
+            type,
+
+            selectedStart || '',
+
+            selectedEnd || '',
+
+            selectedLeaveType || '',
+
+            selectedStatus || ''
+
+        ].join('|');
+
+    }
+
+
+    function addHistory(
+        type,
+        url,
+        selectedStart,
+        selectedEnd,
+        selectedLeaveType,
+        selectedStatus
+    ) {
+
+        const key =
+            type === 'pdf'
+                ? PDF_HISTORY_KEY
+                : EXCEL_HISTORY_KEY;
+
+
+        const history =
+            getHistory(key);
+
+
+        const recordKey =
+            createRecordKey(
+                type,
+                selectedStart,
+                selectedEnd,
+                selectedLeaveType,
+                selectedStatus
+            );
+
+
+        const alreadyExists =
+            history.some(function (record) {
+
+                return record.recordKey === recordKey;
+
+            });
+
+
+        if (alreadyExists) {
+
+            return;
+
+        }
+
+
+        const now =
+            new Date();
+
+
+        const record = {
+
+            id:
+                Date.now(),
+
+            recordKey:
+                recordKey,
+
+            fileName:
+                getFileName(
+                    type,
+                    selectedStart,
+                    selectedEnd,
+                    selectedLeaveType,
+                    selectedStatus
+                ),
+
+            start:
+                selectedStart ||
+                'All Records',
+
+            end:
+                selectedEnd ||
+                'Present',
+
+            leaveType:
+                selectedLeaveType ||
+                'All Types',
+
+            status:
+                selectedStatus ||
+                'All Status',
+
+            url:
+                url,
+
+            generatedDate:
+                now.toISOString().split('T')[0],
+
+            generatedAt:
+                now.toLocaleString()
+
+        };
+
+
+        history.unshift(record);
+
+
+        saveHistory(
+            key,
+            history
+        );
+
+    }
+
+
+    function getFileName(
+        type,
+        selectedStart,
+        selectedEnd,
+        selectedLeaveType,
+        selectedStatus
+    ) {
+
+        const startText =
+            selectedStart ||
+            'all-records';
+
+
+        const endText =
+            selectedEnd ||
+            'present';
+
+
+        const leaveTypeText =
+            selectedLeaveType ||
+            'all-types';
+
+
+        const statusText =
+            selectedStatus ||
+            'all-status';
+
+
+        return 'leave-report-' +
+
+            startText
+                .toLowerCase()
+                .replace(/\s+/g, '-') +
+
+            '-to-' +
+
+            endText
+                .toLowerCase()
+                .replace(/\s+/g, '-') +
+
+            '-' +
+
+            leaveTypeText
+                .toLowerCase()
+                .replace(/\s+/g, '-') +
+
+            '-' +
+
+            statusText
+                .toLowerCase()
+                .replace(/\s+/g, '-') +
+
+            '.' +
+
+            (
+                type === 'pdf'
+                    ? 'pdf'
+                    : 'xlsx'
+            );
+
+    }
+
+
+    function createDownloadButton(
+        record,
+        type
+    ) {
+
+        const button =
+            document.createElement('a');
+
+
+        button.href =
+            record.url;
+
+
+        button.className =
+            type === 'pdf'
+                ? 'btn btn-sm btn-danger'
+                : 'btn btn-sm btn-success';
+
+
+        button.innerHTML =
+            '<i class="bi bi-download me-1"></i>Download';
+
+
+        return button;
+
+    }
+
+
+    function renderHistory() {
+
+        const pdfHistory =
+            getHistory(
+                PDF_HISTORY_KEY
+            );
+
+
+        const excelHistory =
+            getHistory(
+                EXCEL_HISTORY_KEY
+            );
+
+
+        renderMainHistory(
+            pdfHistory,
+            pdfHistoryTableBody,
+            'pdf'
+        );
+
+
+        renderMainHistory(
+            excelHistory,
+            excelHistoryTableBody,
+            'excel'
+        );
+
+
+        renderModalRecords(
+            pdfHistory,
+            pdfModalRecords,
+            'pdf'
+        );
+
+
+        renderModalRecords(
+            excelHistory,
+            excelModalRecords,
+            'excel'
+        );
+
+    }
+
+
+    function renderMainHistory(
+        history,
+        container,
+        type
+    ) {
+
+        container.innerHTML = '';
+
+
+        const recentHistory =
+            history.slice(0, 5);
+
+
+        if (
+            recentHistory.length === 0
+        ) {
+
+            const row =
+                document.createElement('tr');
+
+
+            row.innerHTML =
+                '<td colspan="3" class="history-empty">' +
+                'No generated reports yet.' +
+                '</td>';
+
+
+            container.appendChild(row);
+
+            return;
+
+        }
+
+
+        recentHistory.forEach(
+            function (record) {
+
+                const row =
+                    document.createElement('tr');
+
+
+                const fileCell =
+                    document.createElement('td');
+
+
+                fileCell.textContent =
+                    record.fileName;
+
+
+                const dateCell =
+                    document.createElement('td');
+
+
+                dateCell.textContent =
+                    record.generatedAt;
+
+
+                const actionCell =
+                    document.createElement('td');
+
+
+                actionCell.appendChild(
+                    createDownloadButton(
+                        record,
+                        type
+                    )
+                );
+
+
+                row.appendChild(
+                    fileCell
+                );
+
+
+                row.appendChild(
+                    dateCell
+                );
+
+
+                row.appendChild(
+                    actionCell
+                );
+
+
+                container.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+
+    function renderModalRecords(
+        history,
+        container,
+        type,
+        dateFilter
+    ) {
+
+        container.innerHTML = '';
+
+
+        let filteredHistory =
+            history.slice();
+
+
+        if (dateFilter) {
+
+            filteredHistory =
+                filteredHistory.filter(
+                    function (record) {
+
+                        return (
+                            record.generatedDate ===
+                            dateFilter
+                        );
+
+                    }
+                );
+
+        }
+
+
+        if (
+            filteredHistory.length === 0
+        ) {
+
+            const empty =
+                document.createElement('div');
+
+
+            empty.className =
+                'history-empty';
+
+
+            empty.textContent =
+                dateFilter
+                    ? 'No reports were generated on the selected date.'
+                    : 'No generated reports yet.';
+
+
+            container.appendChild(
+                empty
+            );
+
+            return;
+
+        }
+
+
+        filteredHistory.forEach(
+            function (record) {
+
+                const wrapper =
+                    document.createElement('div');
+
+
+                wrapper.className =
+                    'modal-record';
+
+
+                const info =
+                    document.createElement('div');
+
+
+                info.className =
+                    'modal-record-info';
+
+
+                const name =
+                    document.createElement('div');
+
+
+                name.className =
+                    'modal-record-name';
+
+
+                name.textContent =
+                    record.fileName;
+
+
+                const details =
+                    document.createElement('div');
+
+
+                details.className =
+                    'modal-record-details';
+
+
+                details.textContent =
+                    'Generated: ' +
+                    record.generatedAt +
+                    ' | Date From: ' +
+                    record.start +
+                    ' | Date To: ' +
+                    record.end +
+                    ' | Leave Type: ' +
+                    record.leaveType +
+                    ' | Status: ' +
+                    record.status;
+
+
+                info.appendChild(
+                    name
+                );
+
+
+                info.appendChild(
+                    details
+                );
+
+
+                const action =
+                    document.createElement('div');
+
+
+                action.className =
+                    'modal-record-action';
+
+
+                action.appendChild(
+                    createDownloadButton(
+                        record,
+                        type
+                    )
+                );
+
+
+                wrapper.appendChild(
+                    info
+                );
+
+
+                wrapper.appendChild(
+                    action
+                );
+
+
+                container.appendChild(
+                    wrapper
+                );
+
+            }
+        );
+
+    }
+
+
+    function showGeneratedFiles() {
+
+        const pdfUrl =
+            @json(
+                route(
+                    'reports.leave.pdf',
+                    request()->query()
+                )
+            );
+
+
+        const excelUrl =
+            @json(
+                route(
+                    'reports.leave.excel',
+                    request()->query()
+                )
+            );
+
+
+        const selectedStart =
+            @json(
+                request('start')
+            );
+
+
+        const selectedEnd =
+            @json(
+                request('end')
+            );
+
+
+        const selectedLeaveType =
+            @json(
+                request('leave_type')
+            );
+
+
+        const selectedStatus =
+            @json(
+                request('status')
+            );
+
+
+        addHistory(
+            'pdf',
+            pdfUrl,
+            selectedStart,
+            selectedEnd,
+            selectedLeaveType,
+            selectedStatus
+        );
+
+
+        addHistory(
+            'excel',
+            excelUrl,
+            selectedStart,
+            selectedEnd,
+            selectedLeaveType,
+            selectedStatus
+        );
+
+
+        renderHistory();
+
+
+        const generationModal =
+            document.getElementById(
+                'generationModal'
+            );
+
+
+        if (generationModal) {
+
+            const modal =
+                new bootstrap.Modal(
+                    generationModal
+                );
+
+
+            modal.show();
+
+        }
+
+    }
+
+
+    document.getElementById(
+        'pdfSearchButton'
+    ).addEventListener(
+        'click',
+        function () {
+
+            const history =
+                getHistory(
+                    PDF_HISTORY_KEY
+                );
+
+
+            renderModalRecords(
+                history,
+                pdfModalRecords,
+                'pdf',
+                pdfDateFilter.value
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        'pdfClearButton'
+    ).addEventListener(
+        'click',
+        function () {
+
+            pdfDateFilter.value =
+                '';
+
+
+            const history =
+                getHistory(
+                    PDF_HISTORY_KEY
+                );
+
+
+            renderModalRecords(
+                history,
+                pdfModalRecords,
+                'pdf'
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        'excelSearchButton'
+    ).addEventListener(
+        'click',
+        function () {
+
+            const history =
+                getHistory(
+                    EXCEL_HISTORY_KEY
+                );
+
+
+            renderModalRecords(
+                history,
+                excelModalRecords,
+                'excel',
+                excelDateFilter.value
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        'excelClearButton'
+    ).addEventListener(
+        'click',
+        function () {
+
+            excelDateFilter.value =
+                '';
+
+
+            const history =
+                getHistory(
+                    EXCEL_HISTORY_KEY
+                );
+
+
+            renderModalRecords(
+                history,
+                excelModalRecords,
+                'excel'
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        'leaveReportForm'
+    ).addEventListener(
+        'submit',
+        function (event) {
+
+            const start =
+                document.getElementById(
+                    'start'
+                ).value;
+
+
+            const end =
+                document.getElementById(
+                    'end'
+                ).value;
+
+
+            if (
+                start &&
+                end &&
+                start > end
+            ) {
+
+                event.preventDefault();
+
+
+                alert(
+                    'Date From cannot be later than Date To.'
+                );
+
+            }
+
+        }
+    );
+
+
+    const navigationEntries =
+        performance.getEntriesByType(
+            'navigation'
+        );
+
+
+    const isReload =
+        navigationEntries.length > 0
+            ? navigationEntries[0].type === 'reload'
+            : (
+                performance.navigation &&
+                performance.navigation.type === 1
+            );
+
+
+    if (isReload) {
+
+        window.location.replace(
+            LEAVE_REPORT_URL
+        );
+
+        return;
+
+    }
+
+
+    history.pushState(
+        null,
+        '',
+        window.location.href
+    );
+
+
+    window.addEventListener(
+        'popstate',
+        function () {
+
+            window.location.replace(
+                REPORTS_PAGE_URL
+            );
+
+        }
+    );
+
+
+    renderHistory();
+
+
+    @if(isset($generated) && $generated)
+
+        showGeneratedFiles();
+
+    @endif
+
+});
+
+</script>
 
 </body>
 

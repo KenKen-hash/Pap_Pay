@@ -951,7 +951,7 @@
                     </span>
 
                     <span class="nav-text">
-                        Dashboard
+                        Home
                     </span>
 
                 </a>
@@ -1140,13 +1140,42 @@
 
                     <!-- SEARCH -->
 
-                    <form class="d-none d-md-flex ms-3 flex-grow-1"
+                    <form class="admin-search-form d-none d-md-flex ms-3 flex-grow-1"
+                        action="{{ route('search') }}"
+                        method="GET"
                         role="search">
 
-                        <input class="form-control search-input"
-                            type="search"
-                            placeholder="Search users, orders, reports"
-                            aria-label="Search">
+                        <div class="admin-search-wrapper">
+
+                            <i class="bi bi-search admin-search-icon"
+                                aria-hidden="true"></i>
+
+                            <input
+                                type="search"
+                                name="search"
+                                id="adminSearchInput"
+                                class="admin-search-input"
+                                placeholder="Search Pap Pay..."
+                                aria-label="Search Pap Pay"
+                                autocomplete="off">
+
+                            <button
+                                type="button"
+                                class="admin-search-clear"
+                                id="adminSearchClear"
+                                aria-label="Clear search">
+
+                                <i class="bi bi-x-lg"
+                                    aria-hidden="true"></i>
+
+                            </button>
+
+                            <div
+                                class="admin-search-results"
+                                id="adminSearchResults">
+                            </div>
+
+                        </div>
 
                     </form>
 
@@ -1565,40 +1594,12 @@
                         <div class="panel-body">
 
 
-                            <!-- SUCCESS -->
-
-                            @if (session('success'))
-
-                                <div class="alert alert-success">
-
-                                    {{ session('success') }}
-
-                                </div>
-
-                            @endif
-
-
-                            <!-- ERRORS -->
-
-                            @if ($errors->any())
-
-                                <div class="alert alert-danger">
-
-                                    <ul class="mb-0">
-
-                                        @foreach ($errors->all() as $error)
-
-                                            <li>
-                                                {{ $error }}
-                                            </li>
-
-                                        @endforeach
-
-                                    </ul>
-
-                                </div>
-
-                            @endif
+                            {{--
+                                SUCCESS / ERROR NOTIFICATIONS
+                                The notification UI is handled by the modal near the bottom of this page.
+                                The existing Laravel session and validation messages are intentionally
+                                unchanged so no controller or backend changes are required.
+                            --}}
 
 
                             <!-- FORM -->
@@ -2806,6 +2807,89 @@
 
 
     <!-- =========================================================
+        OFFICIAL BUSINESS NOTIFICATION MODAL
+        ========================================================= -->
+
+    @if (session('success') || $errors->any())
+
+        <div class="modal fade"
+            id="obNotificationModal"
+            tabindex="-1"
+            aria-labelledby="obNotificationModalLabel"
+            aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered">
+
+                <div class="modal-content border-0 shadow-lg"
+                    style="border-radius: 18px; overflow: hidden;">
+
+                    <div class="modal-body text-center px-4 py-4 py-md-5">
+
+                        @if (session('success'))
+
+                            <div class="d-flex align-items-center justify-content-center mx-auto mb-3"
+                                style="width: 72px; height: 72px; border-radius: 50%; background: #e8f7ee;">
+
+                                <i class="bi bi-check-lg text-success"
+                                    style="font-size: 2.4rem;"></i>
+
+                            </div>
+
+                            <h5 class="fw-bold mb-2"
+                                id="obNotificationModalLabel">
+                                Official Business Request Submitted
+                            </h5>
+
+                            <p class="text-muted mb-4">
+                                {{ session('success') }}
+                            </p>
+
+                        @else
+
+                            <div class="d-flex align-items-center justify-content-center mx-auto mb-3"
+                                style="width: 72px; height: 72px; border-radius: 50%; background: #fff3cd;">
+
+                                <i class="bi bi-exclamation-triangle-fill text-warning"
+                                    style="font-size: 2rem;"></i>
+
+                            </div>
+
+                            <h5 class="fw-bold mb-2"
+                                id="obNotificationModalLabel">
+                                Unable to Submit Official Business Request
+                            </h5>
+
+                            <div class="text-muted mb-4">
+
+                                @foreach ($errors->all() as $error)
+                                    <div class="mb-1">{{ $error }}</div>
+                                @endforeach
+
+                            </div>
+
+                        @endif
+
+                        <button type="button"
+                            class="btn {{ session('success') ? 'btn-success' : 'btn-warning' }} px-4 rounded-pill"
+                            data-bs-dismiss="modal">
+
+                            <i class="bi bi-check2 me-1"></i>
+                            OK
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    @endif
+
+
+    <!-- =========================================================
         BOOTSTRAP
         ========================================================= -->
 
@@ -2854,6 +2938,32 @@
             updateEstimatedCost();
         });
     </script>
+
+
+    <!-- =========================================================
+        AUTO-OPEN NOTIFICATION MODAL
+        ========================================================= -->
+
+    @if (session('success') || $errors->any())
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const notificationModalElement = document.getElementById('obNotificationModal');
+
+                if (notificationModalElement && typeof bootstrap !== 'undefined') {
+                    const notificationModal = new bootstrap.Modal(notificationModalElement, {
+                        backdrop: true,
+                        keyboard: true
+                    });
+
+                    notificationModal.show();
+                }
+
+            });
+        </script>
+
+    @endif
 
 
     <!-- =========================================================

@@ -6,36 +6,51 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="adminHMD professional admin dashboard template">
+
+    <meta name="description" content="PAP Pay Employee Profile">
     <title>Profile | PAP Pay</title>
 
+    <link rel="icon"
+        type="image/x-icon"
+        href="{{ asset('khen/assets/images/favicon.png') }}">
 
-     <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="{{ asset('khen/assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('khen/assets/css/bootstrap.min.css') }}">
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="{{ asset('khen/assets/vendors/bootstrap-icons/bootstrap-icons.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('khen/assets/vendors/bootstrap-icons/bootstrap-icons.css') }}">
 
     <!-- Main Dashboard CSS -->
-    <link rel="stylesheet" href="{{ asset('khen/assets/css/style.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('khen/assets/css/style.css') }}">
+
 
     <style>
+
         /* =========================================================
-           PROFILE PAGE RESPONSIVE FIX
+           GLOBAL RESPONSIVE FOUNDATION
            ========================================================= */
 
-        html,
-        body {
+        html {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
 
         body {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
         }
 
@@ -45,72 +60,135 @@
             box-sizing: border-box;
         }
 
-        img {
+        img,
+        svg,
+        video,
+        canvas {
             max-width: 100%;
         }
 
-        /* ---------------------------------------------------------
-           APPLICATION SHELL
-           --------------------------------------------------------- */
+        a,
+        button,
+        input,
+        select,
+        textarea {
+            max-width: 100%;
+        }
+
+
+        /* =========================================================
+           MAIN APPLICATION SHELL
+           ========================================================= */
 
         .admin-shell {
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
+
+            display: flex;
+
+            overflow-x: hidden;
+        }
+
+        .admin-sidebar {
+            flex: 0 0 auto;
             min-width: 0;
         }
 
         .admin-main {
-            min-width: 0;
+            flex: 1 1 auto;
+
             width: 100%;
+            max-width: 100%;
+
+            min-width: 0;
+
+            overflow-x: hidden;
         }
 
         .dashboard-content {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
+
             overflow-x: hidden;
         }
 
-        /* ---------------------------------------------------------
+
+        /* =========================================================
            NAVBAR
-           --------------------------------------------------------- */
+           ========================================================= */
 
         .admin-navbar {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
+
             position: relative;
             z-index: 1000;
+
+            overflow: visible;
         }
 
         .admin-navbar .container-fluid {
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
+
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-navbar form {
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        .admin-navbar .search-input {
+            width: 100%;
+            max-width: 100%;
             min-width: 0;
         }
 
         .navbar-actions {
             display: flex;
             align-items: center;
+
             gap: .5rem;
-            flex-shrink: 0;
+
+            flex: 0 0 auto;
+            min-width: 0;
+        }
+
+        .navbar-actions > * {
+            min-width: 0;
         }
 
         .profile-button {
             min-width: 0;
+            max-width: 100%;
         }
 
         .profile-button .profile-name {
+            display: block;
+
             max-width: 180px;
+
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        /* Keep Bootstrap dropdown behavior normal */
         .admin-navbar .dropdown {
             position: relative;
+            min-width: 0;
         }
 
         .admin-navbar .dropdown-menu {
             min-width: 180px;
+
             max-width: calc(100vw - 20px);
+
             z-index: 2000;
         }
 
@@ -121,51 +199,71 @@
 
         .admin-navbar .dropdown-item {
             white-space: normal;
-            overflow-wrap: break-word;
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
-        /* ---------------------------------------------------------
-           PAGE CONTAINER
-           --------------------------------------------------------- */
+
+        /* =========================================================
+           PROFILE PAGE CONTAINER
+           ========================================================= */
 
         .profile-page-container {
             width: 100%;
             max-width: 100%;
             min-width: 0;
+
+            overflow-x: hidden;
         }
 
         .profile-content-row {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
+
+            margin-left: 0;
+            margin-right: 0;
         }
 
         .profile-content-row > [class*="col-"] {
             min-width: 0;
+            max-width: 100%;
         }
 
-        /* ---------------------------------------------------------
+
+        /* =========================================================
            PAGE HEADING
-           --------------------------------------------------------- */
+           ========================================================= */
 
         .profile-page-heading {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
         }
 
         .profile-page-heading-copy {
             display: flex;
             align-items: flex-start;
+
             gap: 1rem;
+
+            width: 100%;
+            max-width: 100%;
             min-width: 0;
         }
 
         .profile-page-heading-copy > div {
+            flex: 1 1 auto;
+
             min-width: 0;
+            max-width: 100%;
         }
 
         .profile-page-heading h1,
         .profile-page-heading p {
-            overflow-wrap: break-word;
+            max-width: 100%;
+
+            overflow-wrap: anywhere;
             word-break: normal;
         }
 
@@ -173,25 +271,38 @@
             max-width: 100%;
         }
 
-        /* ---------------------------------------------------------
+        .profile-page-heading .page-icon {
+            flex: 0 0 auto;
+        }
+
+
+        /* =========================================================
            PROFILE CARD
-           --------------------------------------------------------- */
+           ========================================================= */
 
         .profile-card {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
+
             overflow: hidden;
         }
 
         .profile-cover {
             width: 100%;
+            max-width: 100%;
+
             overflow: hidden;
         }
 
         .profile-cover img {
             display: block;
+
             width: 100%;
+            max-width: 100%;
+
             height: 220px;
+
             object-fit: cover;
             object-position: center;
         }
@@ -199,117 +310,173 @@
         .profile-photo {
             width: 120px;
             height: 120px;
+
             max-width: 120px;
+
             object-fit: cover;
+
+            border-radius: 50%;
         }
 
         .profile-card h2,
         .profile-card p {
-            overflow-wrap: break-word;
+            max-width: 100%;
+
+            overflow-wrap: anywhere;
             word-break: normal;
         }
 
         .profile-card .badge {
             max-width: 100%;
+
             white-space: normal;
-            overflow-wrap: break-word;
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         .profile-card .info-list {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
         }
 
         .profile-card .info-list > div {
+            width: 100%;
+            max-width: 100%;
             min-width: 0;
+        }
+
+        .profile-card .info-list span {
+            max-width: 100%;
+
+            overflow-wrap: anywhere;
+            word-break: normal;
         }
 
         .profile-card .info-list strong {
             display: block;
+
+            width: 100%;
             max-width: 100%;
-            overflow-wrap: break-word;
-            word-break: normal;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
             white-space: normal;
         }
 
-        /* ---------------------------------------------------------
+
+        /* =========================================================
            EDIT FORM
-           --------------------------------------------------------- */
+           ========================================================= */
 
         .profile-edit-form {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
+
             overflow: hidden;
         }
 
         .profile-edit-form .panel-header {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
+
+            overflow-wrap: anywhere;
         }
 
         .profile-form-body {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
+
+            margin-left: 0 !important;
+            margin-right: 0 !important;
         }
 
         .profile-form-body > [class*="col-"] {
             min-width: 0;
+            max-width: 100%;
         }
 
         .profile-edit-form .form-control,
         .profile-edit-form .form-select {
+            display: block;
+
             width: 100%;
-            min-width: 0;
             max-width: 100%;
+            min-width: 0;
         }
 
         .profile-edit-form textarea {
+            display: block;
+
             width: 100%;
             max-width: 100%;
+            min-width: 0;
+
             resize: vertical;
         }
 
         .profile-edit-form .form-label {
             display: block;
+
+            width: 100%;
             max-width: 100%;
-            overflow-wrap: break-word;
+
+            overflow-wrap: anywhere;
+            word-break: normal;
         }
 
         .profile-edit-form small {
             display: block;
+
+            width: 100%;
             max-width: 100%;
-            overflow-wrap: break-word;
+
+            overflow-wrap: anywhere;
+            word-break: normal;
         }
 
-        /* ---------------------------------------------------------
+
+        /* =========================================================
            BUTTON
-           --------------------------------------------------------- */
+           ========================================================= */
 
         .profile-save-button {
             min-width: 140px;
+            max-width: 100%;
         }
 
-        /* ---------------------------------------------------------
+
+        /* =========================================================
            FOOTER
-           --------------------------------------------------------- */
+           ========================================================= */
 
         .admin-footer {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
+
             overflow-x: hidden;
         }
 
         .admin-footer .container-fluid {
             width: 100%;
+            max-width: 100%;
             min-width: 0;
         }
 
         .admin-footer span {
-            overflow-wrap: break-word;
+            max-width: 100%;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
+
         /* =========================================================
-           TABLET
+           TABLET / SMALL LAPTOP
            ========================================================= */
 
         @media (max-width: 1199.98px) {
@@ -323,10 +490,12 @@
                 height: 110px;
                 max-width: 110px;
             }
+
         }
 
+
         /* =========================================================
-           TABLET / SMALL LAPTOP
+           TABLET
            ========================================================= */
 
         @media (max-width: 991.98px) {
@@ -353,7 +522,24 @@
                 padding-left: 1rem !important;
                 padding-right: 1rem !important;
             }
+
+            /*
+             * Prevent the navbar search from forcing
+             * the entire page wider than the viewport.
+             */
+
+            .admin-navbar .container-fluid > form {
+                flex: 1 1 auto;
+                width: 1px;
+                min-width: 0;
+            }
+
+            .admin-navbar .navbar-actions {
+                flex: 0 0 auto;
+            }
+
         }
+
 
         /* =========================================================
            MOBILE
@@ -365,7 +551,9 @@
             body {
                 width: 100%;
                 max-width: 100%;
-                overflow-x: hidden;
+                min-width: 0;
+
+                overflow-x: hidden !important;
             }
 
             .admin-shell,
@@ -374,26 +562,49 @@
                 width: 100%;
                 max-width: 100%;
                 min-width: 0;
+
+                overflow-x: hidden;
             }
+
 
             /* -----------------------------------------------------
                NAVBAR
                ----------------------------------------------------- */
 
+            .admin-navbar {
+                width: 100%;
+                max-width: 100%;
+            }
+
             .admin-navbar .container-fluid {
+                width: 100%;
+                max-width: 100%;
+
                 padding-left: .75rem !important;
                 padding-right: .75rem !important;
+
+                gap: .25rem;
+            }
+
+            .admin-navbar .container-fluid > form {
+                display: none !important;
             }
 
             .navbar-actions {
                 gap: .3rem;
+
+                margin-left: auto !important;
+
+                flex-shrink: 0;
             }
 
             .admin-navbar .icon-button {
+                flex: 0 0 auto;
                 flex-shrink: 0;
             }
 
             .profile-button {
+                flex: 0 0 auto;
                 flex-shrink: 0;
             }
 
@@ -401,16 +612,14 @@
                 display: none !important;
             }
 
-            /*
-             * Do not force dropdowns to display.
-             * Bootstrap controls visibility with .show.
-             */
-
             .admin-navbar .dropdown-menu {
                 position: absolute;
+
                 right: 0;
                 left: auto;
+
                 min-width: 180px;
+
                 width: auto;
                 max-width: calc(100vw - 16px);
             }
@@ -420,19 +629,29 @@
                 max-width: calc(100vw - 16px);
             }
 
+
             /* -----------------------------------------------------
                PAGE
                ----------------------------------------------------- */
 
             .profile-page-container {
+                width: 100%;
+                max-width: 100%;
+
                 padding: 1rem !important;
             }
 
             .profile-page-heading {
+                width: 100%;
+                max-width: 100%;
+
                 margin-bottom: 1rem;
             }
 
             .profile-page-heading-copy {
+                width: 100%;
+                max-width: 100%;
+
                 gap: .75rem;
             }
 
@@ -450,21 +669,34 @@
                 flex: 0 0 auto;
             }
 
+
             /* -----------------------------------------------------
                PROFILE CARD
                ----------------------------------------------------- */
 
             .profile-card {
+                width: 100%;
+                max-width: 100%;
+
                 height: auto !important;
             }
 
+            .profile-cover {
+                width: 100%;
+                max-width: 100%;
+            }
+
             .profile-cover img {
+                width: 100%;
+                max-width: 100%;
+
                 height: 200px;
             }
 
             .profile-photo {
                 width: 100px;
                 height: 100px;
+
                 max-width: 100px;
             }
 
@@ -477,11 +709,17 @@
             }
 
             .profile-card .info-list {
+                width: 100%;
+                max-width: 100%;
+
                 padding-left: 1rem;
                 padding-right: 1rem;
             }
 
             .profile-card .info-list > div {
+                width: 100%;
+                max-width: 100%;
+
                 margin-bottom: 1rem !important;
             }
 
@@ -490,15 +728,22 @@
                 line-height: 1.45;
             }
 
+
             /* -----------------------------------------------------
                FORM
                ----------------------------------------------------- */
 
             .profile-edit-form {
+                width: 100%;
+                max-width: 100%;
+
                 height: auto !important;
             }
 
             .profile-edit-form .panel-header {
+                width: 100%;
+                max-width: 100%;
+
                 padding: 1rem !important;
             }
 
@@ -507,6 +752,9 @@
             }
 
             .profile-edit-form .profile-form-body {
+                width: 100%;
+                max-width: 100%;
+
                 padding: 1rem !important;
             }
 
@@ -517,37 +765,57 @@
 
             .profile-edit-form .form-control,
             .profile-edit-form .form-select {
+                width: 100%;
+                max-width: 100%;
+                min-width: 0;
+
                 min-height: 44px;
+
                 font-size: .9rem;
             }
 
             .profile-edit-form textarea {
+                width: 100%;
+                max-width: 100%;
+
                 min-height: 100px;
             }
 
             .profile-save-button {
                 width: 100%;
+                max-width: 100%;
+
                 min-height: 44px;
             }
+
 
             /* -----------------------------------------------------
                FOOTER
                ----------------------------------------------------- */
 
             .admin-footer .container-fluid {
+                width: 100%;
+                max-width: 100%;
+
                 padding: 1rem !important;
+
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
+
                 gap: .5rem;
             }
 
             .admin-footer span {
                 width: 100%;
+                max-width: 100%;
+
                 font-size: .8rem;
                 line-height: 1.5;
             }
+
         }
+
 
         /* =========================================================
            SMALL PHONE
@@ -587,6 +855,7 @@
             .profile-photo {
                 width: 88px;
                 height: 88px;
+
                 max-width: 88px;
             }
 
@@ -632,7 +901,9 @@
             .admin-footer span {
                 font-size: .75rem;
             }
+
         }
+
 
         /* =========================================================
            VERY SMALL PHONE
@@ -668,6 +939,7 @@
             .profile-photo {
                 width: 78px;
                 height: 78px;
+
                 max-width: 78px;
             }
 
@@ -723,39 +995,54 @@
                 min-height: 42px;
                 font-size: .85rem;
             }
+
         }
+
 
         /* =========================================================
            MODAL RESPONSIVENESS
            ========================================================= */
 
+        .profile-message-modal {
+            overflow-x: hidden;
+        }
+
         .profile-message-modal .modal-dialog {
             width: auto;
             max-width: 500px;
+
             margin: 1.75rem auto;
         }
 
         .profile-message-modal .modal-content {
             width: 100%;
             max-width: 100%;
+
             overflow: hidden;
+
             border-radius: .75rem;
         }
 
         .profile-message-modal .modal-body {
-            overflow-wrap: break-word;
-            word-break: normal;
+            max-width: 100%;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         .profile-message-modal .modal-body ul {
             padding-left: 1.25rem;
+
+            max-width: 100%;
         }
 
         @media (max-width: 575.98px) {
 
             .profile-message-modal .modal-dialog {
                 width: calc(100% - 1.5rem);
+
                 max-width: none;
+
                 margin: .75rem auto;
             }
 
@@ -776,7 +1063,53 @@
             .profile-message-modal .modal-footer .btn {
                 width: 100%;
             }
+
         }
+
+
+        /* =========================================================
+           BOOTSTRAP ROW SAFETY
+           ========================================================= */
+
+        .row {
+            max-width: 100%;
+        }
+
+        .row > * {
+            min-width: 0;
+        }
+
+
+        /* =========================================================
+           FORM SAFETY
+           ========================================================= */
+
+        input,
+        select,
+        textarea {
+            max-width: 100%;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            max-width: 100%;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================================================
+           LONG TEXT SAFETY
+           ========================================================= */
+
+        .profile-card,
+        .profile-edit-form,
+        .profile-page-heading,
+        .admin-footer {
+            overflow-wrap: anywhere;
+            word-wrap: break-word;
+        }
+
 
         /* =========================================================
            ACCESSIBILITY
@@ -792,16 +1125,25 @@
                 transition-duration: .01ms !important;
                 scroll-behavior: auto !important;
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
     <div class="admin-shell">
 
-        <!-- SIDEBAR BACKDROP -->
-        <div class="sidebar-backdrop" data-sidebar-close></div>
+        <!-- =====================================================
+             SIDEBAR BACKDROP
+             ===================================================== -->
+
+        <div class="sidebar-backdrop"
+            data-sidebar-close></div>
+
 
         <!-- =====================================================
              SIDEBAR
@@ -811,19 +1153,19 @@
             id="adminSidebar"
             aria-label="Main navigation">
 
-             <div class="sidebar-header">
+            <div class="sidebar-header">
 
-            <a class="brand-mark"
-               href="{{ route('dashboard') }}"
-               aria-label="Admin Dashboard">
+                <a class="brand-mark"
+                    href="{{ route('dashboard') }}"
+                    aria-label="Admin Dashboard">
 
-                <img src="../../../khen/assets/images/logo.jpg"
-                     alt="Pap Pay Logo"
-                     class="brand-logo">
+                    <img src="{{ asset('khen/assets/images/logo.jpg') }}"
+                        alt="Pap Pay Logo"
+                        class="brand-logo">
 
-            </a>
+                </a>
 
-        </div>
+            </div>
 
 
             <nav class="sidebar-nav">
@@ -832,11 +1174,12 @@
                     href="{{ route('dashboard') }}">
 
                     <span class="nav-icon">
-                        <i class="bi bi-house-door" aria-hidden="true"></i>
+                        <i class="bi bi-house-door"
+                            aria-hidden="true"></i>
                     </span>
 
                     <span class="nav-text">
-                        Dashboard
+                        Home
                     </span>
 
                 </a>
@@ -846,7 +1189,8 @@
                     href="{{ route('attendance') }}">
 
                     <span class="nav-icon">
-                        <i class="bi bi-calendar-check" aria-hidden="true"></i>
+                        <i class="bi bi-calendar-check"
+                            aria-hidden="true"></i>
                     </span>
 
                     <span class="nav-text">
@@ -860,7 +1204,8 @@
                     href="{{ route('file_leave') }}">
 
                     <span class="nav-icon">
-                        <i class="bi bi-calendar-plus" aria-hidden="true"></i>
+                        <i class="bi bi-calendar-plus"
+                            aria-hidden="true"></i>
                     </span>
 
                     <span class="nav-text">
@@ -874,7 +1219,8 @@
                     href="{{ route('file_ob') }}">
 
                     <span class="nav-icon">
-                        <i class="bi bi-briefcase" aria-hidden="true"></i>
+                        <i class="bi bi-briefcase"
+                            aria-hidden="true"></i>
                     </span>
 
                     <span class="nav-text">
@@ -888,7 +1234,8 @@
                     href="{{ route('payslip') }}">
 
                     <span class="nav-icon">
-                        <i class="bi bi-receipt" aria-hidden="true"></i>
+                        <i class="bi bi-receipt"
+                            aria-hidden="true"></i>
                     </span>
 
                     <span class="nav-text">
@@ -902,7 +1249,8 @@
                     href="{{ route('employee.announcements') }}">
 
                     <span class="nav-icon">
-                        <i class="bi bi-megaphone" aria-hidden="true"></i>
+                        <i class="bi bi-megaphone"
+                            aria-hidden="true"></i>
                     </span>
 
                     <span class="nav-text">
@@ -917,7 +1265,8 @@
                     aria-current="page">
 
                     <span class="nav-icon">
-                        <i class="bi bi-person" aria-hidden="true"></i>
+                        <i class="bi bi-person"
+                            aria-hidden="true"></i>
                     </span>
 
                     <span class="nav-text">
@@ -929,7 +1278,9 @@
             </nav>
 
 
-            <!-- SIDEBAR USER -->
+            <!-- =================================================
+                 SIDEBAR USER
+                 ================================================= -->
 
             <div class="sidebar-user">
 
@@ -950,7 +1301,9 @@
             </div>
 
 
-            <!-- SIDEBAR FOOTER -->
+            <!-- =================================================
+                 SIDEBAR FOOTER
+                 ================================================= -->
 
             <div class="sidebar-footer">
 
@@ -980,6 +1333,7 @@
 
                 <div class="container-fluid px-3 px-lg-4">
 
+
                     <!-- SIDEBAR TOGGLE -->
 
                     <button class="sidebar-toggle"
@@ -998,15 +1352,41 @@
 
                     <!-- SEARCH -->
 
-                    <form class="d-none d-md-flex ms-3 flex-grow-1"
+                    <form class="admin-search-form d-none d-md-flex ms-3 flex-grow-1"
                         action="{{ route('search') }}"
-                        method="GET">
+                        method="GET"
+                        role="search">
 
-                        <input class="form-control search-input"
-                            type="search"
-                            name="search"
-                            placeholder="Search attendance, leave, payroll..."
-                            required>
+                        <div class="admin-search-wrapper">
+
+                            <i class="bi bi-search admin-search-icon"
+                                aria-hidden="true"></i>
+
+                            <input
+                                type="search"
+                                name="search"
+                                id="adminSearchInput"
+                                class="admin-search-input"
+                                placeholder="Search Pap Pay..."
+                                aria-label="Search Pap Pay"
+                                autocomplete="off">
+
+                            <button
+                                type="button"
+                                class="admin-search-clear"
+                                id="adminSearchClear"
+                                aria-label="Clear search">
+
+                                <i class="bi bi-x-lg" aria-hidden="true"></i>
+
+                            </button>
+
+                            <div
+                                class="admin-search-results"
+                                id="adminSearchResults">
+                            </div>
+
+                        </div>
 
                     </form>
 
@@ -1016,7 +1396,9 @@
                     <div class="navbar-actions ms-auto">
 
 
-                        <!-- NOTIFICATIONS -->
+                        <!-- =================================================
+                             NOTIFICATIONS
+                             ================================================= -->
 
                         <div class="dropdown">
 
@@ -1088,7 +1470,9 @@
                         </div>
 
 
-                        <!-- PROFILE -->
+                        <!-- =================================================
+                             PROFILE DROPDOWN
+                             ================================================= -->
 
                         <div class="dropdown">
 
@@ -1120,6 +1504,7 @@
                                         href="{{ route('my_profile') }}">
 
                                         <i class="bi bi-person me-2"></i>
+
                                         Profile
 
                                     </a>
@@ -1128,7 +1513,9 @@
 
 
                                 <li>
+
                                     <hr class="dropdown-divider">
+
                                 </li>
 
 
@@ -1143,6 +1530,7 @@
                                             class="dropdown-item">
 
                                             <i class="bi bi-box-arrow-right me-2"></i>
+
                                             Sign out
 
                                         </button>
@@ -1223,6 +1611,7 @@
                         <div class="col-12 col-xl-4">
 
                             <div class="panel h-100 text-center profile-card">
+
 
                                 <!-- COVER -->
 
@@ -1754,6 +2143,7 @@
                             id="profileSuccessModalLabel">
 
                             <i class="bi bi-check-circle-fill me-2"></i>
+
                             Success
 
                         </h5>
@@ -1816,6 +2206,7 @@
                             id="profileErrorModalLabel">
 
                             <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
                             Please check your information
 
                         </h5>
@@ -1884,6 +2275,7 @@
          ========================================================= -->
 
     <script>
+
         document.addEventListener('DOMContentLoaded', function () {
 
             const successModalElement =
@@ -1927,6 +2319,7 @@
             }
 
         });
+
     </script>
 
 </body>

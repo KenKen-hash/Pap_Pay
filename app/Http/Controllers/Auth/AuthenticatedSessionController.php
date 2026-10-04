@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Services\LoginHistoryService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,40 +23,52 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-public function store(LoginRequest $request): RedirectResponse
-{
-    $request->authenticate();
+    public function store(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
 
-    $request->session()->regenerate();
+        $request->session()->regenerate();
 
-    $user = Auth::user();
+        $user = Auth::user();
 
-    /*
-    |--------------------------------------------------------------------------
-    | Force Password Change
-    |--------------------------------------------------------------------------
-    */
+        /*
+        |--------------------------------------------------------------------------
+        | Record Login History
+        |--------------------------------------------------------------------------
+        |
+        | This must happen AFTER session regeneration so the login history
+        | receives the actual session ID that will remain active.
+        |
+        */
 
-    if ($user->force_password_change) {
+        LoginHistoryService::recordLogin(
+            $user,
+            $request
+        );
 
-        return redirect()->route('password.first');
+        /*
+        |--------------------------------------------------------------------------
+        | Force Password Change
+        |--------------------------------------------------------------------------
+        */
 
+        if ($user->force_password_change) {
+            return redirect()->route('password.first');
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Redirect by Role
+        |--------------------------------------------------------------------------
+        */
+
+        if ($user->role == 'admin') {
+            return redirect()->route('admin-dashboard');
+        }
+
+        return redirect()->route('dashboard');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Redirect by Role
-    |--------------------------------------------------------------------------
-    */
-
-    if ($user->role == 'admin') {
-
-        return redirect()->route('admin-dashboard');
-
-    }
-
-    return redirect()->route('dashboard');
-}
     /**
      * Destroy an authenticated session.
      */

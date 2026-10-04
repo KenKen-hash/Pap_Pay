@@ -148,6 +148,112 @@
         }
 
         /* =========================================================
+           FRONTEND ATTENDANCE STATUS FILTER BUTTONS
+           ========================================================= */
+
+        .attendance-status-filter {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+            margin-bottom: 1.5rem;
+        }
+
+        .attendance-status-filter-label {
+            color: #64748b;
+            font-size: .84rem;
+            font-weight: 700;
+            margin-right: 4px;
+            white-space: nowrap;
+        }
+
+        .attendance-filter-btn {
+            appearance: none;
+            border: 1px solid #dfe5ec;
+            background: #fff;
+            color: #475569;
+            min-height: 40px;
+            padding: 8px 17px;
+            border-radius: 10px;
+            font-size: .84rem;
+            font-weight: 700;
+            line-height: 1.2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            cursor: pointer;
+            transition:
+                background-color .2s ease,
+                border-color .2s ease,
+                color .2s ease,
+                box-shadow .2s ease,
+                transform .2s ease;
+        }
+
+        .attendance-filter-btn:hover {
+            transform: translateY(-1px);
+            border-color: #cbd5e1;
+            background: #f8fafc;
+            color: var(--pp-text-strong);
+        }
+
+        .attendance-filter-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 94, 190, .12);
+        }
+
+        .attendance-filter-btn.active {
+            background: var(--pp-primary);
+            border-color: var(--pp-primary);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(67, 94, 190, .18);
+        }
+
+        .attendance-filter-btn.active:hover {
+            background: #374ea5;
+            border-color: #374ea5;
+            color: #fff;
+        }
+
+        .attendance-filter-btn .filter-count {
+            min-width: 20px;
+            height: 20px;
+            padding: 2px 5px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: .68rem;
+            font-weight: 800;
+        }
+
+        .attendance-filter-btn.active .filter-count {
+            background: rgba(255, 255, 255, .18);
+            color: #fff;
+        }
+
+        /* =========================================================
+           FILTER EMPTY MESSAGE
+           ========================================================= */
+
+        .attendance-filter-empty {
+            display: none;
+            color: #64748b;
+            font-size: .9rem;
+            font-weight: 500;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        .attendance-filter-empty.show {
+            display: block;
+        }
+
+        /* =========================================================
            METRIC CARDS
            Designed to match the Home dashboard cards
            ========================================================= */
@@ -337,35 +443,6 @@
         }
 
         /* =========================================================
-           PAGINATION
-           ========================================================= */
-
-        .attendance-pagination {
-            margin-top: 20px;
-        }
-
-        .attendance-pagination .pagination {
-            margin-bottom: 0;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
-
-        .attendance-pagination .page-link {
-            border-radius: 8px !important;
-            border: 1px solid #e2e8f0;
-            color: #475569;
-            font-size: .82rem;
-            font-weight: 600;
-            margin: 0;
-        }
-
-        .attendance-pagination .page-item.active .page-link {
-            background-color: var(--pp-primary);
-            border-color: var(--pp-primary);
-            color: #fff;
-        }
-
-        /* =========================================================
            EMPTY STATE
            ========================================================= */
 
@@ -423,6 +500,7 @@
            ========================================================= */
 
         @media (max-width: 991.98px) {
+
             .attendance-page-header {
                 align-items: flex-start;
             }
@@ -439,9 +517,11 @@
             .attendance-metric-card {
                 min-height: 120px;
             }
+
         }
 
         @media (max-width: 767.98px) {
+
             .attendance-page-header {
                 gap: 15px;
                 margin-bottom: 1.45rem;
@@ -472,6 +552,23 @@
                 font-size: .8rem;
             }
 
+            .attendance-status-filter {
+                align-items: stretch;
+                gap: 7px;
+            }
+
+            .attendance-status-filter-label {
+                width: 100%;
+                margin-bottom: 1px;
+            }
+
+            .attendance-filter-btn {
+                flex: 1 1 0;
+                min-width: 0;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
             .attendance-metrics {
                 --bs-gutter-y: 12px;
             }
@@ -493,9 +590,11 @@
             .attendance-table-card .card-body {
                 padding: 15px;
             }
+
         }
 
         @media (max-width: 575.98px) {
+
             .attendance-page-header {
                 margin-bottom: 1.25rem;
             }
@@ -524,6 +623,19 @@
                 --bs-gutter-y: 10px;
             }
 
+            .attendance-status-filter {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .attendance-status-filter-label {
+                width: auto;
+            }
+
+            .attendance-filter-btn {
+                width: 100%;
+            }
+
             .attendance-metric-card {
                 min-height: 105px;
                 padding: 17px;
@@ -541,6 +653,7 @@
             .attendance-table-card .card-body {
                 padding: 10px;
             }
+
         }
 
         /* =========================================================
@@ -548,6 +661,7 @@
            ========================================================= */
 
         @media print {
+
             body {
                 background: #fff !important;
             }
@@ -556,6 +670,7 @@
             .admin-navbar,
             .attendance-page-header,
             .attendance-filter,
+            .attendance-status-filter,
             .attendance-metrics,
             .admin-footer,
             .sidebar-backdrop {
@@ -597,9 +712,6 @@
                 padding: 6px !important;
             }
 
-            .attendance-pagination {
-                display: none !important;
-            }
         }
     </style>
 </head>
@@ -613,77 +725,104 @@
         <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
 
             <div class="sidebar-header">
-                <a class="brand-mark" href="{{ route('admin-dashboard') }}" aria-label="Admin Dashboard">
+
+                <a class="brand-mark"
+                    href="{{ route('admin-dashboard') }}"
+                    aria-label="Admin Dashboard">
+
                     <img src="../../../khen/assets/images/logo.jpg"
                         alt="Pap Pay Logo"
                         class="brand-logo">
+
                 </a>
+
             </div>
 
             <nav class="sidebar-nav">
 
-                <a class="nav-link" href="{{ route('admin-dashboard') }}">
+                <a class="nav-link"
+                    href="{{ route('admin-dashboard') }}">
+
                     <span class="nav-icon">
                         <i class="bi bi-speedometer2"></i>
                     </span>
-                    <span class="nav-text">Home</span>
+
+                    <span class="nav-text">
+                        Home
+                    </span>
+
                 </a>
 
-                <a class="nav-link" href="{{ route('employees.index') }}">
+                <a class="nav-link"
+                    href="{{ route('employees.index') }}">
+
                     <span class="nav-icon">
                         <i class="bi bi-people"></i>
                     </span>
-                    <span class="nav-text">Employees</span>
+
+                    <span class="nav-text">
+                        Employees
+                    </span>
+
                 </a>
 
-                <a class="nav-link active" href="{{ route('attendance_list') }}">
+                <a class="nav-link active"
+                    href="{{ route('attendance_list') }}">
+
                     <span class="nav-icon">
                         <i class="bi bi-calendar-check"></i>
                     </span>
-                    <span class="nav-text">Attendance</span>
+
+                    <span class="nav-text">
+                        Attendance
+                    </span>
+
                 </a>
-                
-                        <a class="nav-link {{ ($pendingLeaves ?? 0) > 0 ? 'has-notification' : '' }}"
-    href="{{ route('admin.leaves') }}">
 
-    <span class="nav-icon">
-        <i class="bi bi-calendar-x"></i>
-    </span>
+                <a class="nav-link {{ ($pendingLeaves ?? 0) > 0 ? 'has-notification' : '' }}"
+                    href="{{ route('admin.leaves') }}">
 
-    <span class="nav-text">
-        Leave Requests
-    </span>
+                    <span class="nav-icon">
+                        <i class="bi bi-calendar-x"></i>
+                    </span>
 
-    @if (($pendingLeaves ?? 0) > 0)
-        <span class="sidebar-notification-badge">
-            {{ $pendingLeaves }}
-        </span>
-    @endif
+                    <span class="nav-text">
+                        Leave Requests
+                    </span>
 
-</a>
+                    @if (($pendingLeaves ?? 0) > 0)
 
-<a class="nav-link {{ ($pendingOB ?? 0) > 0 ? 'has-notification' : '' }}"
-    href="{{ route('official_business') }}">
+                        <span class="sidebar-notification-badge">
+                            {{ $pendingLeaves }}
+                        </span>
 
-    <span class="nav-icon">
-        <i class="bi bi-briefcase"></i>
-    </span>
+                    @endif
 
-    <span class="nav-text">
-        Official Business (OB)
-    </span>
+                </a>
 
-    @if (($pendingOB ?? 0) > 0)
-        <span class="sidebar-notification-badge">
-            {{ $pendingOB }}
-        </span>
-    @endif
+                <a class="nav-link {{ ($pendingOB ?? 0) > 0 ? 'has-notification' : '' }}"
+                    href="{{ route('official_business') }}">
 
-</a>
+                    <span class="nav-icon">
+                        <i class="bi bi-briefcase"></i>
+                    </span>
 
+                    <span class="nav-text">
+                        Official Business (OB)
+                    </span>
 
+                    @if (($pendingOB ?? 0) > 0)
 
-                <a class="nav-link" href="{{ route('holidays.index') }}">
+                        <span class="sidebar-notification-badge">
+                            {{ $pendingOB }}
+                        </span>
+
+                    @endif
+
+                </a>
+
+                <a class="nav-link"
+                    href="{{ route('holidays.index') }}">
 
                     <span class="nav-icon">
                         <i class="bi bi-gear"></i>
@@ -695,8 +834,8 @@
 
                 </a>
 
-
-                <a class="nav-link" href="{{ route('payroll') }}">
+                <a class="nav-link"
+                    href="{{ route('payroll') }}">
 
                     <span class="nav-icon">
                         <i class="bi bi-cash-stack"></i>
@@ -708,8 +847,8 @@
 
                 </a>
 
-
-                <a class="nav-link" href="{{ route('payslip_list') }}">
+                <a class="nav-link"
+                    href="{{ route('payslip_list') }}">
 
                     <span class="nav-icon">
                         <i class="bi bi-receipt"></i>
@@ -721,49 +860,9 @@
 
                 </a>
 
-
                 <a class="nav-link {{ ($unreadPayslipConcerns ?? 0) > 0 ? 'has-notification' : '' }}"
-    href="{{ route('admin.payslip-concerns.index') }}">
+                    href="{{ route('admin.payslip-concerns.index') }}">
 
-    <span class="nav-icon">
-        <i class="bi bi-exclamation-circle"></i>
-    </span>
-
-    <span class="nav-text">
-        Payslip Concerns
-    </span>
-
-    @if (($unreadPayslipConcerns ?? 0) > 0)
-        <span class="sidebar-notification-badge">
-            {{ $unreadPayslipConcerns }}
-        </span>
-    @endif
-
-</a>
-
-
-                <a class="nav-link" href="{{ route('holidays.index') }}">
-                    <span class="nav-icon">
-                        <i class="bi bi-gear"></i>
-                    </span>
-                    <span class="nav-text">Holidays</span>
-                </a>
-
-                <a class="nav-link" href="{{ route('payroll') }}">
-                    <span class="nav-icon">
-                        <i class="bi bi-cash-stack"></i>
-                    </span>
-                    <span class="nav-text">Payroll</span>
-                </a>
-
-                <a class="nav-link" href="{{ route('payslip_list') }}">
-                    <span class="nav-icon">
-                        <i class="bi bi-receipt"></i>
-                    </span>
-                    <span class="nav-text">Payslips</span>
-                </a>
-
-                <a class="nav-link" href="{{ route('admin.payslip-concerns.index') }}">
                     <span class="nav-icon">
                         <i class="bi bi-exclamation-circle"></i>
                     </span>
@@ -771,20 +870,41 @@
                     <span class="nav-text">
                         Payslip Concerns
                     </span>
+
+                    @if (($unreadPayslipConcerns ?? 0) > 0)
+
+                        <span class="sidebar-notification-badge">
+                            {{ $unreadPayslipConcerns }}
+                        </span>
+
+                    @endif
+
                 </a>
 
-                <a class="nav-link" href="{{ route('reports') }}">
+                <a class="nav-link"
+                    href="{{ route('reports') }}">
+
                     <span class="nav-icon">
                         <i class="bi bi-bar-chart"></i>
                     </span>
-                    <span class="nav-text">Reports</span>
+
+                    <span class="nav-text">
+                        Reports
+                    </span>
+
                 </a>
 
-                <a class="nav-link" href="{{ route('announcements') }}">
+                <a class="nav-link"
+                    href="{{ route('announcements') }}">
+
                     <span class="nav-icon">
                         <i class="bi bi-megaphone"></i>
                     </span>
-                    <span class="nav-text">Announcements</span>
+
+                    <span class="nav-text">
+                        Announcements
+                    </span>
+
                 </a>
 
             </nav>
@@ -797,21 +917,27 @@
                         : asset('khen/assets/images/avatar/avatar.jpg') }}"
                     alt="{{ Auth::user()->name }}">
 
-                <strong>{{ Auth::user()->name }}</strong>
+                <strong>
+                    {{ Auth::user()->name }}
+                </strong>
 
-                <small>{{ ucfirst(Auth::user()->role ?? 'Employee') }}</small>
+                <small>
+                    {{ ucfirst(Auth::user()->role ?? 'Employee') }}
+                </small>
 
             </div>
 
             <div class="sidebar-footer">
+
                 <span class="status-dot"></span>
+
                 <span class="sidebar-footer-text">
                     System running smoothly
                 </span>
+
             </div>
 
         </aside>
-
 
         <div class="admin-main">
 
@@ -832,166 +958,165 @@
 
                     </button>
 
+                    <form
+                        class="d-none d-md-flex ms-3 flex-grow-1 admin-search-form"
+                        role="search"
+                        autocomplete="off"
+                        data-admin-search>
 
-                   <form
-    class="d-none d-md-flex ms-3 flex-grow-1 admin-search-form"
-    role="search"
-    autocomplete="off"
-    data-admin-search
->
-    <div class="admin-search-wrapper">
+                        <div class="admin-search-wrapper">
 
-        <i class="bi bi-search admin-search-icon"></i>
+                            <i class="bi bi-search admin-search-icon"></i>
 
-        <input
-            id="adminSearchInput"
-            class="form-control search-input admin-search-input"
-            type="search"
-            placeholder="Search Pap Pay..."
-            aria-label="Search Pap Pay"
-            aria-autocomplete="list"
-            aria-controls="adminSearchResults"
-            aria-expanded="false"
-        >
+                            <input
+                                id="adminSearchInput"
+                                class="form-control search-input admin-search-input"
+                                type="search"
+                                placeholder="Search Pap Pay..."
+                                aria-label="Search Pap Pay"
+                                aria-autocomplete="list"
+                                aria-controls="adminSearchResults"
+                                aria-expanded="false">
 
-        <button
-            type="button"
-            class="admin-search-clear"
-            id="adminSearchClear"
-            aria-label="Clear search"
-            title="Clear search"
-        >
-            <i class="bi bi-x-lg"></i>
-        </button>
-
-        <div
-            class="admin-search-results"
-            id="adminSearchResults"
-            role="listbox"
-            aria-label="Search results"
-        ></div>
-
-    </div>
-</form>
-
-                    <div class="navbar-actions ms-auto">
-
-
-                    <div class="navbar-actions ms-auto">
-
-        
-
-
-                        <div class="dropdown">
-
-                            <button class="icon-button"
+                            <button
                                 type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                aria-label="Notifications">
+                                class="admin-search-clear"
+                                id="adminSearchClear"
+                                aria-label="Clear search"
+                                title="Clear search">
 
-                                @if (($unreadNotifications ?? 0) > 0)
-                                    <span class="notification-dot"></span>
-                                @endif
-
-                                <i class="bi bi-bell" aria-hidden="true"></i>
+                                <i class="bi bi-x-lg"></i>
 
                             </button>
 
-
-                            <div class="dropdown-menu dropdown-menu-end notification-menu">
-
-                                <div class="dropdown-header fw-bold text-body">
-                                    Notifications
-                                </div>
-
-                                @forelse($notifications ?? [] as $notification)
-
-                                    <a class="dropdown-item {{ !$notification->is_read ? 'notification-unread' : '' }}"
-                                        href="{{ route('admin.notifications.read', $notification->id) }}">
-
-                                        <span class="notification-title">
-                                            {{ $notification->title }}
-                                        </span>
-
-                                        <span class="notification-message">
-                                            {{ $notification->message }}
-                                        </span>
-
-                                        <span class="notification-time">
-                                            {{ $notification->created_at->diffForHumans() }}
-                                        </span>
-
-                                    </a>
-
-                                @empty
-
-                                    <div class="dropdown-item text-muted text-center py-3">
-
-                                        <i class="bi bi-bell-slash"></i>
-                                        <br>
-
-                                        No notifications
-
-                                    </div>
-
-                                @endforelse
-
-
-                                <div class="dropdown-divider"></div>
-
-                                <a href="{{ route('admin.notifications') }}"
-                                    class="dropdown-item text-center">
-
-                                    View all notifications
-
-                                </a>
-
+                            <div
+                                class="admin-search-results"
+                                id="adminSearchResults"
+                                role="listbox"
+                                aria-label="Search results">
                             </div>
 
                         </div>
 
+                    </form>
 
-                        <div class="dropdown">
+                    <div class="navbar-actions ms-auto">
 
-                            <button class="profile-button dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                        <div class="navbar-actions ms-auto">
 
-                                <img class="avatar-img avatar-sm"
-                                    src="{{ Auth::user()->photo
-                                        ? asset('storage/' . Auth::user()->photo)
-                                        : asset('khen/assets/images/avatar/avatar.jpg') }}"
-                                    alt="{{ Auth::user()->name }}">
+                            <div class="dropdown">
 
-                                <span class="profile-name d-none d-sm-inline">
-                                    {{ Auth::user()->name }}
-                                </span>
+                                <button class="icon-button"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                    aria-label="Notifications">
 
-                            </button>
+                                    @if (($unreadNotifications ?? 0) > 0)
 
+                                        <span class="notification-dot"></span>
 
-                            <ul class="dropdown-menu dropdown-menu-end">
+                                    @endif
 
-                                <li>
+                                    <i class="bi bi-bell"
+                                        aria-hidden="true"></i>
 
-                                    <form method="POST" action="{{ route('logout') }}">
+                                </button>
 
-                                        @csrf
+                                <div class="dropdown-menu dropdown-menu-end notification-menu">
 
-                                        <button type="submit"
-                                            class="dropdown-item">
+                                    <div class="dropdown-header fw-bold text-body">
+                                        Notifications
+                                    </div>
 
-                                            Sign out
+                                    @forelse($notifications ?? [] as $notification)
 
-                                        </button>
+                                        <a class="dropdown-item {{ !$notification->is_read ? 'notification-unread' : '' }}"
+                                            href="{{ route('admin.notifications.read', $notification->id) }}">
 
-                                    </form>
+                                            <span class="notification-title">
+                                                {{ $notification->title }}
+                                            </span>
 
-                                </li>
+                                            <span class="notification-message">
+                                                {{ $notification->message }}
+                                            </span>
 
-                            </ul>
+                                            <span class="notification-time">
+                                                {{ $notification->created_at->diffForHumans() }}
+                                            </span>
+
+                                        </a>
+
+                                    @empty
+
+                                        <div class="dropdown-item text-muted text-center py-3">
+
+                                            <i class="bi bi-bell-slash"></i>
+
+                                            <br>
+
+                                            No notifications
+
+                                        </div>
+
+                                    @endforelse
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a href="{{ route('admin.notifications') }}"
+                                        class="dropdown-item text-center">
+
+                                        View all notifications
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                            <div class="dropdown">
+
+                                <button class="profile-button dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+
+                                    <img class="avatar-img avatar-sm"
+                                        src="{{ Auth::user()->photo
+                                            ? asset('storage/' . Auth::user()->photo)
+                                            : asset('khen/assets/images/avatar/avatar.jpg') }}"
+                                        alt="{{ Auth::user()->name }}">
+
+                                    <span class="profile-name d-none d-sm-inline">
+                                        {{ Auth::user()->name }}
+                                    </span>
+
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+
+                                    <li>
+
+                                        <form method="POST"
+                                            action="{{ route('logout') }}">
+
+                                            @csrf
+
+                                            <button type="submit"
+                                                class="dropdown-item">
+
+                                                Sign out
+
+                                            </button>
+
+                                        </form>
+
+                                    </li>
+
+                                </ul>
+
+                            </div>
 
                         </div>
 
@@ -1001,11 +1126,9 @@
 
             </nav>
 
-
             <main class="dashboard-content">
 
                 <div class="container-fluid px-3 px-lg-4 py-4">
-
 
                     <!-- =====================================================
                          PAGE HEADER
@@ -1015,14 +1138,15 @@
 
                         <div class="attendance-page-heading">
 
-                            <h1>Attendance List</h1>
+                            <h1>
+                                Attendance List
+                            </h1>
 
                             <p>
                                 Complete employee attendance records
                             </p>
 
                         </div>
-
 
                         <div class="attendance-actions">
 
@@ -1031,34 +1155,37 @@
 
                                 <i class="bi bi-file-earmark-excel"></i>
 
-                                <span>CSV</span>
+                                <span>
+                                    CSV
+                                </span>
 
                             </a>
-
 
                             <a href="{{ route('attendance.export.pdf', request()->query()) }}"
                                 class="btn btn-danger">
 
                                 <i class="bi bi-file-earmark-pdf"></i>
 
-                                <span>PDF</span>
+                                <span>
+                                    PDF
+                                </span>
 
                             </a>
-
 
                             <button onclick="printAttendance()"
                                 class="btn btn-dark">
 
                                 <i class="bi bi-printer"></i>
 
-                                <span>Print</span>
+                                <span>
+                                    Print
+                                </span>
 
                             </button>
 
                         </div>
 
                     </div>
-
 
                     <!-- =====================================================
                          FILTER
@@ -1079,7 +1206,6 @@
 
                             </div>
 
-
                             <div class="col-lg-3 col-md-6">
 
                                 <input type="date"
@@ -1088,7 +1214,6 @@
                                     class="form-control">
 
                             </div>
-
 
                             <div class="col-lg-2 col-md-3">
 
@@ -1099,7 +1224,6 @@
                                 </button>
 
                             </div>
-
 
                             <div class="col-lg-2 col-md-3">
 
@@ -1116,13 +1240,79 @@
 
                     </form>
 
+                    <!-- =====================================================
+                         FRONTEND STATUS FILTER
+                         ===================================================== -->
+
+                    <div class="attendance-status-filter"
+                        role="group"
+                        aria-label="Attendance status filter">
+
+                        <span class="attendance-status-filter-label">
+                            Show:
+                        </span>
+
+                        <button
+                            type="button"
+                            class="attendance-filter-btn active"
+                            data-attendance-filter="all">
+
+                            <i class="bi bi-grid"></i>
+
+                            <span>
+                                All
+                            </span>
+
+                            <span class="filter-count"
+                                id="attendanceAllCount">
+                                0
+                            </span>
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="attendance-filter-btn"
+                            data-attendance-filter="present">
+
+                            <i class="bi bi-person-check"></i>
+
+                            <span>
+                                Present
+                            </span>
+
+                            <span class="filter-count"
+                                id="attendancePresentCount">
+                                0
+                            </span>
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="attendance-filter-btn"
+                            data-attendance-filter="absent">
+
+                            <i class="bi bi-person-x"></i>
+
+                            <span>
+                                Absent
+                            </span>
+
+                            <span class="filter-count"
+                                id="attendanceAbsentCount">
+                                0
+                            </span>
+
+                        </button>
+
+                    </div>
 
                     <!-- =====================================================
                          SUMMARY / METRICS
                          ===================================================== -->
 
                     <div class="row g-3 attendance-metrics">
-
 
                         <div class="col-xl-3 col-md-6 attendance-metric-col">
 
@@ -1133,13 +1323,12 @@
                                 </span>
 
                                 <h2 class="attendance-metric-value">
-                                    {{ $attendances->total() }}
+                                    {{ $attendances->count() }}
                                 </h2>
 
                             </div>
 
                         </div>
-
 
                         <div class="col-xl-3 col-md-6 attendance-metric-col">
 
@@ -1157,7 +1346,6 @@
 
                         </div>
 
-
                         <div class="col-xl-3 col-md-6 attendance-metric-col">
 
                             <div class="attendance-metric-card metric-warning">
@@ -1173,7 +1361,6 @@
                             </div>
 
                         </div>
-
 
                         <div class="col-xl-3 col-md-6 attendance-metric-col">
 
@@ -1193,7 +1380,6 @@
 
                     </div>
 
-
                     <!-- =====================================================
                          ATTENDANCE TABLE
                          ===================================================== -->
@@ -1212,41 +1398,84 @@
 
                                             <tr>
 
-                                                <th>ID</th>
+                                                <th>
+                                                    ID
+                                                </th>
 
-                                                <th>Employee</th>
+                                                <th>
+                                                    Employee
+                                                </th>
 
-                                                <th>Date</th>
+                                                <th>
+                                                    Date
+                                                </th>
 
-                                                <th>Morning In</th>
+                                                <th>
+                                                    Time In
+                                                </th>
 
-                                                <th>Morning Out</th>
+                                                <th>
+                                                    Time Out
+                                                </th>
 
-                                                <th>Afternoon In</th>
+                                                <th>
+                                                    Hours
+                                                </th>
 
-                                                <th>Afternoon Out</th>
+                                                <th>
+                                                    Status
+                                                </th>
 
-                                                <th>Hours</th>
-
-                                                <th>Status</th>
-
-                                                <th>Remarks</th>
+                                                <th>
+                                                    Remarks
+                                                </th>
 
                                             </tr>
 
                                         </thead>
 
-
-                                        <tbody>
+                                        <tbody id="attendanceTableBody">
 
                                             @forelse($attendances as $attendance)
 
-                                                <tr>
+                                                @php
+
+                                                    /*
+                                                     * Frontend classification only.
+                                                     *
+                                                     * Anything explicitly marked Absent
+                                                     * belongs to the Absent filter.
+                                                     *
+                                                     * Everything else belongs to Present.
+                                                     *
+                                                     * Therefore Leave, Official Business,
+                                                     * Present, Late, Worked on Holiday,
+                                                     * Undertime, Overtime, etc. are included
+                                                     * in the Present filter.
+                                                     */
+
+                                                    $attendanceStatus = strtolower(
+                                                        trim($attendance->status ?? '')
+                                                    );
+
+                                                    $attendanceFilter =
+                                                        str_contains(
+                                                            $attendanceStatus,
+                                                            'absent'
+                                                        )
+                                                            ? 'absent'
+                                                            : 'present';
+
+                                                @endphp
+
+                                                <tr
+                                                    class="attendance-row"
+                                                    data-attendance-filter="{{ $attendanceFilter }}"
+                                                    data-status="{{ $attendanceStatus }}">
 
                                                     <td>
                                                         {{ $attendance->user->employee_id }}
                                                     </td>
-
 
                                                     <td>
 
@@ -1260,54 +1489,31 @@
 
                                                     </td>
 
-
                                                     <td>
                                                         {{ $attendance->date->format('M d, Y') }}
                                                     </td>
 
-
                                                     <td>
 
-                                                        {{ $attendance->morning_time_in
-                                                            ? \Carbon\Carbon::parse($attendance->morning_time_in)->format('h:i A')
+                                                        {{ $attendance->time_in
+                                                            ? \Carbon\Carbon::parse($attendance->time_in)->format('h:i A')
                                                             : '-' }}
 
                                                     </td>
 
-
                                                     <td>
 
-                                                        {{ $attendance->morning_time_out
-                                                            ? \Carbon\Carbon::parse($attendance->morning_time_out)->format('h:i A')
+                                                        {{ $attendance->time_out
+                                                            ? \Carbon\Carbon::parse($attendance->time_out)->format('h:i A')
                                                             : '-' }}
 
                                                     </td>
-
-
-                                                    <td>
-
-                                                        {{ $attendance->afternoon_time_in
-                                                            ? \Carbon\Carbon::parse($attendance->afternoon_time_in)->format('h:i A')
-                                                            : '-' }}
-
-                                                    </td>
-
-
-                                                    <td>
-
-                                                        {{ $attendance->afternoon_time_out
-                                                            ? \Carbon\Carbon::parse($attendance->afternoon_time_out)->format('h:i A')
-                                                            : '-' }}
-
-                                                    </td>
-
 
                                                     <td class="hours-value">
 
                                                         {{ number_format($attendance->hours_worked, 2) }}
 
                                                     </td>
-
 
                                                     <td>
 
@@ -1321,7 +1527,6 @@
 
                                                             @break
 
-
                                                             @case('Late')
 
                                                                 <span class="badge bg-warning text-dark">
@@ -1329,7 +1534,6 @@
                                                                 </span>
 
                                                             @break
-
 
                                                             @case('Absent')
 
@@ -1339,7 +1543,6 @@
 
                                                             @break
 
-
                                                             @case('Leave')
 
                                                                 <span class="badge bg-info">
@@ -1348,7 +1551,6 @@
 
                                                             @break
 
-
                                                             @case('Official Business')
 
                                                                 <span class="badge bg-primary">
@@ -1356,7 +1558,6 @@
                                                                 </span>
 
                                                             @break
-
 
                                                             @default
 
@@ -1368,7 +1569,6 @@
 
                                                     </td>
 
-
                                                     <td>
                                                         {{ $attendance->remarks ?? '-' }}
                                                     </td>
@@ -1379,7 +1579,7 @@
 
                                                 <tr>
 
-                                                    <td colspan="10"
+                                                    <td colspan="8"
                                                         class="text-center attendance-empty-state">
 
                                                         No attendance records found.
@@ -1396,14 +1596,11 @@
 
                                 </div>
 
+                                <div
+                                    id="attendanceFilterEmpty"
+                                    class="attendance-filter-empty">
 
-                                <!-- =================================================
-                                     PAGINATION
-                                     ================================================= -->
-
-                                <div class="attendance-pagination">
-
-                                    {{ $attendances->links() }}
+                                    No attendance records match this filter.
 
                                 </div>
 
@@ -1417,7 +1614,6 @@
 
             </main>
 
-
             <footer class="admin-footer">
 
                 <div class="container-fluid px-3 px-lg-4">
@@ -1430,96 +1626,328 @@
 
     </div>
 
-
     <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
     <script src="../../../../khen/assets/js/main.js"></script>
 
     <script>
-    window.papPayAdminSearchPages = [
-        {
-            title: 'Home',
-            description: 'Admin dashboard and system overview',
-            keywords: 'home dashboard admin overview',
-            icon: 'bi-speedometer2',
-            url: @json(route('admin-dashboard'))
-        },
-        {
-            title: 'Employees',
-            description: 'Manage employee accounts and records',
-            keywords: 'employee employees staff users accounts personnel',
-            icon: 'bi-people-fill',
-            url: @json(route('employees.index'))
-        },
-        {
-            title: 'Attendance',
-            description: 'Review employee attendance records',
-            keywords: 'attendance time in time out present absent late undertime overtime',
-            icon: 'bi-calendar-check-fill',
-            url: @json(route('attendance_list'))
-        },
-        {
-            title: 'Leave Requests',
-            description: 'Review and approve employee leave requests',
-            keywords: 'leave leaves vacation absence request requests approval approve',
-            icon: 'bi-calendar-x-fill',
-            url: @json(route('admin.leaves'))
-        },
-        {
-            title: 'Official Business',
-            description: 'Manage official business requests',
-            keywords: 'official business ob field work travel request requests',
-            icon: 'bi-briefcase-fill',
-            url: @json(route('official_business'))
-        },
-        {
-            title: 'Holidays',
-            description: 'Manage holidays and holiday settings',
-            keywords: 'holiday holidays calendar dates pay rate',
-            icon: 'bi-calendar-event-fill',
-            url: @json(route('holidays.index'))
-        },
-        {
-            title: 'Payroll',
-            description: 'Process and manage employee payroll',
-            keywords: 'payroll salary salaries wages earnings deductions sss philhealth pagibig hmo',
-            icon: 'bi-cash-stack',
-            url: @json(route('payroll'))
-        },
-        {
-            title: 'Payslips',
-            description: 'View and manage employee payslips',
-            keywords: 'payslip payslips salary slip payment compensation',
-            icon: 'bi-receipt-cutoff',
-            url: @json(route('payslip_list'))
-        },
-        {
-            title: 'Payslip Concerns',
-            description: 'Review employee payslip concerns',
-            keywords: 'payslip concern concerns issue issues complaint complaints payroll problem',
-            icon: 'bi-exclamation-circle-fill',
-            url: @json(route('admin.payslip-concerns.index'))
-        },
-        {
-            title: 'Reports',
-            description: 'Generate HR and payroll reports',
-            keywords: 'report reports analytics statistics summary attendance payroll employee',
-            icon: 'bi-bar-chart-fill',
-            url: @json(route('reports'))
-        },
-        {
-            title: 'Announcements',
-            description: 'Publish and manage system announcements',
-            keywords: 'announcement announcements notice notices news publish message',
-            icon: 'bi-megaphone-fill',
-            url: @json(route('announcements'))
-        }
-    ];
-</script>
+        window.papPayAdminSearchPages = [
 
-<script src="{{ asset('khen/assets/js/admin-search.js') }}"></script>
+            {
+                title: 'Home',
+                description: 'Admin dashboard and system overview',
+                keywords: 'home dashboard admin overview',
+                icon: 'bi-speedometer2',
+                url: @json(route('admin-dashboard'))
+            },
 
+            {
+                title: 'Employees',
+                description: 'Manage employee accounts and records',
+                keywords: 'employee employees staff users accounts personnel',
+                icon: 'bi-people-fill',
+                url: @json(route('employees.index'))
+            },
+
+            {
+                title: 'Attendance',
+                description: 'Review employee attendance records',
+                keywords: 'attendance time in time out present absent late undertime overtime',
+                icon: 'bi-calendar-check-fill',
+                url: @json(route('attendance_list'))
+            },
+
+            {
+                title: 'Leave Requests',
+                description: 'Review and approve employee leave requests',
+                keywords: 'leave leaves vacation absence request requests approval approve',
+                icon: 'bi-calendar-x-fill',
+                url: @json(route('admin.leaves'))
+            },
+
+            {
+                title: 'Official Business',
+                description: 'Manage official business requests',
+                keywords: 'official business ob field work travel request requests',
+                icon: 'bi-briefcase-fill',
+                url: @json(route('official_business'))
+            },
+
+            {
+                title: 'Holidays',
+                description: 'Manage holidays and holiday settings',
+                keywords: 'holiday holidays calendar dates pay rate',
+                icon: 'bi-calendar-event-fill',
+                url: @json(route('holidays.index'))
+            },
+
+            {
+                title: 'Payroll',
+                description: 'Process and manage employee payroll',
+                keywords: 'payroll salary salaries wages earnings deductions sss philhealth pagibig hmo',
+                icon: 'bi-cash-stack',
+                url: @json(route('payroll'))
+            },
+
+            {
+                title: 'Payslips',
+                description: 'View and manage employee payslips',
+                keywords: 'payslip payslips salary slip payment compensation',
+                icon: 'bi-receipt-cutoff',
+                url: @json(route('payslip_list'))
+            },
+
+            {
+                title: 'Payslip Concerns',
+                description: 'Review employee payslip concerns',
+                keywords: 'payslip concern concerns issue issues complaint complaints payroll problem',
+                icon: 'bi-exclamation-circle-fill',
+                url: @json(route('admin.payslip-concerns.index'))
+            },
+
+            {
+                title: 'Reports',
+                description: 'Generate HR and payroll reports',
+                keywords: 'report reports analytics statistics summary attendance payroll employee',
+                icon: 'bi-bar-chart-fill',
+                url: @json(route('reports'))
+            },
+
+            {
+                title: 'Announcements',
+                description: 'Publish and manage system announcements',
+                keywords: 'announcement announcements notice notices news publish message',
+                icon: 'bi-megaphone-fill',
+                url: @json(route('announcements'))
+            }
+
+        ];
+    </script>
+
+    <script src="{{ asset('khen/assets/js/admin-search.js') }}"></script>
 
     <script src="{{ asset('khen/assets/js/attendance_list-search.js') }}"></script>
+
+    <!-- =========================================================
+         ATTENDANCE STATUS FILTER
+         Frontend only - no backend request is made.
+         ========================================================= -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const filterButtons = document.querySelectorAll(
+                '[data-attendance-filter]'
+            );
+
+            const attendanceRows = document.querySelectorAll(
+                '.attendance-row'
+            );
+
+            const filterEmptyMessage = document.getElementById(
+                'attendanceFilterEmpty'
+            );
+
+            const allCountElement = document.getElementById(
+                'attendanceAllCount'
+            );
+
+            const presentCountElement = document.getElementById(
+                'attendancePresentCount'
+            );
+
+            const absentCountElement = document.getElementById(
+                'attendanceAbsentCount'
+            );
+
+            /*
+             * Count the actual rows supplied by the backend.
+             * These numbers are frontend-only and do not modify
+             * any database or backend values.
+             */
+
+            let allCount = 0;
+            let presentCount = 0;
+            let absentCount = 0;
+
+            attendanceRows.forEach(function (row) {
+
+                const rowFilter =
+                    row.getAttribute('data-attendance-filter');
+
+                allCount++;
+
+                if (rowFilter === 'absent') {
+                    absentCount++;
+                } else {
+                    presentCount++;
+                }
+
+            });
+
+            if (allCountElement) {
+                allCountElement.textContent = allCount;
+            }
+
+            if (presentCountElement) {
+                presentCountElement.textContent = presentCount;
+            }
+
+            if (absentCountElement) {
+                absentCountElement.textContent = absentCount;
+            }
+
+            function applyAttendanceFilter(filter) {
+
+                let visibleRows = 0;
+
+                attendanceRows.forEach(function (row) {
+
+                    const rowFilter =
+                        row.getAttribute('data-attendance-filter');
+
+                    let shouldShow = false;
+
+                    /*
+                     * ALL
+                     * Show every attendance record.
+                     */
+
+                    if (filter === 'all') {
+
+                        shouldShow = true;
+
+                    }
+
+                    /*
+                     * PRESENT
+                     *
+                     * This intentionally includes everything that
+                     * is NOT Absent.
+                     *
+                     * Therefore:
+                     *
+                     * Present
+                     * Late
+                     * Leave
+                     * Official Business
+                     * Worked on Holiday
+                     * Undertime
+                     * Overtime
+                     * etc.
+                     *
+                     * are all shown here.
+                     */
+
+                    else if (filter === 'present') {
+
+                        shouldShow = rowFilter === 'present';
+
+                    }
+
+                    /*
+                     * ABSENT
+                     *
+                     * Only records classified as Absent are shown.
+                     */
+
+                    else if (filter === 'absent') {
+
+                        shouldShow = rowFilter === 'absent';
+
+                    }
+
+                    if (shouldShow) {
+
+                        row.style.display = '';
+
+                        visibleRows++;
+
+                    } else {
+
+                        row.style.display = 'none';
+
+                    }
+
+                });
+
+                /*
+                 * Show the empty message only when the selected
+                 * filter has no matching records.
+                 */
+
+                if (filterEmptyMessage) {
+
+                    if (visibleRows === 0 && attendanceRows.length > 0) {
+
+                        filterEmptyMessage.classList.add('show');
+
+                    } else {
+
+                        filterEmptyMessage.classList.remove('show');
+
+                    }
+
+                }
+
+                /*
+                 * Update active button.
+                 */
+
+                filterButtons.forEach(function (button) {
+
+                    const buttonFilter =
+                        button.getAttribute('data-attendance-filter');
+
+                    if (buttonFilter === filter) {
+
+                        button.classList.add('active');
+
+                        button.setAttribute(
+                            'aria-pressed',
+                            'true'
+                        );
+
+                    } else {
+
+                        button.classList.remove('active');
+
+                        button.setAttribute(
+                            'aria-pressed',
+                            'false'
+                        );
+
+                    }
+
+                });
+
+            }
+
+            /*
+             * Button click events.
+             */
+
+            filterButtons.forEach(function (button) {
+
+                button.addEventListener('click', function () {
+
+                    const selectedFilter =
+                        button.getAttribute('data-attendance-filter');
+
+                    applyAttendanceFilter(selectedFilter);
+
+                });
+
+            });
+
+            /*
+             * ALL is the default filter.
+             */
+
+            applyAttendanceFilter('all');
+
+        });
+    </script>
+
     <script>
 
         function printAttendance() {
@@ -1530,11 +1958,13 @@
             const originalContents =
                 document.body.innerHTML;
 
-            document.body.innerHTML = printContents;
+            document.body.innerHTML =
+                printContents;
 
             window.print();
 
-            document.body.innerHTML = originalContents;
+            document.body.innerHTML =
+                originalContents;
 
             location.reload();
 

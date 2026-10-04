@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Holiday;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Services\AuditLogService;
+use App\Models\Notification;
+use App\Models\User;
+use Carbon\Carbon;
 
 class HolidayController extends Controller
 {
@@ -56,7 +61,7 @@ class HolidayController extends Controller
             ])->withInput();
         }
 
-        Holiday::create([
+        $holiday = Holiday::create([
             'holiday_name' => $request->holiday_name,
             'holiday_date' => $request->holiday_date,
             'holiday_type' => $request->holiday_type,
@@ -67,10 +72,73 @@ class HolidayController extends Controller
             'is_active' => $request->is_active,
         ]);
 
+
+        /*
+|--------------------------------------------------------------------------
+| Notify Employees About New Holiday
+|--------------------------------------------------------------------------
+*/
+
+        $employeesQuery = User::where('role', 'employee')
+            ->where('status', 'Active');
+
+        if (!empty($holiday->department)) {
+
+            $employeesQuery->where(
+                'department',
+                $holiday->department
+            );
+        }
+
+        $employees = $employeesQuery->get();
+
+        foreach ($employees as $employee) {
+
+            Notification::create([
+
+                'user_id' => $employee->id,
+
+                'title' => 'New Holiday Posted',
+
+                'message' => $holiday->holiday_name .
+                    ' has been posted for ' .
+                    Carbon::parse($holiday->holiday_date)
+                    ->format('F d, Y') .
+                    ($holiday->department
+                        ? ' for ' . $holiday->department . '.'
+                        : '.'),
+
+                'is_read' => false,
+
+                'type' => 'holiday',
+
+                'url' => null,
+
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Audit Log - Created Holiday
+        |--------------------------------------------------------------------------
+        */
+
+        AuditLogService::log(
+            'Holiday Created',
+            'Admin ' .
+                Auth::user()->name .
+                ' created holiday "' .
+                $request->holiday_name .
+                '" for ' .
+                $request->holiday_date .
+                '.'
+        );
+
         return redirect()
             ->route('holidays.index')
             ->with('success', 'Holiday added successfully.');
     }
+
     /**
      * Update Holiday
      */
@@ -96,6 +164,23 @@ class HolidayController extends Controller
 
         $holiday->update($request->all());
 
+        /*
+        |--------------------------------------------------------------------------
+        | Audit Log - Updated Holiday
+        |--------------------------------------------------------------------------
+        */
+
+        AuditLogService::log(
+            'Holiday Updated',
+            'Admin ' .
+                Auth::user()->name .
+                ' updated holiday "' .
+                $holiday->holiday_name .
+                '" for ' .
+                $holiday->holiday_date .
+                '.'
+        );
+
         return redirect()
             ->route('holidays.index')
             ->with('success', 'Holiday updated successfully.');
@@ -106,7 +191,27 @@ class HolidayController extends Controller
      */
     public function destroy(Holiday $holiday)
     {
+        $holidayName = $holiday->holiday_name;
+        $holidayDate = $holiday->holiday_date;
+
         $holiday->delete();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Audit Log - Deleted Holiday
+        |--------------------------------------------------------------------------
+        */
+
+        AuditLogService::log(
+            'Holiday Deleted',
+            'Admin ' .
+                Auth::user()->name .
+                ' deleted holiday "' .
+                $holidayName .
+                '" for ' .
+                $holidayDate .
+                '.'
+        );
 
         return redirect()
             ->route('holidays.index')

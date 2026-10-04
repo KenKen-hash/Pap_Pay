@@ -14,6 +14,8 @@ use App\Models\TeachingLoad;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Services\AuditLogService;
 
 class PayslipConcernController extends Controller
 {
@@ -103,6 +105,24 @@ class PayslipConcernController extends Controller
             'url' =>
                 route('payslip'),
         ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Audit Log
+        |--------------------------------------------------------------------------
+        */
+
+        AuditLogService::log(
+            'Payslip Concern Updated',
+            'Admin ' .
+            Auth::user()->name .
+            ' updated the payslip concern of employee ' .
+            $concern->user->name .
+            ' to "' .
+            $request->status .
+            '".'
+        );
 
 
         return back()->with(
@@ -521,6 +541,22 @@ class PayslipConcernController extends Controller
                 'url' =>
                     route('payslip'),
             ]);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Audit Log
+            |--------------------------------------------------------------------------
+            */
+
+            AuditLogService::log(
+                'Payslip Corrected',
+                'Admin ' .
+                Auth::user()->name .
+                ' manually corrected the payslip of employee ' .
+                $concern->user->name .
+                '.'
+            );
         });
 
 
@@ -1454,6 +1490,22 @@ class PayslipConcernController extends Controller
                 'url' =>
                     route('payslip'),
             ]);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Audit Log
+            |--------------------------------------------------------------------------
+            */
+
+            AuditLogService::log(
+                'Payslip Recalculated',
+                'Admin ' .
+                Auth::user()->name .
+                ' recalculated the payslip of employee ' .
+                $employee->name .
+                ' based on current payroll, salary configuration, and attendance records.'
+            );
         });
 
 

@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\Holiday;
+use App\Models\LeaveRequest;
+use App\Models\OfficialBusiness;
+use App\Models\User;
 use Carbon\Carbon;
 
 class AttendanceController extends Controller
@@ -13,15 +16,44 @@ class AttendanceController extends Controller
     /**
      * Display attendance records.
      *
-     * If no date is selected, today's attendance is displayed.
+     * The page displays only:
+     *
+     * 1. Employees who scanned through the kiosk
+     * 2. Employees with approved Leave
+     * 3. Employees with approved Official Business
+     * 4. Employees marked Absent by the end-of-day scheduler
+     *
+     * Employees who have not scanned yet are NOT automatically
+     * displayed as Absent during the day.
+     *
+     * NO PAGINATION:
+     * All applicable records for the selected date are displayed
+     * on one page.
      */
     public function index(Request $request)
     {
-        $query = Attendance::with('user', 'holiday');
+        $date = $request->filled('date')
+            ? Carbon::parse($request->date)->toDateString()
+            : today()->toDateString();
 
         /*
         |--------------------------------------------------------------------------
-        | Search employee
+        | Actual attendance records
+        |--------------------------------------------------------------------------
+        |
+        | These are records actually created by:
+        |
+        | - The kiosk
+        | - The end-of-day Absent scheduler
+        |
+        */
+
+        $attendanceQuery = Attendance::with('user', 'holiday')
+            ->whereDate('date', $date);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Search actual attendance
         |--------------------------------------------------------------------------
         */
 
@@ -29,7 +61,7 @@ class AttendanceController extends Controller
 
             $search = $request->search;
 
-            $query->whereHas('user', function ($q) use ($search) {
+            $attendanceQuery->whereHas('user', function ($q) use ($search) {
 
                 $q->where('name', 'like', '%' . $search . '%')
                     ->orWhere(
@@ -37,35 +69,305 @@ class AttendanceController extends Controller
                         'like',
                         '%' . $search . '%'
                     );
+
             });
         }
 
+        $attendanceRecords = $attendanceQuery
+            ->get()
+            ->keyBy('user_id');
+
         /*
         |--------------------------------------------------------------------------
-        | Date filter
+        | Approved Leave
+        |--------------------------------------------------------------------------
+        |
+        | Leave is displayed even when there is no attendance record.
+        |
+        */
+
+        $leaveQuery = LeaveRequest::with('user')
+            ->where('status', 'Approved')
+            ->whereDate('start_date', '<=', $date)
+            ->whereDate('end_date', '>=', $date);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Search approved Leave
         |--------------------------------------------------------------------------
         */
 
-        if ($request->filled('date')) {
+        if ($request->filled('search')) {
 
-            $query->whereDate('date', $request->date);
+            $search = $request->search;
 
-        } else {
+            $leaveQuery->whereHas('user', function ($q) use ($search) {
 
-            $query->whereDate('date', today());
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere(
+                        'employee_id',
+                        'like',
+                        '%' . $search . '%'
+                    );
+
+            });
+        }
+
+        $approvedLeaves = $leaveQuery->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Approved Official Business
+        |--------------------------------------------------------------------------
+        |
+        | Official Business is displayed even when there is no
+        | attendance record.
+        |
+        */
+
+        $obQuery = OfficialBusiness::with('user')
+            ->where('status', 'Approved')
+            ->whereDate('ob_date', '<=', $date)
+            ->whereDate('ob_date_to', '>=', $date);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Search approved Official Business
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('search')) {
+
+            $search = $request->search;
+
+            $obQuery->whereHas('user', function ($q) use ($search) {
+
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere(
+                        'employee_id',
+                        'like',
+                        '%' . $search . '%'
+                    );
+
+            });
+        }
+
+        $approvedOfficialBusinesses = $obQuery->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Build display collection
+        |--------------------------------------------------------------------------
+        */
+
+        $records = collect();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Add actual attendance records
+        |--------------------------------------------------------------------------
+        */
+
+        foreach ($attendanceRecords as $attendance) {
+
+            $records->push($attendance);
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Attendance list
+        | Add approved Leave records
+        |--------------------------------------------------------------------------
+        |
+        | A temporary Attendance model is created only for display.
+        |
+        | IMPORTANT:
+        |
+        | This temporary model is NOT saved to the database.
+        |
+        */
+
+        foreach ($approvedLeaves as $leave) {
+
+            /*
+            |--------------------------------------------------------------------------
+            | Do not duplicate an employee who already has an attendance record.
+            |--------------------------------------------------------------------------
+            */
+
+            if ($attendanceRecords->has($leave->user_id)) {
+                continue;
+            }
+
+            $attendance = new Attendance([
+                'user_id' => $leave->user_id,
+                'date' => $date,
+                'time_in' => null,
+                'time_out' => null,
+                'hours_worked' => 0,
+                'late_minutes' => 0,
+                'undertime_minutes' => 0,
+                'overtime_minutes' => 0,
+                'status' => 'Leave',
+                'remarks' => $leave->leave_type
+                    ? 'Leave - ' . $leave->leave_type
+                    : 'Leave',
+            ]);
+
+            $attendance->setRelation(
+                'user',
+                $leave->user
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | Attach holiday relation if applicable.
+            |--------------------------------------------------------------------------
+            */
+
+            $holiday = Holiday::isHoliday(
+                $date,
+                $leave->user->department
+            );
+
+            if ($holiday) {
+                $attendance->setRelation(
+                    'holiday',
+                    $holiday
+                );
+            }
+
+            $records->push($attendance);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Add approved Official Business records
         |--------------------------------------------------------------------------
         */
 
-        $attendances = $query
-            ->latest('date')
-            ->latest('time_in')
-            ->paginate(20)
-            ->withQueryString();
+        foreach ($approvedOfficialBusinesses as $officialBusiness) {
+
+            /*
+            |--------------------------------------------------------------------------
+            | Do not duplicate an employee who already has an attendance record.
+            |--------------------------------------------------------------------------
+            */
+
+            if ($attendanceRecords->has($officialBusiness->user_id)) {
+                continue;
+            }
+
+            $attendance = new Attendance([
+                'user_id' => $officialBusiness->user_id,
+                'date' => $date,
+                'time_in' => null,
+                'time_out' => null,
+                'hours_worked' => 0,
+                'late_minutes' => 0,
+                'undertime_minutes' => 0,
+                'overtime_minutes' => 0,
+                'status' => 'Official Business',
+                'remarks' => 'Official Business'
+                    . ($officialBusiness->purpose
+                        ? ' - ' . $officialBusiness->purpose
+                        : ''),
+            ]);
+
+            $attendance->setRelation(
+                'user',
+                $officialBusiness->user
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | Attach holiday relation if applicable.
+            |--------------------------------------------------------------------------
+            */
+
+            $holiday = Holiday::isHoliday(
+                $date,
+                $officialBusiness->user->department
+            );
+
+            if ($holiday) {
+                $attendance->setRelation(
+                    'holiday',
+                    $holiday
+                );
+            }
+
+            $records->push($attendance);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Sort records
+        |--------------------------------------------------------------------------
+        |
+        | Employees with actual Time In records appear first.
+        |
+        | Employees without Time In, such as:
+        |
+        | - Leave
+        | - Official Business
+        | - Absent
+        |
+        | appear afterward alphabetically.
+        |
+        */
+
+        $records = $records
+            ->sort(function ($a, $b) {
+
+                /*
+                |--------------------------------------------------------------------------
+                | Time In records first
+                |--------------------------------------------------------------------------
+                */
+
+                if ($a->time_in && !$b->time_in) {
+                    return -1;
+                }
+
+                if (!$a->time_in && $b->time_in) {
+                    return 1;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | If both have Time In, latest Time In first.
+                |--------------------------------------------------------------------------
+                */
+
+                if ($a->time_in && $b->time_in) {
+
+                    return $b->time_in->timestamp
+                        <=> $a->time_in->timestamp;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Otherwise alphabetical employee name.
+                |--------------------------------------------------------------------------
+                */
+
+                return strcasecmp(
+                    $a->user->name ?? '',
+                    $b->user->name ?? ''
+                );
+            })
+            ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | NO PAGINATION
+        |--------------------------------------------------------------------------
+        |
+        | Return every applicable record for the selected date.
+        |
+        */
+
+        $attendances = $records;
 
         return view(
             'admin.attendance_list',
@@ -81,7 +383,7 @@ class AttendanceController extends Controller
      *
      * 1st scan = Time In
      * 2nd scan = Time Out
-     * 3rd scan = rejected
+     * 3rd scan = Rejected
      *
      * Schedule:
      *
@@ -116,7 +418,7 @@ class AttendanceController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $user = \App\Models\User::findOrFail(
+        $user = User::findOrFail(
             $request->employee_id
         );
 
@@ -124,9 +426,6 @@ class AttendanceController extends Controller
         |--------------------------------------------------------------------------
         | Sunday protection
         |--------------------------------------------------------------------------
-        |
-        | Sunday is not a regular working day.
-        |
         */
 
         if ($now->isSunday()) {
@@ -139,8 +438,67 @@ class AttendanceController extends Controller
 
         /*
         |--------------------------------------------------------------------------
+        | Check approved Leave BEFORE creating attendance
+        |--------------------------------------------------------------------------
+        |
+        | Employees who are on approved Leave must not be able
+        | to create a kiosk attendance record.
+        |
+        */
+
+        $approvedLeave = LeaveRequest::where(
+            'user_id',
+            $user->id
+        )
+            ->where('status', 'Approved')
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->exists();
+
+        if ($approvedLeave) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Attendance cannot be recorded because the employee is on approved leave.',
+            ], 422);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Check approved Official Business BEFORE creating attendance
+        |--------------------------------------------------------------------------
+        */
+
+        $approvedOfficialBusiness = OfficialBusiness::where(
+            'user_id',
+            $user->id
+        )
+            ->where('status', 'Approved')
+            ->whereDate('ob_date', '<=', $today)
+            ->whereDate('ob_date_to', '>=', $today)
+            ->exists();
+
+        if ($approvedOfficialBusiness) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Attendance cannot be recorded because the employee has approved Official Business today.',
+            ], 422);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
         | Find or create today's attendance
         |--------------------------------------------------------------------------
+        |
+        | IMPORTANT:
+        |
+        | An attendance record is only created when the employee
+        | actually scans.
+        |
+        | No attendance record is automatically created merely
+        | because the employee exists in the system.
+        |
         */
 
         $attendance = Attendance::firstOrCreate(
@@ -154,6 +512,7 @@ class AttendanceController extends Controller
                 'undertime_minutes' => 0,
                 'overtime_minutes' => 0,
                 'status' => 'Present',
+                'remarks' => 'Kiosk attendance',
             ]
         );
 
@@ -161,10 +520,6 @@ class AttendanceController extends Controller
         |--------------------------------------------------------------------------
         | Holiday detection
         |--------------------------------------------------------------------------
-        |
-        | Holiday::isHoliday() should determine whether the date is a
-        | holiday applicable to this employee's department.
-        |
         */
 
         $holiday = Holiday::isHoliday(
@@ -189,33 +544,19 @@ class AttendanceController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | Calculate late
+            | Calculate Late
             |--------------------------------------------------------------------------
             |
-            | Official start:
-            | 8:00 AM
-            |
-            | Grace period:
-            | 15 minutes
-            |
-            | 8:00 - 8:15 = not late
-            |
-            | Once employee goes beyond the 15-minute allowance,
-            | the ENTIRE period from 8:00 AM is counted as late.
-            |
-            | Example:
-            |
-            | 8:10 AM = 0 late minutes
-            | 8:15 AM = 0 late minutes
-            | 8:16 AM = 16 late minutes
-            | 8:30 AM = 30 late minutes
-            | 9:00 AM = 60 late minutes
+            | 8:00 - 8:15 = 0 late
+            | 8:16 = 16 late minutes
+            | 8:30 = 30 late minutes
             |
             */
 
             $startTime = $this->getStartTime($now);
 
-            $graceTime = $startTime->copy()
+            $graceTime = $startTime
+                ->copy()
                 ->addMinutes(15);
 
             if ($now->greaterThan($graceTime)) {
@@ -230,7 +571,7 @@ class AttendanceController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | Update initial status
+            | Update status
             |--------------------------------------------------------------------------
             */
 
@@ -242,20 +583,26 @@ class AttendanceController extends Controller
 
                 'success' => true,
 
-                'message' => 'Time In recorded successfully.',
+                'message' =>
+                    'Time In recorded successfully.',
 
-                'type' => 'Time In',
+                'type' =>
+                    'Time In',
 
-                'time' => $now->format('h:i:s A'),
+                'time' =>
+                    $now->format('h:i:s A'),
 
-                'employee' => $user->name,
+                'employee' =>
+                    $user->name,
 
-                'status' => $attendance->status,
+                'status' =>
+                    $attendance->status,
 
-                'hours_worked' => number_format(
-                    $attendance->hours_worked ?? 0,
-                    2
-                ),
+                'hours_worked' =>
+                    number_format(
+                        $attendance->hours_worked ?? 0,
+                        2
+                    ),
 
                 'late_minutes' =>
                     $attendance->late_minutes ?? 0,
@@ -318,13 +665,6 @@ class AttendanceController extends Controller
             |--------------------------------------------------------------------------
             | Calculate undertime
             |--------------------------------------------------------------------------
-            |
-            | Weekdays:
-            | Expected end = 5:30 PM
-            |
-            | Saturday:
-            | Expected end = 12:00 PM
-            |
             */
 
             $endTime = $this->getEndTime($now);
@@ -343,13 +683,6 @@ class AttendanceController extends Controller
             |--------------------------------------------------------------------------
             | Calculate overtime
             |--------------------------------------------------------------------------
-            |
-            | Weekdays:
-            | after 5:30 PM
-            |
-            | Saturday:
-            | after 12:00 PM
-            |
             */
 
             if ($now->greaterThan($endTime)) {
@@ -364,7 +697,7 @@ class AttendanceController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | Holiday status
+            | Update status
             |--------------------------------------------------------------------------
             */
 
@@ -376,20 +709,26 @@ class AttendanceController extends Controller
 
                 'success' => true,
 
-                'message' => 'Time Out recorded successfully.',
+                'message' =>
+                    'Time Out recorded successfully.',
 
-                'type' => 'Time Out',
+                'type' =>
+                    'Time Out',
 
-                'time' => $now->format('h:i:s A'),
+                'time' =>
+                    $now->format('h:i:s A'),
 
-                'employee' => $user->name,
+                'employee' =>
+                    $user->name,
 
-                'status' => $attendance->status,
+                'status' =>
+                    $attendance->status,
 
-                'hours_worked' => number_format(
-                    $attendance->hours_worked ?? 0,
-                    2
-                ),
+                'hours_worked' =>
+                    number_format(
+                        $attendance->hours_worked ?? 0,
+                        2
+                    ),
 
                 'late_minutes' =>
                     $attendance->late_minutes ?? 0,
@@ -419,8 +758,16 @@ class AttendanceController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | THIRD SCAN
+        | THIRD SCAN = REJECTED
         |--------------------------------------------------------------------------
+        |
+        | The employee already has both:
+        |
+        | - Time In
+        | - Time Out
+        |
+        | Therefore no additional scan is accepted.
+        |
         */
 
         return response()->json([
@@ -430,7 +777,8 @@ class AttendanceController extends Controller
             'message' =>
                 'Attendance already completed for today.',
 
-            'type' => 'Completed',
+            'type' =>
+                'Completed',
 
             'time' =>
                 $now->format('h:i:s A'),
@@ -440,6 +788,7 @@ class AttendanceController extends Controller
 
             'status' =>
                 $attendance->status,
+
         ], 422);
     }
 
@@ -479,24 +828,12 @@ class AttendanceController extends Controller
     /**
      * Determine attendance status.
      *
-     * Possible statuses:
+     * IMPORTANT:
      *
-     * Present
-     * Late
-     * Undertime
-     * Overtime
-     * Late & Undertime
-     * Late & Overtime
-     * Undertime & Overtime
-     * Late, Undertime & Overtime
-     * Worked Holiday
-     * Worked Holiday & Late
-     * Worked Holiday & Undertime
-     * Worked Holiday & Overtime
-     * Worked Holiday & Late & Undertime
-     * Worked Holiday & Late & Overtime
-     * Worked Holiday & Undertime & Overtime
-     * Worked Holiday & Late & Undertime & Overtime
+     * Absent is NOT determined here.
+     *
+     * Absent is determined by the scheduled end-of-day
+     * MarkAbsent command.
      */
     private function updateStatus(Attendance $attendance)
     {
@@ -504,13 +841,20 @@ class AttendanceController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Holiday
+        | Worked on Holiday
         |--------------------------------------------------------------------------
+        |
+        | A holiday becomes "Worked on Holiday" only when the
+        | employee actually has a kiosk Time In.
+        |
         */
 
-        if ($attendance->holiday_id) {
+        if (
+            $attendance->holiday_id &&
+            $attendance->time_in
+        ) {
 
-            $statuses[] = 'Worked Holiday';
+            $statuses[] = 'Worked on Holiday';
         }
 
         /*
@@ -556,6 +900,12 @@ class AttendanceController extends Controller
 
             $attendance->status = 'Present';
 
+            if (!$attendance->remarks) {
+
+                $attendance->remarks =
+                    'Kiosk attendance';
+            }
+
             return;
         }
 
@@ -567,6 +917,55 @@ class AttendanceController extends Controller
 
         $attendance->status =
             implode(' & ', $statuses);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Attendance remarks
+        |--------------------------------------------------------------------------
+        */
+
+        $remarks = [];
+
+        if (
+            $attendance->holiday_id &&
+            $attendance->time_in
+        ) {
+
+            $remarks[] = 'Worked on Holiday';
+        }
+
+        if (($attendance->late_minutes ?? 0) > 0) {
+
+            $remarks[] =
+                'Late: ' .
+                $this->formatMinutes(
+                    $attendance->late_minutes
+                );
+        }
+
+        if (($attendance->undertime_minutes ?? 0) > 0) {
+
+            $remarks[] =
+                'Undertime: ' .
+                $this->formatMinutes(
+                    $attendance->undertime_minutes
+                );
+        }
+
+        if (($attendance->overtime_minutes ?? 0) > 0) {
+
+            $remarks[] =
+                'Overtime: ' .
+                $this->formatMinutes(
+                    $attendance->overtime_minutes
+                );
+        }
+
+        if (!empty($remarks)) {
+
+            $attendance->remarks =
+                implode(' | ', $remarks);
+        }
     }
 
 
@@ -608,7 +1007,6 @@ class AttendanceController extends Controller
         } elseif ($hours > 0) {
 
             return $hours . 'h';
-
         }
 
         return $remainingMinutes . 'm';

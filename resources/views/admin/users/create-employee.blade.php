@@ -206,7 +206,7 @@
 
     <div class="wrapper">
         <div class="glass">
-            <div class="mb-2 step">STEP 2 OF 2</div>
+            <div class="mb-2 step"></div>
 
             <h1 class="fw-bold mb-2">Create Employee Account</h1>
 

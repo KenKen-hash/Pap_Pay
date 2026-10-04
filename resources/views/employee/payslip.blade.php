@@ -694,17 +694,17 @@
         <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
             <div class="sidebar-header">
 
-            <a class="brand-mark"
-               href="{{ route('dashboard') }}"
-               aria-label="Admin Dashboard">
+                <a class="brand-mark"
+                   href="{{ route('dashboard') }}"
+                   aria-label="Admin Dashboard">
 
-                <img src="../../../khen/assets/images/logo.jpg"
-                     alt="Pap Pay Logo"
-                     class="brand-logo">
+                    <img src="../../../khen/assets/images/logo.jpg"
+                         alt="Pap Pay Logo"
+                         class="brand-logo">
 
-            </a>
+                </a>
 
-        </div>
+            </div>
 
 
             <nav class="sidebar-nav">
@@ -716,7 +716,7 @@
                     </span>
 
                     <span class="nav-text">
-                        Dashboard
+                        Home
                     </span>
 
                 </a>
@@ -866,46 +866,46 @@
 
                     <!-- Search -->
 
-                   <form
-    class="d-none d-md-flex ms-3 flex-grow-1 admin-search-form"
-    role="search"
-    autocomplete="off"
-    data-admin-search
->
-    <div class="admin-search-wrapper">
+                    <form
+                        class="d-none d-md-flex ms-3 flex-grow-1 admin-search-form"
+                        role="search"
+                        autocomplete="off"
+                        data-admin-search
+                    >
+                        <div class="admin-search-wrapper">
 
-        <i class="bi bi-search admin-search-icon"></i>
+                            <i class="bi bi-search admin-search-icon"></i>
 
-        <input
-            id="adminSearchInput"
-            class="form-control search-input admin-search-input"
-            type="search"
-            placeholder="Search Pap Pay..."
-            aria-label="Search Pap Pay"
-            aria-autocomplete="list"
-            aria-controls="adminSearchResults"
-            aria-expanded="false"
-        >
+                            <input
+                                id="adminSearchInput"
+                                class="form-control search-input admin-search-input"
+                                type="search"
+                                placeholder="Search Pap Pay..."
+                                aria-label="Search Pap Pay"
+                                aria-autocomplete="list"
+                                aria-controls="adminSearchResults"
+                                aria-expanded="false"
+                            >
 
-        <button
-            type="button"
-            class="admin-search-clear"
-            id="adminSearchClear"
-            aria-label="Clear search"
-            title="Clear search"
-        >
-            <i class="bi bi-x-lg"></i>
-        </button>
+                            <button
+                                type="button"
+                                class="admin-search-clear"
+                                id="adminSearchClear"
+                                aria-label="Clear search"
+                                title="Clear search"
+                            >
+                                <i class="bi bi-x-lg"></i>
+                            </button>
 
-        <div
-            class="admin-search-results"
-            id="adminSearchResults"
-            role="listbox"
-            aria-label="Search results"
-        ></div>
+                            <div
+                                class="admin-search-results"
+                                id="adminSearchResults"
+                                role="listbox"
+                                aria-label="Search results"
+                            ></div>
 
-    </div>
-</form>
+                        </div>
+                    </form>
 
                     <div class="navbar-actions ms-auto">
 
@@ -1230,7 +1230,12 @@
 
                                                 ₱
                                                 {{ number_format(
-                                                    $p->sss + $p->philhealth + $p->pagibig + $p->hmo + $p->late_deduction + $p->undertime_deduction,
+                                                    (($p->sss ?? 0) / 2) +
+                                                    (($p->philhealth ?? 0) / 2) +
+                                                    (($p->pagibig ?? 0) / 2) +
+                                                    (($p->hmo ?? 0) / 2) +
+                                                    ($p->late_deduction ?? 0) +
+                                                    ($p->undertime_deduction ?? 0),
                                                     2,
                                                 ) }}
 
@@ -1266,20 +1271,37 @@
                                             <td class="payslip-action" data-label="Action">
 
                                                 @if (in_array($p->status, ['Generated', 'Sent', 'Viewed']))
-                                                    <a href="{{ route('payslip.download', $p->id) }}"
-                                                        class="btn btn-sm btn-outline-primary">
 
-                                                        <i class="bi bi-download"></i>
+                                                    <div class="d-flex flex-column flex-sm-row gap-2">
 
-                                                        Download
+                                                        <a href="{{ route('payslip.view', $p->id) }}"
+                                                            class="btn btn-sm btn-outline-primary">
 
-                                                    </a>
+                                                            <i class="bi bi-eye me-1"></i>
+
+                                                            View
+
+                                                        </a>
+
+                                                        <a href="{{ route('payslip.download', $p->id) }}"
+                                                            class="btn btn-sm btn-outline-secondary">
+
+                                                            <i class="bi bi-download me-1"></i>
+
+                                                            Download
+
+                                                        </a>
+
+                                                    </div>
+
                                                 @else
+
                                                     <button class="btn btn-sm btn-secondary" type="button" disabled>
 
                                                         Not Available
 
                                                     </button>
+
                                                 @endif
 
                                             </td>
@@ -1326,41 +1348,7 @@
 
             <footer class="admin-footer">
 
-                <div class="container-fluid px-3 px-lg-4">
 
-                    <span>
-                        Copyright 2026 adminHMD.
-                        <br>
-
-                        Developed by
-
-                        <a target="_blank" class="fw-bold text-success" href="https://github.com/HasanMahmudDev">
-
-                            Md. Hasan Mahmud
-
-                        </a>
-
-                        • Distributed by
-
-                        <a target="_blank" class="fw-bold text-success" href="https://themewagon.com">
-
-                            ThemeWagon
-
-                        </a>
-
-                    </span>
-
-
-                    <span>
-                        Professional dashboard template.
-                    </span>
-
-
-                    <span>
-                        Responsive table examples.
-                    </span>
-
-                </div>
 
             </footer>
 
@@ -1555,89 +1543,89 @@
     <script src="../../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
     <script src="../../../../../khen/assets/js/main.js"></script>
 
-     <script>
-    window.papPayAdminSearchPages = [
-        {
-            title: 'Home',
-            description: 'Admin dashboard and system overview',
-            keywords: 'home dashboard admin overview',
-            icon: 'bi-speedometer2',
-            url: @json(route('admin-dashboard'))
-        },
-        {
-            title: 'Employees',
-            description: 'Manage employee accounts and records',
-            keywords: 'employee employees staff users accounts personnel',
-            icon: 'bi-people-fill',
-            url: @json(route('employees.index'))
-        },
-        {
-            title: 'Attendance',
-            description: 'Review employee attendance records',
-            keywords: 'attendance time in time out present absent late undertime overtime',
-            icon: 'bi-calendar-check-fill',
-            url: @json(route('attendance_list'))
-        },
-        {
-            title: 'Leave Requests',
-            description: 'Review and approve employee leave requests',
-            keywords: 'leave leaves vacation absence request requests approval approve',
-            icon: 'bi-calendar-x-fill',
-            url: @json(route('admin.leaves'))
-        },
-        {
-            title: 'Official Business',
-            description: 'Manage official business requests',
-            keywords: 'official business ob field work travel request requests',
-            icon: 'bi-briefcase-fill',
-            url: @json(route('official_business'))
-        },
-        {
-            title: 'Holidays',
-            description: 'Manage holidays and holiday settings',
-            keywords: 'holiday holidays calendar dates pay rate',
-            icon: 'bi-calendar-event-fill',
-            url: @json(route('holidays.index'))
-        },
-        {
-            title: 'Payroll',
-            description: 'Process and manage employee payroll',
-            keywords: 'payroll salary salaries wages earnings deductions sss philhealth pagibig hmo',
-            icon: 'bi-cash-stack',
-            url: @json(route('payroll'))
-        },
-        {
-            title: 'Payslips',
-            description: 'View and manage employee payslips',
-            keywords: 'payslip payslips salary slip payment compensation',
-            icon: 'bi-receipt-cutoff',
-            url: @json(route('payslip_list'))
-        },
-        {
-            title: 'Payslip Concerns',
-            description: 'Review employee payslip concerns',
-            keywords: 'payslip concern concerns issue issues complaint complaints payroll problem',
-            icon: 'bi-exclamation-circle-fill',
-            url: @json(route('admin.payslip-concerns.index'))
-        },
-        {
-            title: 'Reports',
-            description: 'Generate HR and payroll reports',
-            keywords: 'report reports analytics statistics summary attendance payroll employee',
-            icon: 'bi-bar-chart-fill',
-            url: @json(route('reports'))
-        },
-        {
-            title: 'Announcements',
-            description: 'Publish and manage system announcements',
-            keywords: 'announcement announcements notice notices news publish message',
-            icon: 'bi-megaphone-fill',
-            url: @json(route('announcements'))
-        }
-    ];
-</script>
+    <script>
+        window.papPayAdminSearchPages = [
+            {
+                title: 'Home',
+                description: 'Admin dashboard and system overview',
+                keywords: 'home dashboard admin overview',
+                icon: 'bi-speedometer2',
+                url: @json(route('admin-dashboard'))
+            },
+            {
+                title: 'Employees',
+                description: 'Manage employee accounts and records',
+                keywords: 'employee employees staff users accounts personnel',
+                icon: 'bi-people-fill',
+                url: @json(route('employees.index'))
+            },
+            {
+                title: 'Attendance',
+                description: 'Review employee attendance records',
+                keywords: 'attendance time in time out present absent late undertime overtime',
+                icon: 'bi-calendar-check-fill',
+                url: @json(route('attendance_list'))
+            },
+            {
+                title: 'Leave Requests',
+                description: 'Review and approve employee leave requests',
+                keywords: 'leave leaves vacation absence request requests approval approve',
+                icon: 'bi-calendar-x-fill',
+                url: @json(route('admin.leaves'))
+            },
+            {
+                title: 'Official Business',
+                description: 'Manage official business requests',
+                keywords: 'official business ob field work travel request requests',
+                icon: 'bi-briefcase-fill',
+                url: @json(route('official_business'))
+            },
+            {
+                title: 'Holidays',
+                description: 'Manage holidays and holiday settings',
+                keywords: 'holiday holidays calendar dates pay rate',
+                icon: 'bi-calendar-event-fill',
+                url: @json(route('holidays.index'))
+            },
+            {
+                title: 'Payroll',
+                description: 'Process and manage employee payroll',
+                keywords: 'payroll salary salaries wages earnings deductions sss philhealth pagibig hmo',
+                icon: 'bi-cash-stack',
+                url: @json(route('payroll'))
+            },
+            {
+                title: 'Payslips',
+                description: 'View and manage employee payslips',
+                keywords: 'payslip payslips salary slip payment compensation',
+                icon: 'bi-receipt-cutoff',
+                url: @json(route('payslip_list'))
+            },
+            {
+                title: 'Payslip Concerns',
+                description: 'Review employee payslip concerns',
+                keywords: 'payslip concern concerns issue issues complaint complaints payroll problem',
+                icon: 'bi-exclamation-circle-fill',
+                url: @json(route('admin.payslip-concerns.index'))
+            },
+            {
+                title: 'Reports',
+                description: 'Generate HR and payroll reports',
+                keywords: 'report reports analytics statistics summary attendance payroll employee',
+                icon: 'bi-bar-chart-fill',
+                url: @json(route('reports'))
+            },
+            {
+                title: 'Announcements',
+                description: 'Publish and manage system announcements',
+                keywords: 'announcement announcements notice notices news publish message',
+                icon: 'bi-megaphone-fill',
+                url: @json(route('announcements'))
+            }
+        ];
+    </script>
 
-<script src="{{ asset('khen/assets/js/payslips-search.js') }}"></script>
+    <script src="{{ asset('khen/assets/js/payslips-search.js') }}"></script>
 </body>
 
 </html>

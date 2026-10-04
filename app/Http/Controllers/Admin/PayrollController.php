@@ -12,8 +12,13 @@ use App\Models\Payslip;
 use App\Models\Holiday;
 use App\Models\AdditionalEarning;
 use App\Models\TeachingLoad;
+use App\Models\LeaveRequest;
+use App\Models\OfficialBusiness;
+use App\Services\AuditLogService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\AdditionalDeduction;
 
 class PayrollController extends Controller
 {
@@ -84,6 +89,14 @@ class PayrollController extends Controller
             ->get()
             ->groupBy('user_id');
 
+        $additionalDeductions = AdditionalDeduction::whereIn(
+            'user_id',
+            $employeeIds
+        )
+            ->orderBy('id')
+            ->get()
+            ->groupBy('user_id');
+
         foreach ($employees as $employee) {
             $employee->additionalEarnings =
                 $additionalEarnings->get(
@@ -93,6 +106,12 @@ class PayrollController extends Controller
 
             $employee->teachingLoads =
                 $teachingLoads->get(
+                    $employee->id,
+                    collect()
+                );
+
+            $employee->additionalDeductions =
+                $additionalDeductions->get(
                     $employee->id,
                     collect()
                 );
@@ -134,7 +153,8 @@ class PayrollController extends Controller
                 'employees',
                 'departmentConfig',
                 'additionalEarnings',
-                'teachingLoads'
+                'teachingLoads',
+                'additionalDeductions'
             )
         );
     }
@@ -188,6 +208,15 @@ class PayrollController extends Controller
                 'required|numeric|min:0',
 
             'additional_earnings.*.remarks' =>
+                'nullable|string|max:1000',
+
+            'additional_deductions' =>
+                'nullable|array',
+
+            'additional_deductions.*.amount' =>
+                'required|numeric|min:0',
+
+            'additional_deductions.*.remarks' =>
                 'nullable|string|max:1000',
 
             'teaching_loads' =>
@@ -427,6 +456,39 @@ class PayrollController extends Controller
 
 
             /*
+             * Replace employee additional deductions.
+             */
+
+            AdditionalDeduction::where(
+                'user_id',
+                $validated['user_id']
+            )->delete();
+
+            foreach (
+                $validated['additional_deductions'] ?? []
+                as $deduction
+            ) {
+                AdditionalDeduction::create([
+                    'user_id' =>
+                        $validated['user_id'],
+
+                    'amount' =>
+                        max(
+                            0,
+                            (float) (
+                                $deduction['amount']
+                                ?? 0
+                            )
+                        ),
+
+                    'remarks' =>
+                        $deduction['remarks']
+                        ?? null,
+                ]);
+            }
+
+
+            /*
              * Replace employee teaching loads.
              */
 
@@ -486,6 +548,20 @@ class PayrollController extends Controller
             ]);
 
 
+        $savedAdditionalDeductions =
+            AdditionalDeduction::where(
+                'user_id',
+                $validated['user_id']
+            )
+            ->orderBy('id')
+            ->get([
+                'id',
+                'user_id',
+                'amount',
+                'remarks',
+            ]);
+
+
         $savedTeachingLoads =
             TeachingLoad::where(
                 'user_id',
@@ -522,6 +598,16 @@ class PayrollController extends Controller
                 ? $dailyRate / 8
                 : 0;
 
+        AuditLogService::log(
+            'Employee Payroll Configuration Updated',
+            'Admin ' .
+            Auth::user()->name .
+            ' updated payroll configuration for employee ' .
+            $employee->name .
+            ' (' .
+            $employee->email .
+            ').'
+        );
 
         return response()->json([
             'success' =>
@@ -556,6 +642,9 @@ class PayrollController extends Controller
 
             'additional_earnings' =>
                 $savedAdditionalEarnings,
+
+            'additional_deductions' =>
+                $savedAdditionalDeductions,
 
             'teaching_loads' =>
                 $savedTeachingLoads,
@@ -963,6 +1052,16 @@ class PayrollController extends Controller
         }
 
 
+        AuditLogService::log(
+            'Department Payroll Configuration Updated',
+            'Admin ' .
+            Auth::user()->name .
+            ' updated payroll configuration for the ' .
+            $validated['department'] .
+            ' department.'
+        );
+
+
         return response()->json([
             'success' =>
                 true,
@@ -1121,6 +1220,335 @@ class PayrollController extends Controller
 
 
         /*
+         * APPROVED LEAVES
+         *
+         * Only approved leaves are considered.
+         *
+         * With Pay:
+         *     The applicable leave dates are treated
+         *     as paid salary days.
+         *
+         * Without Pay:
+         *     The applicable leave dates are not paid.
+         *
+         * Payroll only considers Monday-Saturday because
+         * Sunday is not part of the 26-day salary basis.
+         */
+
+        $payrollStart =
+            Carbon::parse($periodStart)
+                ->startOfDay();
+
+        $payrollEnd =
+            Carbon::parse($periodEnd)
+                ->startOfDay();
+
+
+        $approvedLeaves =
+            LeaveRequest::where(
+                'user_id',
+                $employee->id
+            )
+            ->where(
+                'status',
+                'Approved'
+            )
+            ->whereDate(
+                'start_date',
+                '<=',
+                $payrollEnd->format('Y-m-d')
+            )
+            ->whereDate(
+                'end_date',
+                '>=',
+                $payrollStart->format('Y-m-d')
+            )
+            ->orderBy('start_date')
+            ->get();
+
+
+        $paidLeaveDays = 0;
+        $unpaidLeaveDays = 0;
+
+        $paidLeaveDates = [];
+        $unpaidLeaveDates = [];
+
+
+        foreach ($approvedLeaves as $leave) {
+
+            $leaveStart =
+                Carbon::parse(
+                    $leave->start_date
+                )->startOfDay();
+
+            $leaveEnd =
+                Carbon::parse(
+                    $leave->end_date
+                )->startOfDay();
+
+
+            /*
+             * Limit the leave to the current
+             * payroll period.
+             */
+
+            $effectiveStart =
+                $leaveStart->greaterThan(
+                    $payrollStart
+                )
+                    ? $leaveStart->copy()
+                    : $payrollStart->copy();
+
+
+            $effectiveEnd =
+                $leaveEnd->lessThan(
+                    $payrollEnd
+                )
+                    ? $leaveEnd->copy()
+                    : $payrollEnd->copy();
+
+
+            if (
+                $effectiveStart->greaterThan(
+                    $effectiveEnd
+                )
+            ) {
+                continue;
+            }
+
+
+            /*
+             * Count scheduled salary days.
+             *
+             * Monday = 1
+             * ...
+             * Saturday = 6
+             * Sunday = 7
+             *
+             * Sunday is excluded.
+             */
+
+            $currentDate =
+                $effectiveStart->copy();
+
+
+            while (
+                $currentDate->lessThanOrEqualTo(
+                    $effectiveEnd
+                )
+            ) {
+
+                if (
+                    $currentDate->dayOfWeek !==
+                    Carbon::SUNDAY
+                ) {
+
+                    $dateKey =
+                        $currentDate->format(
+                            'Y-m-d'
+                        );
+
+
+                    /*
+                     * Prevent duplicate counting if
+                     * overlapping approved leave records
+                     * somehow exist.
+                     */
+
+                    if (
+                        $leave->leave_pay_type ===
+                        'Leave with pay'
+                    ) {
+
+                        if (
+                            !in_array(
+                                $dateKey,
+                                $paidLeaveDates,
+                                true
+                            )
+                            &&
+                            !in_array(
+                                $dateKey,
+                                $unpaidLeaveDates,
+                                true
+                            )
+                        ) {
+
+                            $paidLeaveDates[] =
+                                $dateKey;
+
+                            $paidLeaveDays++;
+                        }
+
+                    } elseif (
+                        $leave->leave_pay_type ===
+                        'Leave without pay'
+                    ) {
+
+                        if (
+                            !in_array(
+                                $dateKey,
+                                $paidLeaveDates,
+                                true
+                            )
+                            &&
+                            !in_array(
+                                $dateKey,
+                                $unpaidLeaveDates,
+                                true
+                            )
+                        ) {
+
+                            $unpaidLeaveDates[] =
+                                $dateKey;
+
+                            $unpaidLeaveDays++;
+                        }
+                    }
+                }
+
+
+                $currentDate->addDay();
+            }
+        }
+
+
+        /*
+         * APPROVED OFFICIAL BUSINESS
+         *
+         * Approved Official Business is treated as a paid
+         * attendance day even when the employee has no
+         * biometric attendance record for that date.
+         *
+         * Monday-Saturday are salary days. Sunday is excluded.
+         */
+
+        $approvedOfficialBusinesses =
+            OfficialBusiness::where(
+                'user_id',
+                $employee->id
+            )
+            ->where(
+                'status',
+                'Approved'
+            )
+            ->whereDate(
+                'ob_date',
+                '<=',
+                $payrollEnd->format('Y-m-d')
+            )
+            ->whereDate(
+                'ob_date_to',
+                '>=',
+                $payrollStart->format('Y-m-d')
+            )
+            ->orderBy('ob_date')
+            ->get();
+
+
+        $officialBusinessDays = 0;
+
+        $officialBusinessDates = [];
+
+
+        foreach (
+            $approvedOfficialBusinesses as $officialBusiness
+        ) {
+
+            $obStart =
+                Carbon::parse(
+                    $officialBusiness->ob_date
+                )->startOfDay();
+
+            $obEnd =
+                Carbon::parse(
+                    $officialBusiness->ob_date_to
+                        ?? $officialBusiness->ob_date
+                )->startOfDay();
+
+
+            $effectiveStart =
+                $obStart->greaterThan($payrollStart)
+                    ? $obStart->copy()
+                    : $payrollStart->copy();
+
+            $effectiveEnd =
+                $obEnd->lessThan($payrollEnd)
+                    ? $obEnd->copy()
+                    : $payrollEnd->copy();
+
+
+            if (
+                $effectiveStart->greaterThan($effectiveEnd)
+            ) {
+                continue;
+            }
+
+
+            $currentDate =
+                $effectiveStart->copy();
+
+
+            while (
+                $currentDate->lessThanOrEqualTo($effectiveEnd)
+            ) {
+
+                if (
+                    $currentDate->dayOfWeek !== Carbon::SUNDAY
+                ) {
+
+                    $dateKey =
+                        $currentDate->format('Y-m-d');
+
+
+                    $hasActualAttendance =
+                        $workedAttendance->contains(
+                            function ($record) use ($dateKey) {
+                                return Carbon::parse(
+                                    $record->date
+                                )->format('Y-m-d') === $dateKey;
+                            }
+                        );
+
+
+                    /*
+                     * One calendar date can only receive one
+                     * regular daily-rate payment.
+                     *
+                     * Actual attendance takes priority.
+                     * Leave With Pay already pays the date.
+                     */
+
+                    if (
+                        !$hasActualAttendance
+                        &&
+                        !in_array(
+                            $dateKey,
+                            $paidLeaveDates,
+                            true
+                        )
+                        &&
+                        !in_array(
+                            $dateKey,
+                            $officialBusinessDates,
+                            true
+                        )
+                    ) {
+
+                        $officialBusinessDates[] =
+                            $dateKey;
+
+                        $officialBusinessDays++;
+                    }
+                }
+
+
+                $currentDate->addDay();
+            }
+        }
+
+
+        /*
          * HOLIDAYS
          */
 
@@ -1235,6 +1663,40 @@ class PayrollController extends Controller
 
 
         /*
+         * Do not pay a Leave With Pay or Official Business
+         * date twice when the date is already handled by
+         * the holiday calculation above.
+         */
+
+        $paidLeaveDates =
+            array_values(
+                array_filter(
+                    $paidLeaveDates,
+                    function ($date) use ($holidays) {
+                        return !isset($holidays[$date]);
+                    }
+                )
+            );
+
+        $paidLeaveDays =
+            count($paidLeaveDates);
+
+
+        $officialBusinessDates =
+            array_values(
+                array_filter(
+                    $officialBusinessDates,
+                    function ($date) use ($holidays) {
+                        return !isset($holidays[$date]);
+                    }
+                )
+            );
+
+        $officialBusinessDays =
+            count($officialBusinessDates);
+
+
+        /*
          * Ordinary worked days exclude
          * worked holidays.
          */
@@ -1249,11 +1711,22 @@ class PayrollController extends Controller
 
         /*
          * BASIC PAY
+         *
+         * With Pay leave is added to the
+         * payable basic-pay days.
+         *
+         * Without Pay leave is NOT added.
          */
+
+        $basicPayDays =
+            $normalWorkedDays +
+            $paidLeaveDays +
+            $officialBusinessDays;
+
 
         $basicPay =
             $dailyRate *
-            $normalWorkedDays;
+            $basicPayDays;
 
 
         /*
@@ -1332,6 +1805,30 @@ class PayrollController extends Controller
                 0,
                 (float) (
                     $additionalEarnings->sum(
+                        'amount'
+                    )
+                )
+            );
+
+
+        /*
+         * ADDITIONAL DEDUCTIONS
+         */
+
+        $additionalDeductions =
+            AdditionalDeduction::where(
+                'user_id',
+                $employee->id
+            )
+            ->orderBy('id')
+            ->get();
+
+
+        $additionalDeductionTotal =
+            max(
+                0,
+                (float) (
+                    $additionalDeductions->sum(
                         'amount'
                     )
                 )
@@ -1575,6 +2072,10 @@ class PayrollController extends Controller
 
         /*
          * LABORERS ARE WEEKLY.
+         *
+         * Laborers use 4 weeks per month.
+         * Other departments keep their existing
+         * payroll-period behavior.
          */
 
         $payrollPeriod =
@@ -1587,6 +2088,13 @@ class PayrollController extends Controller
             ||
             $payrollPeriod === 'Weekly';
 
+
+        /*
+         * Benefits:
+         *
+         * Laborers = 4 weeks
+         * Other departments = 2 payroll periods
+         */
 
         $benefitDivisor =
             $isWeeklyPayroll
@@ -1603,6 +2111,31 @@ class PayrollController extends Controller
             )
             /
             $benefitDivisor;
+
+
+        /*
+         * ADDITIONAL DEDUCTION PERIOD DIVISOR
+         *
+         * Additional deductions are configured
+         * as monthly amounts.
+         *
+         * Laborers are paid weekly, so their
+         * monthly additional deductions are
+         * divided by 4.
+         *
+         * Other departments remain unchanged.
+         */
+
+        $additionalDeductionDivisor =
+            $isWeeklyPayroll
+                ? 4
+                : 1;
+
+
+        $periodAdditionalDeductionTotal =
+            $additionalDeductionTotal
+            /
+            $additionalDeductionDivisor;
 
 
         /*
@@ -1666,6 +2199,7 @@ class PayrollController extends Controller
                 - $benefits
                 - $lateDeduction
                 - $undertimeDeduction
+                - $periodAdditionalDeductionTotal
             );
 
 
@@ -1687,6 +2221,32 @@ class PayrollController extends Controller
 
             'total_attendance' =>
                 $presentDays,
+
+
+            /*
+             * Leave Pay
+             */
+
+            'paid_leave_days' =>
+                $paidLeaveDays,
+
+            'unpaid_leave_days' =>
+                $unpaidLeaveDays,
+
+            'paid_leave_dates' =>
+                $paidLeaveDates,
+
+            'unpaid_leave_dates' =>
+                $unpaidLeaveDates,
+
+            'official_business_days' =>
+                $officialBusinessDays,
+
+            'official_business_dates' =>
+                $officialBusinessDates,
+
+            'basic_pay_days' =>
+                $basicPayDays,
 
 
             /*
@@ -1802,6 +2362,24 @@ class PayrollController extends Controller
             'additional_earnings' =>
                 $additionalEarnings,
 
+            'additional_deduction_total' =>
+                round(
+                    $periodAdditionalDeductionTotal,
+                    2
+                ),
+
+            'additional_deduction_configured_total' =>
+                round(
+                    $additionalDeductionTotal,
+                    2
+                ),
+
+            'additional_deduction_divisor' =>
+                $additionalDeductionDivisor,
+
+            'additional_deductions' =>
+                $additionalDeductions,
+
 
             /*
              * Teaching load
@@ -1839,6 +2417,7 @@ class PayrollController extends Controller
 
             'teaching_load_entries' =>
                 $teachingLoads,
+
 
             /*
              * Individual teaching-load amounts
@@ -2056,6 +2635,23 @@ class PayrollController extends Controller
 
 
                 /*
+                 * Leave Pay
+                 */
+
+                'paid_leave_days' =>
+                    $calculation['paid_leave_days'],
+
+                'unpaid_leave_days' =>
+                    $calculation['unpaid_leave_days'],
+
+                'official_business_days' =>
+                    $calculation['official_business_days'],
+
+                'basic_pay_days' =>
+                    $calculation['basic_pay_days'],
+
+
+                /*
                  * Minutes
                  */
 
@@ -2107,6 +2703,18 @@ class PayrollController extends Controller
 
                 'additional_earnings' =>
                     $calculation['additional_earnings'],
+
+                'additional_deduction_total' =>
+                    $calculation['additional_deduction_total'],
+
+                'additional_deduction_configured_total' =>
+                    $calculation['additional_deduction_configured_total'],
+
+                'additional_deduction_divisor' =>
+                    $calculation['additional_deduction_divisor'],
+
+                'additional_deductions' =>
+                    $calculation['additional_deductions'],
 
 
                 /*
@@ -2401,6 +3009,22 @@ class PayrollController extends Controller
 
 
             $generated++;
+        }
+
+
+        if ($generated > 0) {
+            AuditLogService::log(
+                'Payslips Generated',
+                'Admin ' .
+                Auth::user()->name .
+                ' generated ' .
+                $generated .
+                ' payslip(s) for payroll period ' .
+                $request->period_start .
+                ' to ' .
+                $request->period_end .
+                '.'
+            );
         }
 
 

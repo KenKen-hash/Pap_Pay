@@ -13,12 +13,14 @@
         content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
-        content="adminHMD professional admin dashboard template">
+        content="Employee announcements - PAP Pay Payroll Management System">
 
     <title>Announcements | PAP Pay</title>
 
+    <link rel="icon"
+        type="image/x-icon"
+        href="../../../../khen/assets/images/favicon.png">
 
-     <link rel="icon" type="image/x-icon" href="../../../../khen/assets/images/favicon.png">
     <!-- Bootstrap -->
     <link rel="stylesheet"
         href="../../../../khen/assets/css/bootstrap.min.css">
@@ -52,6 +54,7 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            background: #f7f9fc;
         }
 
         *,
@@ -214,10 +217,27 @@
 
         .announcement-search-wrapper .input-group-text {
             flex: 0 0 auto;
+            border-color: #e5e7eb;
         }
 
         .announcement-search-wrapper input {
             min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            border-color: #e5e7eb;
+            box-shadow: none !important;
+        }
+
+        .announcement-search-wrapper input:focus {
+            border-color: #2563eb;
+        }
+
+
+        /* =========================================================
+           ANNOUNCEMENT LIST
+           ========================================================= */
+
+        .announcement-list {
             width: 100%;
             max-width: 100%;
         }
@@ -233,16 +253,23 @@
             min-width: 0;
             overflow: hidden;
 
+            background: #ffffff;
+            border: 1px solid #edf0f5 !important;
+            border-radius: 16px !important;
+
             transition:
-                transform .25s ease,
-                box-shadow .25s ease;
+                transform .2s ease,
+                box-shadow .2s ease,
+                border-color .2s ease;
         }
 
         .announcement-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-2px);
+
+            border-color: #dce4f2 !important;
 
             box-shadow:
-                0 12px 25px rgba(0, 0, 0, .12) !important;
+                0 10px 25px rgba(15, 23, 42, .08) !important;
         }
 
         .announcement-card .card-body {
@@ -250,11 +277,12 @@
             max-width: 100%;
             min-width: 0;
             overflow: hidden;
+            padding: 1.25rem 1.35rem;
         }
 
 
         /* =========================================================
-           ANNOUNCEMENT HEADER
+           ANNOUNCEMENT CARD HEADER
            ========================================================= */
 
         .announcement-header {
@@ -264,8 +292,8 @@
 
             display: flex;
 
+            align-items: center;
             justify-content: space-between;
-            align-items: flex-start;
 
             gap: 1rem;
         }
@@ -284,11 +312,14 @@
             overflow-wrap: anywhere;
             word-break: break-word;
 
-            line-height: 1.35;
+            line-height: 1.4;
+            font-size: 1.08rem;
+            font-weight: 700;
+            color: #1f2937;
         }
 
         .announcement-title-icon {
-            display: inline;
+            color: #2563eb;
         }
 
         .announcement-meta {
@@ -296,10 +327,13 @@
 
             max-width: 100%;
 
+            margin-top: .3rem;
+
             overflow-wrap: anywhere;
             word-break: break-word;
 
             line-height: 1.5;
+            font-size: .78rem;
         }
 
         .announcement-badge {
@@ -308,39 +342,218 @@
             white-space: nowrap;
 
             max-width: 100%;
+
+            font-size: .7rem;
+            font-weight: 600;
+
+            padding: .4rem .65rem;
+
+            border-radius: 999px;
         }
 
 
         /* =========================================================
-           ANNOUNCEMENT MESSAGE
+           ANNOUNCEMENT PREVIEW
            ========================================================= */
 
-        .announcement-message {
+        .announcement-preview {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+
+            color: #6b7280;
+
+            overflow: hidden;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+
+            line-height: 1.6;
+
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+
+            line-clamp: 2;
+        }
+
+
+        /* =========================================================
+           CARD FOOTER / VIEW BUTTON
+           ========================================================= */
+
+        .announcement-card-footer {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 1rem;
+
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+        }
+
+        .announcement-attachment-indicator {
+            min-width: 0;
+            max-width: 100%;
+
+            color: #6b7280;
+
+            font-size: .78rem;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .announcement-view-btn {
+            flex: 0 0 auto;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: .4rem;
+
+            min-height: 38px;
+
+            padding: .5rem .9rem;
+
+            border-radius: 9px;
+
+            font-size: .82rem;
+            font-weight: 600;
+
+            white-space: nowrap;
+
+            transition:
+                background-color .2s ease,
+                transform .2s ease;
+        }
+
+        .announcement-view-btn:hover {
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================================
+           ANNOUNCEMENT MODAL
+           ========================================================= */
+
+        .announcement-modal .modal-dialog {
+            max-width: 760px;
+            width: calc(100% - 2rem);
+            margin: 1rem auto;
+        }
+
+        .announcement-modal .modal-content {
+            border: 0;
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 60px rgba(15, 23, 42, .2);
+        }
+
+        .announcement-modal .modal-header {
+            padding: 1.15rem 1.35rem;
+
+            background: #ffffff;
+
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .announcement-modal-title-wrapper {
+            min-width: 0;
+            max-width: calc(100% - 40px);
+        }
+
+        .announcement-modal .modal-title {
+            margin: 0;
+
+            max-width: 100%;
+
+            color: #1f2937;
+
+            font-size: 1.2rem;
+            font-weight: 700;
+
+            line-height: 1.4;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .announcement-modal-meta {
+            display: block;
+
+            margin-top: .3rem;
+
+            color: #6b7280;
+
+            font-size: .78rem;
+            line-height: 1.5;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .announcement-modal .btn-close {
+            flex: 0 0 auto;
+        }
+
+        .announcement-modal .modal-body {
+            max-height: 65vh;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            padding: 1.35rem;
+        }
+
+        .announcement-modal-message {
             width: 100%;
             max-width: 100%;
 
-            margin-bottom: 1rem;
+            margin: 0;
 
-            overflow-wrap: anywhere;
-            word-break: break-word;
+            color: #374151;
+
+            font-size: .95rem;
+            line-height: 1.8;
 
             white-space: pre-wrap;
 
-            line-height: 1.7;
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
+        .announcement-modal-attachment {
+            display: inline-flex;
 
-        /* =========================================================
-           ATTACHMENT
-           ========================================================= */
+            align-items: center;
+            justify-content: center;
 
-        .announcement-attachment {
+            gap: .4rem;
+
+            margin-top: 1.25rem;
+
             max-width: 100%;
-
-            white-space: normal;
 
             overflow-wrap: anywhere;
             word-break: break-word;
+        }
+
+        .announcement-modal .modal-footer {
+            padding: .9rem 1.35rem;
+
+            border-top: 1px solid #edf0f5;
+
+            background: #fafbfc;
         }
 
 
@@ -354,6 +567,8 @@
             min-width: 0;
 
             overflow: hidden;
+
+            border-radius: 16px !important;
         }
 
         .announcement-empty .card-body {
@@ -362,6 +577,17 @@
             min-width: 0;
 
             overflow: hidden;
+
+            padding: 4rem 1.5rem;
+        }
+
+        .announcement-empty i {
+            font-size: 3.5rem;
+        }
+
+        .announcement-empty h4 {
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         .announcement-empty p {
@@ -369,6 +595,23 @@
 
             overflow-wrap: anywhere;
             word-break: break-word;
+        }
+
+
+        /* =========================================================
+           SEARCH EMPTY STATE
+           ========================================================= */
+
+        #noSearchResults {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+
+            border-radius: 16px !important;
+        }
+
+        #noSearchResults .card-body {
+            padding: 3rem 1.5rem;
         }
 
 
@@ -400,7 +643,6 @@
 
         /* =========================================================
            TABLET
-           992px AND BELOW
            ========================================================= */
 
         @media (max-width: 991.98px) {
@@ -429,11 +671,6 @@
                 overflow-x: hidden !important;
             }
 
-
-            /* -----------------------------------------
-               Navbar
-               ----------------------------------------- */
-
             .admin-navbar {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -450,11 +687,6 @@
                 max-width: 100%;
             }
 
-
-            /* -----------------------------------------
-               Page
-               ----------------------------------------- */
-
             .announcement-container {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -463,13 +695,8 @@
                 padding-right: 1rem !important;
             }
 
-
-            /* -----------------------------------------
-               Announcement header
-               ----------------------------------------- */
-
-            .announcement-header {
-                gap: .75rem;
+            .announcement-modal .modal-dialog {
+                max-width: 720px;
             }
 
         }
@@ -477,7 +704,6 @@
 
         /* =========================================================
            MOBILE
-           768px AND BELOW
            ========================================================= */
 
         @media (max-width: 767.98px) {
@@ -489,12 +715,6 @@
 
                 overflow-x: hidden !important;
             }
-
-
-            /* =====================================================
-               IMPORTANT:
-               MAIN CONTENT MUST USE FULL MOBILE WIDTH
-               ===================================================== */
 
             .admin-shell {
                 display: block !important;
@@ -556,12 +776,6 @@
                 overflow-y: auto !important;
                 overflow-x: hidden !important;
             }
-
-
-            /*
-             * These selectors cover the common sidebar-open
-             * classes used by the template JavaScript.
-             */
 
             body.sidebar-open .admin-sidebar,
             .admin-shell.sidebar-open .admin-sidebar,
@@ -672,8 +886,7 @@
                 max-width: 100% !important;
                 min-width: 0 !important;
 
-                padding:
-                    1rem !important;
+                padding: 1rem !important;
 
                 overflow-x: hidden !important;
             }
@@ -690,7 +903,7 @@
             }
 
             .announcement-page-header h2 {
-                font-size: 1.65rem;
+                font-size: 1.55rem;
 
                 line-height: 1.25;
 
@@ -745,9 +958,9 @@
                 width: 100% !important;
                 max-width: 100% !important;
 
-                margin-bottom: 1rem !important;
+                margin-bottom: .75rem !important;
 
-                border-radius: 1rem !important;
+                border-radius: 14px !important;
             }
 
             .announcement-card .card-body {
@@ -757,91 +970,103 @@
                 padding: 1rem !important;
             }
 
-
-            /* =====================================================
-               ANNOUNCEMENT HEADER
-               ===================================================== */
-
             .announcement-header {
-                display: flex !important;
+                align-items: flex-start;
 
-                flex-direction: column !important;
-
-                align-items: stretch !important;
-
-                justify-content: flex-start !important;
-
-                gap: .75rem !important;
-            }
-
-            .announcement-title-area {
-                width: 100% !important;
-                max-width: 100% !important;
+                gap: .65rem !important;
             }
 
             .announcement-title {
-                font-size: 1.2rem;
+                font-size: 1rem;
 
                 line-height: 1.4;
             }
 
             .announcement-meta {
-                margin-top: .35rem;
+                margin-top: .25rem;
 
-                font-size: .78rem;
+                font-size: .74rem;
 
-                line-height: 1.5;
+                line-height: 1.45;
             }
 
             .announcement-badge {
-                align-self: flex-start;
+                font-size: .65rem;
 
-                width: auto;
+                padding: .35rem .55rem;
+            }
 
-                max-width: 100%;
+            .announcement-preview {
+                margin-top: .8rem;
+                margin-bottom: .85rem;
 
+                font-size: .86rem;
+
+                line-height: 1.6;
+
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+            }
+
+            .announcement-card-footer {
+                gap: .65rem;
+            }
+
+            .announcement-attachment-indicator {
                 font-size: .72rem;
+            }
 
-                white-space: nowrap;
+            .announcement-view-btn {
+                min-height: 36px;
+
+                padding: .45rem .75rem;
+
+                font-size: .76rem;
             }
 
 
             /* =====================================================
-               DIVIDER
+               MODAL
                ===================================================== */
 
-            .announcement-card hr {
-                margin-top: .9rem;
-                margin-bottom: .9rem;
+            .announcement-modal .modal-dialog {
+                width: calc(100% - 1rem);
+
+                max-width: none;
+
+                margin: .5rem auto;
             }
 
-
-            /* =====================================================
-               MESSAGE
-               ===================================================== */
-
-            .announcement-message {
-                font-size: .9rem;
-
-                line-height: 1.65;
-
-                margin-top: .75rem !important;
+            .announcement-modal .modal-content {
+                border-radius: 15px;
             }
 
+            .announcement-modal .modal-header {
+                padding: 1rem;
+            }
 
-            /* =====================================================
-               ATTACHMENT
-               ===================================================== */
+            .announcement-modal .modal-title {
+                font-size: 1.05rem;
+            }
 
-            .announcement-attachment {
-                width: 100% !important;
+            .announcement-modal-meta {
+                font-size: .72rem;
+            }
 
-                display: block;
+            .announcement-modal .modal-body {
+                max-height: 70vh;
 
-                text-align: center;
+                padding: 1rem;
+            }
 
-                padding-left: .75rem;
-                padding-right: .75rem;
+            .announcement-modal-message {
+                font-size: .88rem;
+
+                line-height: 1.7;
+            }
+
+            .announcement-modal .modal-footer {
+                padding: .75rem 1rem;
             }
 
 
@@ -853,28 +1078,36 @@
                 width: 100% !important;
                 max-width: 100% !important;
 
-                border-radius: 1rem !important;
+                border-radius: 14px !important;
             }
 
             .announcement-empty .card-body {
-                padding:
-                    3rem 1rem !important;
+                padding: 3rem 1rem !important;
             }
 
             .announcement-empty i {
-                font-size: 3.5rem !important;
+                font-size: 3.25rem !important;
             }
 
             .announcement-empty h4 {
-                font-size: 1.2rem;
+                font-size: 1.15rem;
 
                 line-height: 1.4;
             }
 
             .announcement-empty p {
-                font-size: .9rem;
+                font-size: .88rem;
 
                 line-height: 1.6;
+            }
+
+
+            /* =====================================================
+               SEARCH EMPTY STATE
+               ===================================================== */
+
+            #noSearchResults .card-body {
+                padding: 2.5rem 1rem;
             }
 
 
@@ -901,8 +1134,7 @@
 
                 gap: .65rem !important;
 
-                padding:
-                    1rem !important;
+                padding: 1rem !important;
             }
 
             .admin-footer span {
@@ -920,7 +1152,6 @@
 
         /* =========================================================
            SMALL PHONES
-           576px AND BELOW
            ========================================================= */
 
         @media (max-width: 575.98px) {
@@ -928,9 +1159,6 @@
             .announcement-container {
                 padding: .75rem !important;
             }
-
-
-            /* Navbar */
 
             .admin-navbar .container-fluid {
                 padding-left: .65rem !important;
@@ -956,65 +1184,47 @@
                 padding: 0 !important;
             }
 
-
-            /* Header */
-
             .announcement-page-header h2 {
-                font-size: 1.45rem;
+                font-size: 1.4rem;
             }
 
             .announcement-page-header p {
-                font-size: .85rem;
+                font-size: .84rem;
             }
-
-
-            /* Search */
 
             .announcement-search-wrapper input {
-                font-size: .85rem;
+                font-size: .84rem;
             }
-
-
-            /* Cards */
 
             .announcement-card .card-body {
                 padding: .9rem !important;
             }
 
             .announcement-title {
-                font-size: 1.1rem;
+                font-size: .95rem;
             }
 
-            .announcement-message {
-                font-size: .875rem;
-            }
-
-            .announcement-badge {
-                font-size: .68rem;
-            }
-
-
-            /* Empty state */
-
-            .announcement-empty .card-body {
-                padding:
-                    2.5rem .85rem !important;
-            }
-
-            .announcement-empty i {
-                font-size: 3rem !important;
-            }
-
-            .announcement-empty h4 {
-                font-size: 1.1rem;
-            }
-
-            .announcement-empty p {
+            .announcement-preview {
                 font-size: .82rem;
             }
 
+            .announcement-view-btn {
+                padding: .42rem .65rem;
 
-            /* Footer */
+                font-size: .72rem;
+            }
+
+            .announcement-attachment-indicator {
+                font-size: .68rem;
+            }
+
+            .announcement-modal .modal-dialog {
+                width: calc(100% - .75rem);
+            }
+
+            .announcement-modal .modal-body {
+                max-height: 72vh;
+            }
 
             .admin-footer span {
                 font-size: .75rem;
@@ -1025,7 +1235,6 @@
 
         /* =========================================================
            VERY SMALL PHONES
-           380px AND BELOW
            ========================================================= */
 
         @media (max-width: 380px) {
@@ -1034,30 +1243,25 @@
                 padding: .6rem !important;
             }
 
-
             .admin-navbar .container-fluid {
                 padding-left: .5rem !important;
                 padding-right: .5rem !important;
             }
-
 
             .sidebar-toggle {
                 width: 38px;
                 height: 38px;
             }
 
-
             .icon-button {
                 width: 36px;
                 height: 36px;
             }
 
-
             .profile-button {
                 width: 38px;
                 max-width: 38px;
             }
-
 
             .announcement-page-header h2 {
                 font-size: 1.3rem;
@@ -1067,11 +1271,9 @@
                 font-size: .8rem;
             }
 
-
             .announcement-search-wrapper input {
                 font-size: .8rem;
             }
-
 
             .announcement-card {
                 border-radius: .85rem !important;
@@ -1081,35 +1283,40 @@
                 padding: .75rem !important;
             }
 
-
             .announcement-title {
-                font-size: 1rem;
+                font-size: .9rem;
             }
 
             .announcement-meta {
-                font-size: .72rem;
+                font-size: .68rem;
             }
 
-            .announcement-message {
-                font-size: .82rem;
+            .announcement-preview {
+                font-size: .78rem;
 
-                line-height: 1.6;
+                line-height: 1.55;
             }
-
 
             .announcement-badge {
-                font-size: .62rem;
+                font-size: .58rem;
             }
 
+            .announcement-view-btn {
+                font-size: .68rem;
 
-            .announcement-attachment {
-                font-size: .75rem;
+                padding: .4rem .55rem;
             }
 
+            .announcement-modal .modal-title {
+                font-size: .95rem;
+            }
+
+            .announcement-modal-message {
+                font-size: .82rem;
+            }
 
             .announcement-empty .card-body {
-                padding:
-                    2rem .65rem !important;
+                padding: 2rem .65rem !important;
             }
 
             .announcement-empty i {
@@ -1187,7 +1394,7 @@
 
         <!-- SIDEBAR HEADER -->
 
-         <div class="sidebar-header">
+        <div class="sidebar-header">
 
             <a class="brand-mark"
                href="{{ route('dashboard') }}"
@@ -1219,7 +1426,7 @@
                 </span>
 
                 <span class="nav-text">
-                    Dashboard
+                    Home
                 </span>
 
             </a>
@@ -1343,23 +1550,19 @@
 
         <div class="sidebar-user">
 
-
             <img class="avatar-img avatar-md sidebar-user-avatar"
                 src="{{ $employee->photo
                     ? asset('storage/' . $employee->photo)
                     : asset('images/default-avatar.png') }}"
                 alt="{{ $employee->name ?? 'Employee' }}">
 
-
             <strong>
                 {{ $employee->name ?? 'Employee Name' }}
             </strong>
 
-
             <small>
                 {{ $employee->position ?? 'Position' }}
             </small>
-
 
         </div>
 
@@ -1395,7 +1598,6 @@
 
         <nav class="navbar admin-navbar navbar-expand bg-white">
 
-
             <div class="container-fluid px-3 px-lg-4">
 
 
@@ -1417,13 +1619,44 @@
 
                 <!-- NAVBAR SEARCH -->
 
-                <form class="d-none d-md-flex ms-3 flex-grow-1"
+                <form class="admin-search-form d-none d-md-flex ms-3 flex-grow-1"
+                    action="{{ route('search') }}"
+                    method="GET"
                     role="search">
 
-                    <input class="form-control search-input"
-                        type="search"
-                        placeholder="Search users, orders, reports"
-                        aria-label="Search">
+                    <div class="admin-search-wrapper">
+
+                        <i class="bi bi-search admin-search-icon"
+                            aria-hidden="true">
+                        </i>
+
+                        <input
+                            type="search"
+                            name="search"
+                            id="adminSearchInput"
+                            class="admin-search-input"
+                            placeholder="Search Pap Pay..."
+                            aria-label="Search Pap Pay"
+                            autocomplete="off">
+
+                        <button
+                            type="button"
+                            class="admin-search-clear"
+                            id="adminSearchClear"
+                            aria-label="Clear search">
+
+                            <i class="bi bi-x-lg"
+                                aria-hidden="true">
+                            </i>
+
+                        </button>
+
+                        <div
+                            class="admin-search-results"
+                            id="adminSearchResults">
+                        </div>
+
+                    </div>
 
                 </form>
 
@@ -1436,7 +1669,6 @@
                     <!-- NOTIFICATIONS -->
 
                     <div class="dropdown">
-
 
                         <button class="icon-button"
                             type="button"
@@ -1454,7 +1686,6 @@
 
 
                         <div class="dropdown-menu dropdown-menu-end notification-menu">
-
 
                             <div class="dropdown-header fw-bold text-body">
                                 Notifications
@@ -1512,12 +1743,10 @@
 
                     <div class="dropdown">
 
-
                         <button class="profile-button dropdown-toggle"
                             type="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false">
-
 
                             <img class="avatar-img avatar-sm"
                                 src="{{ $employee->photo
@@ -1525,19 +1754,14 @@
                                     : asset('images/default-avatar.png') }}"
                                 alt="{{ $employee->name ?? 'Employee' }}">
 
-
                             <span class="profile-name d-none d-sm-inline">
-
                                 {{ $employee->name ?? 'Employee' }}
-
                             </span>
-
 
                         </button>
 
 
                         <ul class="dropdown-menu dropdown-menu-end">
-
 
                             <li>
 
@@ -1576,7 +1800,6 @@
 
                             </li>
 
-
                         </ul>
 
                     </div>
@@ -1605,19 +1828,14 @@
 
                 <div class="announcement-page-header mb-4">
 
-
                     <h2 class="fw-bold mb-2">
                         Announcements
                     </h2>
 
-
                     <p class="text-muted mb-0">
-
                         Stay updated with the latest announcements
                         from the administrator.
-
                     </p>
-
 
                 </div>
 
@@ -1628,12 +1846,9 @@
 
                 <div class="row announcement-search-row mb-4">
 
-
                     <div class="col-12 col-lg-6 announcement-search-wrapper">
 
-
                         <div class="input-group shadow-sm">
-
 
                             <span class="input-group-text bg-white">
 
@@ -1641,19 +1856,16 @@
 
                             </span>
 
-
-                            <input type="text"
+                            <input
+                                type="text"
                                 id="announcementSearch"
                                 class="form-control"
                                 placeholder="Search announcements..."
                                 autocomplete="off">
 
-
                         </div>
 
-
                     </div>
-
 
                 </div>
 
@@ -1664,194 +1876,309 @@
 
                 <div class="row">
 
-
                     <div class="col-12">
 
+                        <div class="announcement-list">
 
-                        @forelse($announcements as $announcement)
+                            @forelse($announcements as $announcement)
 
+                                <!-- =================================================
+                                     ANNOUNCEMENT CARD
+                                     ================================================= -->
 
-                            <!-- ANNOUNCEMENT CARD -->
+                                <div class="card shadow-sm border-0 announcement-card mb-3"
+                                    data-announcement-card
+                                    data-search-text="{{ strtolower($announcement->title . ' ' . $announcement->message) }}">
 
-                            <div class="card shadow-sm border-0 rounded-4 mb-4 announcement-card">
-
-
-                                <div class="card-body">
-
-
-                                    <!-- HEADER -->
-
-                                    <div class="announcement-header">
+                                    <div class="card-body">
 
 
-                                        <div class="announcement-title-area">
+                                        <!-- CARD HEADER -->
+
+                                        <div class="announcement-header">
+
+                                            <div class="announcement-title-area">
+
+                                                <h4 class="announcement-title">
+
+                                                    <span class="announcement-title-icon">
+
+                                                        <i class="bi bi-megaphone-fill me-1"></i>
+
+                                                    </span>
+
+                                                    {{ $announcement->title }}
+
+                                                </h4>
 
 
-                                            <h4 class="fw-bold announcement-title">
+                                                <small class="text-muted announcement-meta">
+
+                                                    Administrator
+
+                                                    <span class="mx-1">
+                                                        •
+                                                    </span>
+
+                                                    {{ $announcement->created_at->diffForHumans() }}
+
+                                                </small>
+
+                                            </div>
 
 
-                                                <span class="announcement-title-icon">
+                                            <span class="badge bg-primary announcement-badge">
 
-                                                    <i class="bi bi-megaphone-fill text-primary me-1"></i>
+                                                Announcement
 
+                                            </span>
+
+                                        </div>
+
+
+                                        <!-- SHORT PREVIEW -->
+
+                                        <div class="announcement-preview">
+
+                                            {{ $announcement->message }}
+
+                                        </div>
+
+
+                                        <!-- CARD FOOTER -->
+
+                                        <div class="announcement-card-footer">
+
+
+                                            <div class="announcement-attachment-indicator">
+
+                                                @if ($announcement->attachment)
+
+                                                    <i class="bi bi-paperclip me-1"></i>
+
+                                                    Attachment available
+
+                                                @else
+
+                                                    <i class="bi bi-megaphone me-1"></i>
+
+                                                    Administrator announcement
+
+                                                @endif
+
+                                            </div>
+
+
+                                            <!-- VIEW BUTTON -->
+
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary announcement-view-btn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#announcementModal{{ $announcement->id }}">
+
+                                                <i class="bi bi-eye"></i>
+
+                                                <span>
+                                                    View
                                                 </span>
 
-
-                                                {{ $announcement->title }}
-
-
-                                            </h4>
-
-
-                                            <small class="text-muted announcement-meta">
-
-
-                                                Administrator
-
-
-                                                <span class="mx-1">
-                                                    •
-                                                </span>
-
-
-                                                {{ $announcement->created_at->diffForHumans() }}
-
-
-                                            </small>
+                                            </button>
 
 
                                         </div>
 
 
-                                        <span class="badge bg-primary announcement-badge">
+                                    </div>
 
-                                            Announcement
+                                </div>
 
-                                        </span>
 
+                                <!-- =================================================
+                                     ANNOUNCEMENT MODAL
+                                     ================================================= -->
+
+                                <div
+                                    class="modal fade announcement-modal"
+                                    id="announcementModal{{ $announcement->id }}"
+                                    tabindex="-1"
+                                    aria-labelledby="announcementModalLabel{{ $announcement->id }}"
+                                    aria-hidden="true">
+
+                                    <div class="modal-dialog modal-dialog-centered">
+
+                                        <div class="modal-content">
+
+
+                                            <!-- MODAL HEADER -->
+
+                                            <div class="modal-header">
+
+                                                <div class="announcement-modal-title-wrapper">
+
+                                                    <h5
+                                                        class="modal-title"
+                                                        id="announcementModalLabel{{ $announcement->id }}">
+
+                                                        <i class="bi bi-megaphone-fill text-primary me-1"></i>
+
+                                                        {{ $announcement->title }}
+
+                                                    </h5>
+
+
+                                                    <small class="announcement-modal-meta">
+
+                                                        Administrator
+
+                                                        <span class="mx-1">
+                                                            •
+                                                        </span>
+
+                                                        {{ $announcement->created_at->diffForHumans() }}
+
+                                                    </small>
+
+                                                </div>
+
+
+                                                <button
+                                                    type="button"
+                                                    class="btn-close"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close">
+                                                </button>
+
+                                            </div>
+
+
+                                            <!-- MODAL BODY -->
+
+                                            <div class="modal-body">
+
+
+                                                <!-- FULL ANNOUNCEMENT -->
+
+                                                <p class="announcement-modal-message">
+
+                                                    {{ $announcement->message }}
+
+                                                </p>
+
+
+                                                <!-- ATTACHMENT -->
+
+                                                @if ($announcement->attachment)
+
+                                                    <a
+                                                        href="{{ asset('storage/' . $announcement->attachment) }}"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        class="btn btn-outline-primary btn-sm announcement-modal-attachment">
+
+                                                        <i class="bi bi-paperclip"></i>
+
+                                                        View Attachment
+
+                                                    </a>
+
+                                                @endif
+
+
+                                            </div>
+
+
+                                            <!-- MODAL FOOTER -->
+
+                                            <div class="modal-footer">
+
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-secondary btn-sm"
+                                                    data-bs-dismiss="modal">
+
+                                                    Close
+
+                                                </button>
+
+                                            </div>
+
+
+                                        </div>
 
                                     </div>
 
-
-                                    <hr>
-
-
-                                    <!-- MESSAGE -->
-
-                                    <p class="announcement-message">
-
-                                        {{ $announcement->message }}
-
-                                    </p>
+                                </div>
 
 
-                                    <!-- ATTACHMENT -->
+                            @empty
 
-                                    @if ($announcement->attachment)
 
-                                        <a href="{{ asset('storage/' . $announcement->attachment) }}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="btn btn-outline-primary btn-sm announcement-attachment">
+                                <!-- =================================================
+                                     EMPTY STATE
+                                     ================================================= -->
 
-                                            <i class="bi bi-paperclip me-1"></i>
+                                <div class="card shadow-sm border-0 announcement-empty">
 
-                                            View Attachment
+                                    <div class="card-body text-center">
 
-                                        </a>
+                                        <i class="bi bi-megaphone text-secondary"></i>
 
-                                    @endif
+                                        <h4 class="mt-4">
+                                            No Announcements
+                                        </h4>
 
+                                        <p class="text-muted mb-0">
+                                            There are no announcements
+                                            from the administrator.
+                                        </p>
+
+                                    </div>
 
                                 </div>
 
 
-                            </div>
+                            @endforelse
 
 
-                        @empty
+                            <!-- =================================================
+                                 NO SEARCH RESULTS
+                                 ================================================= -->
 
+                            @if ($announcements->count() > 0)
 
-                            <!-- EMPTY STATE -->
+                                <div
+                                    id="noSearchResults"
+                                    class="card shadow-sm border-0"
+                                    style="display:none;">
 
-                            <div class="card shadow-sm rounded-4 border-0 announcement-empty">
+                                    <div class="card-body text-center">
 
+                                        <i class="bi bi-search display-5 text-secondary"></i>
 
-                                <div class="card-body text-center py-5">
+                                        <h5 class="mt-3">
+                                            No matching announcements
+                                        </h5>
 
+                                        <p class="text-muted mb-0">
+                                            Try a different search term.
+                                        </p>
 
-                                    <i class="bi bi-megaphone display-2 text-secondary"></i>
-
-
-                                    <h4 class="mt-4">
-
-                                        No Announcements
-
-                                    </h4>
-
-
-                                    <p class="text-muted mb-0">
-
-                                        There are no announcements
-                                        from the administrator.
-
-                                    </p>
-
+                                    </div>
 
                                 </div>
 
-
-                            </div>
-
-
-                        @endforelse
+                            @endif
 
 
-                        <!-- NO SEARCH RESULTS -->
-
-                        @if ($announcements->count() > 0)
-
-                            <div id="noSearchResults"
-                                class="card shadow-sm rounded-4 border-0"
-                                style="display:none;">
-
-
-                                <div class="card-body text-center py-5">
-
-
-                                    <i class="bi bi-search display-5 text-secondary"></i>
-
-
-                                    <h5 class="mt-3">
-
-                                        No matching announcements
-
-                                    </h5>
-
-
-                                    <p class="text-muted mb-0">
-
-                                        Try a different search term.
-
-                                    </p>
-
-
-                                </div>
-
-
-                            </div>
-
-                        @endif
-
+                        </div>
 
                     </div>
-
 
                 </div>
 
 
             </div>
-
 
         </main>
 
@@ -1862,9 +2189,7 @@
 
         <footer class="admin-footer">
 
-
             <div class="container-fluid px-3 px-lg-4">
-
 
                 <span>
 
@@ -1874,7 +2199,8 @@
 
                     Developed by
 
-                    <a target="_blank"
+                    <a
+                        target="_blank"
                         class="fw-bold text-success"
                         href="https://github.com/HasanMahmudDev">
 
@@ -1886,7 +2212,8 @@
 
                     Distributed by
 
-                    <a target="_blank"
+                    <a
+                        target="_blank"
                         class="fw-bold text-success"
                         href="https://themewagon.com">
 
@@ -1898,21 +2225,16 @@
 
 
                 <span>
-
                     Professional dashboard template.
-
                 </span>
 
 
                 <span>
-
                     Responsive announcement system.
-
                 </span>
 
 
             </div>
-
 
         </footer>
 
@@ -1932,12 +2254,13 @@
 
 
 <!-- =========================================================
-     RESPONSIVE SIDEBAR + SEARCH
+     RESPONSIVE SIDEBAR + ANNOUNCEMENT SEARCH
      ========================================================= -->
 
 <script>
 
 document.addEventListener('DOMContentLoaded', function () {
+
 
     /*
     |--------------------------------------------------------------------------
@@ -1984,10 +2307,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (sidebarToggle) {
+
             sidebarToggle.setAttribute(
                 'aria-expanded',
                 'true'
             );
+
         }
 
     }
@@ -2010,10 +2335,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (sidebarToggle) {
+
             sidebarToggle.setAttribute(
                 'aria-expanded',
                 'false'
             );
+
         }
 
     }
@@ -2031,6 +2358,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 event.preventDefault();
                 event.stopPropagation();
+
 
                 if (
                     document.body.classList.contains(
@@ -2125,10 +2453,12 @@ document.addEventListener('DOMContentLoaded', function () {
             'announcementSearch'
         );
 
+
     const cards =
         document.querySelectorAll(
-            '.announcement-card'
+            '[data-announcement-card]'
         );
+
 
     const noResults =
         document.getElementById(
@@ -2147,20 +2477,20 @@ document.addEventListener('DOMContentLoaded', function () {
                         .trim()
                         .toLowerCase();
 
+
                 let visibleCards = 0;
 
 
                 cards.forEach(
                     function (card) {
 
-                        const text =
-                            card.innerText
-                                .toLowerCase();
+                        const searchText =
+                            card.dataset.searchText || '';
 
 
                         if (
                             value === '' ||
-                            text.includes(value)
+                            searchText.includes(value)
                         ) {
 
                             card.style.display = '';
@@ -2198,6 +2528,39 @@ document.addEventListener('DOMContentLoaded', function () {
         );
 
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | RESET SEARCH WHEN MODAL CLOSES
+    |--------------------------------------------------------------------------
+    */
+
+    document.querySelectorAll('.announcement-modal')
+        .forEach(function (modal) {
+
+            modal.addEventListener(
+                'hidden.bs.modal',
+                function () {
+
+                    /*
+                     * Keep the search text as it is.
+                     * This only ensures the modal returns to
+                     * its normal scroll position.
+                     */
+
+                    const modalBody =
+                        modal.querySelector('.modal-body');
+
+                    if (modalBody) {
+                        modalBody.scrollTop = 0;
+                    }
+
+                }
+            );
+
+        });
+
 
 });
 

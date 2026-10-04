@@ -11,6 +11,8 @@ use App\Models\Payslip;
 use App\Models\EmployeeSalaryConfig;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+use App\Services\AuditLogService;
 
 class ReportController extends Controller
 {
@@ -32,6 +34,7 @@ class ReportController extends Controller
         ]);
     }
 
+
     // ===========================
     // Payroll Query (Reusable)
     // ===========================
@@ -41,134 +44,239 @@ class ReportController extends Controller
 
         // Payroll Period
         if ($request->filled('start')) {
-            $query->whereDate('period_start', '>=', $request->start);
+
+            $query->whereDate(
+                'period_start',
+                '>=',
+                $request->start
+            );
         }
 
         if ($request->filled('end')) {
-            $query->whereDate('period_end', '<=', $request->end);
+
+            $query->whereDate(
+                'period_end',
+                '<=',
+                $request->end
+            );
         }
 
         // Department
         if ($request->filled('department')) {
+
             $query->whereHas('user', function ($q) use ($request) {
-                $q->where('department', $request->department);
+
+                $q->where(
+                    'department',
+                    $request->department
+                );
+
             });
         }
 
         // Status
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+
+            $query->where(
+                'status',
+                $request->status
+            );
         }
 
         return $query->latest();
     }
 
 
+    // ===========================
+    // Attendance Query
+    // ===========================
     private function attendanceQuery(Request $request)
     {
         $query = Attendance::with('user');
 
         // Date From
         if ($request->filled('start')) {
-            $query->whereDate('date', '>=', $request->start);
+
+            $query->whereDate(
+                'date',
+                '>=',
+                $request->start
+            );
         }
 
         // Date To
         if ($request->filled('end')) {
-            $query->whereDate('date', '<=', $request->end);
+
+            $query->whereDate(
+                'date',
+                '<=',
+                $request->end
+            );
         }
 
         // Department
         if ($request->filled('department')) {
+
             $query->whereHas('user', function ($q) use ($request) {
-                $q->where('department', $request->department);
+
+                $q->where(
+                    'department',
+                    $request->department
+                );
+
             });
         }
 
         // Attendance Status
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+
+            $query->where(
+                'status',
+                $request->status
+            );
         }
 
         return $query->latest();
     }
 
+
+    // ===========================
+    // Employee Query
+    // ===========================
     private function employeeQuery(Request $request)
     {
-        $query = User::where('role', 'employee');
+        $query = User::where(
+            'role',
+            'employee'
+        );
 
         // Department
         if ($request->filled('department')) {
 
-            $query->where('department', $request->department);
+            $query->where(
+                'department',
+                $request->department
+            );
         }
 
         // Employee Status
         if ($request->filled('status')) {
 
-            $query->where('status', $request->status);
+            $query->where(
+                'status',
+                $request->status
+            );
         }
 
         return $query->orderBy('name');
     }
 
+
+    // ===========================
+    // Leave Query
+    // ===========================
     private function leaveQuery(Request $request)
     {
         $query = LeaveRequest::with('user');
 
         // Date Range
         if ($request->filled('start')) {
-            $query->whereDate('start_date', '>=', $request->start);
+
+            $query->whereDate(
+                'start_date',
+                '>=',
+                $request->start
+            );
         }
 
         if ($request->filled('end')) {
-            $query->whereDate('end_date', '<=', $request->end);
+
+            $query->whereDate(
+                'end_date',
+                '<=',
+                $request->end
+            );
         }
 
         // Leave Type
         if ($request->filled('leave_type')) {
-            $query->where('leave_type', $request->leave_type);
+
+            $query->where(
+                'leave_type',
+                $request->leave_type
+            );
         }
 
         // Status
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+
+            $query->where(
+                'status',
+                $request->status
+            );
         }
 
         return $query->latest();
     }
 
 
+    // ===========================
+    // Official Business Query
+    // ===========================
     private function obQuery(Request $request)
     {
         $query = OfficialBusiness::with('user');
 
         // Date From
         if ($request->filled('start')) {
-            $query->whereDate('ob_date', '>=', $request->start);
+
+            $query->whereDate(
+                'ob_date',
+                '>=',
+                $request->start
+            );
         }
 
         // Date To
         if ($request->filled('end')) {
-            $query->whereDate('ob_date', '<=', $request->end);
+
+            $query->whereDate(
+                'ob_date',
+                '<=',
+                $request->end
+            );
         }
 
         // Status
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+
+            $query->where(
+                'status',
+                $request->status
+            );
         }
 
         return $query->latest();
     }
 
+
+    // ===========================
+    // Salary Query
+    // ===========================
     private function salaryQuery(Request $request)
     {
         $query = EmployeeSalaryConfig::with('user');
 
         // Department Filter
         if ($request->filled('department')) {
+
             $query->whereHas('user', function ($q) use ($request) {
-                $q->where('department', $request->department);
+
+                $q->where(
+                    'department',
+                    $request->department
+                );
+
             });
         }
 
@@ -176,6 +284,9 @@ class ReportController extends Controller
     }
 
 
+    // ===========================
+    // Contributions Query
+    // ===========================
     private function contributionsQuery(Request $request)
     {
         $query = EmployeeSalaryConfig::with('user');
@@ -184,51 +295,150 @@ class ReportController extends Controller
 
             $query->whereHas('user', function ($q) use ($request) {
 
-                $q->where('department', $request->department);
+                $q->where(
+                    'department',
+                    $request->department
+                );
+
             });
         }
 
         return $query->latest();
     }
 
+
     // ===========================
     // Payroll Report
     // ===========================
     public function payroll(Request $request)
     {
-        $payslips = $this->payrollQuery($request)->get();
+        /*
+        |--------------------------------------------------------------------------
+        | Generate Report
+        |--------------------------------------------------------------------------
+        |
+        | The report is generated only when filter parameters are submitted.
+        | After generation, the user is redirected to a clean URL.
+        |
+        */
 
-        $totalEmployees = $payslips->count();
+        if ($request->hasAny([
+            'start',
+            'end',
+            'department',
+            'status'
+        ])) {
 
-        $grossPayroll = $payslips->sum('gross_salary');
+            $payslips = $this->payrollQuery($request)->get();
 
-        $netPayroll = $payslips->sum('net_salary');
+            $totalEmployees = $payslips->count();
 
-        $totalBenefits = $payslips->sum('benefits');
+            $grossPayroll = $payslips->sum('gross_salary');
 
-        $totalDeductions =
-            $payslips->sum('sss') +
-            $payslips->sum('philhealth') +
-            $payslips->sum('pagibig') +
-            $payslips->sum('hmo') +
-            $payslips->sum('late_deduction') +
-            $payslips->sum('undertime_deduction');
+            $netPayroll = $payslips->sum('net_salary');
 
-        $generated = $request->filled('start') ||
-            $request->filled('end') ||
-            $request->filled('department') ||
-            $request->filled('status');
+            $totalBenefits = $payslips->sum('benefits');
 
-        return view('admin.reports.payroll', compact(
-            'payslips',
-            'totalEmployees',
-            'grossPayroll',
-            'netPayroll',
-            'totalBenefits',
-            'totalDeductions',
-            'generated'
-        ));
+            $totalDeductions =
+                $payslips->sum('sss') +
+                $payslips->sum('philhealth') +
+                $payslips->sum('pagibig') +
+                $payslips->sum('hmo') +
+                $payslips->sum('late_deduction') +
+                $payslips->sum('undertime_deduction');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Store Generated Report Information
+            |--------------------------------------------------------------------------
+            |
+            | Flash data is available for the redirected request only.
+            | When the user refreshes the clean URL, the generated state is gone.
+            |
+            */
+
+            session()->flash(
+                'payroll_report_generated',
+                true
+            );
+
+
+            session()->flash(
+                'payroll_report_filters',
+                [
+                    'start' => $request->start,
+                    'end' => $request->end,
+                    'department' => $request->department,
+                    'status' => $request->status,
+                ]
+            );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Redirect To Clean URL
+            |--------------------------------------------------------------------------
+            */
+
+            return redirect()->route(
+                'reports.payroll'
+            );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Normal / Fresh Page
+        |--------------------------------------------------------------------------
+        */
+
+        $payslips = collect();
+
+        $totalEmployees = 0;
+
+        $grossPayroll = 0;
+
+        $netPayroll = 0;
+
+        $totalBenefits = 0;
+
+        $totalDeductions = 0;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Retrieve Flash Data
+        |--------------------------------------------------------------------------
+        */
+
+        $generated = session(
+            'payroll_report_generated',
+            false
+        );
+
+
+        $reportFilters = session(
+            'payroll_report_filters',
+            []
+        );
+
+
+        return view(
+            'admin.reports.payroll',
+            compact(
+                'payslips',
+                'totalEmployees',
+                'grossPayroll',
+                'netPayroll',
+                'totalBenefits',
+                'totalDeductions',
+                'generated',
+                'reportFilters'
+            )
+        );
     }
+
 
     // ===========================
     // Payroll PDF
@@ -265,23 +475,48 @@ class ReportController extends Controller
             )
         );
 
-        return $pdf->setPaper('a4', 'landscape')
+        AuditLogService::log(
+            'Payroll Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Payroll Report as a PDF.'
+        );
+
+        return $pdf
+            ->setPaper('a4', 'landscape')
             ->download('Payroll_Report.pdf');
     }
 
+
+    // ===========================
+    // Attendance PDF
+    // ===========================
     public function attendancePdf(Request $request)
     {
         $attendance = $this->attendanceQuery($request)->get();
 
         $totalRecords = $attendance->count();
 
-        $presentCount = $attendance->where('status', 'Present')->count();
+        $presentCount =
+            $attendance->where(
+                'status',
+                'Present'
+            )->count();
 
-        $lateCount = $attendance->where('status', 'Late')->count();
+        $lateCount =
+            $attendance->where(
+                'status',
+                'Late'
+            )->count();
 
-        $absentCount = $attendance->where('status', 'Absent')->count();
+        $absentCount =
+            $attendance->where(
+                'status',
+                'Absent'
+            )->count();
 
-        $totalHours = $attendance->sum('hours_worked');
+        $totalHours =
+            $attendance->sum('hours_worked');
 
         $pdf = Pdf::loadView(
             'admin.reports.pdf.attendance',
@@ -295,9 +530,18 @@ class ReportController extends Controller
             )
         );
 
-        return $pdf->setPaper('a4', 'landscape')
+        AuditLogService::log(
+            'Attendance Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Attendance Report as a PDF.'
+        );
+
+        return $pdf
+            ->setPaper('a4', 'landscape')
             ->download('Attendance_Report.pdf');
     }
+
 
     // ===========================
     // Payroll Excel
@@ -306,18 +550,24 @@ class ReportController extends Controller
     {
         $payslips = $this->payrollQuery($request)->get();
 
-        $fileName = 'Payroll_Report_' . now()->format('Y-m-d') . '.csv';
+        $fileName =
+            'Payroll_Report_' .
+            now()->format('Y-m-d') .
+            '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename={$fileName}",
+            'Content-Disposition' =>
+                "attachment; filename={$fileName}",
         ];
 
         $callback = function () use ($payslips) {
 
-            $file = fopen('php://output', 'w');
+            $file = fopen(
+                'php://output',
+                'w'
+            );
 
-            // Header Row
             fputcsv($file, [
                 'Employee ID',
                 'Employee Name',
@@ -335,7 +585,6 @@ class ReportController extends Controller
                 'Status',
             ]);
 
-            // Data Rows
             foreach ($payslips as $pay) {
 
                 fputcsv($file, [
@@ -346,7 +595,9 @@ class ReportController extends Controller
 
                     $pay->user->department,
 
-                    $pay->period_start . ' - ' . $pay->period_end,
+                    $pay->period_start .
+                    ' - ' .
+                    $pay->period_end,
 
                     $pay->gross_salary,
 
@@ -374,25 +625,47 @@ class ReportController extends Controller
             fclose($file);
         };
 
-        return response()->stream($callback, 200, $headers);
+        AuditLogService::log(
+            'Payroll Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Payroll Report as a CSV file.'
+        );
+
+        return response()->stream(
+            $callback,
+            200,
+            $headers
+        );
     }
 
+
+    // ===========================
+    // Attendance Excel
+    // ===========================
     public function attendanceExcel(Request $request)
     {
-        $attendance = $this->attendanceQuery($request)->get();
+        $attendance =
+            $this->attendanceQuery($request)->get();
 
-        $fileName = 'Attendance_Report_' . now()->format('Y-m-d') . '.csv';
+        $fileName =
+            'Attendance_Report_' .
+            now()->format('Y-m-d') .
+            '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename={$fileName}",
+            'Content-Disposition' =>
+                "attachment; filename={$fileName}",
         ];
 
         $callback = function () use ($attendance) {
 
-            $file = fopen('php://output', 'w');
+            $file = fopen(
+                'php://output',
+                'w'
+            );
 
-            // Header Row
             fputcsv($file, [
                 'Employee ID',
                 'Employee Name',
@@ -406,7 +679,6 @@ class ReportController extends Controller
                 'Status',
             ]);
 
-            // Data Rows
             foreach ($attendance as $record) {
 
                 fputcsv($file, [
@@ -417,15 +689,20 @@ class ReportController extends Controller
 
                     $record->user->department,
 
-                    optional($record->date)->format('Y-m-d'),
+                    optional($record->date)
+                        ->format('Y-m-d'),
 
-                    optional($record->morning_time_in)->format('h:i:s A'),
+                    optional($record->morning_time_in)
+                        ->format('h:i:s A'),
 
-                    optional($record->morning_time_out)->format('h:i:s A'),
+                    optional($record->morning_time_out)
+                        ->format('h:i:s A'),
 
-                    optional($record->afternoon_time_in)->format('h:i:s A'),
+                    optional($record->afternoon_time_in)
+                        ->format('h:i:s A'),
 
-                    optional($record->afternoon_time_out)->format('h:i:s A'),
+                    optional($record->afternoon_time_out)
+                        ->format('h:i:s A'),
 
                     $record->hours_worked,
 
@@ -437,15 +714,28 @@ class ReportController extends Controller
             fclose($file);
         };
 
-        return response()->stream($callback, 200, $headers);
+        AuditLogService::log(
+            'Attendance Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Attendance Report as a CSV file.'
+        );
+
+        return response()->stream(
+            $callback,
+            200,
+            $headers
+        );
     }
+
 
     // ===========================
     // Attendance Report
     // ===========================
     public function attendance(Request $request)
     {
-        $attendance = $this->attendanceQuery($request)->get();
+        $attendance =
+            $this->attendanceQuery($request)->get();
 
         $generated =
             $request->filled('start') ||
@@ -453,17 +743,35 @@ class ReportController extends Controller
             $request->filled('department') ||
             $request->filled('status');
 
-        $totalRecords = $attendance->count();
+        $totalRecords =
+            $attendance->count();
 
-        $presentCount = $attendance->where('status', 'Present')->count();
+        $presentCount =
+            $attendance->where(
+                'status',
+                'Present'
+            )->count();
 
-        $lateCount = $attendance->where('status', 'Late')->count();
+        $lateCount =
+            $attendance->where(
+                'status',
+                'Late'
+            )->count();
 
-        $absentCount = $attendance->where('status', 'Absent')->count();
+        $absentCount =
+            $attendance->where(
+                'status',
+                'Absent'
+            )->count();
 
-        $totalHours = $attendance->sum('hours_worked');
+        $totalHours =
+            $attendance->sum('hours_worked');
 
-        $departments = User::where('role', 'employee')
+        $departments =
+            User::where(
+                'role',
+                'employee'
+            )
             ->select('department')
             ->distinct()
             ->orderBy('department')
@@ -484,29 +792,45 @@ class ReportController extends Controller
         );
     }
 
+
     // ===========================
     // Employee Report
     // ===========================
     public function employee(Request $request)
     {
-        $employees = $this->employeeQuery($request)->get();
+        $employees =
+            $this->employeeQuery($request)->get();
 
         $generated =
             $request->filled('department') ||
             $request->filled('status');
 
-        $totalEmployees = $employees->count();
+        $totalEmployees =
+            $employees->count();
 
-        $activeEmployees = $employees->where('status', 'Active')->count();
+        $activeEmployees =
+            $employees->where(
+                'status',
+                'Active'
+            )->count();
 
-        $inactiveEmployees = $employees->where('status', 'Inactive')->count();
+        $inactiveEmployees =
+            $employees->where(
+                'status',
+                'Inactive'
+            )->count();
 
-        $departmentCount = $employees
-            ->pluck('department')
-            ->unique()
-            ->count();
+        $departmentCount =
+            $employees
+                ->pluck('department')
+                ->unique()
+                ->count();
 
-        $departments = User::where('role', 'employee')
+        $departments =
+            User::where(
+                'role',
+                'employee'
+            )
             ->select('department')
             ->distinct()
             ->orderBy('department')
@@ -526,18 +850,29 @@ class ReportController extends Controller
         );
     }
 
+
     // ===========================
     // Employee PDF
     // ===========================
     public function employeePdf(Request $request)
     {
-        $employees = $this->employeeQuery($request)->get();
+        $employees =
+            $this->employeeQuery($request)->get();
 
-        $totalEmployees = $employees->count();
+        $totalEmployees =
+            $employees->count();
 
-        $activeEmployees = $employees->where('status', 'Active')->count();
+        $activeEmployees =
+            $employees->where(
+                'status',
+                'Active'
+            )->count();
 
-        $inactiveEmployees = $employees->where('status', 'Inactive')->count();
+        $inactiveEmployees =
+            $employees->where(
+                'status',
+                'Inactive'
+            )->count();
 
         $pdf = Pdf::loadView(
             'admin.reports.pdf.employee',
@@ -549,28 +884,45 @@ class ReportController extends Controller
             )
         );
 
-        return $pdf->download('Employee_Report.pdf');
+        AuditLogService::log(
+            'Employee Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Employee Report as a PDF.'
+        );
+
+        return $pdf->download(
+            'Employee_Report.pdf'
+        );
     }
 
+
     // ===========================
-    // Employee Excel (CSV)
+    // Employee Excel
     // ===========================
     public function employeeExcel(Request $request)
     {
-        $employees = $this->employeeQuery($request)->get();
+        $employees =
+            $this->employeeQuery($request)->get();
 
-        $fileName = 'Employee_Report_' . now()->format('Y-m-d') . '.csv';
+        $fileName =
+            'Employee_Report_' .
+            now()->format('Y-m-d') .
+            '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename={$fileName}",
+            'Content-Disposition' =>
+                "attachment; filename={$fileName}",
         ];
 
         $callback = function () use ($employees) {
 
-            $file = fopen('php://output', 'w');
+            $file = fopen(
+                'php://output',
+                'w'
+            );
 
-            // Header Row
             fputcsv($file, [
                 'Employee ID',
                 'Employee Name',
@@ -580,7 +932,6 @@ class ReportController extends Controller
                 'Status',
             ]);
 
-            // Data
             foreach ($employees as $employee) {
 
                 fputcsv($file, [
@@ -603,15 +954,28 @@ class ReportController extends Controller
             fclose($file);
         };
 
-        return response()->stream($callback, 200, $headers);
+        AuditLogService::log(
+            'Employee Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Employee Report as a CSV file.'
+        );
+
+        return response()->stream(
+            $callback,
+            200,
+            $headers
+        );
     }
+
 
     // ===========================
     // Leave Report
     // ===========================
     public function leave(Request $request)
     {
-        $leaves = $this->leaveQuery($request)->get();
+        $leaves =
+            $this->leaveQuery($request)->get();
 
         $generated =
             $request->filled('start') ||
@@ -619,18 +983,32 @@ class ReportController extends Controller
             $request->filled('leave_type') ||
             $request->filled('status');
 
-        $totalLeaves = $leaves->count();
+        $totalLeaves =
+            $leaves->count();
 
-        $approvedLeaves = $leaves->where('status', 'Approved')->count();
+        $approvedLeaves =
+            $leaves->where(
+                'status',
+                'Approved'
+            )->count();
 
-        $pendingLeaves = $leaves->where('status', 'Pending')->count();
+        $pendingLeaves =
+            $leaves->where(
+                'status',
+                'Pending'
+            )->count();
 
-        $rejectedLeaves = $leaves->where('status', 'Rejected')->count();
+        $rejectedLeaves =
+            $leaves->where(
+                'status',
+                'Rejected'
+            )->count();
 
-        $leaveTypes = LeaveRequest::select('leave_type')
-            ->distinct()
-            ->orderBy('leave_type')
-            ->pluck('leave_type');
+        $leaveTypes =
+            LeaveRequest::select('leave_type')
+                ->distinct()
+                ->orderBy('leave_type')
+                ->pluck('leave_type');
 
         return view(
             'admin.reports.leave',
@@ -646,20 +1024,35 @@ class ReportController extends Controller
         );
     }
 
+
     // ===========================
     // Leave PDF
     // ===========================
     public function leavePdf(Request $request)
     {
-        $leaves = $this->leaveQuery($request)->get();
+        $leaves =
+            $this->leaveQuery($request)->get();
 
-        $totalLeaves = $leaves->count();
+        $totalLeaves =
+            $leaves->count();
 
-        $approvedLeaves = $leaves->where('status', 'Approved')->count();
+        $approvedLeaves =
+            $leaves->where(
+                'status',
+                'Approved'
+            )->count();
 
-        $pendingLeaves = $leaves->where('status', 'Pending')->count();
+        $pendingLeaves =
+            $leaves->where(
+                'status',
+                'Pending'
+            )->count();
 
-        $rejectedLeaves = $leaves->where('status', 'Rejected')->count();
+        $rejectedLeaves =
+            $leaves->where(
+                'status',
+                'Rejected'
+            )->count();
 
         $pdf = Pdf::loadView(
             'admin.reports.pdf.leave',
@@ -672,28 +1065,45 @@ class ReportController extends Controller
             )
         );
 
-        return $pdf->download('Leave_Report.pdf');
+        AuditLogService::log(
+            'Leave Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Leave Report as a PDF.'
+        );
+
+        return $pdf->download(
+            'Leave_Report.pdf'
+        );
     }
 
+
     // ===========================
-    // Leave Excel (CSV)
+    // Leave Excel
     // ===========================
     public function leaveExcel(Request $request)
     {
-        $leaves = $this->leaveQuery($request)->get();
+        $leaves =
+            $this->leaveQuery($request)->get();
 
-        $fileName = 'Leave_Report_' . now()->format('Y-m-d') . '.csv';
+        $fileName =
+            'Leave_Report_' .
+            now()->format('Y-m-d') .
+            '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename={$fileName}",
+            'Content-Disposition' =>
+                "attachment; filename={$fileName}",
         ];
 
         $callback = function () use ($leaves) {
 
-            $file = fopen('php://output', 'w');
+            $file = fopen(
+                'php://output',
+                'w'
+            );
 
-            // Header Row
             fputcsv($file, [
                 'Employee ID',
                 'Employee Name',
@@ -707,8 +1117,14 @@ class ReportController extends Controller
 
             foreach ($leaves as $leave) {
 
-                $days = \Carbon\Carbon::parse($leave->start_date)
-                    ->diffInDays(\Carbon\Carbon::parse($leave->end_date)) + 1;
+                $days =
+                    \Carbon\Carbon::parse(
+                        $leave->start_date
+                    )->diffInDays(
+                        \Carbon\Carbon::parse(
+                            $leave->end_date
+                        )
+                    ) + 1;
 
                 fputcsv($file, [
 
@@ -734,28 +1150,54 @@ class ReportController extends Controller
             fclose($file);
         };
 
-        return response()->stream($callback, 200, $headers);
+        AuditLogService::log(
+            'Leave Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Leave Report as a CSV file.'
+        );
+
+        return response()->stream(
+            $callback,
+            200,
+            $headers
+        );
     }
+
 
     // ===========================
     // Official Business Report
     // ===========================
     public function ob(Request $request)
     {
-        $obs = $this->obQuery($request)->get();
+        $obs =
+            $this->obQuery($request)->get();
 
         $generated =
             $request->filled('start') ||
             $request->filled('end') ||
             $request->filled('status');
 
-        $totalOB = $obs->count();
+        $totalOB =
+            $obs->count();
 
-        $approvedOB = $obs->where('status', 'Approved')->count();
+        $approvedOB =
+            $obs->where(
+                'status',
+                'Approved'
+            )->count();
 
-        $pendingOB = $obs->where('status', 'Pending')->count();
+        $pendingOB =
+            $obs->where(
+                'status',
+                'Pending'
+            )->count();
 
-        $rejectedOB = $obs->where('status', 'Rejected')->count();
+        $rejectedOB =
+            $obs->where(
+                'status',
+                'Rejected'
+            )->count();
 
         return view(
             'admin.reports.ob',
@@ -770,20 +1212,35 @@ class ReportController extends Controller
         );
     }
 
+
     // ===========================
     // Official Business PDF
     // ===========================
     public function obPdf(Request $request)
     {
-        $obs = $this->obQuery($request)->get();
+        $obs =
+            $this->obQuery($request)->get();
 
-        $totalOB = $obs->count();
+        $totalOB =
+            $obs->count();
 
-        $approvedOB = $obs->where('status', 'Approved')->count();
+        $approvedOB =
+            $obs->where(
+                'status',
+                'Approved'
+            )->count();
 
-        $pendingOB = $obs->where('status', 'Pending')->count();
+        $pendingOB =
+            $obs->where(
+                'status',
+                'Pending'
+            )->count();
 
-        $rejectedOB = $obs->where('status', 'Rejected')->count();
+        $rejectedOB =
+            $obs->where(
+                'status',
+                'Rejected'
+            )->count();
 
         $pdf = Pdf::loadView(
             'admin.reports.pdf.ob',
@@ -796,28 +1253,45 @@ class ReportController extends Controller
             )
         );
 
-        return $pdf->download('Official_Business_Report.pdf');
+        AuditLogService::log(
+            'Official Business Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Official Business Report as a PDF.'
+        );
+
+        return $pdf->download(
+            'Official_Business_Report.pdf'
+        );
     }
 
+
     // ===========================
-    // Official Business Excel (CSV)
+    // Official Business Excel
     // ===========================
     public function obExcel(Request $request)
     {
-        $obs = $this->obQuery($request)->get();
+        $obs =
+            $this->obQuery($request)->get();
 
-        $fileName = 'Official_Business_Report_' . now()->format('Y-m-d') . '.csv';
+        $fileName =
+            'Official_Business_Report_' .
+            now()->format('Y-m-d') .
+            '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename={$fileName}",
+            'Content-Disposition' =>
+                "attachment; filename={$fileName}",
         ];
 
         $callback = function () use ($obs) {
 
-            $file = fopen('php://output', 'w');
+            $file = fopen(
+                'php://output',
+                'w'
+            );
 
-            // Header Row
             fputcsv($file, [
                 'Employee ID',
                 'Employee Name',
@@ -836,17 +1310,21 @@ class ReportController extends Controller
 
                 fputcsv($file, [
 
-                    optional($ob->user)->employee_id,
+                    optional($ob->user)
+                        ->employee_id,
 
-                    optional($ob->user)->name,
+                    optional($ob->user)
+                        ->name,
 
-                    optional($ob->user)->department,
+                    optional($ob->user)
+                        ->department,
 
                     $ob->purpose,
 
                     $ob->destination,
 
-                    optional($ob->ob_date)->format('Y-m-d'),
+                    optional($ob->ob_date)
+                        ->format('Y-m-d'),
 
                     $ob->morning_time_out,
 
@@ -864,27 +1342,45 @@ class ReportController extends Controller
             fclose($file);
         };
 
-        return response()->stream($callback, 200, $headers);
+        AuditLogService::log(
+            'Official Business Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Official Business Report as a CSV file.'
+        );
+
+        return response()->stream(
+            $callback,
+            200,
+            $headers
+        );
     }
+
 
     // ===========================
     // Salary Report
     // ===========================
     public function salary(Request $request)
     {
-        $salaries = $this->salaryQuery($request)->get();
+        $salaries =
+            $this->salaryQuery($request)->get();
 
-        $generated = $request->filled('department');
+        $generated =
+            $request->filled('department');
 
-        $totalEmployees = $salaries->count();
+        $totalEmployees =
+            $salaries->count();
 
-        $totalBasicSalary = $salaries->sum('basic_salary');
+        $totalBasicSalary =
+            $salaries->sum('basic_salary');
 
-        $totalDailyRate = $salaries->sum('daily_rate');
+        $totalDailyRate =
+            $salaries->sum('daily_rate');
 
-        $averageBasicSalary = $totalEmployees > 0
-            ? $totalBasicSalary / $totalEmployees
-            : 0;
+        $averageBasicSalary =
+            $totalEmployees > 0
+                ? $totalBasicSalary / $totalEmployees
+                : 0;
 
         return view(
             'admin.reports.salary',
@@ -899,22 +1395,28 @@ class ReportController extends Controller
         );
     }
 
+
     // ===========================
     // Salary PDF
     // ===========================
     public function salaryPdf(Request $request)
     {
-        $salaries = $this->salaryQuery($request)->get();
+        $salaries =
+            $this->salaryQuery($request)->get();
 
-        $totalEmployees = $salaries->count();
+        $totalEmployees =
+            $salaries->count();
 
-        $totalBasicSalary = $salaries->sum('basic_salary');
+        $totalBasicSalary =
+            $salaries->sum('basic_salary');
 
-        $totalDailyRate = $salaries->sum('daily_rate');
+        $totalDailyRate =
+            $salaries->sum('daily_rate');
 
-        $averageBasicSalary = $totalEmployees > 0
-            ? $totalBasicSalary / $totalEmployees
-            : 0;
+        $averageBasicSalary =
+            $totalEmployees > 0
+                ? $totalBasicSalary / $totalEmployees
+                : 0;
 
         $pdf = Pdf::loadView(
             'admin.reports.pdf.salary',
@@ -927,26 +1429,44 @@ class ReportController extends Controller
             )
         );
 
-        return $pdf->download('Salary_Report.pdf');
+        AuditLogService::log(
+            'Salary Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Salary Report as a PDF.'
+        );
+
+        return $pdf->download(
+            'Salary_Report.pdf'
+        );
     }
 
+
     // ===========================
-    // Salary Excel (CSV)
+    // Salary Excel
     // ===========================
     public function salaryExcel(Request $request)
     {
-        $salaries = $this->salaryQuery($request)->get();
+        $salaries =
+            $this->salaryQuery($request)->get();
 
-        $fileName = 'Salary_Report_' . now()->format('Y-m-d') . '.csv';
+        $fileName =
+            'Salary_Report_' .
+            now()->format('Y-m-d') .
+            '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename={$fileName}",
+            'Content-Disposition' =>
+                "attachment; filename={$fileName}",
         ];
 
         $callback = function () use ($salaries) {
 
-            $file = fopen('php://output', 'w');
+            $file = fopen(
+                'php://output',
+                'w'
+            );
 
             fputcsv($file, [
                 'Employee ID',
@@ -968,11 +1488,14 @@ class ReportController extends Controller
 
                 fputcsv($file, [
 
-                    optional($salary->user)->employee_id,
+                    optional($salary->user)
+                        ->employee_id,
 
-                    optional($salary->user)->name,
+                    optional($salary->user)
+                        ->name,
 
-                    optional($salary->user)->department,
+                    optional($salary->user)
+                        ->department,
 
                     $salary->basic_salary,
 
@@ -1000,27 +1523,46 @@ class ReportController extends Controller
             fclose($file);
         };
 
-        return response()->stream($callback, 200, $headers);
+        AuditLogService::log(
+            'Salary Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Salary Report as a CSV file.'
+        );
+
+        return response()->stream(
+            $callback,
+            200,
+            $headers
+        );
     }
+
 
     // ===========================
     // Government Contributions
     // ===========================
     public function contributions(Request $request)
     {
-        $contributions = $this->contributionsQuery($request)->get();
+        $contributions =
+            $this->contributionsQuery($request)->get();
 
-        $generated = $request->filled('department');
+        $generated =
+            $request->filled('department');
 
-        $totalEmployees = $contributions->count();
+        $totalEmployees =
+            $contributions->count();
 
-        $totalSSS = $contributions->sum('sss');
+        $totalSSS =
+            $contributions->sum('sss');
 
-        $totalPhilHealth = $contributions->sum('philhealth');
+        $totalPhilHealth =
+            $contributions->sum('philhealth');
 
-        $totalPagibig = $contributions->sum('pagibig');
+        $totalPagibig =
+            $contributions->sum('pagibig');
 
-        $totalHMO = $contributions->sum('hmo');
+        $totalHMO =
+            $contributions->sum('hmo');
 
         $grandTotal =
             $totalSSS +
@@ -1049,17 +1591,23 @@ class ReportController extends Controller
     // ===========================
     public function contributionsPdf(Request $request)
     {
-        $contributions = $this->contributionsQuery($request)->get();
+        $contributions =
+            $this->contributionsQuery($request)->get();
 
-        $totalEmployees = $contributions->count();
+        $totalEmployees =
+            $contributions->count();
 
-        $totalSSS = $contributions->sum('sss');
+        $totalSSS =
+            $contributions->sum('sss');
 
-        $totalPhilHealth = $contributions->sum('philhealth');
+        $totalPhilHealth =
+            $contributions->sum('philhealth');
 
-        $totalPagibig = $contributions->sum('pagibig');
+        $totalPagibig =
+            $contributions->sum('pagibig');
 
-        $totalHMO = $contributions->sum('hmo');
+        $totalHMO =
+            $contributions->sum('hmo');
 
         $grandTotal =
             $totalSSS +
@@ -1080,26 +1628,44 @@ class ReportController extends Controller
             )
         );
 
-        return $pdf->download('Government_Contributions_Report.pdf');
+        AuditLogService::log(
+            'Government Contributions Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Government Contributions Report as a PDF.'
+        );
+
+        return $pdf->download(
+            'Government_Contributions_Report.pdf'
+        );
     }
 
+
     // ===========================
-    // Government Contributions Excel (CSV)
+    // Government Contributions Excel
     // ===========================
     public function contributionsExcel(Request $request)
     {
-        $contributions = $this->contributionsQuery($request)->get();
+        $contributions =
+            $this->contributionsQuery($request)->get();
 
-        $fileName = 'Government_Contributions_Report_' . now()->format('Y-m-d') . '.csv';
+        $fileName =
+            'Government_Contributions_Report_' .
+            now()->format('Y-m-d') .
+            '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename={$fileName}",
+            'Content-Disposition' =>
+                "attachment; filename={$fileName}",
         ];
 
         $callback = function () use ($contributions) {
 
-            $file = fopen('php://output', 'w');
+            $file = fopen(
+                'php://output',
+                'w'
+            );
 
             fputcsv($file, [
 
@@ -1131,11 +1697,14 @@ class ReportController extends Controller
 
                 fputcsv($file, [
 
-                    optional($contribution->user)->employee_id,
+                    optional($contribution->user)
+                        ->employee_id,
 
-                    optional($contribution->user)->name,
+                    optional($contribution->user)
+                        ->name,
 
-                    optional($contribution->user)->department,
+                    optional($contribution->user)
+                        ->department,
 
                     $contribution->sss,
 
@@ -1153,6 +1722,17 @@ class ReportController extends Controller
             fclose($file);
         };
 
-        return response()->stream($callback, 200, $headers);
+        AuditLogService::log(
+            'Government Contributions Report Exported',
+            'Admin ' .
+            Auth::user()->name .
+            ' exported the Government Contributions Report as a CSV file.'
+        );
+
+        return response()->stream(
+            $callback,
+            200,
+            $headers
+        );
     }
 }

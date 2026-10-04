@@ -874,67 +874,7 @@
 </a>
 
 
-                <a class="nav-link" href="{{ route('holidays.index') }}">
-
-                    <span class="nav-icon">
-                        <i class="bi bi-gear"></i>
-                    </span>
-
-                    <span class="nav-text">
-                        Holidays
-                    </span>
-
-                </a>
-
-
-                <a class="nav-link" href="{{ route('payroll') }}">
-
-                    <span class="nav-icon">
-                        <i class="bi bi-cash-stack"></i>
-                    </span>
-
-                    <span class="nav-text">
-                        Payroll
-                    </span>
-
-                </a>
-
-
-                <a class="nav-link" href="{{ route('payslip_list') }}">
-
-                    <span class="nav-icon">
-                        <i class="bi bi-receipt"></i>
-                    </span>
-
-                    <span class="nav-text">
-                        Payslips
-                    </span>
-
-                </a>
-
-
-                <a class="nav-link {{ ($unreadPayslipConcerns ?? 0) > 0 ? 'has-notification' : '' }}"
-    href="{{ route('admin.payslip-concerns.index') }}">
-
-    <span class="nav-icon">
-        <i class="bi bi-exclamation-circle"></i>
-    </span>
-
-    <span class="nav-text">
-        Payslip Concerns
-    </span>
-
-    @if (($unreadPayslipConcerns ?? 0) > 0)
-        <span class="sidebar-notification-badge">
-            {{ $unreadPayslipConcerns }}
-        </span>
-    @endif
-
-</a>
-
-                </a>
-
-                <a class="nav-link"
+     <a class="nav-link"
                     href="{{ route('holidays.index') }}">
 
                     <span class="nav-icon">
@@ -1071,7 +1011,7 @@
 
                     </button>
 
-                    
+
                    <form
     class="d-none d-md-flex ms-3 flex-grow-1 admin-search-form"
     role="search"

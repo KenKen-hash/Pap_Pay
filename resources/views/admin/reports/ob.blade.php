@@ -5,65 +5,370 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>Official Business Report</title>
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
 
-    <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
-    <link rel="stylesheet" href="../../../../khen/assets/css/style.css">
+    <title>Official Business Reports | PAP PAY</title>
+
+    <link
+        rel="icon"
+        type="image/x-icon"
+        href="../../../../khen/assets/images/favicon.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../../../../khen/assets/css/bootstrap.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../../../../khen/assets/css/style.css"
+    >
 
     <style>
 
-        body{
-            background:#f5f7fb;
+        * {
+            box-sizing: border-box;
         }
 
-        .report-header{
-            background:#fff;
-            border-radius:15px;
-            padding:30px;
-            margin-bottom:25px;
-            box-shadow:0 3px 15px rgba(0,0,0,.05);
+        html,
+        body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
-        .summary-card{
-            border:none;
-            border-radius:15px;
-            transition:.3s;
-            box-shadow:0 5px 18px rgba(0,0,0,.06);
+        body {
+            background: #f5f7fb;
         }
 
-        .summary-card:hover{
-            transform:translateY(-4px);
+        .page-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 30px;
         }
 
-        .summary-icon{
-            width:60px;
-            height:60px;
-            border-radius:50%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            color:#fff;
-            font-size:28px;
+        .page-card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, .05);
+            overflow: hidden;
         }
 
-        .filter-card{
-            border:none;
-            border-radius:15px;
-            box-shadow:0 4px 18px rgba(0,0,0,.06);
+        .page-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
-        .report-table{
-            border-radius:15px;
-            overflow:hidden;
-            box-shadow:0 4px 20px rgba(0,0,0,.06);
+        .page-title {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1f2937;
         }
 
-        table thead{
-            background:#0d6efd;
-            color:#fff;
+        .page-subtitle {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .filter-section {
+            padding: 20px;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 7px;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 43px;
+            border-radius: 8px;
+            border-color: #d1d5db;
+            font-size: 14px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 .15rem rgba(37, 99, 235, .12);
+        }
+
+        .generate-btn {
+            min-height: 43px;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .generated-section,
+        .history-section {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .section-title {
+            margin: 0 0 15px;
+            font-size: 17px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .file-card {
+            height: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 18px;
+            background: #fff;
+        }
+
+        .file-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .pdf-icon {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .excel-icon {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .file-title {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .file-description {
+            margin: 6px 0 15px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .file-actions .btn {
+            flex: 1 1 120px;
+        }
+
+        .history-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .history-card-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .history-card-title {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .history-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .history-table {
+            width: 100%;
+            margin: 0;
+        }
+
+        .history-table th {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+            background: #f9fafb;
+            white-space: nowrap;
+        }
+
+        .history-table td {
+            font-size: 13px;
+            color: #374151;
+            vertical-align: middle;
+        }
+
+        .history-empty {
+            padding: 25px 15px;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .modal-content {
+            border: 0;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-title {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .date-filter {
+            padding: 15px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-record {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .modal-record:last-child {
+            border-bottom: 0;
+        }
+
+        .modal-record-info {
+            min-width: 0;
+        }
+
+        .modal-record-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            overflow-wrap: anywhere;
+        }
+
+        .modal-record-details {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .modal-record-action {
+            flex-shrink: 0;
+        }
+
+        .modal-records {
+            max-height: 55vh;
+            overflow-y: auto;
+        }
+
+        .generation-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: #dcfce7;
+            color: #16a34a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 15px;
+        }
+
+        .generation-message {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .alert-success,
+        .alert-warning {
+            border-radius: 10px;
+        }
+
+        @media (max-width: 767.98px) {
+
+            .page-wrapper {
+                padding: 12px;
+                padding-bottom: 30px;
+            }
+
+            .page-header,
+            .filter-section,
+            .generated-section,
+            .history-section {
+                padding: 15px;
+            }
+
+            .page-title {
+                font-size: 19px;
+            }
+
+            .file-actions {
+                flex-direction: column;
+            }
+
+            .file-actions .btn {
+                width: 100%;
+            }
+
+            .modal-record {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .modal-record-action {
+                width: 100%;
+            }
+
+            .modal-record-action .btn {
+                width: 100%;
+            }
+
         }
 
     </style>
@@ -72,625 +377,394 @@
 
 <body>
 
-<div class="container-fluid py-4">
+<div class="page-wrapper">
 
-<div class="report-header">
+    <div class="page-card">
 
-<div class="row align-items-center">
+        <div class="page-header">
 
-<div class="col-md-8">
+            <div>
 
-<h2 class="fw-bold">
+                <h1 class="page-title">
+                    Official Business Reports
+                </h1>
 
-<i class="bi bi-briefcase-fill text-primary"></i>
-
-Official Business Report
-
-</h2>
-
-<p class="text-muted mb-0">
-
-Generate official business reports.
-
-</p>
-
-</div>
-
-<div class="col-md-4 text-end">
-
-<a href="{{ route('reports') }}" class="btn btn-outline-secondary">
-
-<i class="bi bi-arrow-left"></i>
-
-Back to Reports
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- FILTERS -->
-
-<div class="card filter-card mb-4">
-
-<div class="card-body">
-
-<form method="GET" action="{{ route('reports.ob') }}">
-
-<div class="row g-3">
-
-<div class="col-md-4">
-
-<label class="form-label">
-
-Date From
-
-</label>
-
-<input
-type="date"
-name="start"
-class="form-control"
-value="{{ request('start') }}">
-
-</div>
-
-<div class="col-md-4">
-
-<label class="form-label">
-
-Date To
-
-</label>
-
-<input
-type="date"
-name="end"
-class="form-control"
-value="{{ request('end') }}">
-
-</div>
-
-<div class="col-md-3">
-
-<label class="form-label">
-
-Status
-
-</label>
-
-<select
-name="status"
-class="form-select">
-
-<option value="">
-
-All Status
-
-</option>
-
-<option value="Pending"
-{{ request('status')=='Pending'?'selected':'' }}>
-
-Pending
-
-</option>
-
-<option value="Approved"
-{{ request('status')=='Approved'?'selected':'' }}>
-
-Approved
-
-</option>
-
-<option value="Rejected"
-{{ request('status')=='Rejected'?'selected':'' }}>
-
-Rejected
-
-</option>
-
-</select>
-
-</div>
-
-<div class="col-md-1 d-grid">
-
-<label>&nbsp;</label>
-
-<button class="btn btn-primary">
-
-<i class="bi bi-search"></i>
-
-</button>
-
-</div>
-
-</div>
-
-</form>
-
-</div>
-
-</div>
-
-@if(isset($generated))
-
-@if($totalOB)
-
-<div class="alert alert-success alert-dismissible fade show">
-
-<i class="bi bi-check-circle-fill me-2"></i>
-
-Official Business report generated successfully.
-
-<button
-class="btn-close"
-data-bs-dismiss="alert">
-</button>
-
-</div>
-
-@else
-
-<div class="alert alert-warning alert-dismissible fade show">
-
-No official business records found.
-
-<button
-class="btn-close"
-data-bs-dismiss="alert">
-</button>
-
-</div>
-
-@endif
-
-@endif
-
-<!-- SUMMARY CARDS -->
-
-<div class="row mb-4">
-
-<div class="col-lg-3">
-
-<div class="card summary-card">
-
-<div class="card-body">
-
-<div class="d-flex justify-content-between">
-
-<div>
-
-<small>Total Records</small>
-
-<h3>{{ $totalOB }}</h3>
-
-</div>
-
-<div class="summary-icon bg-primary">
-
-<i class="bi bi-briefcase"></i>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
-<div class="card summary-card">
-
-<div class="card-body">
-
-<div class="d-flex justify-content-between">
-
-<div>
-
-<small>Approved</small>
-
-<h3>{{ $approvedOB }}</h3>
-
-</div>
-
-<div class="summary-icon bg-success">
-
-<i class="bi bi-check-circle"></i>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
-<div class="card summary-card">
-
-<div class="card-body">
-
-<div class="d-flex justify-content-between">
-
-<div>
-
-<small>Pending</small>
-
-<h3>{{ $pendingOB }}</h3>
-
-</div>
-
-<div class="summary-icon bg-warning">
-
-<i class="bi bi-hourglass-split"></i>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
-<div class="card summary-card">
-
-<div class="card-body">
-
-<div class="d-flex justify-content-between">
-
-<div>
-
-<small>Rejected</small>
-
-<h3>{{ $rejectedOB }}</h3>
-
-</div>
-
-<div class="summary-icon bg-danger">
-
-<i class="bi bi-x-circle"></i>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-    <!-- EXPORT BUTTONS -->
-
-    <div class="d-flex justify-content-end mb-3">
-
-        <a href="{{ route('reports.ob.pdf', request()->query()) }}"
-           class="btn btn-danger me-2">
-
-            <i class="bi bi-file-earmark-pdf-fill"></i>
-
-            Download PDF
-
-        </a>
-
-        <a href="{{ route('reports.ob.excel', request()->query()) }}"
-           class="btn btn-success">
-
-            <i class="bi bi-file-earmark-excel-fill"></i>
-
-            Download Excel
-
-        </a>
-
-    </div>
-
-    <!-- REPORT TABLE -->
-
-    <div class="card report-table">
-
-        <div class="card-header bg-white">
-
-            <h5 class="mb-0">
-
-                Official Business Report
-
-            </h5>
-
-        </div>
-
-        <div class="card-body p-0">
-
-            <div class="table-responsive">
-
-                <table class="table table-hover table-bordered mb-0">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>#</th>
-
-                            <th>Employee ID</th>
-
-                            <th>Employee Name</th>
-
-                            <th>Department</th>
-
-                            <th>Purpose</th>
-
-                            <th>Destination</th>
-
-                            <th>OB Date</th>
-
-                            <th>Morning Out</th>
-
-                            <th>Morning In</th>
-
-                            <th>Afternoon Out</th>
-
-                            <th>Afternoon In</th>
-
-                            <th>Status</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        @forelse($obs as $ob)
-
-                        <tr>
-
-                            <td>{{ $loop->iteration }}</td>
-
-                            <td>{{ $ob->user->employee_id }}</td>
-
-                            <td>{{ $ob->user->name }}</td>
-
-                            <td>{{ $ob->user->department }}</td>
-
-                            <td>{{ $ob->purpose }}</td>
-
-                            <td>{{ $ob->destination }}</td>
-
-                            <td>
-
-                                {{ optional($ob->ob_date)->format('M d, Y') }}
-
-                            </td>
-
-                            <td>
-
-                                {{ optional($ob->morning_time_out)->format('h:i A') }}
-
-                            </td>
-
-                            <td>
-
-                                {{ optional($ob->morning_time_in)->format('h:i A') }}
-
-                            </td>
-
-                            <td>
-
-                                {{ optional($ob->afternoon_time_out)->format('h:i A') }}
-
-                            </td>
-
-                            <td>
-
-                                {{ optional($ob->afternoon_time_in)->format('h:i A') }}
-
-                            </td>
-
-                            <td>
-
-                                @if($ob->status == 'Approved')
-
-                                    <span class="badge bg-success">
-
-                                        Approved
-
-                                    </span>
-
-                                @elseif($ob->status == 'Pending')
-
-                                    <span class="badge bg-warning text-dark">
-
-                                        Pending
-
-                                    </span>
-
-                                @else
-
-                                    <span class="badge bg-danger">
-
-                                        Rejected
-
-                                    </span>
-
-                                @endif
-
-                            </td>
-
-                        </tr>
-
-                        @empty
-
-                        <tr>
-
-                            <td colspan="12" class="text-center py-5">
-
-                                <i class="bi bi-briefcase display-4 text-muted"></i>
-
-                                <br><br>
-
-                                No official business records found.
-
-                            </td>
-
-                        </tr>
-
-                        @endforelse
-
-                    </tbody>
-
-                </table>
+                <p class="page-subtitle">
+                    Generate and manage official business reports.
+                </p>
 
             </div>
 
-        </div>
 
-    </div>
-
-        <!-- REPORT INFORMATION -->
-
-    <div class="card mt-4 shadow-sm">
-
-        <div class="card-header bg-light">
-
-            <h5 class="mb-0">
-
-                <i class="bi bi-info-circle"></i>
-
-                Report Information
-
-            </h5>
+            <a
+                href="{{ route('reports') }}"
+                class="btn btn-outline-secondary"
+            >
+                <i class="bi bi-arrow-left me-1"></i>
+                Back to Reports
+            </a>
 
         </div>
 
-        <div class="card-body">
 
-            <div class="row">
+        <form
+            action="{{ route('reports.ob') }}"
+            method="GET"
+            id="obReportForm"
+        >
 
-                <div class="col-md-6">
+            <div class="filter-section">
 
-                    <table class="table table-borderless">
+                <div class="row g-3">
 
-                        <tr>
+                    <div class="col-12 col-lg-4">
 
-                            <th width="180">
+                        <label
+                            for="start"
+                            class="filter-label"
+                        >
+                            Date From
+                        </label>
 
-                                Report Type
+                        <input
+                            type="date"
+                            name="start"
+                            id="start"
+                            class="form-control"
+                            value="{{ request('start') }}"
+                        >
 
-                            </th>
+                    </div>
 
-                            <td>
 
-                                Official Business Report
+                    <div class="col-12 col-lg-4">
 
-                            </td>
+                        <label
+                            for="end"
+                            class="filter-label"
+                        >
+                            Date To
+                        </label>
 
-                        </tr>
+                        <input
+                            type="date"
+                            name="end"
+                            id="end"
+                            class="form-control"
+                            value="{{ request('end') }}"
+                        >
 
-                        <tr>
+                    </div>
 
-                            <th>
 
-                                Generated Date
+                    <div class="col-12 col-lg-4">
 
-                            </th>
+                        <label
+                            for="status"
+                            class="filter-label"
+                        >
+                            Status
+                        </label>
 
-                            <td>
+                        <select
+                            name="status"
+                            id="status"
+                            class="form-select"
+                        >
 
-                                {{ now()->format('F d, Y h:i A') }}
+                            <option value="">
+                                All Status
+                            </option>
 
-                            </td>
+                            <option
+                                value="Pending"
+                                {{ request('status') === 'Pending' ? 'selected' : '' }}
+                            >
+                                Pending
+                            </option>
 
-                        </tr>
+                            <option
+                                value="Approved"
+                                {{ request('status') === 'Approved' ? 'selected' : '' }}
+                            >
+                                Approved
+                            </option>
 
-                        <tr>
+                            <option
+                                value="Rejected"
+                                {{ request('status') === 'Rejected' ? 'selected' : '' }}
+                            >
+                                Rejected
+                            </option>
 
-                            <th>
+                        </select>
 
-                                Generated By
+                    </div>
 
-                            </th>
 
-                            <td>
+                    <div class="col-12">
 
-                                {{ auth()->user()->name }}
+                        <button
+                            type="submit"
+                            class="btn btn-primary generate-btn"
+                        >
+                            <i class="bi bi-file-earmark-bar-graph me-1"></i>
+                            Generate Report
+                        </button>
 
-                            </td>
-
-                        </tr>
-
-                    </table>
+                    </div>
 
                 </div>
 
-                <div class="col-md-6">
+            </div>
 
-                    <table class="table table-borderless">
+        </form>
 
-                        <tr>
 
-                            <th width="180">
+        @if(isset($generated) && $generated)
 
-                                Date From
+            <div class="generated-section">
 
-                            </th>
+                @if($totalOB > 0)
 
-                            <td>
+                    <div
+                        class="alert alert-success mb-4"
+                        role="alert"
+                    >
 
-                                {{ request('start') ?: 'All Records' }}
+                        <i class="bi bi-check-circle me-1"></i>
 
-                            </td>
+                        Official business report generated successfully.
+                        {{ $totalOB }} record(s) found.
 
-                        </tr>
+                    </div>
 
-                        <tr>
+                @else
 
-                            <th>
+                    <div
+                        class="alert alert-warning mb-4"
+                        role="alert"
+                    >
 
-                                Date To
+                        <i class="bi bi-exclamation-circle me-1"></i>
 
-                            </th>
+                        No official business records found.
 
-                            <td>
+                    </div>
 
-                                {{ request('end') ?: 'Present' }}
+                @endif
 
-                            </td>
 
-                        </tr>
+                <h2 class="section-title">
+                    Generated Reports
+                </h2>
 
-                        <tr>
 
-                            <th>
+                <div class="row g-3">
 
-                                Status
+                    <div class="col-12 col-md-6">
 
-                            </th>
+                        <div class="file-card">
 
-                            <td>
+                            <div class="file-icon pdf-icon">
+                                <i class="bi bi-file-earmark-pdf"></i>
+                            </div>
 
-                                {{ request('status') ?: 'All Status' }}
 
-                            </td>
+                            <h3 class="file-title">
+                                PDF Report
+                            </h3>
 
-                        </tr>
 
-                    </table>
+                            <p class="file-description">
+                                Download the official business report as a PDF document.
+                            </p>
+
+
+                            <div class="file-actions">
+
+                                <a
+                                    href="{{ route('reports.ob.pdf', array_merge(request()->query(), ['download' => 1])) }}"
+                                    class="btn btn-danger"
+                                    id="pdfDownloadBtn"
+                                >
+                                    <i class="bi bi-download me-1"></i>
+                                    Download PDF
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-12 col-md-6">
+
+                        <div class="file-card">
+
+                            <div class="file-icon excel-icon">
+                                <i class="bi bi-file-earmark-excel"></i>
+                            </div>
+
+
+                            <h3 class="file-title">
+                                Excel Report
+                            </h3>
+
+
+                            <p class="file-description">
+                                Download the official business report as an Excel spreadsheet.
+                            </p>
+
+
+                            <div class="file-actions">
+
+                                <a
+                                    href="{{ route('reports.ob.excel', array_merge(request()->query(), ['download' => 1])) }}"
+                                    class="btn btn-success"
+                                    id="excelDownloadBtn"
+                                >
+                                    <i class="bi bi-download me-1"></i>
+                                    Download Excel
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        @endif
+
+
+        <div class="history-section">
+
+            <h2 class="section-title">
+                Generated Report History
+            </h2>
+
+
+            <div class="row g-3">
+
+                <div class="col-12 col-md-6">
+
+                    <div class="history-card">
+
+                        <div class="history-card-header">
+
+                            <h3 class="history-card-title">
+                                PDF History
+                            </h3>
+
+
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-outline-secondary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#pdfHistoryModal"
+                            >
+                                View All
+                            </button>
+
+                        </div>
+
+
+                        <div class="history-table-wrapper">
+
+                            <table class="table history-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            File
+                                        </th>
+
+                                        <th>
+                                            Date
+                                        </th>
+
+                                        <th>
+                                            Action
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody id="pdfHistoryTableBody"></tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-12 col-md-6">
+
+                    <div class="history-card">
+
+                        <div class="history-card-header">
+
+                            <h3 class="history-card-title">
+                                Excel History
+                            </h3>
+
+
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-outline-secondary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#excelHistoryModal"
+                            >
+                                View All
+                            </button>
+
+                        </div>
+
+
+                        <div class="history-table-wrapper">
+
+                            <table class="table history-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            File
+                                        </th>
+
+                                        <th>
+                                            Date
+                                        </th>
+
+                                        <th>
+                                            Action
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody id="excelHistoryTableBody"></tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -700,55 +774,951 @@ data-bs-dismiss="alert">
 
     </div>
 
-    <!-- SIGNATURES -->
+</div>
 
-    <div class="row mt-5">
 
-        <div class="col-md-6 text-center">
+<div
+    class="modal fade"
+    id="generationModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
 
-            <br><br>
+    <div class="modal-dialog modal-dialog-centered">
 
-            _______________________________
+        <div class="modal-content">
 
-            <br>
+            <div class="modal-header">
 
-            <strong>Prepared By</strong>
+                <h5 class="modal-title">
+                    Report Generated
+                </h5>
+
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+
+            <div class="modal-body text-center py-4">
+
+                <div class="generation-icon">
+
+                    <i class="bi bi-check-lg"></i>
+
+                </div>
+
+
+                <div class="generation-message">
+
+                    Your official business PDF and Excel reports
+                    have been generated successfully.
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-bs-dismiss="modal"
+                >
+                    Done
+                </button>
+
+            </div>
 
         </div>
-
-        <div class="col-md-6 text-center">
-
-            <br><br>
-
-            _______________________________
-
-            <br>
-
-            <strong>Approved By</strong>
-
-        </div>
-
-    </div>
-
-    <!-- FOOTER -->
-
-    <div class="text-center text-muted mt-5 mb-3">
-
-        <small>
-
-            PAP PAY - Official Business Report System
-
-            <br>
-
-            © {{ date('Y') }} All Rights Reserved.
-
-        </small>
 
     </div>
 
 </div>
+
+
+<div
+    class="modal fade"
+    id="pdfHistoryModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    PDF Report History
+                </h5>
+
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+
+            <div class="date-filter">
+
+                <div class="row g-2">
+
+                    <div class="col-12 col-md">
+
+                        <input
+                            type="date"
+                            id="pdfHistoryDate"
+                            class="form-control"
+                        >
+
+                    </div>
+
+
+                    <div class="col-6 col-md-auto">
+
+                        <button
+                            type="button"
+                            class="btn btn-primary w-100"
+                            id="searchPdfHistory"
+                        >
+                            Search
+                        </button>
+
+                    </div>
+
+
+                    <div class="col-6 col-md-auto">
+
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary w-100"
+                            id="clearPdfHistory"
+                        >
+                            Clear
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="modal-records"
+                id="pdfHistoryRecords"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="modal fade"
+    id="excelHistoryModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Excel Report History
+                </h5>
+
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+
+            <div class="date-filter">
+
+                <div class="row g-2">
+
+                    <div class="col-12 col-md">
+
+                        <input
+                            type="date"
+                            id="excelHistoryDate"
+                            class="form-control"
+                        >
+
+                    </div>
+
+
+                    <div class="col-6 col-md-auto">
+
+                        <button
+                            type="button"
+                            class="btn btn-primary w-100"
+                            id="searchExcelHistory"
+                        >
+                            Search
+                        </button>
+
+                    </div>
+
+
+                    <div class="col-6 col-md-auto">
+
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary w-100"
+                            id="clearExcelHistory"
+                        >
+                            Clear
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="modal-records"
+                id="excelHistoryRecords"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
 
 <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+
+    const REPORTS_PAGE_URL = @json(route('reports'));
+
+    const OB_REPORT_URL = @json(route('reports.ob'));
+
+    const PDF_HISTORY_KEY = 'pap_pay_ob_pdf_history';
+
+    const EXCEL_HISTORY_KEY = 'pap_pay_ob_excel_history';
+
+
+    const startInput =
+        document.getElementById('start');
+
+    const endInput =
+        document.getElementById('end');
+
+    const obReportForm =
+        document.getElementById('obReportForm');
+
+
+    function getHistory(key) {
+
+        try {
+
+            const history =
+                JSON.parse(
+                    localStorage.getItem(key) || '[]'
+                );
+
+            return Array.isArray(history)
+                ? history
+                : [];
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
+
+
+    function saveHistory(key, history) {
+
+        localStorage.setItem(
+            key,
+            JSON.stringify(history)
+        );
+
+    }
+
+
+    function createRecordKey(
+        type,
+        selectedStart,
+        selectedEnd,
+        selectedStatus
+    ) {
+
+        return [
+            type,
+            selectedStart || 'all',
+            selectedEnd || 'present',
+            selectedStatus || 'all'
+        ].join('|');
+
+    }
+
+
+    function getFileName(
+        type,
+        selectedStart,
+        selectedEnd
+    ) {
+
+        const from =
+            selectedStart || 'all-records';
+
+        const to =
+            selectedEnd || 'present';
+
+        const extension =
+            type === 'pdf'
+                ? 'pdf'
+                : 'xlsx';
+
+        return `official-business-report-${from}-to-${to}.${extension}`;
+
+    }
+
+
+    function addHistory(
+        type,
+        selectedStart,
+        selectedEnd,
+        selectedStatus,
+        url
+    ) {
+
+        const key =
+            type === 'pdf'
+                ? PDF_HISTORY_KEY
+                : EXCEL_HISTORY_KEY;
+
+
+        const history =
+            getHistory(key);
+
+
+        const recordKey =
+            createRecordKey(
+                type,
+                selectedStart,
+                selectedEnd,
+                selectedStatus
+            );
+
+
+        const existingIndex =
+            history.findIndex(
+                item =>
+                    item.recordKey === recordKey
+            );
+
+
+        if (existingIndex !== -1) {
+
+            history.splice(
+                existingIndex,
+                1
+            );
+
+        }
+
+
+        const now =
+            new Date();
+
+
+        const record = {
+
+            recordKey: recordKey,
+
+            filename:
+                getFileName(
+                    type,
+                    selectedStart,
+                    selectedEnd
+                ),
+
+            start:
+                selectedStart || '',
+
+            end:
+                selectedEnd || '',
+
+            status:
+                selectedStatus || '',
+
+            url:
+                url,
+
+            generatedDate:
+                now.toISOString().split('T')[0],
+
+            generatedAt:
+                now.toLocaleString()
+
+        };
+
+
+        history.unshift(record);
+
+
+        saveHistory(
+            key,
+            history.slice(0, 100)
+        );
+
+    }
+
+
+    function escapeHtml(value) {
+
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+
+    }
+
+
+    function renderMainHistory() {
+
+        const pdfBody =
+            document.getElementById(
+                'pdfHistoryTableBody'
+            );
+
+
+        const excelBody =
+            document.getElementById(
+                'excelHistoryTableBody'
+            );
+
+
+        const pdfHistory =
+            getHistory(
+                PDF_HISTORY_KEY
+            );
+
+
+        const excelHistory =
+            getHistory(
+                EXCEL_HISTORY_KEY
+            );
+
+
+        if (!pdfHistory.length) {
+
+            pdfBody.innerHTML = `
+                <tr>
+                    <td colspan="3">
+                        <div class="history-empty">
+                            No PDF reports generated yet.
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+        } else {
+
+            pdfBody.innerHTML =
+                pdfHistory
+                    .slice(0, 5)
+                    .map(record => {
+
+                        return `
+                            <tr>
+
+                                <td>
+                                    <span class="text-break">
+                                        ${escapeHtml(record.filename)}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(record.generatedAt)}
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="${escapeHtml(record.url)}"
+                                        class="btn btn-sm btn-outline-danger"
+                                        target="_blank"
+                                    >
+                                        <i class="bi bi-download"></i>
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        `;
+
+                    })
+                    .join('');
+
+        }
+
+
+        if (!excelHistory.length) {
+
+            excelBody.innerHTML = `
+                <tr>
+                    <td colspan="3">
+                        <div class="history-empty">
+                            No Excel reports generated yet.
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+        } else {
+
+            excelBody.innerHTML =
+                excelHistory
+                    .slice(0, 5)
+                    .map(record => {
+
+                        return `
+                            <tr>
+
+                                <td>
+                                    <span class="text-break">
+                                        ${escapeHtml(record.filename)}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(record.generatedAt)}
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="${escapeHtml(record.url)}"
+                                        class="btn btn-sm btn-outline-success"
+                                        target="_blank"
+                                    >
+                                        <i class="bi bi-download"></i>
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        `;
+
+                    })
+                    .join('');
+
+        }
+
+    }
+
+
+    function renderModalHistory(
+        type,
+        dateFilter = ''
+    ) {
+
+        const key =
+            type === 'pdf'
+                ? PDF_HISTORY_KEY
+                : EXCEL_HISTORY_KEY;
+
+
+        const container =
+            document.getElementById(
+                type === 'pdf'
+                    ? 'pdfHistoryRecords'
+                    : 'excelHistoryRecords'
+            );
+
+
+        let history =
+            getHistory(key);
+
+
+        if (dateFilter) {
+
+            history =
+                history.filter(
+                    record =>
+                        record.generatedDate === dateFilter
+                );
+
+        }
+
+
+        if (!history.length) {
+
+            container.innerHTML = `
+                <div class="history-empty">
+                    No generated reports found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            history
+                .map(record => {
+
+                    const from =
+                        record.start ||
+                        'All Records';
+
+
+                    const to =
+                        record.end ||
+                        'Present';
+
+
+                    const selectedStatus =
+                        record.status ||
+                        'All Status';
+
+
+                    const buttonClass =
+                        type === 'pdf'
+                            ? 'btn-outline-danger'
+                            : 'btn-outline-success';
+
+
+                    return `
+
+                        <div class="modal-record">
+
+                            <div class="modal-record-info">
+
+                                <div class="modal-record-name">
+                                    ${escapeHtml(record.filename)}
+                                </div>
+
+                                <div class="modal-record-details">
+
+                                    Generated:
+                                    ${escapeHtml(record.generatedAt)}
+
+                                    <br>
+
+                                    Date From:
+                                    ${escapeHtml(from)}
+
+                                    &nbsp; | &nbsp;
+
+                                    Date To:
+                                    ${escapeHtml(to)}
+
+                                    &nbsp; | &nbsp;
+
+                                    Status:
+                                    ${escapeHtml(selectedStatus)}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="modal-record-action">
+
+                                <a
+                                    href="${escapeHtml(record.url)}"
+                                    class="btn btn-sm ${buttonClass}"
+                                    target="_blank"
+                                >
+                                    <i class="bi bi-download me-1"></i>
+                                    Download
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                })
+                .join('');
+
+    }
+
+
+    function showGeneratedFiles() {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const selectedStart =
+            params.get('start') || '';
+
+
+        const selectedEnd =
+            params.get('end') || '';
+
+
+        const selectedStatus =
+            params.get('status') || '';
+
+
+        const pdfParams =
+            new URLSearchParams(params);
+
+
+        pdfParams.set(
+            'download',
+            '1'
+        );
+
+
+        const excelParams =
+            new URLSearchParams(params);
+
+
+        excelParams.set(
+            'download',
+            '1'
+        );
+
+
+        const pdfUrl =
+            @json(route('reports.ob.pdf'))
+            + '?'
+            + pdfParams.toString();
+
+
+        const excelUrl =
+            @json(route('reports.ob.excel'))
+            + '?'
+            + excelParams.toString();
+
+
+        addHistory(
+            'pdf',
+            selectedStart,
+            selectedEnd,
+            selectedStatus,
+            pdfUrl
+        );
+
+
+        addHistory(
+            'excel',
+            selectedStart,
+            selectedEnd,
+            selectedStatus,
+            excelUrl
+        );
+
+
+        renderMainHistory();
+
+        renderModalHistory('pdf');
+
+        renderModalHistory('excel');
+
+
+        const modalElement =
+            document.getElementById(
+                'generationModal'
+            );
+
+
+        if (modalElement) {
+
+            const modal =
+                new bootstrap.Modal(
+                    modalElement
+                );
+
+            modal.show();
+
+        }
+
+    }
+
+
+    document
+        .getElementById('searchPdfHistory')
+        .addEventListener(
+            'click',
+            function () {
+
+                renderModalHistory(
+                    'pdf',
+                    document.getElementById(
+                        'pdfHistoryDate'
+                    ).value
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById('clearPdfHistory')
+        .addEventListener(
+            'click',
+            function () {
+
+                document.getElementById(
+                    'pdfHistoryDate'
+                ).value = '';
+
+                renderModalHistory(
+                    'pdf'
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById('searchExcelHistory')
+        .addEventListener(
+            'click',
+            function () {
+
+                renderModalHistory(
+                    'excel',
+                    document.getElementById(
+                        'excelHistoryDate'
+                    ).value
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById('clearExcelHistory')
+        .addEventListener(
+            'click',
+            function () {
+
+                document.getElementById(
+                    'excelHistoryDate'
+                ).value = '';
+
+                renderModalHistory(
+                    'excel'
+                );
+
+            }
+        );
+
+
+    obReportForm.addEventListener(
+        'submit',
+        function (event) {
+
+            const start =
+                startInput.value;
+
+
+            const end =
+                endInput.value;
+
+
+            if (
+                start &&
+                end &&
+                start > end
+            ) {
+
+                event.preventDefault();
+
+
+                alert(
+                    'Date From cannot be later than Date To.'
+                );
+
+
+                return;
+
+            }
+
+        }
+    );
+
+
+    if (
+        performance.getEntriesByType('navigation')[0]
+        &&
+        performance.getEntriesByType('navigation')[0].type === 'reload'
+    ) {
+
+        window.location.replace(
+            OB_REPORT_URL
+        );
+
+    }
+
+
+    history.pushState(
+        null,
+        '',
+        window.location.href
+    );
+
+
+    window.addEventListener(
+        'popstate',
+        function () {
+
+            window.location.replace(
+                REPORTS_PAGE_URL
+            );
+
+        }
+    );
+
+
+    renderMainHistory();
+
+    renderModalHistory('pdf');
+
+    renderModalHistory('excel');
+
+
+    @if(isset($generated) && $generated)
+
+        showGeneratedFiles();
+
+    @endif
+
+</script>
 
 </body>
 

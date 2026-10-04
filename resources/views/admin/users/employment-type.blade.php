@@ -213,7 +213,7 @@
         <div class="glass">
 
             <div class="step">
-                STEP 2 OF 3
+            
             </div>
 
             <h2 class="mt-2">

@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Payslip;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class PayslipController extends Controller
 {
@@ -58,7 +60,7 @@ class PayslipController extends Controller
             'basic_pay' => 'required',
         ]);
 
-        Payslip::create([
+        $payslip = Payslip::create([
             'user_id' => $request->user_id,
             'pay_period' => $request->pay_period,
             'basic_pay' => $request->basic_pay,
@@ -70,16 +72,34 @@ class PayslipController extends Controller
             'status' => 'draft',
         ]);
 
+        AuditLogService::log(
+            'Payslip Created',
+            'Admin ' .
+            Auth::user()->name .
+            ' created a payslip for employee ' .
+            $payslip->user->name .
+            '.'
+        );
+
         return redirect()->route('admin.payslips')->with('success', 'Payslip created successfully');
     }
 
     public function release($id)
     {
-        $payslip = Payslip::findOrFail($id);
+        $payslip = Payslip::with('user')->findOrFail($id);
 
         $payslip->update([
             'status' => 'released'
         ]);
+
+        AuditLogService::log(
+            'Payslip Released',
+            'Admin ' .
+            Auth::user()->name .
+            ' released the payslip of employee ' .
+            $payslip->user->name .
+            '.'
+        );
 
         return back()->with('success', 'Payslip released to employee');
     }
@@ -112,11 +132,20 @@ class PayslipController extends Controller
 
     public function markPaid($id)
     {
-        $payslip = Payslip::findOrFail($id);
+        $payslip = Payslip::with('user')->findOrFail($id);
 
         $payslip->update([
             'status' => 'Paid',
         ]);
+
+        AuditLogService::log(
+            'Payslip Marked as Paid',
+            'Admin ' .
+            Auth::user()->name .
+            ' marked the payslip of employee ' .
+            $payslip->user->name .
+            ' as paid.'
+        );
 
         return redirect()->back()->with(
             'success',

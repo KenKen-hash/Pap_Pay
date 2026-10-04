@@ -303,7 +303,7 @@
 
                 <div class="step">
 
-                    STEP 1 OF 2
+                  
 
                 </div>
 

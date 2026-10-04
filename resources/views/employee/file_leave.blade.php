@@ -439,6 +439,81 @@
         ============================================================
         */
 
+        /*
+         * ============================================================
+         * LEAVE NOTIFICATION MODAL
+         * ============================================================
+         */
+
+        .leave-notification-modal .modal-dialog {
+            max-width: 440px;
+        }
+
+        .leave-notification-modal .modal-content {
+            border: 0;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 18px 55px rgba(15, 23, 42, 0.22);
+        }
+
+        .leave-notification-modal .modal-body {
+            padding: 2rem 1.75rem 1.75rem;
+            text-align: center;
+        }
+
+        .leave-notification-icon {
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .leave-notification-icon.success {
+            background: #e8f7ee;
+            color: #198754;
+        }
+
+        .leave-notification-icon.error {
+            background: #fdecec;
+            color: #dc3545;
+        }
+
+        .leave-notification-title {
+            margin-bottom: 0.55rem;
+            color: #172033;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .leave-notification-message {
+            margin: 0 auto 1.5rem;
+            max-width: 360px;
+            color: #667085;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .leave-notification-modal .btn {
+            min-width: 110px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 575.98px) {
+            .leave-notification-modal .modal-dialog {
+                margin: 0.75rem;
+            }
+
+            .leave-notification-modal .modal-body {
+                padding: 1.75rem 1.25rem 1.5rem;
+            }
+        }
+
+
         @media (max-width: 380px) {
 
             .dashboard-content > .container-fluid {
@@ -518,7 +593,7 @@
                     </span>
 
                     <span class="nav-text">
-                        Dashboard
+                        Home
                     </span>
 
                 </a>
@@ -701,13 +776,44 @@
 
                     <!-- SEARCH -->
 
-                    <form class="d-none d-md-flex ms-3 flex-grow-1"
+                    <form class="admin-search-form d-none d-md-flex ms-3 flex-grow-1"
+                        action="{{ route('search') }}"
+                        method="GET"
                         role="search">
 
-                        <input class="form-control search-input"
-                            type="search"
-                            placeholder="Search users, orders, reports"
-                            aria-label="Search">
+                        <div class="admin-search-wrapper">
+
+                            <i class="bi bi-search admin-search-icon"
+                                aria-hidden="true"></i>
+
+                            <input
+                                type="search"
+                                name="search"
+                                id="adminSearchInput"
+                                class="admin-search-input"
+                                placeholder="Search Pap Pay..."
+                                aria-label="Search Pap Pay"
+                                autocomplete="off">
+
+                            <button
+                                type="button"
+                                class="admin-search-clear"
+                                id="adminSearchClear"
+                                aria-label="Clear search"
+                                hidden>
+
+                                <i class="bi bi-x-circle-fill"
+                                    aria-hidden="true"></i>
+
+                            </button>
+
+                            <div
+                                class="admin-search-results"
+                                id="adminSearchResults"
+                                aria-live="polite">
+                            </div>
+
+                        </div>
 
                     </form>
 
@@ -1079,42 +1185,12 @@
 
 
                     <!-- =================================================
-                         ALERTS
+                         NOTIFICATIONS
+
+                         Success/error messages are displayed through the
+                         modal at the bottom of this page. No inline
+                         Bootstrap alert is shown here.
                          ================================================= -->
-
-                    @if (session('success'))
-
-                        <div class="alert alert-success mt-4">
-
-                            {{ session('success') }}
-
-                        </div>
-
-                    @endif
-
-
-                    @if ($errors->has('duplicate'))
-
-                        <div class="alert alert-danger mt-4">
-
-                            <i class="bi bi-exclamation-triangle-fill"></i>
-
-                            {{ $errors->first('duplicate') }}
-
-                        </div>
-
-                    @endif
-
-
-                    @if (session('error'))
-
-                        <div class="alert alert-danger mt-4">
-
-                            {{ session('error') }}
-
-                        </div>
-
-                    @endif
 
 
                     <!-- =================================================
@@ -1644,6 +1720,7 @@
 
                                             </tr>
 
+
                                         @empty
 
 
@@ -1754,6 +1831,64 @@
 
 
     <!-- =========================================================
+         LEAVE NOTIFICATION MODAL
+         ========================================================= -->
+
+    @php
+        $leaveNotificationMessage = session('success')
+            ?: session('error')
+            ?: ($errors->has('duplicate') ? $errors->first('duplicate') : null);
+
+        $leaveNotificationType = session('success') ? 'success' : 'error';
+
+        $leaveNotificationTitle = session('success')
+            ? 'Leave Request Submitted'
+            : 'Unable to Submit Leave';
+    @endphp
+
+    @if ($leaveNotificationMessage)
+        <div class="modal fade leave-notification-modal"
+            id="leaveNotificationModal"
+            tabindex="-1"
+            aria-labelledby="leaveNotificationModalLabel"
+            aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-body">
+
+                        <div class="leave-notification-icon {{ $leaveNotificationType }}">
+                            @if ($leaveNotificationType === 'success')
+                                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                            @else
+                                <i class="bi bi-exclamation-lg" aria-hidden="true"></i>
+                            @endif
+                        </div>
+
+                        <h5 class="leave-notification-title" id="leaveNotificationModalLabel">
+                            {{ $leaveNotificationTitle }}
+                        </h5>
+
+                        <p class="leave-notification-message">
+                            {{ $leaveNotificationMessage }}
+                        </p>
+
+                        <button type="button"
+                            class="btn {{ $leaveNotificationType === 'success' ? 'btn-success' : 'btn-danger' }} px-4"
+                            data-bs-dismiss="modal">
+                            OK
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    @endif
+
+
+    <!-- =========================================================
          DATE CALCULATION
          ========================================================= -->
 
@@ -1841,6 +1976,30 @@
             );
 
         }
+
+
+        /* =====================================================
+           LEAVE NOTIFICATION MODAL
+           ===================================================== */
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const leaveNotificationModal =
+                document.getElementById('leaveNotificationModal');
+
+            if (leaveNotificationModal &&
+                typeof bootstrap !== 'undefined') {
+
+                const modal = new bootstrap.Modal(leaveNotificationModal, {
+                    backdrop: true,
+                    keyboard: true
+                });
+
+                modal.show();
+
+            }
+
+        });
 
     </script>
 

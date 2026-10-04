@@ -1,228 +1,491 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <title>Employee Reports</title>
+<meta name="csrf-token"
+      content="{{ csrf_token() }}">
 
-    <link rel="stylesheet" href="../../../../khen/assets/css/bootstrap.min.css">
+<title>Employee Reports | PAP PAY</title>
 
-    <link rel="stylesheet" href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+<link rel="icon"
+      type="image/x-icon"
+      href="../../../../khen/assets/images/favicon.png">
 
-    <link rel="stylesheet" href="../../../../khen/assets/css/style.css">
+<link rel="stylesheet"
+      href="../../../../khen/assets/css/bootstrap.min.css">
 
-    <style>
-        body {
-            background: #f5f7fb;
-        }
+<link rel="stylesheet"
+      href="../../../../khen/assets/vendors/bootstrap-icons/bootstrap-icons.css">
 
-        .report-header {
-            background: #fff;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, .05);
-        }
+<link rel="stylesheet"
+      href="../../../../khen/assets/css/style.css">
 
-        .summary-card {
-            border: none;
-            border-radius: 15px;
-            transition: .3s;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, .06);
-        }
+<style>
 
-        .summary-card:hover {
-            transform: translateY(-4px);
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .summary-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: #fff;
-        }
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
 
-        .filter-card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, .06);
-        }
+body {
+    background: #f5f7fb;
+}
 
-        .report-table {
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
-        }
+.page-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 30px;
+}
 
-        table thead {
-            background: #0d6efd;
-            color: #fff;
-        }
+.page-card {
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
 
-        table th {
-            white-space: nowrap;
-        }
+.page-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
 
-        .export-btn {
-            border-radius: 10px;
-        }
-    </style>
+.page-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.page-subtitle {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.filter-section,
+.generated-section,
+.history-section {
+    padding: 20px;
+}
+
+.generated-section,
+.history-section {
+    border-top: 1px solid #e5e7eb;
+}
+
+.filter-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 7px;
+}
+
+.form-control,
+.form-select {
+    min-height: 43px;
+    border-radius: 8px;
+    border-color: #d1d5db;
+    font-size: 14px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 0.15rem rgba(37, 99, 235, 0.12);
+}
+
+.generate-btn {
+    min-height: 43px;
+    border-radius: 8px;
+    font-weight: 600;
+    width: 100%;
+}
+
+.section-title {
+    margin: 0 0 15px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.file-card {
+    height: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 18px;
+    background: #ffffff;
+}
+
+.file-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    margin-bottom: 12px;
+}
+
+.pdf-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.excel-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.file-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.file-description {
+    margin: 6px 0 15px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.file-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.file-actions .btn {
+    flex: 1 1 120px;
+}
+
+.history-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.history-card-header {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.history-card-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.history-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    margin: 0;
+}
+
+.history-table th {
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b7280;
+    background: #f9fafb;
+    white-space: nowrap;
+}
+
+.history-table td {
+    font-size: 13px;
+    color: #374151;
+    vertical-align: middle;
+}
+
+.history-empty {
+    padding: 25px 15px;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.modal-content {
+    border: 0;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.modal-header {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.date-filter {
+    padding: 15px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-record {
+    padding: 15px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.modal-record:last-child {
+    border-bottom: 0;
+}
+
+.modal-record-info {
+    min-width: 0;
+}
+
+.modal-record-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1f2937;
+    overflow-wrap: anywhere;
+}
+
+.modal-record-details {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.modal-record-action {
+    flex-shrink: 0;
+}
+
+.modal-records {
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+.alert-success,
+.alert-warning {
+    border-radius: 10px;
+}
+
+@media (max-width: 767.98px) {
+
+    .page-wrapper {
+        padding: 12px;
+        padding-bottom: 30px;
+    }
+
+    .page-header,
+    .filter-section,
+    .generated-section,
+    .history-section {
+        padding: 15px;
+    }
+
+    .page-title {
+        font-size: 19px;
+    }
+
+    .file-actions {
+        flex-direction: column;
+    }
+
+    .file-actions .btn {
+        width: 100%;
+    }
+
+    .modal-record {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .modal-record-action {
+        width: 100%;
+    }
+
+    .modal-record-action .btn {
+        width: 100%;
+    }
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-    <div class="container-fluid py-4">
+<div class="page-wrapper">
 
-        <!-- PAGE HEADER -->
+<div class="page-card">
 
-        <div class="report-header">
+    <div class="page-header">
 
-            <div class="row align-items-center">
+        <div>
 
-                <div class="col-md-8">
+            <h1 class="page-title">
+                Employee Reports
+            </h1>
 
-                    <h2 class="fw-bold">
+            <p class="page-subtitle">
+                Generate and manage employee reports.
+            </p>
 
-                        <i class="bi bi-people-fill text-primary"></i>
+        </div>
 
-                        Employee Reports
 
-                    </h2>
+        <a href="{{ route('reports') }}"
+           class="btn btn-outline-secondary">
 
-                    <p class="text-muted mb-0">
+            <i class="bi bi-arrow-left me-1"></i>
 
-                        Generate employee reports by department and employment status.
+            Back to Reports
 
-                    </p>
+        </a>
+
+    </div>
+
+
+    <div class="filter-section">
+
+        <form method="GET"
+              action="{{ route('reports.employee') }}"
+              id="employeeReportForm">
+
+            <div class="row g-3">
+
+                <div class="col-12 col-md-6">
+
+                    <label for="department"
+                           class="filter-label">
+
+                        Department
+
+                    </label>
+
+                    <select name="department"
+                            id="department"
+                            class="form-select">
+
+                        <option value="">
+                            All Departments
+                        </option>
+
+                        @foreach ($departments as $department)
+
+                            <option value="{{ $department }}"
+                                {{ request('department') == $department ? 'selected' : '' }}>
+
+                                {{ $department }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
 
                 </div>
 
-                <div class="col-md-4 text-end">
 
-                    <a href="{{ route('reports') }}" class="btn btn-outline-secondary">
+                <div class="col-12 col-md-6">
 
-                        <i class="bi bi-arrow-left"></i>
+                    <label for="status"
+                           class="filter-label">
 
-                        Back to Reports
+                        Employee Status
 
-                    </a>
+                    </label>
+
+                    <select name="status"
+                            id="status"
+                            class="form-select">
+
+                        <option value="">
+                            All Status
+                        </option>
+
+                        <option value="Active"
+                            {{ request('status') == 'Active' ? 'selected' : '' }}>
+
+                            Active
+
+                        </option>
+
+                        <option value="Inactive"
+                            {{ request('status') == 'Inactive' ? 'selected' : '' }}>
+
+                            Inactive
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-12">
+
+                    <button type="submit"
+                            class="btn btn-primary generate-btn">
+
+                        <i class="bi bi-file-earmark-bar-graph me-1"></i>
+
+                        Generate Report
+
+                    </button>
 
                 </div>
 
             </div>
 
-        </div>
+        </form>
 
-        <!-- FILTERS -->
+    </div>
 
-        <div class="card filter-card mb-4">
 
-            <div class="card-body">
+    @if(isset($generated) && $generated)
 
-                <form method="GET" action="{{ route('reports.employee') }}">
+        <div class="generated-section"
+             id="generatedFilesSection">
 
-                    <div class="row g-3">
+            @if($totalEmployees > 0)
 
-                        <div class="col-lg-5">
+                <div class="alert alert-success mb-4">
 
-                            <label class="form-label">
-
-                                Department
-
-                            </label>
-
-                            <select name="department" class="form-select">
-
-                                <option value="">
-
-                                    All Departments
-
-                                </option>
-
-                                @foreach ($departments as $department)
-                                    <option value="{{ $department }}"
-                                        {{ request('department') == $department ? 'selected' : '' }}>
-
-                                        {{ $department }}
-
-                                    </option>
-                                @endforeach
-
-                            </select>
-
-                        </div>
-
-                        <div class="col-lg-5">
-
-                            <label class="form-label">
-
-                                Employee Status
-
-                            </label>
-
-                            <select name="status" class="form-select">
-
-                                <option value="">
-
-                                    All Status
-
-                                </option>
-
-                                <option value="Active" {{ request('status') == 'Active' ? 'selected' : '' }}>
-
-                                    Active
-
-                                </option>
-
-                                <option value="Inactive" {{ request('status') == 'Inactive' ? 'selected' : '' }}>
-
-                                    Inactive
-
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        <div class="col-lg-2 d-grid">
-
-                            <label>&nbsp;</label>
-
-                            <button class="btn btn-primary">
-
-                                <i class="bi bi-search"></i>
-
-                                Generate
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
-        <!-- SUCCESS MESSAGE -->
-
-        @if (isset($generated))
-
-            @if ($totalEmployees > 0)
-                <div class="alert alert-success alert-dismissible fade show">
-
-                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <i class="bi bi-check-circle-fill me-1"></i>
 
                     Employee report generated successfully.
 
@@ -230,54 +493,59 @@
 
                     employee(s) found.
 
-                    <button type="button" class="btn-close" data-bs-dismiss="alert">
-                    </button>
-
                 </div>
-            @else
-                <div class="alert alert-warning alert-dismissible fade show">
 
-                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+            @else
+
+                <div class="alert alert-warning mb-4">
+
+                    <i class="bi bi-exclamation-circle-fill me-1"></i>
 
                     No employees found.
 
-                    <button type="button" class="btn-close" data-bs-dismiss="alert">
-                    </button>
-
                 </div>
+
             @endif
 
-        @endif
 
-        <!-- SUMMARY CARDS -->
+            <h2 class="section-title">
+                Generated Reports
+            </h2>
 
-        <div class="row mb-4">
 
-            <div class="col-lg-3">
+            <div class="row g-3">
 
-                <div class="card summary-card">
+                <div class="col-12 col-md-6">
 
-                    <div class="card-body">
+                    <div class="file-card">
 
-                        <div class="d-flex justify-content-between">
+                        <div class="file-icon pdf-icon">
 
-                            <div>
+                            <i class="bi bi-file-earmark-pdf"></i>
 
-                                <small>Total Employees</small>
+                        </div>
 
-                                <h3>
 
-                                    {{ $totalEmployees }}
+                        <h3 class="file-title">
+                            PDF Report
+                        </h3>
 
-                                </h3>
 
-                            </div>
+                        <p class="file-description">
+                            Download the generated employee PDF report.
+                        </p>
 
-                            <div class="summary-icon bg-primary">
 
-                                <i class="bi bi-people"></i>
+                        <div class="file-actions">
 
-                            </div>
+                            <a href="{{ route('reports.employee.pdf', array_merge(request()->query(), ['download' => 1])) }}"
+                               class="btn btn-danger w-100">
+
+                                <i class="bi bi-download me-1"></i>
+
+                                Download PDF
+
+                            </a>
 
                         </div>
 
@@ -285,101 +553,38 @@
 
                 </div>
 
-            </div>
 
-            <div class="col-lg-3">
+                <div class="col-12 col-md-6">
 
-                <div class="card summary-card">
+                    <div class="file-card">
 
-                    <div class="card-body">
+                        <div class="file-icon excel-icon">
 
-                        <div class="d-flex justify-content-between">
-
-                            <div>
-
-                                <small>Active</small>
-
-                                <h3>
-
-                                    {{ $activeEmployees }}
-
-                                </h3>
-
-                            </div>
-
-                            <div class="summary-icon bg-success">
-
-                                <i class="bi bi-person-check"></i>
-
-                            </div>
+                            <i class="bi bi-file-earmark-excel"></i>
 
                         </div>
 
-                    </div>
 
-                </div>
+                        <h3 class="file-title">
+                            Excel Report
+                        </h3>
 
-            </div>
 
-            <div class="col-lg-3">
+                        <p class="file-description">
+                            Download the generated employee Excel report.
+                        </p>
 
-                <div class="card summary-card">
 
-                    <div class="card-body">
+                        <div class="file-actions">
 
-                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('reports.employee.excel', array_merge(request()->query(), ['download' => 1])) }}"
+                               class="btn btn-success w-100">
 
-                            <div>
+                                <i class="bi bi-download me-1"></i>
 
-                                <small>Inactive</small>
+                                Download Excel
 
-                                <h3>
-
-                                    {{ $inactiveEmployees }}
-
-                                </h3>
-
-                            </div>
-
-                            <div class="summary-icon bg-danger">
-
-                                <i class="bi bi-person-x"></i>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3">
-
-                <div class="card summary-card">
-
-                    <div class="card-body">
-
-                        <div class="d-flex justify-content-between">
-
-                            <div>
-
-                                <small>Departments</small>
-
-                                <h3>
-
-                                    {{ $departmentCount }}
-
-                                </h3>
-
-                            </div>
-
-                            <div class="summary-icon bg-info">
-
-                                <i class="bi bi-building"></i>
-
-                            </div>
+                            </a>
 
                         </div>
 
@@ -391,346 +596,1167 @@
 
         </div>
 
+    @endif
 
-        <!-- EXPORT BUTTONS -->
 
-        <div class="d-flex justify-content-end mb-3">
+    <div class="history-section">
 
-            <a href="{{ route('reports.employee.pdf', request()->query()) }}" class="btn btn-danger export-btn me-2">
+        <h2 class="section-title">
+            Generated Report History
+        </h2>
 
-                <i class="bi bi-file-earmark-pdf-fill"></i>
 
-                Download PDF
+        <div class="row g-3">
 
-            </a>
+            <div class="col-12 col-lg-6">
 
-            <a href="{{ route('reports.employee.excel', request()->query()) }}" class="btn btn-success export-btn">
+                <div class="history-card">
 
-                <i class="bi bi-file-earmark-excel-fill"></i>
+                    <div class="history-card-header">
 
-                Download Excel
+                        <h3 class="history-card-title">
+                            PDF History
+                        </h3>
 
-            </a>
 
-        </div>
+                        <button type="button"
+                                class="btn btn-sm btn-outline-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#pdfHistoryModal">
 
-        <!-- EMPLOYEE TABLE -->
+                            View All
 
-        <div class="card report-table">
+                        </button>
 
-            <div class="card-header bg-white">
+                    </div>
 
-                <h5 class="mb-0">
 
-                    Employee Report
+                    <div class="history-table-wrapper">
 
-                </h5>
+                        <table class="table history-table">
 
-            </div>
-
-            <div class="card-body p-0">
-
-                <div class="table-responsive">
-
-                    <table class="table table-hover table-bordered mb-0">
-
-                        <thead>
-
-                            <tr>
-
-                                <th>#</th>
-
-                                <th>Employee ID</th>
-
-                                <th>Employee Name</th>
-
-                                <th>Department</th>
-
-                                <th>Email</th>
-
-                                <th>Contact Number</th>
-
-                                <th>Status</th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            @forelse($employees as $employee)
-                                <tr>
-
-                                    <td>
-
-                                        {{ $loop->iteration }}
-
-                                    </td>
-
-                                    <td>
-
-                                        {{ $employee->employee_id }}
-
-                                    </td>
-
-                                    <td>
-
-                                        {{ $employee->name }}
-
-                                    </td>
-
-                                    <td>
-
-                                        {{ $employee->department }}
-
-                                    </td>
-
-                                    <td>
-
-                                        {{ $employee->email }}
-
-                                    </td>
-
-                                    <td>
-
-                                        {{ $employee->contact_number }}
-
-                                    </td>
-
-                                    <td>
-
-                                        @if ($employee->status == 'Active')
-                                            <span class="badge bg-success">
-
-                                                Active
-
-                                            </span>
-                                        @else
-                                            <span class="badge bg-danger">
-
-                                                Inactive
-
-                                            </span>
-                                        @endif
-
-                                    </td>
-
-                                </tr>
-
-                            @empty
+                            <thead>
 
                                 <tr>
 
-                                    <td colspan="7" class="text-center py-5">
+                                    <th>
+                                        File
+                                    </th>
 
-                                        <i class="bi bi-people display-4 text-muted"></i>
+                                    <th>
+                                        Date
+                                    </th>
 
-                                        <br><br>
-
-                                        No employee records found.
-
-                                    </td>
+                                    <th>
+                                        Action
+                                    </th>
 
                                 </tr>
-                            @endforelse
 
-                        </tbody>
+                            </thead>
 
-                    </table>
+
+                            <tbody id="pdfHistoryTableBody"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-12 col-lg-6">
+
+                <div class="history-card">
+
+                    <div class="history-card-header">
+
+                        <h3 class="history-card-title">
+                            Excel History
+                        </h3>
+
+
+                        <button type="button"
+                                class="btn btn-sm btn-outline-success"
+                                data-bs-toggle="modal"
+                                data-bs-target="#excelHistoryModal">
+
+                            View All
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="history-table-wrapper">
+
+                        <table class="table history-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        File
+                                    </th>
+
+                                    <th>
+                                        Date
+                                    </th>
+
+                                    <th>
+                                        Action
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="excelHistoryTableBody"></tbody>
+
+                        </table>
+
+                    </div>
 
                 </div>
 
             </div>
 
         </div>
-
-            <!-- REPORT INFORMATION -->
-
-    <div class="card mt-4 shadow-sm">
-
-        <div class="card-header bg-light">
-
-            <h5 class="mb-0">
-
-                <i class="bi bi-info-circle"></i>
-
-                Report Information
-
-            </h5>
-
-        </div>
-
-        <div class="card-body">
-
-            <div class="row">
-
-                <div class="col-md-6">
-
-                    <table class="table table-borderless">
-
-                        <tr>
-
-                            <th width="180">
-
-                                Report Type
-
-                            </th>
-
-                            <td>
-
-                                Employee Report
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>
-
-                                Generated Date
-
-                            </th>
-
-                            <td>
-
-                                {{ now()->format('F d, Y h:i A') }}
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>
-
-                                Generated By
-
-                            </th>
-
-                            <td>
-
-                                {{ auth()->user()->name }}
-
-                            </td>
-
-                        </tr>
-
-                    </table>
-
-                </div>
-
-                <div class="col-md-6">
-
-                    <table class="table table-borderless">
-
-                        <tr>
-
-                            <th width="180">
-
-                                Department
-
-                            </th>
-
-                            <td>
-
-                                {{ request('department') ?: 'All Departments' }}
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>
-
-                                Status
-
-                            </th>
-
-                            <td>
-
-                                {{ request('status') ?: 'All Status' }}
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>
-
-                                Total Employees
-
-                            </th>
-
-                            <td>
-
-                                {{ $totalEmployees }}
-
-                            </td>
-
-                        </tr>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- SIGNATURES -->
-
-    <div class="row mt-5">
-
-        <div class="col-md-6 text-center">
-
-            <br><br>
-
-            _______________________________
-
-            <br>
-
-            <strong>Prepared By</strong>
-
-        </div>
-
-        <div class="col-md-6 text-center">
-
-            <br><br>
-
-            _______________________________
-
-            <br>
-
-            <strong>Approved By</strong>
-
-        </div>
-
-    </div>
-
-    <!-- FOOTER -->
-
-    <div class="text-center text-muted mt-5 mb-3">
-
-        <small>
-
-            PAP PAY - Employee Report System
-
-            <br>
-
-            © {{ date('Y') }} All Rights Reserved.
-
-        </small>
 
     </div>
 
 </div>
 
+</div>
+
+
+<div class="modal fade"
+     id="generationModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    <i class="bi bi-check-circle text-success me-1"></i>
+
+                    Report Generated
+
+                </h5>
+
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                Your employee PDF and Excel reports have been generated successfully.
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-primary"
+                        data-bs-dismiss="modal">
+
+                    Done
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="modal fade"
+     id="pdfHistoryModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    <i class="bi bi-file-earmark-pdf text-danger me-1"></i>
+
+                    PDF Report History
+
+                </h5>
+
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <div class="date-filter">
+
+                <div class="row g-2 align-items-end">
+
+                    <div class="col-12 col-md">
+
+                        <label for="pdfHistoryDateFilter"
+                               class="filter-label">
+
+                            Search by generated date
+
+                        </label>
+
+
+                        <input type="date"
+                               id="pdfHistoryDateFilter"
+                               class="form-control">
+
+                    </div>
+
+
+                    <div class="col-12 col-md-auto">
+
+                        <button type="button"
+                                class="btn btn-danger"
+                                id="pdfSearchButton">
+
+                            <i class="bi bi-search me-1"></i>
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="col-12 col-md-auto">
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                id="pdfClearButton">
+
+                            Clear
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-records"
+                 id="pdfModalRecords"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="modal fade"
+     id="excelHistoryModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    <i class="bi bi-file-earmark-excel text-success me-1"></i>
+
+                    Excel Report History
+
+                </h5>
+
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <div class="date-filter">
+
+                <div class="row g-2 align-items-end">
+
+                    <div class="col-12 col-md">
+
+                        <label for="excelHistoryDateFilter"
+                               class="filter-label">
+
+                            Search by generated date
+
+                        </label>
+
+
+                        <input type="date"
+                               id="excelHistoryDateFilter"
+                               class="form-control">
+
+                    </div>
+
+
+                    <div class="col-12 col-md-auto">
+
+                        <button type="button"
+                                class="btn btn-success"
+                                id="excelSearchButton">
+
+                            <i class="bi bi-search me-1"></i>
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="col-12 col-md-auto">
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                id="excelClearButton">
+
+                            Clear
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-records"
+                 id="excelModalRecords"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script src="../../../../khen/assets/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const REPORTS_PAGE_URL =
+        @json(route('reports'));
+
+
+    const EMPLOYEE_REPORT_URL =
+        @json(route('reports.employee'));
+
+
+    const PDF_HISTORY_KEY =
+        'pap_pay_employee_pdf_history';
+
+
+    const EXCEL_HISTORY_KEY =
+        'pap_pay_employee_excel_history';
+
+
+    const pdfHistoryTableBody =
+        document.getElementById(
+            'pdfHistoryTableBody'
+        );
+
+
+    const excelHistoryTableBody =
+        document.getElementById(
+            'excelHistoryTableBody'
+        );
+
+
+    const pdfModalRecords =
+        document.getElementById(
+            'pdfModalRecords'
+        );
+
+
+    const excelModalRecords =
+        document.getElementById(
+            'excelModalRecords'
+        );
+
+
+    const pdfDateFilter =
+        document.getElementById(
+            'pdfHistoryDateFilter'
+        );
+
+
+    const excelDateFilter =
+        document.getElementById(
+            'excelHistoryDateFilter'
+        );
+
+
+    function getHistory(key) {
+
+        try {
+
+            const history =
+                JSON.parse(
+                    localStorage.getItem(key) || '[]'
+                );
+
+
+            return Array.isArray(history)
+                ? history
+                : [];
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
+
+
+    function saveHistory(
+        key,
+        history
+    ) {
+
+        localStorage.setItem(
+            key,
+            JSON.stringify(history)
+        );
+
+    }
+
+
+    function createRecordKey(
+        type,
+        selectedDepartment,
+        selectedStatus
+    ) {
+
+        return [
+
+            type,
+
+            selectedDepartment || '',
+
+            selectedStatus || ''
+
+        ].join('|');
+
+    }
+
+
+    function addHistory(
+        type,
+        url,
+        selectedDepartment,
+        selectedStatus
+    ) {
+
+        const key =
+            type === 'pdf'
+                ? PDF_HISTORY_KEY
+                : EXCEL_HISTORY_KEY;
+
+
+        const history =
+            getHistory(key);
+
+
+        const recordKey =
+            createRecordKey(
+                type,
+                selectedDepartment,
+                selectedStatus
+            );
+
+
+        const alreadyExists =
+            history.some(function (record) {
+
+                return record.recordKey === recordKey;
+
+            });
+
+
+        if (alreadyExists) {
+
+            return;
+
+        }
+
+
+        const now =
+            new Date();
+
+
+        const record = {
+
+            id:
+                Date.now(),
+
+            recordKey:
+                recordKey,
+
+            fileName:
+                getFileName(
+                    type,
+                    selectedDepartment,
+                    selectedStatus
+                ),
+
+            department:
+                selectedDepartment ||
+                'All Departments',
+
+            status:
+                selectedStatus ||
+                'All Status',
+
+            url:
+                url,
+
+            generatedDate:
+                now.toISOString().split('T')[0],
+
+            generatedAt:
+                now.toLocaleString()
+
+        };
+
+
+        history.unshift(record);
+
+
+        saveHistory(
+            key,
+            history
+        );
+
+    }
+
+
+    function getFileName(
+        type,
+        selectedDepartment,
+        selectedStatus
+    ) {
+
+        const departmentText =
+            selectedDepartment ||
+            'all-departments';
+
+
+        const statusText =
+            selectedStatus ||
+            'all-status';
+
+
+        return 'employee-report-' +
+
+            departmentText
+                .toLowerCase()
+                .replace(/\s+/g, '-') +
+
+            '-' +
+
+            statusText
+                .toLowerCase()
+                .replace(/\s+/g, '-') +
+
+            '.' +
+
+            (
+                type === 'pdf'
+                    ? 'pdf'
+                    : 'xlsx'
+            );
+
+    }
+
+
+    function createDownloadButton(
+        record,
+        type
+    ) {
+
+        const button =
+            document.createElement('a');
+
+
+        button.href =
+            record.url;
+
+
+        button.className =
+            type === 'pdf'
+                ? 'btn btn-sm btn-danger'
+                : 'btn btn-sm btn-success';
+
+
+        button.innerHTML =
+            '<i class="bi bi-download me-1"></i>Download';
+
+
+        return button;
+
+    }
+
+
+    function renderHistory() {
+
+        const pdfHistory =
+            getHistory(
+                PDF_HISTORY_KEY
+            );
+
+
+        const excelHistory =
+            getHistory(
+                EXCEL_HISTORY_KEY
+            );
+
+
+        renderMainHistory(
+            pdfHistory,
+            pdfHistoryTableBody,
+            'pdf'
+        );
+
+
+        renderMainHistory(
+            excelHistory,
+            excelHistoryTableBody,
+            'excel'
+        );
+
+
+        renderModalRecords(
+            pdfHistory,
+            pdfModalRecords,
+            'pdf'
+        );
+
+
+        renderModalRecords(
+            excelHistory,
+            excelModalRecords,
+            'excel'
+        );
+
+    }
+
+
+    function renderMainHistory(
+        history,
+        container,
+        type
+    ) {
+
+        container.innerHTML = '';
+
+
+        const recentHistory =
+            history.slice(0, 5);
+
+
+        if (
+            recentHistory.length === 0
+        ) {
+
+            const row =
+                document.createElement('tr');
+
+
+            row.innerHTML =
+                '<td colspan="3" class="history-empty">' +
+                'No generated reports yet.' +
+                '</td>';
+
+
+            container.appendChild(row);
+
+            return;
+
+        }
+
+
+        recentHistory.forEach(
+            function (record) {
+
+                const row =
+                    document.createElement('tr');
+
+
+                const fileCell =
+                    document.createElement('td');
+
+
+                fileCell.textContent =
+                    record.fileName;
+
+
+                const dateCell =
+                    document.createElement('td');
+
+
+                dateCell.textContent =
+                    record.generatedAt;
+
+
+                const actionCell =
+                    document.createElement('td');
+
+
+                actionCell.appendChild(
+                    createDownloadButton(
+                        record,
+                        type
+                    )
+                );
+
+
+                row.appendChild(
+                    fileCell
+                );
+
+
+                row.appendChild(
+                    dateCell
+                );
+
+
+                row.appendChild(
+                    actionCell
+                );
+
+
+                container.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+
+    function renderModalRecords(
+        history,
+        container,
+        type,
+        dateFilter
+    ) {
+
+        container.innerHTML = '';
+
+
+        let filteredHistory =
+            history.slice();
+
+
+        if (dateFilter) {
+
+            filteredHistory =
+                filteredHistory.filter(
+                    function (record) {
+
+                        return (
+                            record.generatedDate ===
+                            dateFilter
+                        );
+
+                    }
+                );
+
+        }
+
+
+        if (
+            filteredHistory.length === 0
+        ) {
+
+            const empty =
+                document.createElement('div');
+
+
+            empty.className =
+                'history-empty';
+
+
+            empty.textContent =
+                dateFilter
+                    ? 'No reports were generated on the selected date.'
+                    : 'No generated reports yet.';
+
+
+            container.appendChild(
+                empty
+            );
+
+            return;
+
+        }
+
+
+        filteredHistory.forEach(
+            function (record) {
+
+                const wrapper =
+                    document.createElement('div');
+
+
+                wrapper.className =
+                    'modal-record';
+
+
+                const info =
+                    document.createElement('div');
+
+
+                info.className =
+                    'modal-record-info';
+
+
+                const name =
+                    document.createElement('div');
+
+
+                name.className =
+                    'modal-record-name';
+
+
+                name.textContent =
+                    record.fileName;
+
+
+                const details =
+                    document.createElement('div');
+
+
+                details.className =
+                    'modal-record-details';
+
+
+                details.textContent =
+                    'Generated: ' +
+                    record.generatedAt +
+                    ' | Department: ' +
+                    record.department +
+                    ' | Status: ' +
+                    record.status;
+
+
+                info.appendChild(
+                    name
+                );
+
+
+                info.appendChild(
+                    details
+                );
+
+
+                const action =
+                    document.createElement('div');
+
+
+                action.className =
+                    'modal-record-action';
+
+
+                action.appendChild(
+                    createDownloadButton(
+                        record,
+                        type
+                    )
+                );
+
+
+                wrapper.appendChild(
+                    info
+                );
+
+
+                wrapper.appendChild(
+                    action
+                );
+
+
+                container.appendChild(
+                    wrapper
+                );
+
+            }
+        );
+
+    }
+
+
+    function showGeneratedFiles() {
+
+        const pdfUrl =
+            @json(
+                route(
+                    'reports.employee.pdf',
+                    request()->query()
+                )
+            );
+
+
+        const excelUrl =
+            @json(
+                route(
+                    'reports.employee.excel',
+                    request()->query()
+                )
+            );
+
+
+        const selectedDepartment =
+            @json(
+                request('department')
+            );
+
+
+        const selectedStatus =
+            @json(
+                request('status')
+            );
+
+
+        addHistory(
+            'pdf',
+            pdfUrl,
+            selectedDepartment,
+            selectedStatus
+        );
+
+
+        addHistory(
+            'excel',
+            excelUrl,
+            selectedDepartment,
+            selectedStatus
+        );
+
+
+        renderHistory();
+
+
+        const generationModal =
+            document.getElementById(
+                'generationModal'
+            );
+
+
+        if (generationModal) {
+
+            const modal =
+                new bootstrap.Modal(
+                    generationModal
+                );
+
+
+            modal.show();
+
+        }
+
+    }
+
+
+    document.getElementById(
+        'pdfSearchButton'
+    ).addEventListener(
+        'click',
+        function () {
+
+            const history =
+                getHistory(
+                    PDF_HISTORY_KEY
+                );
+
+
+            renderModalRecords(
+                history,
+                pdfModalRecords,
+                'pdf',
+                pdfDateFilter.value
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        'pdfClearButton'
+    ).addEventListener(
+        'click',
+        function () {
+
+            pdfDateFilter.value =
+                '';
+
+
+            const history =
+                getHistory(
+                    PDF_HISTORY_KEY
+                );
+
+
+            renderModalRecords(
+                history,
+                pdfModalRecords,
+                'pdf'
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        'excelSearchButton'
+    ).addEventListener(
+        'click',
+        function () {
+
+            const history =
+                getHistory(
+                    EXCEL_HISTORY_KEY
+                );
+
+
+            renderModalRecords(
+                history,
+                excelModalRecords,
+                'excel',
+                excelDateFilter.value
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        'excelClearButton'
+    ).addEventListener(
+        'click',
+        function () {
+
+            excelDateFilter.value =
+                '';
+
+
+            const history =
+                getHistory(
+                    EXCEL_HISTORY_KEY
+                );
+
+
+            renderModalRecords(
+                history,
+                excelModalRecords,
+                'excel'
+            );
+
+        }
+    );
+
+
+    const navigationEntries =
+        performance.getEntriesByType(
+            'navigation'
+        );
+
+
+    const isReload =
+        navigationEntries.length > 0
+            ? navigationEntries[0].type === 'reload'
+            : (
+                performance.navigation &&
+                performance.navigation.type === 1
+            );
+
+
+    if (isReload) {
+
+        window.location.replace(
+            EMPLOYEE_REPORT_URL
+        );
+
+        return;
+
+    }
+
+
+    history.pushState(
+        null,
+        '',
+        window.location.href
+    );
+
+
+    window.addEventListener(
+        'popstate',
+        function () {
+
+            window.location.replace(
+                REPORTS_PAGE_URL
+            );
+
+        }
+    );
+
+
+    renderHistory();
+
+
+    @if(isset($generated) && $generated)
+
+        showGeneratedFiles();
+
+    @endif
+
+});
+
+</script>
 
 </body>
 

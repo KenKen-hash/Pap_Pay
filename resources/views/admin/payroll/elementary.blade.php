@@ -750,6 +750,34 @@
 
 
                                     /*
+                                     |--------------------------------------------------------------------------
+                                     | Existing Additional Deductions
+                                     |--------------------------------------------------------------------------
+                                    */
+
+                                    $existingAdditionalDeductions =
+                                        ($additionalDeductions ?? collect())->get(
+                                            $employee->id,
+                                            collect()
+                                        );
+
+
+                                    $additionalDeductionsJson =
+                                        $existingAdditionalDeductions
+                                            ->map(function ($deduction) {
+
+                                                return [
+                                                    'id' => $deduction->id ?? null,
+                                                    'amount' => $deduction->amount,
+                                                    'remarks' => $deduction->remarks,
+                                                ];
+
+                                            })
+                                            ->values()
+                                            ->all();
+
+
+                                    /*
                                     |--------------------------------------------------------------------------
                                     | Existing Additional Teaching Loads
                                     |--------------------------------------------------------------------------
@@ -948,6 +976,8 @@
                                             data-teaching-units="{{ $salaryConfig?->teaching_load_units_taken ?? 0 }}"
 
                                             data-additional-earnings='@json($additionalEarningsJson, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)'
+
+                                            data-additional-deductions='@json($additionalDeductionsJson, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)'
 
                                             data-teaching-loads='@json($teachingLoadsJson, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)'>
 
@@ -1422,6 +1452,51 @@
 
 
                     <!-- ================================================= -->
+                    <!-- ADDITIONAL DEDUCTIONS -->
+                    <!-- ================================================= -->
+
+                    <div class="card shadow-sm mb-4">
+
+                        <div class="card-header">
+
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                                <strong>
+                                    <i class="bi bi-dash-circle me-2 text-danger"></i>
+                                    Additional Deductions
+                                </strong>
+
+                                <button type="button"
+                                    class="btn add-entry-btn"
+                                    id="addAdditionalDeduction">
+
+                                    <i class="bi bi-plus-circle me-1"></i>
+                                    Add Additional Deduction
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div id="additionalDeductionsContainer"></div>
+
+                            <div id="noAdditionalDeductions"
+                                class="text-muted text-center py-3">
+
+                                <i class="bi bi-info-circle me-1"></i>
+                                No additional deductions added.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
                     <!-- ADDITIONAL TEACHING LOAD -->
                     <!-- ================================================= -->
 
@@ -1509,6 +1584,76 @@
     </div>
 
 
+    <!-- =============================================================== -->
+    <!-- SYSTEM NOTIFICATION MODAL -->
+    <!-- =============================================================== -->
+
+    <div class="modal fade"
+        id="notificationModal"
+        tabindex="-1"
+        aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content border-0 shadow-lg">
+
+                <div class="modal-header"
+                    id="notificationModalHeader">
+
+                    <h5 class="modal-title text-white"
+                        id="notificationModalTitle">
+
+                        <i class="bi bi-check-circle-fill me-2"
+                            id="notificationModalIcon">
+                        </i>
+
+                        Notification
+
+                    </h5>
+
+                    <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body text-center py-4">
+
+                    <div id="notificationModalBody"
+                        style="
+                            white-space: pre-line;
+                            color: #374151;
+                            font-size: 15px;
+                            line-height: 1.7;
+                        ">
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer justify-content-center">
+
+                    <button type="button"
+                        class="btn btn-success px-4"
+                        id="notificationModalButton"
+                        data-bs-dismiss="modal">
+
+                        OK
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
@@ -1535,6 +1680,146 @@
                     new bootstrap.Modal(
                         modalElement
                     );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Notification Modal
+                |--------------------------------------------------------------------------
+                */
+
+                const notificationModalElement =
+                    document.getElementById(
+                        "notificationModal"
+                    );
+
+
+                const notificationModal =
+                    new bootstrap.Modal(
+                        notificationModalElement,
+                        {
+                            backdrop: true,
+                            keyboard: true
+                        }
+                    );
+
+
+                const notificationModalHeader =
+                    document.getElementById(
+                        "notificationModalHeader"
+                    );
+
+
+                const notificationModalTitle =
+                    document.getElementById(
+                        "notificationModalTitle"
+                    );
+
+
+                const notificationModalIcon =
+                    document.getElementById(
+                        "notificationModalIcon"
+                    );
+
+
+                const notificationModalBody =
+                    document.getElementById(
+                        "notificationModalBody"
+                    );
+
+
+                const notificationModalButton =
+                    document.getElementById(
+                        "notificationModalButton"
+                    );
+
+
+                let reloadAfterNotification =
+                    false;
+
+
+                function showNotification(
+                    type,
+                    title,
+                    message,
+                    reloadAfterClose = false
+                ) {
+
+                    reloadAfterNotification =
+                        reloadAfterClose;
+
+
+                    if (type === "success") {
+
+                        notificationModalHeader.className =
+                            "modal-header bg-success text-white";
+
+
+                        notificationModalIcon.className =
+                            "bi bi-check-circle-fill me-2";
+
+
+                        notificationModalTitle.innerHTML =
+                            `
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                ${escapeHtml(title)}
+                            `;
+
+
+                        notificationModalButton.className =
+                            "btn btn-success px-4";
+
+
+                    } else {
+
+                        notificationModalHeader.className =
+                            "modal-header bg-danger text-white";
+
+
+                        notificationModalIcon.className =
+                            "bi bi-exclamation-triangle-fill me-2";
+
+
+                        notificationModalTitle.innerHTML =
+                            `
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                ${escapeHtml(title)}
+                            `;
+
+
+                        notificationModalButton.className =
+                            "btn btn-danger px-4";
+
+                    }
+
+
+                    notificationModalBody.textContent =
+                        message;
+
+
+                    notificationModal.show();
+
+                }
+
+
+                notificationModalElement.addEventListener(
+                    "hidden.bs.modal",
+                    function() {
+
+                        if (
+                            reloadAfterNotification
+                        ) {
+
+                            reloadAfterNotification =
+                                false;
+
+
+                            location.reload();
+
+                        }
+
+                    }
+                );
 
 
                 /*
@@ -1772,6 +2057,154 @@
                         function() {
 
                             createAdditionalEarning();
+
+                        }
+                    );
+
+
+                /*
+                 |--------------------------------------------------------------------------
+                 | Additional Deductions
+                 |--------------------------------------------------------------------------
+                */
+
+                const additionalDeductionsContainer =
+                    document.getElementById(
+                        "additionalDeductionsContainer"
+                    );
+
+
+                const noAdditionalDeductions =
+                    document.getElementById(
+                        "noAdditionalDeductions"
+                    );
+
+
+                function updateAdditionalDeductionsMessage() {
+
+                    noAdditionalDeductions.style.display =
+                        additionalDeductionsContainer.children.length === 0
+                            ? ""
+                            : "none";
+
+                }
+
+
+                function createAdditionalDeduction(
+                    amount = "",
+                    remarks = ""
+                ) {
+
+                    const entry =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    entry.className =
+                        "additional-entry";
+
+
+                    entry.innerHTML =
+                        `
+
+                        <div class="row align-items-end">
+
+                            <div class="col-md-5 mb-3 mb-md-0">
+
+                                <label class="form-label">
+                                    Amount
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        ₱
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        inputmode="decimal"
+                                        class="form-control additional-deduction-amount"
+                                        placeholder="0.00"
+                                        value="${escapeHtml(amount)}"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-5 mb-3 mb-md-0">
+
+                                <label class="form-label">
+                                    Remarks
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control additional-deduction-remarks"
+                                    placeholder="Enter remarks"
+                                    value="${escapeHtml(remarks)}"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-2 mb-3 mb-md-0">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-danger w-100 remove-entry-btn remove-additional-deduction"
+                                >
+
+                                    <i class="bi bi-trash me-1"></i>
+                                    Remove
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        `;
+
+
+                    additionalDeductionsContainer.appendChild(
+                        entry
+                    );
+
+
+                    entry
+                        .querySelector(
+                            ".remove-additional-deduction"
+                        )
+                        .addEventListener(
+                            "click",
+                            function() {
+
+                                entry.remove();
+
+                                updateAdditionalDeductionsMessage();
+
+                            }
+                        );
+
+
+                    updateAdditionalDeductionsMessage();
+
+                }
+
+
+                document
+                    .getElementById(
+                        "addAdditionalDeduction"
+                    )
+                    .addEventListener(
+                        "click",
+                        function() {
+
+                            createAdditionalDeduction();
 
                         }
                     );
@@ -2061,6 +2494,49 @@
 
                 /*
                 |--------------------------------------------------------------------------
+                | Load Existing Additional Deductions
+                |--------------------------------------------------------------------------
+                */
+
+                function loadAdditionalDeductions(
+                    deductions
+                ) {
+
+                    additionalDeductionsContainer.innerHTML =
+                        "";
+
+
+                    if (
+                        !Array.isArray(deductions) ||
+                        deductions.length === 0
+                    ) {
+
+                        updateAdditionalDeductionsMessage();
+
+                        return;
+
+                    }
+
+
+                    deductions.forEach(
+                        function(deduction) {
+
+                            createAdditionalDeduction(
+                                deduction.amount ?? "",
+                                deduction.remarks ?? ""
+                            );
+
+                        }
+                    );
+
+
+                    updateAdditionalDeductionsMessage();
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
                 | Load Existing Teaching Loads
                 |--------------------------------------------------------------------------
                 */
@@ -2234,6 +2710,40 @@
 
 
                                     /*
+                                     |--------------------------------------------------------------------------
+                                     | Load Existing Additional Deductions
+                                     |--------------------------------------------------------------------------
+                                     */
+
+                                    let additionalDeductions = [];
+
+
+                                    try {
+
+                                        additionalDeductions =
+                                            JSON.parse(
+                                                this.dataset.additionalDeductions || "[]"
+                                            );
+
+                                    } catch (error) {
+
+                                        console.error(
+                                            "Unable to load additional deductions:",
+                                            error,
+                                            this.dataset.additionalDeductions
+                                        );
+
+                                        additionalDeductions = [];
+
+                                    }
+
+
+                                    loadAdditionalDeductions(
+                                        additionalDeductions
+                                    );
+
+
+                                    /*
                                     |--------------------------------------------------------------------------
                                     | Load Existing Teaching Loads
                                     |--------------------------------------------------------------------------
@@ -2352,6 +2862,59 @@
                                             ) {
 
                                                 additionalEarnings.push({
+
+                                                    amount: amount,
+
+                                                    remarks: remarks
+
+                                                });
+
+                                            }
+
+                                        }
+                                    );
+
+
+                                /*
+                                 |--------------------------------------------------------------------------
+                                 | Collect Additional Deductions
+                                 |--------------------------------------------------------------------------
+                                 */
+
+                                const additionalDeductions = [];
+
+
+                                document
+                                    .querySelectorAll(
+                                        "#additionalDeductionsContainer .additional-entry"
+                                    )
+                                    .forEach(
+                                        function(entry) {
+
+                                            const amount =
+                                                entry
+                                                    .querySelector(
+                                                        ".additional-deduction-amount"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            const remarks =
+                                                entry
+                                                    .querySelector(
+                                                        ".additional-deduction-remarks"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            if (
+                                                amount !== "" ||
+                                                remarks !== ""
+                                            ) {
+
+                                                additionalDeductions.push({
 
                                                     amount: amount,
 
@@ -2569,6 +3132,9 @@
                                                 additional_earnings:
                                                     additionalEarnings,
 
+                                                additional_deductions:
+                                                    additionalDeductions,
+
                                                 teaching_loads:
                                                     teachingLoads
 
@@ -2620,12 +3186,27 @@
 
                                 if (data.success) {
 
-                                    alert(
-                                        "Employee salary configuration saved successfully."
+                                    button.disabled =
+                                        false;
+
+
+                                    button.innerHTML =
+                                        `
+                                            <i class="bi bi-check-circle me-2"></i>
+                                            Save Configuration
+                                        `;
+
+
+                                    employeeModal.hide();
+
+
+                                    showNotification(
+                                        "success",
+                                        "Configuration Saved",
+                                        "Employee salary configuration saved successfully.",
+                                        true
                                     );
 
-
-                                    location.reload();
 
                                 } else {
 
@@ -2644,12 +3225,6 @@
                                 );
 
 
-                                alert(
-                                    error.message ||
-                                    "Something went wrong while saving the configuration."
-                                );
-
-
                                 button.disabled =
                                     false;
 
@@ -2659,6 +3234,15 @@
                                         <i class="bi bi-check-circle me-2"></i>
                                         Save Configuration
                                     `;
+
+
+                                showNotification(
+                                    "error",
+                                    "Unable to Save Configuration",
+                                    error.message ||
+                                    "Something went wrong while saving the configuration.",
+                                    false
+                                );
 
                             }
 
@@ -2833,12 +3417,24 @@
 
                                 if (data.success) {
 
-                                    alert(
-                                        "Department default configuration saved successfully."
+                                    button.disabled =
+                                        false;
+
+
+                                    button.innerHTML =
+                                        `
+                                            <i class="bi bi-check-circle me-2"></i>
+                                            Save Default Configuration
+                                        `;
+
+
+                                    showNotification(
+                                        "success",
+                                        "Configuration Saved",
+                                        "Department default configuration saved successfully.",
+                                        true
                                     );
 
-
-                                    location.reload();
 
                                 } else {
 
@@ -2857,12 +3453,6 @@
                                 );
 
 
-                                alert(
-                                    error.message ||
-                                    "Something went wrong while saving the department configuration."
-                                );
-
-
                                 button.disabled =
                                     false;
 
@@ -2872,6 +3462,15 @@
                                         <i class="bi bi-check-circle me-2"></i>
                                         Save Default Configuration
                                     `;
+
+
+                                showNotification(
+                                    "error",
+                                    "Unable to Save Configuration",
+                                    error.message ||
+                                    "Something went wrong while saving the department configuration.",
+                                    false
+                                );
 
                             }
 

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -95,7 +97,7 @@ class EmployeeController extends Controller
             'password' => 'required'
         ]);
 
-        User::create([
+        $employee = User::create([
 
             'name' => $request->name,
 
@@ -107,6 +109,17 @@ class EmployeeController extends Controller
 
         ]);
 
+        AuditLogService::log(
+            'Employee Created',
+            'Admin ' .
+            Auth::user()->name .
+            ' created employee ' .
+            $employee->name .
+            ' (' .
+            $employee->email .
+            ').'
+        );
+
         return redirect()
             ->route('employees.index')
             ->with('success', 'Employee created successfully.');
@@ -116,56 +129,92 @@ class EmployeeController extends Controller
     {
         return response()->json($employee);
     }
+
     public function edit(User $employee)
     {
         return response()->json($employee);
     }
 
-   public function update(Request $request, User $employee)
-{
-    $validated = $request->validate([
-        'first_name' => 'nullable|string|max:255',
-        'middle_name' => 'nullable|string|max:255',
-        'last_name' => 'nullable|string|max:255',
-        'email' => 'nullable|email|unique:users,email,' . $employee->id,
-        'department' => 'nullable|string|max:255',
-        'position' => 'nullable|string|max:255',
-        'status' => 'nullable|string|max:50',
-        'contact_number' => 'nullable|string|max:255',
-        'gender' => 'nullable|string|max:50',
-        'birth_date' => 'nullable|date',
-        'address' => 'nullable|string',
-        'employment_type' => 'nullable|string|max:255',
-        'salary_grade' => 'nullable|string|max:255',
-        'emergency_contact_person' => 'nullable|string|max:255',
-        'emergency_contact_number' => 'nullable|string|max:255',
-        'bio' => 'nullable|string',
+    public function update(Request $request, User $employee)
+    {
+        $validated = $request->validate([
+            'first_name' => 'nullable|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|unique:users,email,' . $employee->id,
+            'department' => 'nullable|string|max:255',
+            'position' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:50',
+            'contact_number' => 'nullable|string|max:255',
+            'gender' => 'nullable|string|max:50',
+            'birth_date' => 'nullable|date',
+            'address' => 'nullable|string',
+            'employment_type' => 'nullable|string|max:255',
+            'salary_grade' => 'nullable|string|max:255',
+            'emergency_contact_person' => 'nullable|string|max:255',
+            'emergency_contact_number' => 'nullable|string|max:255',
+            'bio' => 'nullable|string',
 
-        // Government Benefits Numbers
-        'sss_number' => 'nullable|string|max:30',
-        'philhealth_number' => 'nullable|string|max:30',
-        'pagibig_number' => 'nullable|string|max:30',
-        'tin' => 'nullable|string|max:30',
-    ]);
+            // Government Benefits Numbers
+            'sss_number' => 'nullable|string|max:30',
+            'philhealth_number' => 'nullable|string|max:30',
+            'pagibig_number' => 'nullable|string|max:30',
+            'tin' => 'nullable|string|max:30',
 
-    $validated['name'] = trim(
-        $validated['first_name'] . ' ' .
-            (!empty($validated['middle_name']) ? $validated['middle_name'] . ' ' : '') .
-            $validated['last_name']
-    );
+            // Password
+            'password' => 'nullable|string|min:8',
+        ]);
 
-    $employee->update($validated);
+        $validated['name'] = trim(
+            $validated['first_name'] . ' ' .
+                (!empty($validated['middle_name']) ? $validated['middle_name'] . ' ' : '') .
+                $validated['last_name']
+        );
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Employee updated successfully.'
-    ]);
-}
+        if ($request->filled('password')) {
+            $validated['password'] = Hash::make($request->password);
+        } else {
+            unset($validated['password']);
+        }
+
+        $employee->update($validated);
+
+        AuditLogService::log(
+            'Employee Updated',
+            'Admin ' .
+            Auth::user()->name .
+            ' updated employee ' .
+            $employee->name .
+            ' (' .
+            $employee->email .
+            ').'
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Employee updated successfully.'
+        ]);
+    }
+
     public function destroy(User $employee)
     {
+        $employeeName = $employee->name;
+        $employeeEmail = $employee->email;
+
         $employee->update([
             'status' => 'Inactive'
         ]);
+
+        AuditLogService::log(
+            'Employee Deactivated',
+            'Admin ' .
+            Auth::user()->name .
+            ' deactivated employee ' .
+            $employeeName .
+            ' (' .
+            $employeeEmail .
+            ').'
+        );
 
         return response()->json([
             'success' => true,
@@ -178,6 +227,17 @@ class EmployeeController extends Controller
         $employee->update([
             'status' => 'Active'
         ]);
+
+        AuditLogService::log(
+            'Employee Reactivated',
+            'Admin ' .
+            Auth::user()->name .
+            ' reactivated employee ' .
+            $employee->name .
+            ' (' .
+            $employee->email .
+            ').'
+        );
 
         return response()->json([
             'success' => true,

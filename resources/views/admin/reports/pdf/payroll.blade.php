@@ -139,7 +139,7 @@ tfoot td{
 
 <div class="header">
 
-    <h2>YOUR SCHOOL NAME</h2>
+    <h2>Professional Academy of the Philippines</h2>
 
     <h4>Payroll Report</h4>
 

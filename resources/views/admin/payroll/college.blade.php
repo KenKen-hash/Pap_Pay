@@ -8,7 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Elementary Salary Configuration | PAP PAY</title>
+    <title>College Salary Configuration | PAP PAY</title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -359,13 +359,13 @@
 
                         <i class="bi bi-bank2 me-2"></i>
 
-                        Elementary Salary Configuration
+                        College Salary Configuration
 
                     </h1>
 
                     <p class="page-subtitle">
 
-                        Configure the default payroll settings for all Elementary employees.
+                        Configure the default payroll settings for all College employees.
                         Individual employees can also have their own salary configuration.
 
                     </p>
@@ -652,7 +652,7 @@
 
                         <i class="bi bi-people-fill"></i>
 
-                        Elementary Employees
+                        College Employees
 
                     </h3>
 
@@ -742,6 +742,34 @@
                                                     'id' => $earning->id ?? null,
                                                     'amount' => $earning->amount,
                                                     'remarks' => $earning->remarks,
+                                                ];
+
+                                            })
+                                            ->values()
+                                            ->all();
+
+
+                                    /*
+                                     |--------------------------------------------------------------------------
+                                     | Existing Additional Deductions
+                                     |--------------------------------------------------------------------------
+                                    */
+
+                                    $existingAdditionalDeductions =
+                                        ($additionalDeductions ?? collect())->get(
+                                            $employee->id,
+                                            collect()
+                                        );
+
+
+                                    $additionalDeductionsJson =
+                                        $existingAdditionalDeductions
+                                            ->map(function ($deduction) {
+
+                                                return [
+                                                    'id' => $deduction->id ?? null,
+                                                    'amount' => $deduction->amount,
+                                                    'remarks' => $deduction->remarks,
                                                 ];
 
                                             })
@@ -949,6 +977,8 @@
 
                                             data-additional-earnings='@json($additionalEarningsJson, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)'
 
+                                            data-additional-deductions='@json($additionalDeductionsJson, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)'
+
                                             data-teaching-loads='@json($teachingLoadsJson, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)'>
 
                                             <i class="bi bi-pencil-square me-1"></i>
@@ -971,7 +1001,7 @@
 
                                         <i class="bi bi-people fs-1 d-block mb-2"></i>
 
-                                        No Elementary employees found.
+                                        No College employees found.
 
                                     </td>
 
@@ -1422,6 +1452,51 @@
 
 
                     <!-- ================================================= -->
+                    <!-- ADDITIONAL DEDUCTIONS -->
+                    <!-- ================================================= -->
+
+                    <div class="card shadow-sm mb-4">
+
+                        <div class="card-header">
+
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                                <strong>
+                                    <i class="bi bi-dash-circle me-2 text-danger"></i>
+                                    Additional Deductions
+                                </strong>
+
+                                <button type="button"
+                                    class="btn add-entry-btn"
+                                    id="addAdditionalDeduction">
+
+                                    <i class="bi bi-plus-circle me-1"></i>
+                                    Add Additional Deduction
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div id="additionalDeductionsContainer"></div>
+
+                            <div id="noAdditionalDeductions"
+                                class="text-muted text-center py-3">
+
+                                <i class="bi bi-info-circle me-1"></i>
+                                No additional deductions added.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
                     <!-- ADDITIONAL TEACHING LOAD -->
                     <!-- ================================================= -->
 
@@ -1778,6 +1853,154 @@
 
 
                 /*
+                 |--------------------------------------------------------------------------
+                 | Additional Deductions
+                 |--------------------------------------------------------------------------
+                */
+
+                const additionalDeductionsContainer =
+                    document.getElementById(
+                        "additionalDeductionsContainer"
+                    );
+
+
+                const noAdditionalDeductions =
+                    document.getElementById(
+                        "noAdditionalDeductions"
+                    );
+
+
+                function updateAdditionalDeductionsMessage() {
+
+                    noAdditionalDeductions.style.display =
+                        additionalDeductionsContainer.children.length === 0
+                            ? ""
+                            : "none";
+
+                }
+
+
+                function createAdditionalDeduction(
+                    amount = "",
+                    remarks = ""
+                ) {
+
+                    const entry =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    entry.className =
+                        "additional-entry";
+
+
+                    entry.innerHTML =
+                        `
+
+                        <div class="row align-items-end">
+
+                            <div class="col-md-5 mb-3 mb-md-0">
+
+                                <label class="form-label">
+                                    Amount
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        ₱
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        inputmode="decimal"
+                                        class="form-control additional-deduction-amount"
+                                        placeholder="0.00"
+                                        value="${escapeHtml(amount)}"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-5 mb-3 mb-md-0">
+
+                                <label class="form-label">
+                                    Remarks
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control additional-deduction-remarks"
+                                    placeholder="Enter remarks"
+                                    value="${escapeHtml(remarks)}"
+                                >
+
+                            </div>
+
+
+                            <div class="col-md-2 mb-3 mb-md-0">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-danger w-100 remove-entry-btn remove-additional-deduction"
+                                >
+
+                                    <i class="bi bi-trash me-1"></i>
+                                    Remove
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        `;
+
+
+                    additionalDeductionsContainer.appendChild(
+                        entry
+                    );
+
+
+                    entry
+                        .querySelector(
+                            ".remove-additional-deduction"
+                        )
+                        .addEventListener(
+                            "click",
+                            function() {
+
+                                entry.remove();
+
+                                updateAdditionalDeductionsMessage();
+
+                            }
+                        );
+
+
+                    updateAdditionalDeductionsMessage();
+
+                }
+
+
+                document
+                    .getElementById(
+                        "addAdditionalDeduction"
+                    )
+                    .addEventListener(
+                        "click",
+                        function() {
+
+                            createAdditionalDeduction();
+
+                        }
+                    );
+
+
+                /*
                 |--------------------------------------------------------------------------
                 | Additional Teaching Load
                 |--------------------------------------------------------------------------
@@ -2060,6 +2283,49 @@
 
 
                 /*
+                 |--------------------------------------------------------------------------
+                 | Load Existing Additional Deductions
+                 |--------------------------------------------------------------------------
+                */
+
+                function loadAdditionalDeductions(
+                    deductions
+                ) {
+
+                    additionalDeductionsContainer.innerHTML =
+                        "";
+
+
+                    if (
+                        !Array.isArray(deductions) ||
+                        deductions.length === 0
+                    ) {
+
+                        updateAdditionalDeductionsMessage();
+
+                        return;
+
+                    }
+
+
+                    deductions.forEach(
+                        function(deduction) {
+
+                            createAdditionalDeduction(
+                                deduction.amount ?? "",
+                                deduction.remarks ?? ""
+                            );
+
+                        }
+                    );
+
+
+                    updateAdditionalDeductionsMessage();
+
+                }
+
+
+                /*
                 |--------------------------------------------------------------------------
                 | Load Existing Teaching Loads
                 |--------------------------------------------------------------------------
@@ -2234,6 +2500,40 @@
 
 
                                     /*
+                                     |--------------------------------------------------------------------------
+                                     | Load Existing Additional Deductions
+                                     |--------------------------------------------------------------------------
+                                    */
+
+                                    let additionalDeductions = [];
+
+
+                                    try {
+
+                                        additionalDeductions =
+                                            JSON.parse(
+                                                this.dataset.additionalDeductions || "[]"
+                                            );
+
+                                    } catch (error) {
+
+                                        console.error(
+                                            "Unable to load additional deductions:",
+                                            error,
+                                            this.dataset.additionalDeductions
+                                        );
+
+                                        additionalDeductions = [];
+
+                                    }
+
+
+                                    loadAdditionalDeductions(
+                                        additionalDeductions
+                                    );
+
+
+                                    /*
                                     |--------------------------------------------------------------------------
                                     | Load Existing Teaching Loads
                                     |--------------------------------------------------------------------------
@@ -2352,6 +2652,59 @@
                                             ) {
 
                                                 additionalEarnings.push({
+
+                                                    amount: amount,
+
+                                                    remarks: remarks
+
+                                                });
+
+                                            }
+
+                                        }
+                                    );
+
+
+                                /*
+                                 |--------------------------------------------------------------------------
+                                 | Collect Additional Deductions
+                                 |--------------------------------------------------------------------------
+                                */
+
+                                const additionalDeductions = [];
+
+
+                                document
+                                    .querySelectorAll(
+                                        "#additionalDeductionsContainer .additional-entry"
+                                    )
+                                    .forEach(
+                                        function(entry) {
+
+                                            const amount =
+                                                entry
+                                                    .querySelector(
+                                                        ".additional-deduction-amount"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            const remarks =
+                                                entry
+                                                    .querySelector(
+                                                        ".additional-deduction-remarks"
+                                                    )
+                                                    .value
+                                                    .trim();
+
+
+                                            if (
+                                                amount !== "" ||
+                                                remarks !== ""
+                                            ) {
+
+                                                additionalDeductions.push({
 
                                                     amount: amount,
 
@@ -2568,6 +2921,9 @@
 
                                                 additional_earnings:
                                                     additionalEarnings,
+
+                                                additional_deductions:
+                                                    additionalDeductions,
 
                                                 teaching_loads:
                                                     teachingLoads
